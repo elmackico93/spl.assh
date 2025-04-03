@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Assistant Pro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Matrix-inspired Theme */
+    :root {
+      --matrix-bg: #0c0c0c;
+      --matrix-text: #00ff41;
+      --matrix-glow: #00ff4155;
+      --matrix-dim: #0f3d0f;
+      --matrix-highlight: #00ff97;
+      --matrix-panel: #0f0f0f;
+      --matrix-border: #143214;
+      --matrix-error: #ff2222;
+      --matrix-warning: #ffe100;
+      --matrix-success: #00ff41;
+      --matrix-font: 'Courier New', monospace;
+      --matrix-secondary: #072707;
+      --animation-speed: 0.5s;
+    }
+
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--matrix-font);
+    }
+
+    body {
+      background-color: var(--matrix-bg);
+      color: var(--matrix-text);
+      font-family: var(--matrix-font);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Digital Rain Effect */
+    .digital-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    /* Glow and Text Effects */
+    .glow {
+      text-shadow: 0 0 10px var(--matrix-glow);
+      animation: pulse 2s infinite;
+    }
+
+    .matrix-text {
+      color: var(--matrix-text);
+      font-family: var(--matrix-font);
+    }
+
+    .highlight {
+      color: var(--matrix-highlight);
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 4px var(--matrix-glow); }
+      50% { text-shadow: 0 0 16px var(--matrix-glow); }
+      100% { text-shadow: 0 0 4px var(--matrix-glow); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes glitchText {
+      0% { clip-path: inset(40% 0 61% 0); }
+      20% { clip-path: inset(92% 0 1% 0); }
+      40% { clip-path: inset(43% 0 1% 0); }
+      60% { clip-path: inset(25% 0 58% 0); }
+      80% { clip-path: inset(54% 0 7% 0); }
+      100% { clip-path: inset(58% 0 43% 0); }
+    }
+
+    /* Layout Components */
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--matrix-border);
+      margin-bottom: 20px;
+      animation: slideInRight 0.7s forwards;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo i {
+      margin-right: 10px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      gap: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 0.3s forwards;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: var(--matrix-panel);
+      border-radius: 5px;
+      border: 1px solid var(--matrix-border);
+      padding: 15px;
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+      animation: slideInLeft 0.5s forwards;
+    }
+
+    .content {
+      flex: 1;
+      border-radius: 5px;
+      animation: slideInRight 0.5s forwards;
+    }
+
+    /* Panels and Cards */
+    .panel {
+      background-color: var(--matrix-panel);
+      border: 1px solid var(--matrix-border);
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--matrix-bg), var(--matrix-text), var(--matrix-bg));
+      opacity: 0;
+      transition: opacity var(--animation-speed);
+    }
+
+    .panel:hover::before {
+      opacity: 1;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Form Elements */
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      background-color: rgba(0, 30, 0, 0.3);
+      border: 1px solid var(--matrix-border);
+      border-radius: 3px;
+      color: var(--matrix-text);
+      font-family: var(--matrix-font);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--matrix-text);
+      box-shadow: 0 0 5px var(--matrix-glow);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px;
+      background-color: var(--matrix-secondary);
+      color: var(--matrix-text);
+      border: 1px solid var(--matrix-border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--matrix-font);
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(transparent, rgba(0, 255, 65, 0.1), transparent);
+      transform: rotate(30deg);
+      transition: transform 0.5s;
+      transform-origin: center;
+      opacity: 0;
+    }
+
+    .btn:hover {
+      background-color: var(--matrix-dim);
+      box-shadow: 0 0 10px var(--matrix-glow);
+    }
+
+    .btn:hover::after {
+      transform: rotate(30deg) translateY(0);
+      opacity: 1;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    .btn-primary {
+      background-color: var(--matrix-dim);
+    }
+
+    .btn-danger {
+      background-color: #3d0000;
+      color: var(--matrix-error);
+    }
+
+    .btn-warn {
+      background-color: #3d3d00;
+      color: var(--matrix-warning);
+    }
+
+    /* Status and Indicators */
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .status-success {
+      background-color: rgba(0, 255, 65, 0.2);
+      color: var(--matrix-success);
+    }
+
+    .status-warning {
+      background-color: rgba(255, 225, 0, 0.2);
+      color: var(--matrix-warning);
+    }
+
+    .status-error {
+      background-color: rgba(255, 34, 34, 0.2);
+      color: var(--matrix-error);
+    }
+
+    /* Lists and Tables */
+    .list {
+      list-style: none;
+    }
+
+    .list-item {
+      padding: 10px;
+      border-bottom: 1px solid var(--matrix-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+
+    .list-item:hover {
+      background-color: var(--matrix-secondary);
+      cursor: pointer;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item-title {
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    th {
+      background-color: var(--matrix-secondary);
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    tr:hover {
+      background-color: var(--matrix-secondary);
+    }
+
+    /* Code Display */
+    .code-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .code {
+      background-color: rgba(0, 30, 0, 0.3);
+      padding: 15px;
+      border-radius: 3px;
+      font-family: monospace;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.4;
+      border: 1px solid var(--matrix-border);
+    }
+
+    .code-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Terminal Effect */
+    .terminal {
+      height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: rgba(0, 10, 0, 0.5);
+      font-family: monospace;
+      border-radius: 3px;
+      border: 1px solid var(--matrix-border);
+    }
+
+    .terminal-line {
+      margin-bottom: 5px;
+      display: flex;
+    }
+
+    .terminal-prompt {
+      color: var(--matrix-highlight);
+      margin-right: 10px;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top-color: var(--matrix-text);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--matrix-panel);
+      border: 1px solid var(--matrix-border);
+      border-left: 4px solid var(--matrix-text);
+      padding: 15px;
+      border-radius: 3px;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: notificationIn 0.3s forwards, notificationOut 0.3s 5s forwards;
+    }
+
+    @keyframes notificationIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes notificationOut {
+      to { opacity: 0; transform: translateY(20px); }
+    }
+
+    .notification i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+    .notification-success {
+      border-left-color: var(--matrix-success);
+    }
+
+    .notification-error {
+      border-left-color: var(--matrix-error);
+    }
+
+    .notification-warning {
+      border-left-color: var(--matrix-warning);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--matrix-border);
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 10px 15px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--matrix-text);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .tab:hover, .tab.active {
+      color: var(--matrix-highlight);
+    }
+
+    .tab.active::after {
+      transform: scaleX(1);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--matrix-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--matrix-dim);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--matrix-text);
+    }
+
+    /* File Tree */
+    .file-tree {
+      margin-bottom: 20px;
+    }
+
+    .file-tree ul {
+      list-style: none;
+      padding-left: 20px;
+    }
+
+    .file-tree li {
+      margin-bottom: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .file-tree li:hover {
+      color: var(--matrix-highlight);
+    }
+
+    .file-tree i {
+      margin-right: 8px;
+    }
+
+    /* Task List */
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--matrix-border);
+      padding: 10px;
+      transition: all 0.3s;
+    }
+
+    .task-item:hover {
+      background-color: var(--matrix-secondary);
+    }
+
+    .task-info {
+      flex: 1;
+    }
+
+    .task-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .task-meta {
+      font-size: 12px;
+      color: rgba(0, 255, 65, 0.7);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      width: 90%;
+      max-width: 600px;
+      background-color: var(--matrix-panel);
+      border: 1px solid var(--matrix-border);
+      border-radius: 5px;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .modal-backdrop.active .modal {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    .modal-title {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--matrix-text);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-close:hover {
+      color: var(--matrix-highlight);
+    }
+
+    .modal-body {
+      padding: 15px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 15px;
+      border-top: 1px solid var(--matrix-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        margin-top: 10px;
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+    }
+
+    /* Dark Mode Toggle */
+    .mode-toggle {
+      background: none;
+      border: none;
+      color: var(--matrix-text);
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 20px;
+    }
+
+    .mode-toggle:hover {
+      color: var(--matrix-highlight);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--matrix-border);
+      padding-top: 20px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(0, 255, 65, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <!-- Digital Rain Canvas -->
+  <canvas id="digitalRain" class="digital-rain"></canvas>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo glow">
+        <i class="fas fa-terminal"></i>
+        <span>PROJECT ASSISTANT PRO</span>
+      </div>
+      <nav class="nav">
+        <button id="startSessionBtn" class="btn btn-primary">
+          <i class="fas fa-play"></i> New Session
+        </button>
+        <button id="loadSessionBtn" class="btn">
+          <i class="fas fa-folder-open"></i> Load Session
+        </button>
+        <button id="modeToggle" class="mode-toggle">
+          <i class="fas fa-adjust"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Project Info</div>
+          </div>
+          <div id="projectInfo">
+            <p class="matrix-text">No active session</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Recent Tasks</div>
+          </div>
+          <ul id="tasksList" class="list">
+            <li class="list-item">No tasks yet</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Content Area -->
+      <section class="content">
+        <!-- New Task Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">New Task</div>
+          </div>
+          <div id="taskForm">
+            <textarea id="taskDescription" placeholder="Describe your task..."></textarea>
+            <select id="taskType">
+              <option value="Create new component">Create new component</option>
+              <option value="Modify existing code">Modify existing code</option>
+              <option value="Fix a bug">Fix a bug</option>
+              <option value="Implement a feature">Implement a feature</option>
+              <option value="Other">Other</option>
+            </select>
+            <button id="executeTaskBtn" class="btn btn-primary">
+              <i class="fas fa-code"></i> Execute Task
+            </button>
+          </div>
+        </div>
+
+        <!-- Task Result Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Task Result</div>
+            <div class="panel-actions">
+              <button id="saveCodeBtn" class="btn" disabled>
+                <i class="fas fa-save"></i> Save
+              </button>
+              <button id="copyCodeBtn" class="btn">
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
+          <div id="taskResult">
+            <div class="terminal" id="terminal">
+              <div class="terminal-line">
+                <span class="terminal-prompt">$</span>
+                <span>Ready for execution. Describe your task above and click 'Execute Task'.</span>
+              </div>
+            </div>
+            <div id="codeContainer" class="code-container" style="display: none;">
+              <pre class="code" id="codeOutput"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Project Assistant Pro v3.0.0 | Copyright © 2025 | Matrix Interface</p>
+    </footer>
+  </div>
+
+  <!-- Save File Modal -->
+  <div id="saveFileModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Save File</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label for="filePath">File Path:</label>
+        <input type="text" id="filePath" placeholder="path/to/file.js">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancelSaveBtn">Cancel</button>
+        <button class="btn btn-primary" id="confirmSaveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Session Modal -->
+  <div id="loadSessionModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Load Session</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="sessionsContainer">
+          <p>Loading sessions...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancelLoadBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Template -->
+  <div id="notification" class="notification" style="display: none;">
+    <i class="fas fa-info-circle"></i>
+    <div id="notificationMessage">This is a notification message</div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Digital Rain Effect
+    (function() {
+      const canvas = document.getElementById('digitalRain');
+      const ctx = canvas.getContext('2d');
+      
+      // Set canvas dimensions
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      
+      resize();
+      window.addEventListener('resize', resize);
+      
+      // Define Matrix characters
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      const charArray = chars.split('');
+      
+      // Create rain drops
+      const fontSize = 14;
+      const columns = Math.floor(canvas.width / fontSize);
+      
+      const drops = [];
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+      }
+      
+      // Drawing function
+      function draw() {
+        // Add semi-transparent black rectangle to create fade effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Set text color and font
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+        
+        // Draw characters
+        for (let i = 0; i < drops.length; i++) {
+          // Choose a random character
+          const char = charArray[Math.floor(Math.random() * charArray.length)];
+          
+          // Draw character
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          
+          // If drop reaches bottom or random chance, reset to top
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          
+          // Move drop down
+          drops[i]++;
+        }
+      }
+      
+      // Animation loop
+      function animate() {
+        draw();
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
+    })();
+
+    // Application logic
+    (function() {
+      // Variables
+      let socket;
+      let currentSession = null;
+      let currentTaskResult = null;
+      
+      // DOM Elements
+      const terminal = document.getElementById('terminal');
+      const codeOutput = document.getElementById('codeOutput');
+      const codeContainer = document.getElementById('codeContainer');
+      const projectInfo = document.getElementById('projectInfo');
+      const tasksList = document.getElementById('tasksList');
+      const saveFileModal = document.getElementById('saveFileModal');
+      const loadSessionModal = document.getElementById('loadSessionModal');
+      const sessionsContainer = document.getElementById('sessionsContainer');
+      const notification = document.getElementById('notification');
+      
+      // Buttons
+      const startSessionBtn = document.getElementById('startSessionBtn');
+      const loadSessionBtn = document.getElementById('loadSessionBtn');
+      const executeTaskBtn = document.getElementById('executeTaskBtn');
+      const saveCodeBtn = document.getElementById('saveCodeBtn');
+      const copyCodeBtn = document.getElementById('copyCodeBtn');
+      const cancelSaveBtn = document.getElementById('cancelSaveBtn');
+      const confirmSaveBtn = document.getElementById('confirmSaveBtn');
+      const cancelLoadBtn = document.getElementById('cancelLoadBtn');
+      const modeToggle = document.getElementById('modeToggle');
+      
+      // Inputs
+      const taskDescription = document.getElementById('taskDescription');
+      const taskType = document.getElementById('taskType');
+      const filePath = document.getElementById('filePath');
+      
+      // Initialize WebSocket connection
+      function initWebSocket() {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${protocol}//${window.location.host}/ws`;
+        
+        socket = new WebSocket(wsUrl);
+        
+        socket.onopen = () => {
+          addTerminalLine('Connected to server');
+          showNotification('Connected to server', 'success');
+        };
+        
+        socket.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          handleWebSocketMessage(data);
+        };
+        
+        socket.onclose = () => {
+          addTerminalLine('Disconnected from server. Trying to reconnect...');
+          setTimeout(initWebSocket, 3000);
+        };
+        
+        socket.onerror = (error) => {
+          console.error('WebSocket error:', error);
+          addTerminalLine('WebSocket error occurred');
+        };
+      }
+      
+      // Handle incoming WebSocket messages
+      function handleWebSocketMessage(data) {
+        switch(data.event) {
+          case 'sessionStarted':
+            currentSession = data.data;
+            updateProjectInfo();
+            addTerminalLine(`Session started: ${currentSession.id}`);
+            showNotification('Session started successfully', 'success');
+            break;
+            
+          case 'sessionLoaded':
+            currentSession = data.data;
+            updateProjectInfo();
+            updateTasksList();
+            addTerminalLine(`Session loaded: ${currentSession.id}`);
+            showNotification('Session loaded successfully', 'success');
+            break;
+            
+          case 'taskStarted':
+            addTerminalLine(`Task started: ${data.data.description}`);
+            break;
+            
+          case 'taskCompleted':
+            addTerminalLine(`Task completed: ${data.data.description}`);
+            updateTaskResult(data.data);
+            updateTasksList();
+            showNotification('Task completed successfully', 'success');
+            break;
+            
+          case 'taskFailed':
+            addTerminalLine(`Task failed: ${data.data.error}`);
+            showNotification(`Task failed: ${data.data.error}`, 'error');
+            break;
+            
+          case 'newLog':
+            if (data.data.level === 'error') {
+              addTerminalLine(`ERROR: ${data.data.message}`, 'error');
+            } else {
+              addTerminalLine(`${data.data.message}`);
+            }
+            break;
+            
+          default:
+            console.log('Unknown event:', data);
+        }
+      }
+      
+      // Add a line to the terminal
+      function addTerminalLine(text, type = 'info') {
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'terminal-prompt';
+        
+        if (type === 'error') {
+          prompt.textContent = '!';
+          prompt.style.color = 'var(--matrix-error)';
+        } else {
+          prompt.textContent = '>';
+        }
+        
+        const content = document.createElement('span');
+        content.textContent = text;
+        
+        if (type === 'error') {
+          content.style.color = 'var(--matrix-error)';
+        }
+        
+        line.appendChild(prompt);
+        line.appendChild(content);
+        
+        terminal.appendChild(line);
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+      
+      // Update project info panel
+      function updateProjectInfo() {
+        if (!currentSession || !currentSession.projectInfo) {
+          projectInfo.innerHTML = '<p class="matrix-text">No active session</p>';
+          return;
+        }
+        
+        const info = currentSession.projectInfo;
+        
+        let html = `
+          <div class="project-info">
+            <p><strong>Path:</strong> ${currentSession.projectDir}</p>
+            <p><strong>Framework:</strong> ${info.framework}</p>
+            <p><strong>Router:</strong> ${info.routerType}</p>
+            <p><strong>TypeScript:</strong> ${info.hasTypeScript ? 'Yes' : 'No'}</p>
+        `;
+        
+        if (info.styling.length) {
+          html += `<p><strong>Styling:</strong> ${info.styling.join(', ')}</p>`;
+        }
+        
+        if (info.stateManagement.length) {
+          html += `<p><strong>State:</strong> ${info.stateManagement.join(', ')}</p>`;
+        }
+        
+        if (info.uiLibraries.length) {
+          html += `<p><strong>UI:</strong> ${info.uiLibraries.join(', ')}</p>`;
+        }
+        
+        html += '</div>';
+        
+        projectInfo.innerHTML = html;
+      }
+      
+      // Update tasks list
+      function updateTasksList() {
+        if (!currentSession || !currentSession.tasks || currentSession.tasks.length === 0) {
+          tasksList.innerHTML = '<li class="list-item">No tasks yet</li>';
+          return;
+        }
+        
+        let html = '';
+        
+        // Get last 5 tasks and reverse to show newest first
+        const recentTasks = [...currentSession.tasks]
+          .sort((a, b) => b.startTime - a.startTime)
+          .slice(0, 5);
+        
+        for (const task of recentTasks) {
+          let statusClass = '';
+          let statusText = '';
+          
+          switch(task.status) {
+            case 'completed':
+              statusClass = 'status-success';
+              statusText = 'Completed';
+              break;
+            case 'running':
+              statusClass = 'status-warning';
+              statusText = 'Running';
+              break;
+            case 'failed':
+              statusClass = 'status-error';
+              statusText = 'Failed';
+              break;
+            default:
+              statusClass = '';
+              statusText = task.status;
+          }
+          
+          html += `
+            <li class="task-item" data-task-id="${task.id}">
+              <div class="task-info">
+                <div class="task-title">${task.description.substring(0, 40)}${task.description.length > 40 ? '...' : ''}</div>
+                <div class="task-meta">
+                  <span class="status ${statusClass}">${statusText}</span>
+                  ${task.endTime ? `${formatTime(task.endTime - task.startTime)}` : ''}
+                </div>
+              </div>
+            </li>
+          `;
+        }
+        
+        tasksList.innerHTML = html;
+        
+        // Add click event listeners
+        const taskItems = document.querySelectorAll('.task-item');
+        taskItems.forEach(item => {
+          item.addEventListener('click', () => {
+            const taskId = item.getAttribute('data-task-id');
+            const task = currentSession.tasks.find(t => t.id === taskId);
+            if (task && task.result) {
+              updateTaskResult(task);
+            }
+          });
+        });
+      }
+      
+      // Format time in ms to human readable format
+      function formatTime(ms) {
+        if (ms < 1000) {
+          return `${ms}ms`;
+        } else if (ms < 60000) {
+          return `${Math.floor(ms / 1000)}s`;
+        } else {
+          return `${Math.floor(ms / 60000)}m ${Math.floor((ms % 60000) / 1000)}s`;
+        }
+      }
+      
+      // Update task result panel
+      function updateTaskResult(task) {
+        if (!task.result) return;
+        
+        currentTaskResult = task.result;
+        
+        // Show code container if there's code
+        if (task.result.code) {
+          codeContainer.style.display = 'block';
+          codeOutput.textContent = task.result.code;
+          saveCodeBtn.disabled = false;
+          
+          // Add highlighted explanation to terminal
+          addTerminalLine('');
+          addTerminalLine('EXPLANATION:', 'highlight');
+          
+          // Split explanation into lines
+          const explanation = task.result.explanation.split('\n');
+          for (const line of explanation) {
+            if (line.trim()) {
+              addTerminalLine(line);
+            }
+          }
+        } else {
+          codeContainer.style.display = 'none';
+          saveCodeBtn.disabled = true;
+        }
+      }
+      
+      // Show notification
+      function showNotification(message, type = 'info') {
+        notification.classList.remove('notification-success', 'notification-error', 'notification-warning');
+        
+        const icon = notification.querySelector('i');
+        icon.classList.remove('fa-info-circle', 'fa-check-circle', 'fa-exclamation-triangle');
+        
+        switch(type) {
+          case 'success':
+            notification.classList.add('notification-success');
+            icon.classList.add('fa-check-circle');
+            break;
+          case 'error':
+            notification.classList.add('notification-error');
+            icon.classList.add('fa-exclamation-triangle');
+            break;
+          case 'warning':
+            notification.classList.add('notification-warning');
+            icon.classList.add('fa-exclamation-triangle');
+            break;
+          default:
+            icon.classList.add('fa-info-circle');
+        }
+        
+        notification.querySelector('#notificationMessage').textContent = message;
+        notification.style.display = 'flex';
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 5000);
+      }
+      
+      // Fetch available sessions
+      async function fetchSessions() {
+        try {
+          const response = await fetch('/api/sessions');
+          const sessions = await response.json();
+          
+          if (sessions.length === 0) {
+            sessionsContainer.innerHTML = '<p>No saved sessions found</p>';
+            return;
+          }
+          
+          let html = '<ul class="list">';
+          
+          for (const session of sessions) {
+            const date = new Date(session.startTime).toLocaleString();
+            
+            html += `
+              <li class="list-item" data-session-id="${session.id}">
+                <div>
+                  <div><strong>${session.id}</strong></div>
+                  <div class="task-meta">${date}</div>
+                  <div class="task-meta">${session.projectDir}</div>
+                </div>
+                <button class="btn btn-primary load-session-btn">Load</button>
+              </li>
+            `;
+          }
+          
+          html += '</ul>';
+          
+          sessionsContainer.innerHTML = html;
+          
+          // Add event listeners to load buttons
+          document.querySelectorAll('.load-session-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              const sessionId = btn.parentElement.getAttribute('data-session-id');
+              await loadSession(sessionId);
+              loadSessionModal.classList.remove('active');
+            });
+          });
+        } catch (error) {
+          console.error('Error fetching sessions:', error);
+          sessionsContainer.innerHTML = `<p>Error fetching sessions: ${error.message}</p>`;
+        }
+      }
+      
+      // Load session by ID
+      async function loadSession(sessionId) {
+        try {
+          const response = await fetch('/api/session/load', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId })
+          });
+          
+          const data = await response.json();
+          
+          if (data.error) {
+            showNotification(`Error loading session: ${data.error}`, 'error');
+            return;
+          }
+          
+          addTerminalLine(`Loading session: ${sessionId}`);
+        } catch (error) {
+          console.error('Error loading session:', error);
+          showNotification(`Error loading session: ${error.message}`, 'error');
+        }
+      }
+      
+      // Start new session
+      async function startNewSession() {
+        // In a real app, you would ask for the project directory
+        const projectDir = prompt('Enter project directory path (leave empty for current directory):');
+        
+        try {
+          const response = await fetch('/api/session/start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ projectDir: projectDir || null })
+          });
+          
+          const data = await response.json();
+          
+          if (data.error) {
+            showNotification(`Error starting session: ${data.error}`, 'error');
+            return;
+          }
+          
+          addTerminalLine(`Starting new session in directory: ${projectDir || 'current directory'}`);
+        } catch (error) {
+          console.error('Error starting session:', error);
+          showNotification(`Error starting session: ${error.message}`, 'error');
+        }
+      }
+      
+      // Execute task
+      async function executeTask() {
+        const description = taskDescription.value.trim();
+        const type = taskType.value;
+        
+        if (!description) {
+          showNotification('Please enter a task description', 'warning');
+          return;
+        }
+        
+        if (!currentSession) {
+          showNotification('No active session. Please start a session first.', 'warning');
+          return;
+        }
+        
+        try {
+          addTerminalLine(`Executing task: ${description}`);
+          
+          const response = await fetch('/api/task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ description, type })
+          });
+          
+          const data = await response.json();
+          
+          if (data.error) {
+            showNotification(`Error executing task: ${data.error}`, 'error');
+          }
+        } catch (error) {
+          console.error('Error executing task:', error);
+          showNotification(`Error executing task: ${error.message}`, 'error');
+        }
+      }
+      
+      // Save code to file
+      async function saveCodeToFile() {
+        if (!currentTaskResult || !currentTaskResult.code) {
+          showNotification('No code to save', 'warning');
+          return;
+        }
+        
+        const path = filePath.value.trim();
+        
+        if (!path) {
+          showNotification('Please enter a file path', 'warning');
+          return;
+        }
+        
+        try {
+          const response = await fetch('/api/file/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              path,
+              content: currentTaskResult.code
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (data.error) {
+            showNotification(`Error saving file: ${data.error}`, 'error');
+            return;
+          }
+          
+          showNotification('File saved successfully', 'success');
+          saveFileModal.classList.remove('active');
+          addTerminalLine(`File saved to: ${path}`);
+        } catch (error) {
+          console.error('Error saving file:', error);
+          showNotification(`Error saving file: ${error.message}`, 'error');
+        }
+      }
+      
+      // Copy code to clipboard
+      function copyCodeToClipboard() {
+        if (!currentTaskResult || !currentTaskResult.code) {
+          showNotification('No code to copy', 'warning');
+          return;
+        }
+        
+        navigator.clipboard.writeText(currentTaskResult.code)
+          .then(() => {
+            showNotification('Code copied to clipboard', 'success');
+          })
+          .catch(error => {
+            console.error('Error copying code:', error);
+            showNotification('Failed to copy code', 'error');
+          });
+      }
+      
+      // Event Listeners
+      startSessionBtn.addEventListener('click', startNewSession);
+      
+      loadSessionBtn.addEventListener('click', () => {
+        fetchSessions();
+        loadSessionModal.classList.add('active');
+      });
+      
+      executeTaskBtn.addEventListener('click', executeTask);
+      
+      saveCodeBtn.addEventListener('click', () => {
+        saveFileModal.classList.add('active');
+      });
+      
+      copyCodeBtn.addEventListener('click', copyCodeToClipboard);
+      
+      confirmSaveBtn.addEventListener('click', saveCodeToFile);
+      
+      cancelSaveBtn.addEventListener('click', () => {
+        saveFileModal.classList.remove('active');
+      });
+      
+      cancelLoadBtn.addEventListener('click', () => {
+        loadSessionModal.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.modal-close').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.modal-backdrop').forEach(modal => {
+            modal.classList.remove('active');
+          });
+        });
+      });
+      
+      // Toggle between green matrix mode and a lighter mode
+      modeToggle.addEventListener('click', () => {
+        const root = document.documentElement;
+        const currentBg = getComputedStyle(root).getPropertyValue('--matrix-bg').trim();
+        
+        if (currentBg === '#0c0c0c') {
+          // Switch to light mode
+          root.style.setProperty('--matrix-bg', '#f5f5f5');
+          root.style.setProperty('--matrix-text', '#007c21');
+          root.style.setProperty('--matrix-glow', '#00ff4100');
+          root.style.setProperty('--matrix-dim', '#e0f5e0');
+          root.style.setProperty('--matrix-panel', '#ffffff');
+          root.style.setProperty('--matrix-border', '#cccccc');
+          root.style.setProperty('--matrix-secondary', '#ebfff1');
+          document.getElementById('digitalRain').style.opacity = '0.1';
+        } else {
+          // Switch to matrix mode
+          root.style.setProperty('--matrix-bg', '#0c0c0c');
+          root.style.setProperty('--matrix-text', '#00ff41');
+          root.style.setProperty('--matrix-glow', '#00ff4155');
+          root.style.setProperty('--matrix-dim', '#0f3d0f');
+          root.style.setProperty('--matrix-panel', '#0f0f0f');
+          root.style.setProperty('--matrix-border', '#143214');
+          root.style.setProperty('--matrix-secondary', '#072707');
+          document.getElementById('digitalRain').style.opacity = '0.3';
+        }
+      });
+      
+      // Initialize
+      initWebSocket();
+      
+      // Check if there's an active session
+      fetch('/api/session')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('No active session');
+        })
+        .then(session => {
+          currentSession = session;
+          updateProjectInfo();
+          updateTasksList();
+          addTerminalLine(`Connected to existing session: ${session.id}`);
+        })
+        .catch(error => {
+          console.log('No active session:', error);
+        });
+    })();
+  </script>
+</body>
+</html>
