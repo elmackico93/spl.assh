@@ -1,0 +1,1455 @@
+/* Matrix.css Quantum Extensions - Advanced Visualization Components */
+
+/* ========== Quantum Circuit Visualization ========== */
+.m-quantum-circuit {
+    position: relative;
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-quantum-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-quantum-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-bright);
+  }
+  
+  .m-circuit-container {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border-radius: var(--m-radius);
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  
+  .m-qubit-line {
+    position: relative;
+    height: 40px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .m-qubit-label {
+    width: 60px;
+    font-family: monospace;
+    color: var(--m-text-dim);
+    font-size: 0.9rem;
+    text-align: right;
+    padding-right: 10px;
+  }
+  
+  .m-qubit-wire {
+    flex: 1;
+    height: 2px;
+    background-color: var(--m-text);
+    position: relative;
+  }
+  
+  .m-quantum-gate {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--m-border);
+    background-color: var(--m-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 2px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--m-text);
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 2;
+  }
+  
+  .m-quantum-gate:hover {
+    background-color: var(--m-text-dim);
+    color: var(--m-text-bright);
+    box-shadow: 0 0 10px var(--m-glow);
+    transform: translateX(-50%) translateY(-50%) scale(1.2);
+    z-index: 3;
+  }
+  
+  .m-quantum-gate.hadamard::before {
+    content: "H";
+  }
+  
+  .m-quantum-gate.pauli-x::before {
+    content: "X";
+  }
+  
+  .m-quantum-gate.pauli-y::before {
+    content: "Y";
+  }
+  
+  .m-quantum-gate.pauli-z::before {
+    content: "Z";
+  }
+  
+  .m-quantum-gate.phase::before {
+    content: "P";
+  }
+  
+  .m-quantum-gate.cnot {
+    width: 30px;
+    height: 100px;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .m-quantum-gate.cnot::before,
+  .m-quantum-gate.cnot::after {
+    content: "";
+    position: absolute;
+    background-color: var(--m-text);
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .m-quantum-gate.cnot::before {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--m-text);
+    background-color: transparent;
+    top: 0;
+  }
+  
+  .m-quantum-gate.cnot::after {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--m-text);
+    background-color: var(--m-secondary);
+    bottom: 0;
+  }
+  
+  .m-quantum-gate.measure {
+    width: 40px;
+    height: 30px;
+    border-radius: var(--m-radius);
+    background-color: rgba(0, 30, 0, 0.7);
+  }
+  
+  .m-quantum-gate.measure::before {
+    content: "M";
+  }
+  
+  .m-quantum-result {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 30px;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    color: var(--m-text);
+  }
+  
+  .m-quantum-superposition {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  .m-superposition-wave {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+    z-index: 1;
+  }
+  
+  .m-superposition-wave::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 5px,
+      var(--m-text) 5px,
+      var(--m-text) 6px
+    );
+    opacity: 0.3;
+    animation: m-wave-flow 2s linear infinite;
+  }
+  
+  @keyframes m-wave-flow {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 30px; }
+  }
+  
+  /* ========== Quantum State Visualization ========== */
+  .m-quantum-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-bloch-sphere {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 2rem auto;
+  }
+  
+  .m-bloch-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    perspective: 500px;
+  }
+  
+  .m-sphere {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid var(--m-border);
+    background: radial-gradient(
+      circle at 70% 30%,
+      rgba(0, 255, 65, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 60%
+    );
+    transform-style: preserve-3d;
+    animation: m-sphere-rotate 20s linear infinite;
+    box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.2);
+  }
+  
+  @keyframes m-sphere-rotate {
+    0% { transform: rotateY(0) rotateX(20deg); }
+    100% { transform: rotateY(360deg) rotateX(20deg); }
+  }
+  
+  .m-axis {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: var(--m-text-dim);
+    transform-origin: center;
+  }
+  
+  .m-axis.x {
+    width: 100%;
+    height: 1px;
+    transform: translate(-50%, -50%) rotateZ(0deg);
+  }
+  
+  .m-axis.y {
+    width: 100%;
+    height: 1px;
+    transform: translate(-50%, -50%) rotateZ(90deg);
+  }
+  
+  .m-axis.z {
+    width: 100%;
+    height: 1px;
+    transform: translate(-50%, -50%) rotateY(90deg);
+  }
+  
+  .m-axis-label {
+    position: absolute;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--m-text);
+  }
+  
+  .m-axis-label.x {
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+  }
+  
+  .m-axis-label.y {
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .m-axis-label.z {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(100px);
+  }
+  
+  .m-state-vector {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 2px;
+    background-color: var(--m-text-bright);
+    transform-origin: left center;
+    transform: translateY(-50%) translateX(0) rotateZ(var(--angle-z, 45deg)) rotateY(var(--angle-y, 30deg));
+    animation: m-vector-pulsate 2s infinite;
+    z-index: 2;
+  }
+  
+  .m-state-vector::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--m-text-bright);
+    transform: translate(50%, -50%);
+    box-shadow: 0 0 5px var(--m-glow);
+  }
+  
+  @keyframes m-vector-pulsate {
+    0%, 100% { box-shadow: 0 0 5px var(--m-glow); }
+    50% { box-shadow: 0 0 10px var(--m-glow); }
+  }
+  
+  .m-probability-display {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .m-probability-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .m-state-label {
+    font-family: monospace;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-state-label.ket0::before {
+    content: "|0⟩";
+  }
+  
+  .m-state-label.ket1::before {
+    content: "|1⟩";
+  }
+  
+  .m-state-label.plus::before {
+    content: "|+⟩";
+  }
+  
+  .m-state-label.minus::before {
+    content: "|-⟩";
+  }
+  
+  .m-probability-bar {
+    width: 60px;
+    height: 100px;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-probability-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--m-text);
+    height: 0;
+    animation: m-probability-rise 2s forwards;
+    box-shadow: 0 0 10px var(--m-glow);
+  }
+  
+  @keyframes m-probability-rise {
+    to { height: var(--probability, 50%); }
+  }
+  
+  .m-probability-value {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--m-text-dim);
+  }
+  
+  /* ========== Quantum Entanglement Visualization ========== */
+  .m-entanglement {
+    position: relative;
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-entanglement-visual {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .m-qubit {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 30% 30%,
+      var(--m-text-dim) 0%,
+      var(--m-secondary) 70%
+    );
+    border: 2px solid var(--m-border);
+    position: relative;
+    animation: m-qubit-pulse 3s infinite alternate;
+    box-shadow: 0 0 15px var(--m-glow);
+  }
+  
+  @keyframes m-qubit-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 15px var(--m-glow); }
+    100% { transform: scale(1.1); box-shadow: 0 0 25px var(--m-glow); }
+  }
+  
+  .m-qubit-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--m-text);
+    font-weight: bold;
+  }
+  
+  .m-entanglement-link {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    right: 100px;
+    height: 2px;
+    background-color: var(--m-text);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+  
+  .m-entanglement-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 10px,
+      var(--m-text) 10px,
+      var(--m-text) 20px
+    );
+    opacity: 0.5;
+    animation: m-entanglement-flow 2s linear infinite;
+  }
+  
+  @keyframes m-entanglement-flow {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 40px; }
+  }
+  
+  .m-entanglement-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: var(--m-text-bright);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--m-glow);
+    animation: m-particle-flow 3s ease-in-out infinite alternate;
+    z-index: 1;
+  }
+  
+  @keyframes m-particle-flow {
+    0% { left: 30%; opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { left: 70%; opacity: 1; }
+  }
+  
+  .m-measurement-panel {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+  
+  .m-measurement-box {
+    width: 120px;
+    padding: 0.75rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    text-align: center;
+  }
+  
+  .m-measurement-label {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-measurement-value {
+    font-family: monospace;
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 1.5rem;
+    animation: m-measurement-update 3s infinite;
+  }
+  
+  @keyframes m-measurement-update {
+    0%, 45%, 100% { color: var(--m-text); }
+    50%, 95% { color: var(--m-text-bright); }
+  }
+  
+  /* ========== Quantum Teleportation Visualization ========== */
+  .m-teleportation {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-teleport-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+  }
+  
+  .m-teleport-station {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 2px solid var(--m-border);
+    border-radius: 10px;
+    background-color: rgba(0, 20, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  
+  .m-teleport-station.sender {
+    top: 100px;
+    left: 50px;
+  }
+  
+  .m-teleport-station.receiver {
+    top: 100px;
+    right: 50px;
+  }
+  
+  .m-teleport-label {
+    position: absolute;
+    top: -25px;
+    font-size: 0.9rem;
+    color: var(--m-text);
+  }
+  
+  .m-teleport-qubit {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 30% 30%,
+      var(--m-text-dim) 0%,
+      var(--m-secondary) 70%
+    );
+    border: 1px solid var(--m-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--m-text);
+    font-family: monospace;
+    animation: m-qubit-glow 2s infinite alternate;
+  }
+  
+  @keyframes m-qubit-glow {
+    0% { box-shadow: 0 0 5px var(--m-glow); }
+    100% { box-shadow: 0 0 15px var(--m-glow); }
+  }
+  
+  .m-teleport-path {
+    position: absolute;
+    top: 125px;
+    left: 150px;
+    width: calc(100% - 300px);
+    height: 2px;
+    background-color: var(--m-text);
+    z-index: 1;
+  }
+  
+  .m-teleport-data {
+    position: absolute;
+    top: 125px;
+    left: 150px;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: 2px solid var(--m-text-bright);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--m-glow);
+    z-index: 3;
+    animation: m-teleport-transfer 5s linear infinite;
+  }
+  
+  @keyframes m-teleport-transfer {
+    0% {
+      left: 150px;
+      opacity: 1;
+      width: 30px;
+      height: 30px;
+    }
+    45% {
+      opacity: 0.9;
+      width: 20px;
+      height: 20px;
+      left: calc(50% - 25px);
+    }
+    50% {
+      opacity: 0;
+      width: 5px;
+      height: 5px;
+      left: 50%;
+    }
+    55% {
+      opacity: 0.9;
+      width: 20px;
+      height: 20px;
+      left: calc(50% + 25px);
+    }
+    100% {
+      left: calc(100% - 150px);
+      opacity: 1;
+      width: 30px;
+      height: 30px;
+    }
+  }
+  
+  .m-teleport-bit {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    color: var(--m-text-bright);
+    font-size: 0.8rem;
+    opacity: 0;
+    animation: m-bit-transfer 5s linear infinite;
+  }
+  
+  .m-teleport-bit:nth-child(odd) {
+    top: 135px;
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes m-bit-transfer {
+    0%, 40% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(0);
+    }
+    45%, 55% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+    60%, 100% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-20px);
+    }
+  }
+  
+  /* ========== Quantum Key Distribution ========== */
+  .m-quantum-encryption {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-qkd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-qkd-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-bright);
+  }
+  
+  .m-qkd-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .m-qkd-party {
+    width: 100px;
+    height: 160px;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .m-qkd-label {
+    position: absolute;
+    top: -25px;
+    font-family: monospace;
+    color: var(--m-text);
+  }
+  
+  .m-qkd-bits {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+  
+  .m-qkd-bit {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+  
+  .m-qkd-bit-value {
+    width: 25px;
+    height: 25px;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+  }
+  
+  .m-qkd-basis {
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-size: 0.8rem;
+  }
+  
+  .m-qkd-basis.plus::before {
+    content: "+";
+  }
+  
+  .m-qkd-basis.cross::before {
+    content: "×";
+  }
+  
+  .m-qkd-channel {
+    flex: 1;
+    height: 2px;
+    background-color: var(--m-text-dim);
+    position: relative;
+    margin: 0 1rem;
+  }
+  
+  .m-qkd-photon {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: var(--m-text-bright);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: m-photon-travel 3s linear infinite;
+    box-shadow: 0 0 5px var(--m-glow);
+  }
+  
+  @keyframes m-photon-travel {
+    0% { left: 0; opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+  
+  .m-qkd-key {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    font-family: monospace;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: auto;
+    color: var(--m-text-bright);
+  }
+  
+  .m-qkd-illustration {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+  }
+  
+  .m-polarization {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .m-polarization-label {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-polarization-visual {
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--m-border);
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .m-polarization-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 2px;
+    background-color: var(--m-text);
+    transform-origin: left center;
+    box-shadow: 0 0 5px var(--m-glow);
+  }
+  
+  .m-polarization-arrow.horizontal {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  
+  .m-polarization-arrow.vertical {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  
+  .m-polarization-arrow.diagonal {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  
+  .m-polarization-arrow.anti-diagonal {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  
+  /* ========== Quantum Algorithm Visualization ========== */
+  .m-quantum-algorithm {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-algorithm-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .m-algorithm-timeline {
+    display: flex;
+    align-items: center;
+    min-height: 200px;
+    padding: 2rem 0;
+  }
+  
+  .m-algorithm-step {
+    min-width: 150px;
+    height: 100px;
+    margin-right: 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .m-algorithm-step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    right: -30px;
+    transform: translateY(-50%);
+    color: var(--m-text);
+    font-size: 1.5rem;
+  }
+  
+  .m-step-box {
+    width: 150px;
+    padding: 1rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    text-align: center;
+    transition: all 0.3s;
+  }
+  
+  .m-step-box:hover {
+    background-color: var(--m-secondary);
+    box-shadow: 0 0 10px var(--m-glow);
+    transform: translateY(-5px);
+  }
+  
+  .m-step-title {
+    font-size: 0.9rem;
+    color: var(--m-text-bright);
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-step-desc {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+  }
+  
+  .m-state-evolution {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border-radius: var(--m-radius);
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    overflow: hidden;
+  }
+  
+  .m-state-bar {
+    height: 60px;
+    flex: 1;
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    margin: 0 0.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .m-state-probability {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-prob-change 10s infinite;
+  }
+  
+  @keyframes m-prob-change {
+    0%, 20% { height: 5%; }
+    25%, 45% { height: 50%; }
+    50%, 70% { height: 20%; }
+    75%, 95% { height: 80%; }
+    100% { height: 5%; }
+  }
+  
+  .m-state-label {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: var(--m-text-dim);
+  }
+  
+  /* ========== Quantum Error Correction ========== */
+  .m-error-correction {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-error-visual {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .m-error-code {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+  }
+  
+  .m-code-qubit {
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    color: var(--m-text);
+    position: relative;
+  }
+  
+  .m-code-qubit.data {
+    background-color: rgba(0, 50, 0, 0.5);
+  }
+  
+  .m-code-qubit.syndrome {
+    background-color: rgba(0, 30, 0, 0.3);
+  }
+  
+  .m-code-qubit.error {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .m-code-qubit.error::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.3);
+    animation: m-error-pulse 2s infinite;
+  }
+  
+  @keyframes m-error-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+  
+  .m-correction-path {
+    position: absolute;
+    width: 2px;
+    background-color: var(--m-text);
+    transform-origin: bottom center;
+    z-index: 1;
+  }
+  
+  .m-correction-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: var(--m-text-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-correction-flow 3s infinite;
+  }
+  
+  @keyframes m-correction-flow {
+    0% { opacity: 0; transform: translate(0, 0); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--x, 50px), var(--y, 50px)); }
+  }
+  
+  .m-error-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+  }
+  
+  .m-error-stat {
+    text-align: center;
+  }
+  
+  .m-stat-value {
+    font-family: monospace;
+    font-size: 1.5rem;
+    color: var(--m-text-bright);
+    margin-bottom: 0.25rem;
+  }
+  
+  .m-stat-label {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+  }
+  
+  /* ========== Quantum Computer Architecture ========== */
+  .m-quantum-architecture {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-arch-visualizer {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  
+  .m-processor {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 20, 0, 0.7);
+    border: 2px solid var(--m-border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 2;
+  }
+  
+  .m-processor-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .m-qubit-cell {
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--m-text);
+    transition: all 0.3s;
+  }
+  
+  .m-qubit-cell:hover {
+    background-color: var(--m-text-dim);
+    color: var(--m-text-bright);
+    box-shadow: 0 0 5px var(--m-glow);
+    transform: scale(1.1);
+    z-index: 3;
+  }
+  
+  .m-qubit-cell.active {
+    background-color: var(--m-text-dim);
+    color: var(--m-text-bright);
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-qubit-active 2s infinite;
+  }
+  
+  @keyframes m-qubit-active {
+    0%, 100% { background-color: var(--m-text-dim); }
+    50% { background-color: var(--m-secondary); }
+  }
+  
+  .m-subsystem {
+    position: absolute;
+    width: 80px;
+    height: 60px;
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--m-text);
+    z-index: 2;
+  }
+  
+  .m-subsystem.control {
+    top: 30px;
+    left: 30px;
+  }
+  
+  .m-subsystem.memory {
+    top: 30px;
+    right: 30px;
+  }
+  
+  .m-subsystem.io {
+    bottom: 30px;
+    left: 30px;
+  }
+  
+  .m-subsystem.error {
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .m-connection {
+    position: absolute;
+    height: 2px;
+    background-color: var(--m-text-dim);
+    transform-origin: left center;
+    z-index: 1;
+  }
+  
+  .m-connection.active {
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-connection-active 2s infinite;
+  }
+  
+  @keyframes m-connection-active {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  .m-data-packet {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--m-text-bright);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px var(--m-glow);
+    z-index: 3;
+    animation: m-packet-move 4s linear infinite;
+  }
+  
+  @keyframes m-packet-move {
+    0% { 
+      left: var(--start-x, 0);
+      top: var(--start-y, 0);
+      opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { 
+      left: var(--end-x, 100px);
+      top: var(--end-y, 100px);
+      opacity: 0;
+    }
+  }
+  
+  .m-stats-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .m-stat-box {
+    padding: 0.75rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    text-align: center;
+  }
+  
+  .m-stat-name {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-stat-number {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--m-text-bright);
+  }
+  
+  /* ========== Superposition Animation ========== */
+  .m-superposition-anim {
+    height: 100px;
+    padding: 1rem;
+    background-color: rgba(0, 10, 0, 0.5);
+    border-radius: var(--m-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .m-wave-container {
+    position: relative;
+    width: 100%;
+    height: 60px;
+  }
+  
+  .m-sine-wave {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+  }
+  
+  .m-sine-wave::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--m-text) 5%,
+      transparent 10%,
+      transparent 15%,
+      var(--m-text) 20%,
+      transparent 25%,
+      transparent 30%,
+      var(--m-text) 35%,
+      transparent 40%,
+      transparent 45%,
+      var(--m-text) 50%,
+      transparent 55%,
+      transparent 60%,
+      var(--m-text) 65%,
+      transparent 70%,
+      transparent 75%,
+      var(--m-text) 80%,
+      transparent 85%,
+      transparent 90%,
+      var(--m-text) 95%,
+      transparent 100%
+    );
+    transform: translateY(-50%);
+    animation: m-wave-animate 3s linear infinite;
+    opacity: 0.7;
+  }
+  
+  @keyframes m-wave-animate {
+    0% { 
+      clip-path: polygon(
+        0% 50%, 5% 25%, 10% 50%, 15% 75%, 20% 50%, 
+        25% 25%, 30% 50%, 35% 75%, 40% 50%, 45% 25%, 
+        50% 50%, 55% 75%, 60% 50%, 65% 25%, 70% 50%, 
+        75% 75%, 80% 50%, 85% 25%, 90% 50%, 95% 75%, 
+        100% 50%
+      );
+    }
+    50% {
+      clip-path: polygon(
+        0% 50%, 5% 75%, 10% 50%, 15% 25%, 20% 50%, 
+        25% 75%, 30% 50%, 35% 25%, 40% 50%, 45% 75%, 
+        50% 50%, 55% 25%, 60% 50%, 65% 75%, 70% 50%, 
+        75% 25%, 80% 50%, 85% 75%, 90% 50%, 95% 25%, 
+        100% 50%
+      );
+    }
+    100% {
+      clip-path: polygon(
+        0% 50%, 5% 25%, 10% 50%, 15% 75%, 20% 50%, 
+        25% 25%, 30% 50%, 35% 75%, 40% 50%, 45% 25%, 
+        50% 50%, 55% 75%, 60% 50%, 65% 25%, 70% 50%, 
+        75% 75%, 80% 50%, 85% 25%, 90% 50%, 95% 75%, 
+        100% 50%
+      );
+    }
+  }
+  
+  .m-ket-labels {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5rem;
+    pointer-events: none;
+  }
+  
+  .m-ket-label {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--m-text-bright);
+    animation: m-label-glow 3s infinite alternate;
+  }
+  
+  @keyframes m-label-glow {
+    0% { text-shadow: 0 0 3px var(--m-glow); }
+    100% { text-shadow: 0 0 10px var(--m-glow); }
+  }

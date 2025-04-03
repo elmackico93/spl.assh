@@ -1,0 +1,800 @@
+/* Matrix.css Extensions - Advanced Components */
+
+/* ========== Text Scramble Effect ========== */
+.m-scramble {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .m-scramble::after {
+    content: attr(data-scramble);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--m-text);
+    background-color: var(--m-bg);
+    overflow: hidden;
+    animation: scramble-text 3s steps(30) forwards;
+  }
+  
+  @keyframes scramble-text {
+    0% {
+      width: 100%;
+    }
+    100% {
+      width: 0;
+    }
+  }
+  
+  /* Set default scramble characters if none provided */
+  .m-scramble:not([data-scramble])::after {
+    content: "日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ01001101011";
+  }
+  
+  /* ========== Interactive Terminal ========== */
+  .m-term-interactive {
+    position: relative;
+    background-color: rgba(0, 10, 0, 0.8);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 1rem;
+    font-family: monospace;
+    min-height: 300px;
+    overflow: hidden;
+  }
+  
+  .m-term-interactive::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background-color: var(--m-secondary);
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-term-interactive::after {
+    content: '● ○ ○';
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 100%;
+    height: 20px;
+    color: var(--m-text);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .m-term-content {
+    margin-top: 20px;
+    color: var(--m-text);
+    line-height: 1.4;
+  }
+  
+  .m-term-line {
+    display: flex;
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-term-line:last-child {
+    position: relative;
+  }
+  
+  .m-term-prompt {
+    color: var(--m-text-bright);
+    margin-right: 0.5rem;
+  }
+  
+  .m-term-cursor {
+    position: relative;
+  }
+  
+  .m-term-cursor::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -0.8rem;
+    width: 0.6rem;
+    height: 1.2rem;
+    background-color: var(--m-text);
+    animation: cursor-blink 1s infinite step-end;
+  }
+  
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 0; }
+    51%, 100% { opacity: 1; }
+  }
+  
+  /* ========== Matrix Code Effect ========== */
+  .m-code-rain {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    background-color: var(--m-black);
+    border-radius: var(--m-radius);
+    border: 1px solid var(--m-border);
+  }
+  
+  .m-code-column {
+    position: absolute;
+    top: -100px;
+    color: var(--m-text);
+    font-family: monospace;
+    font-size: 1rem;
+    line-height: 1;
+    animation: m-code-fall linear infinite;
+  }
+  
+  .m-code-column:nth-child(1) { left: 5%; animation-duration: 12s; animation-delay: 0s; }
+  .m-code-column:nth-child(2) { left: 15%; animation-duration: 14s; animation-delay: 1s; }
+  .m-code-column:nth-child(3) { left: 25%; animation-duration: 9s; animation-delay: 2s; }
+  .m-code-column:nth-child(4) { left: 35%; animation-duration: 16s; animation-delay: 0.5s; }
+  .m-code-column:nth-child(5) { left: 45%; animation-duration: 10s; animation-delay: 3s; }
+  .m-code-column:nth-child(6) { left: 55%; animation-duration: 15s; animation-delay: 1.5s; }
+  .m-code-column:nth-child(7) { left: 65%; animation-duration: 11s; animation-delay: 2.5s; }
+  .m-code-column:nth-child(8) { left: 75%; animation-duration: 13s; animation-delay: 0.8s; }
+  .m-code-column:nth-child(9) { left: 85%; animation-duration: 8s; animation-delay: 1.2s; }
+  .m-code-column:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: 2.2s; }
+  
+  @keyframes m-code-fall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(300px); }
+  }
+  
+  .m-code-char {
+    display: block;
+    margin: 2px 0;
+    text-align: center;
+    opacity: 0.8;
+    animation: m-char-flicker 3s infinite;
+  }
+  
+  .m-code-char:first-child {
+    color: white;
+    opacity: 1;
+    text-shadow: 0 0 8px white, 0 0 12px var(--m-text);
+  }
+  
+  @keyframes m-char-flicker {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.5; }
+  }
+  
+  /* Pre-defined character set for matrix code columns */
+  .m-code-char1::before { content: "0"; }
+  .m-code-char2::before { content: "1"; }
+  .m-code-char3::before { content: "ﾊ"; }
+  .m-code-char4::before { content: "ﾐ"; }
+  .m-code-char5::before { content: "ﾋ"; }
+  .m-code-char6::before { content: "ｰ"; }
+  .m-code-char7::before { content: "ｳ"; }
+  .m-code-char8::before { content: "ｼ"; }
+  .m-code-char9::before { content: "ﾅ"; }
+  .m-code-char10::before { content: "ﾓ"; }
+  .m-code-char11::before { content: "ﾆ"; }
+  .m-code-char12::before { content: "ｻ"; }
+  .m-code-char13::before { content: "ﾜ"; }
+  .m-code-char14::before { content: "ﾂ"; }
+  .m-code-char15::before { content: "ｵ"; }
+  .m-code-char16::before { content: "ﾘ"; }
+  .m-code-char17::before { content: "ｱ"; }
+  .m-code-char18::before { content: "ﾎ"; }
+  .m-code-char19::before { content: "ﾃ"; }
+  .m-code-char20::before { content: "ﾏ"; }
+  
+  /* ========== Glitch Effect ========== */
+  .m-glitch-text {
+    position: relative;
+    display: inline-block;
+    color: var(--m-text-bright);
+  }
+  
+  .m-glitch-text::before,
+  .m-glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--m-bg);
+  }
+  
+  .m-glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 red;
+    animation: m-glitch-anim-1 2s infinite linear alternate-reverse;
+  }
+  
+  .m-glitch-text::after {
+    left: -2px;
+    text-shadow: 1px 0 blue;
+    animation: m-glitch-anim-2 3s infinite linear alternate-reverse;
+  }
+  
+  @keyframes m-glitch-anim-1 {
+    0%, 100% { clip-path: inset(0 0 98% 0); }
+    20% { clip-path: inset(20% 0 80% 0); }
+    40% { clip-path: inset(40% 0 60% 0); }
+    60% { clip-path: inset(60% 0 40% 0); }
+    80% { clip-path: inset(80% 0 20% 0); }
+  }
+  
+  @keyframes m-glitch-anim-2 {
+    0%, 100% { clip-path: inset(0 0 98% 0); }
+    25% { clip-path: inset(25% 0 75% 0); }
+    50% { clip-path: inset(50% 0 50% 0); }
+    75% { clip-path: inset(75% 0 25% 0); }
+  }
+  
+  /* ========== Digital Counter ========== */
+  .m-counter {
+    font-family: var(--m-font-main);
+    font-size: 2rem;
+    color: var(--m-text);
+    background-color: rgba(0, 20, 0, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: var(--m-radius);
+    border: 1px solid var(--m-border);
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 0 5px var(--m-glow);
+  }
+  
+  .m-counter::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 50%, rgba(0, 255, 65, 0.1) 50%);
+    background-size: 100% 4px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .m-counter-digit {
+    display: inline-block;
+    width: 1ch;
+    text-align: center;
+    position: relative;
+    animation: m-counter-flicker 2s infinite;
+  }
+  
+  .m-counter-digit:nth-child(odd) {
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes m-counter-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+  
+  /* ========== Loading Bar ========== */
+  .m-loading {
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  
+  .m-loading::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--m-text);
+    animation: m-loading 5s infinite;
+    box-shadow: 0 0 10px var(--m-glow);
+  }
+  
+  .m-loading::after {
+    content: attr(data-percent) "%";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--m-text-bright);
+    font-family: var(--m-font-main);
+    z-index: 1;
+  }
+  
+  @keyframes m-loading {
+    0% { width: 0%; }
+    50% { width: var(--percent, 50%); }
+    100% { width: var(--percent, 50%); }
+  }
+  
+  /* ========== Hacking Animation ========== */
+  .m-hacking {
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    background-color: rgba(0, 10, 0, 0.8);
+    color: var(--m-text);
+    padding: 1rem;
+    border-radius: var(--m-radius);
+    border: 1px solid var(--m-border);
+    height: 300px;
+    overflow: auto;
+    position: relative;
+  }
+  
+  .m-hacking-line {
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    animation: m-typing 2s steps(60, end);
+  }
+  
+  .m-hacking-line:nth-child(2) { animation-delay: 2s; }
+  .m-hacking-line:nth-child(3) { animation-delay: 4s; }
+  .m-hacking-line:nth-child(4) { animation-delay: 6s; }
+  .m-hacking-line:nth-child(5) { animation-delay: 8s; }
+  .m-hacking-line:nth-child(6) { animation-delay: 10s; }
+  .m-hacking-line:nth-child(7) { animation-delay: 12s; }
+  .m-hacking-line:nth-child(8) { animation-delay: 14s; }
+  
+  @keyframes m-typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  
+  /* ========== Grid Display ========== */
+  .m-grid-display {
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    background-color: rgba(0, 15, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .m-grid-display::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(to right, var(--m-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--m-border) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.2;
+    z-index: 1;
+  }
+  
+  .m-grid-header {
+    background-color: var(--m-secondary);
+    color: var(--m-text);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--m-border);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .m-grid-content {
+    padding: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .m-grid-scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(0, 255, 65, 0.5);
+    box-shadow: 0 0 8px var(--m-glow);
+    animation: m-scanline 3s infinite linear;
+    z-index: 1;
+  }
+  
+  @keyframes m-scanline {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+  
+  /* ========== Data Visualizations ========== */
+  
+  /* Pie Chart */
+  .m-pie-chart {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--m-success) 0% var(--segment1, 25%),
+      var(--m-warning) var(--segment1, 25%) var(--segment2, 50%),
+      var(--m-info) var(--segment2, 50%) var(--segment3, 75%),
+      var(--m-danger) var(--segment3, 75%) 100%
+    );
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+  }
+  
+  .m-pie-chart::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-color: var(--m-panel);
+    border-radius: 50%;
+  }
+  
+  .m-pie-chart::after {
+    content: attr(data-value);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--m-text);
+    font-family: var(--m-font-main);
+    font-size: 1.5rem;
+  }
+  
+  /* Bar Chart */
+  .m-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    height: 200px;
+    padding: 1rem;
+    background-color: rgba(0, 15, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+  }
+  
+  .m-bar {
+    flex: 1;
+    background-color: var(--m-text);
+    margin: 0 5px;
+    box-shadow: 0 0 10px var(--m-glow);
+    position: relative;
+    animation: m-bar-grow 2s ease-out;
+    transform-origin: bottom;
+  }
+  
+  .m-bar::after {
+    content: attr(data-value);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--m-text);
+    font-size: 0.8rem;
+  }
+  
+  @keyframes m-bar-grow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+  
+  /* ========== System Status Display ========== */
+  .m-status-display {
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 1rem;
+  }
+  
+  .m-status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+  }
+  
+  .m-status-item:last-child {
+    border-bottom: none;
+  }
+  
+  .m-status-label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .m-status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .m-status-online {
+    background-color: var(--m-success);
+    box-shadow: 0 0 5px var(--m-success);
+    animation: m-pulse 2s infinite;
+  }
+  
+  .m-status-warning {
+    background-color: var(--m-warning);
+    box-shadow: 0 0 5px var(--m-warning);
+  }
+  
+  .m-status-offline {
+    background-color: var(--m-danger);
+    box-shadow: 0 0 5px var(--m-danger);
+  }
+  
+  .m-status-details {
+    color: var(--m-text-dim);
+    font-size: 0.8rem;
+  }
+  
+  /* ========== Neural Network Visualization ========== */
+  .m-neural-net {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+  }
+  
+  .m-node {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: var(--m-text);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-node-pulse 3s infinite;
+  }
+  
+  .m-connection {
+    position: absolute;
+    height: 2px;
+    background-color: rgba(0, 255, 65, 0.3);
+    transform-origin: left center;
+    animation: m-connection-pulse 4s infinite;
+  }
+  
+  @keyframes m-node-pulse {
+    0%, 100% { box-shadow: 0 0 5px var(--m-glow); }
+    50% { box-shadow: 0 0 15px var(--m-glow); }
+  }
+  
+  @keyframes m-connection-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  /* JS function to generate nodes and connections
+  function createNeuralNet(container, nodes = 20, layers = 4) {
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+    const layerWidth = width / (layers + 1);
+    
+    // Create nodes
+    for (let l = 1; l <= layers; l++) {
+      const nodesInLayer = l === 1 || l === layers ? nodes / 2 : nodes;
+      for (let n = 1; n <= nodesInLayer; n++) {
+        const node = document.createElement('div');
+        node.className = 'm-node';
+        node.style.left = `${l * layerWidth}px`;
+        node.style.top = `${(height / (nodesInLayer + 1)) * n}px`;
+        node.style.animationDelay = `${Math.random() * 3}s`;
+        container.appendChild(node);
+        
+        // Create connections to previous layer
+        if (l > 1) {
+          const prevNodes = container.querySelectorAll(`.m-node[style*="left: ${(l-1) * layerWidth}px"]`);
+          prevNodes.forEach(prevNode => {
+            const connection = document.createElement('div');
+            connection.className = 'm-connection';
+            
+            const x1 = (l-1) * layerWidth + 10;
+            const y1 = parseInt(prevNode.style.top) + 10;
+            const x2 = l * layerWidth + 10;
+            const y2 = parseInt(node.style.top) + 10;
+            
+            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            
+            connection.style.width = `${length}px`;
+            connection.style.left = `${x1}px`;
+            connection.style.top = `${y1}px`;
+            connection.style.transform = `rotate(${angle}deg)`;
+            connection.style.animationDelay = `${Math.random() * 4}s`;
+            
+            container.appendChild(connection);
+          });
+        }
+      }
+    }
+  }
+  */
+  
+  /* ========== Cyberdeck Interface ========== */
+  .m-cyberdeck {
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .m-cyberdeck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+    margin-bottom: 1rem;
+  }
+  
+  .m-cyberdeck-title {
+    font-size: 1.2rem;
+    color: var(--m-text-bright);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .m-cyberdeck-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .m-cyberdeck-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--m-border);
+    background-color: var(--m-secondary);
+    cursor: pointer;
+    transition: background-color var(--m-time-fast);
+  }
+  
+  .m-cyberdeck-btn:hover {
+    background-color: var(--m-text-dim);
+  }
+  
+  .m-cyberdeck-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .m-cyberdeck-panel {
+    background-color: rgba(0, 15, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 0.5rem;
+    position: relative;
+  }
+  
+  .m-cyberdeck-panel::before {
+    content: attr(data-title);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: var(--m-panel);
+    padding: 0 0.5rem;
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+  }
+  
+  /* ========== Notification System ========== */
+  .m-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-left: 4px solid var(--m-text);
+    padding: 1rem;
+    border-radius: var(--m-radius);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(50px);
+    animation: m-notification-in 0.3s forwards, m-notification-out 0.3s 5s forwards;
+    max-width: 300px;
+  }
+  
+  @keyframes m-notification-in {
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  @keyframes m-notification-out {
+    to { opacity: 0; transform: translateX(50px); }
+  }
+  
+  .m-notification-title {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .m-notification-message {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .m-notification-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--m-text);
+    cursor: pointer;
+  }
+  
+  .m-notification-success {
+    border-left-color: var(--m-success);
+  }
+  
+  .m-notification-warning {
+    border-left-color: var(--m-warning);
+  }
+  
+  .m-notification-error {
+    border-left-color: var(--m-danger);
+  }
+  
+  /* Usage example:
+  <div class="m-notification m-notification-success">
+    <div class="m-notification-title">Success</div>
+    <div class="m-notification-message">Operation completed successfully.</div>
+    <button class="m-notification-close">&times;</button>
+  </div>
+  */
+  
+  /* ========== Matrix Rain Effect (No JS) ========== */
+  .m-rain-pure {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    background-color: var(--m-black);
+    border-radius: var(--m-radius);
+  }
+  
+  /* Create rain columns with box shadows and custom properties */
+  .m-rain-pure::after {
+    content: "日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ";
+    color: var(--m-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+    letter-spacing: 14px;
+    line-height: 1;
+    width: 20px;
+    animation: m-pure-rain 13s linear infinite;
+    text-shadow: 
+      25px 0px 0 var(--m-text),
+      50px 100px 0 var(--m-text),
+      75px 30px 0 var(--m-text),
+      100px 0px 0 var(--m-text),
+      125px 110px 0 var(--m-text),
+      150px 50px 0 var(--m-text),
+      175px 30px 0 var(--m-text),
+      200px 0px 0 var(--m-text),
+      225px 100px 0 var(--m-text),
+      250px 30px 0 var(--m-text),
+      275px 80px 0 var(--m-text),
+      300px 20px 0 var(--m-text);
+  }
+  
+  @keyframes m-pure-rain {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }

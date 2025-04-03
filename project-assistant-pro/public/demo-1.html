@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix CSS Framework Demo</title>
+  <style>
+    /* Insert the Matrix.css framework here */
+    /* Core colors */
+:root {
+  --m-black: #000000;
+  --m-bg: #0c0c0c;
+  --m-text: #00ff41; /* Main Matrix green */
+  --m-text-dim: #0a3f0a;
+  --m-text-bright: #00ff97;
+  --m-text-white: #ffffff;
+  --m-glow: rgba(0, 255, 65, 0.6);
+  --m-panel: #0f0f0f;
+  --m-border: #143214;
+  --m-overlay: rgba(0, 10, 0, 0.8);
+  
+  /* Functional colors */
+  --m-primary: #00ff41;
+  --m-secondary: #072707;
+  --m-info: #39a0ed;
+  --m-success: #00ff41;
+  --m-warning: #ffe100;
+  --m-danger: #ff2222;
+  --m-light: #1d1d1d;
+  --m-dark: #030303;
+  
+  /* Typography */
+  --m-font-main: 'Courier New', monospace;
+  --m-font-alt: 'Lucida Console', Monaco, monospace;
+  --m-font-size: 16px;
+  --m-line-height: 1.6;
+  
+  /* Spacing */
+  --m-space-xs: 0.25rem;
+  --m-space-sm: 0.5rem;
+  --m-space-md: 1rem;
+  --m-space-lg: 1.5rem;
+  --m-space-xl: 2.5rem;
+  
+  /* Timing */
+  --m-time-fast: 0.2s;
+  --m-time-med: 0.5s;
+  --m-time-slow: 1s;
+  
+  /* Effects */
+  --m-shadow: 0 0 10px var(--m-glow);
+  --m-radius: 3px;
+  
+  /* Grid */
+  --m-cols: 12;
+  --m-gap: 20px;
+  --m-container-width: 1200px;
+}
+/* Just a subset of styles to make the demo work */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--m-font-size);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--m-bg);
+  color: var(--m-text);
+  font-family: var(--m-font-main);
+  line-height: var(--m-line-height);
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6, .m-h1, .m-h2, .m-h3, .m-h4, .m-h5, .m-h6 {
+  font-family: var(--m-font-alt);
+  font-weight: 700;
+  margin-bottom: var(--m-space-md);
+  line-height: 1.2;
+}
+
+h1, .m-h1 { font-size: 2.5rem; }
+h2, .m-h2 { font-size: 2rem; }
+h3, .m-h3 { font-size: 1.75rem; }
+h4, .m-h4 { font-size: 1.5rem; }
+h5, .m-h5 { font-size: 1.25rem; }
+h6, .m-h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: var(--m-space-md);
+}
+
+a, .m-link {
+  color: var(--m-text-bright);
+  text-decoration: none;
+  transition: color var(--m-time-fast);
+  position: relative;
+}
+
+a:hover, .m-link:hover {
+  color: var(--m-text);
+  text-shadow: 0 0 5px var(--m-glow);
+}
+
+.m-container {
+  width: 100%;
+  max-width: var(--m-container-width);
+  margin: 0 auto;
+  padding: 0 var(--m-space-md);
+}
+
+.m-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: calc(var(--m-gap) / -2);
+  margin-left: calc(var(--m-gap) / -2);
+}
+
+.m-row > * {
+  padding-right: calc(var(--m-gap) / 2);
+  padding-left: calc(var(--m-gap) / 2);
+  margin-bottom: var(--m-gap);
+}
+
+.m-col {
+  flex: 1 0 0%;
+}
+
+.m-col-12 { flex: 0 0 auto; width: 100%; }
+.m-col-6 { flex: 0 0 auto; width: 50%; }
+.m-col-4 { flex: 0 0 auto; width: 33.333333%; }
+.m-col-3 { flex: 0 0 auto; width: 25%; }
+
+.m-rain::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--m-bg);
+  z-index: -2;
+  pointer-events: none;
+}
+
+.m-rain::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-image: 
+    repeating-linear-gradient(90deg, 
+      transparent 0px, 
+      transparent calc(100vw / 30 - 2px), 
+      rgba(0, 255, 65, 0.03) calc(100vw / 30), 
+      transparent calc(100vw / 30 + 2px)
+    ),
+    radial-gradient(
+      circle at 50% 150%, 
+      rgba(0, 20, 0, 0.5) 10%, 
+      rgba(0, 0, 0, 0.9) 100%
+    );
+  opacity: 0.7;
+  animation: m-scanline 10s linear infinite;
+  pointer-events: none;
+}
+
+.m-glow {
+  text-shadow: 0 0 10px var(--m-glow);
+  animation: m-glow-pulse 2s infinite;
+}
+
+@keyframes m-glow-pulse {
+  0%, 100% { text-shadow: 0 0 5px var(--m-glow); }
+  50% { text-shadow: 0 0 20px var(--m-glow), 0 0 30px var(--m-glow); }
+}
+
+.m-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--m-font-main);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid var(--m-border);
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--m-radius);
+  background-color: var(--m-secondary);
+  color: var(--m-text);
+  transition: all var(--m-time-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.m-btn:hover {
+  background-color: var(--m-text-dim);
+  color: var(--m-text-bright);
+  box-shadow: 0 0 10px var(--m-glow);
+}
+
+.m-btn-primary {
+  background-color: var(--m-primary);
+  color: var(--m-dark);
+  border-color: var(--m-primary);
+}
+
+.m-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  transition: transform var(--m-time-fast), box-shadow var(--m-time-fast);
+}
+
+.m-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
+}
+
+.m-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--m-bg), var(--m-text), var(--m-bg));
+  opacity: 0;
+  transition: opacity var(--m-time-med);
+}
+
+.m-card:hover::before {
+  opacity: 1;
+}
+
+.m-card-body {
+  flex: 1 1 auto;
+  padding: var(--m-space-md);
+}
+
+.m-card-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.m-navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: var(--m-panel);
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-navbar-brand {
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  color: var(--m-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.m-navbar-nav {
+  display: flex;
+  flex-direction: row;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.m-nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--m-text);
+  text-decoration: none;
+  transition: color var(--m-time-fast);
+}
+
+.m-nav-link:hover, .m-nav-link:focus {
+  color: var(--m-text-bright);
+}
+
+.m-py-5 { padding-top: var(--m-space-xl) !important; padding-bottom: var(--m-space-xl) !important; }
+.m-text-center { text-align: center; }
+.m-mb-4 { margin-bottom: var(--m-space-lg) !important; }
+.m-mb-2 { margin-bottom: var(--m-space-sm) !important; }
+.m-mt-5 { margin-top: var(--m-space-xl) !important; }
+
+@keyframes m-scanline {
+  0%, 100% { background-position: 0 0; }
+  50% { background-position: 0 100%; }
+}
+
+@keyframes m-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.m-fade-in {
+  animation: m-fade-in var(--m-time-med) ease;
+}
+
+/* for the demo */
+.components-section {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.component-header {
+  border-bottom: 1px solid var(--m-border);
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.component-item {
+  margin-bottom: 2rem;
+}
+
+.m-form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-family: var(--m-font-main);
+  line-height: 1.5;
+  color: var(--m-text);
+  background-color: rgba(0, 30, 0, 0.3);
+  background-clip: padding-box;
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  transition: border-color var(--m-time-fast), box-shadow var(--m-time-fast);
+  margin-bottom: 1rem;
+}
+
+.m-table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: var(--m-text);
+  border-collapse: collapse;
+}
+
+.m-table th,
+.m-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid var(--m-border);
+  background-color: var(--m-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.m-alert {
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--m-radius);
+}
+
+.m-alert-primary {
+  color: var(--m-text-bright);
+  background-color: rgba(0, 255, 65, 0.1);
+  border-color: var(--m-primary);
+}
+
+.m-footer {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--m-border);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+  </style>
+</head>
+
+<body class="m-rain">
+  <!-- Navbar -->
+  <nav class="m-navbar">
+    <a class="m-navbar-brand m-glow" href="#">MATRIX.CSS</a>
+    <ul class="m-navbar-nav">
+      <li><a class="m-nav-link" href="#home">Home</a></li>
+      <li><a class="m-nav-link" href="#components">Components</a></li>
+      <li><a class="m-nav-link" href="#about">About</a></li>
+      <li><a class="m-nav-link" href="#download">Download</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="m-py-5 m-text-center">
+    <div class="m-container m-fade-in">
+      <h1 class="m-glow">MATRIX.CSS</h1>
+      <p class="m-mb-4">A complete Matrix-themed CSS framework in a single file.<br>No JavaScript required.</p>
+      <a href="#" class="m-btn m-btn-primary m-mb-2">ENTER THE MATRIX</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="m-py-5">
+    <div class="m-container">
+      <h2 class="m-text-center m-mb-4">Key Features</h2>
+      
+      <div class="m-row">
+        <div class="m-col-4">
+          <div class="m-card">
+            <div class="m-card-body">
+              <h3 class="m-card-title">Zero JavaScript</h3>
+              <p>The entire framework, including the Matrix rain effect, works with pure CSS. No JavaScript required.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="m-col-4">
+          <div class="m-card">
+            <div class="m-card-body">
+              <h3 class="m-card-title">Complete Components</h3>
+              <p>Includes all standard HTML5 components with the authentic Matrix styling and effects.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="m-col-4">
+          <div class="m-card">
+            <div class="m-card-body">
+              <h3 class="m-card-title">Single File</h3>
+              <p>The entire framework is contained in a single CSS file. No dependencies or imports needed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Components Preview -->
+  <section id="components" class="components-section">
+    <div class="m-container">
+      <h2 class="component-header">Components</h2>
+      
+      <div class="m-row">
+        <!-- Buttons Component -->
+        <div class="m-col-6 component-item">
+          <h3>Buttons</h3>
+          <button class="m-btn">Default Button</button>
+          <button class="m-btn m-btn-primary">Primary Button</button>
+        </div>
+        
+        <!-- Forms Component -->
+        <div class="m-col-6 component-item">
+          <h3>Forms</h3>
+          <input type="text" class="m-form-control" placeholder="Matrix Input">
+          <textarea class="m-form-control" placeholder="Matrix Textarea"></textarea>
+        </div>
+        
+        <!-- Tables Component -->
+        <div class="m-col-6 component-item">
+          <h3>Tables</h3>
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Neo</td>
+                <td>The One</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Trinity</td>
+                <td>Operator</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Morpheus</td>
+                <td>Captain</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Alerts Component -->
+        <div class="m-col-6 component-item">
+          <h3>Alerts</h3>
+          <div class="m-alert m-alert-primary">
+            The Matrix has you...
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="m-py-5 m-text-center">
+    <div class="m-container">
+      <h2 class="m-glow m-mb-4">Ready to join the rebellion?</h2>
+      <p class="m-mb-4">Download the Matrix.css framework and build your own Matrix-themed websites.</p>
+      <a href="#" class="m-btn m-btn-primary">Download Matrix.css</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="m-footer">
+    <div class="m-container">
+      <p>Matrix.css - A complete Matrix-themed CSS framework</p>
+      <p class="m-mb-0">Created for the real world</p>
+    </div>
+  </footer>
+</body>
+</html>

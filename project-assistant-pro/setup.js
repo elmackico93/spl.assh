@@ -44,8 +44,8 @@ const DEFAULT_CONFIG = {
 function displayBanner() {
   console.log(chalk.cyan(`
 ╔══════════════════════════════════════════════════════════════╗
-║                 PROJECT ASSISTANT PRO                         ║
-║                      SETUP SCRIPT                             ║
+║                 PROJECT ASSISTANT PRO                        ║
+║                      SETUP SCRIPT                            ║
 ║                         v3.0.0                               ║
 ╚══════════════════════════════════════════════════════════════╝
   `));

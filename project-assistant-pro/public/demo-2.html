@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix UI Examples</title>
+  <style>
+    /* Core Matrix.css - Basic styles */
+    :root {
+      --m-black: #000000;
+      --m-bg: #0c0c0c;
+      --m-text: #00ff41;
+      --m-text-dim: #0a3f0a;
+      --m-text-bright: #00ff97;
+      --m-text-white: #ffffff;
+      --m-glow: rgba(0, 255, 65, 0.6);
+      --m-panel: #0f0f0f;
+      --m-border: #143214;
+      --m-overlay: rgba(0, 10, 0, 0.8);
+      --m-primary: #00ff41;
+      --m-secondary: #072707;
+      --m-info: #39a0ed;
+      --m-success: #00ff41;
+      --m-warning: #ffe100;
+      --m-danger: #ff2222;
+      --m-light: #1d1d1d;
+      --m-dark: #030303;
+      --m-font-main: 'Courier New', monospace;
+      --m-font-alt: 'Lucida Console', Monaco, monospace;
+      --m-font-size: 16px;
+      --m-line-height: 1.6;
+      --m-space-xs: 0.25rem;
+      --m-space-sm: 0.5rem;
+      --m-space-md: 1rem;
+      --m-space-lg: 1.5rem;
+      --m-space-xl: 2.5rem;
+      --m-time-fast: 0.2s;
+      --m-time-med: 0.5s;
+      --m-time-slow: 1s;
+      --m-shadow: 0 0 10px var(--m-glow);
+      --m-radius: 3px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: var(--m-font-size);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--m-bg);
+      color: var(--m-text);
+      font-family: var(--m-font-main);
+      line-height: var(--m-line-height);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--m-font-alt);
+      font-weight: 700;
+      margin-bottom: var(--m-space-md);
+      line-height: 1.2;
+    }
+
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.75rem; }
+
+    p {
+      margin-bottom: var(--m-space-md);
+    }
+
+    a {
+      color: var(--m-text-bright);
+      text-decoration: none;
+      transition: color var(--m-time-fast);
+    }
+
+    a:hover {
+      color: var(--m-text);
+      text-shadow: 0 0 5px var(--m-glow);
+    }
+
+    .m-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .m-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -1rem;
+    }
+
+    .m-col {
+      flex: 1;
+      padding: 0 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .m-col-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 0 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .m-glow {
+      text-shadow: 0 0 10px var(--m-glow);
+      animation: m-glow-pulse 2s infinite;
+    }
+
+    @keyframes m-glow-pulse {
+      0%, 100% { text-shadow: 0 0 5px var(--m-glow); }
+      50% { text-shadow: 0 0 20px var(--m-glow), 0 0 30px var(--m-glow); }
+    }
+
+    .m-card {
+      background-color: var(--m-panel);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .m-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--m-border);
+    }
+
+    /* Code Rain Effect */
+    .m-code-rain {
+      position: relative;
+      overflow: hidden;
+      height: 200px;
+      background-color: var(--m-black);
+      border-radius: var(--m-radius);
+      border: 1px solid var(--m-border);
+    }
+
+    .m-code-column {
+      position: absolute;
+      top: -100px;
+      color: var(--m-text);
+      font-family: monospace;
+      font-size: 1rem;
+      line-height: 1;
+      animation: m-code-fall linear infinite;
+    }
+
+    .m-code-column:nth-child(1) { left: 5%; animation-duration: 12s; animation-delay: 0s; }
+    .m-code-column:nth-child(2) { left: 15%; animation-duration: 14s; animation-delay: 1s; }
+    .m-code-column:nth-child(3) { left: 25%; animation-duration: 9s; animation-delay: 2s; }
+    .m-code-column:nth-child(4) { left: 35%; animation-duration: 16s; animation-delay: 0.5s; }
+    .m-code-column:nth-child(5) { left: 45%; animation-duration: 10s; animation-delay: 3s; }
+    .m-code-column:nth-child(6) { left: 55%; animation-duration: 15s; animation-delay: 1.5s; }
+    .m-code-column:nth-child(7) { left: 65%; animation-duration: 11s; animation-delay: 2.5s; }
+    .m-code-column:nth-child(8) { left: 75%; animation-duration: 13s; animation-delay: 0.8s; }
+    .m-code-column:nth-child(9) { left: 85%; animation-duration: 8s; animation-delay: 1.2s; }
+    .m-code-column:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: 2.2s; }
+
+    @keyframes m-code-fall {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(300px); }
+    }
+
+    .m-code-char {
+      display: block;
+      margin: 2px 0;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .m-code-char:first-child {
+      color: white;
+      opacity: 1;
+      text-shadow: 0 0 8px white, 0 0 12px var(--m-text);
+    }
+
+    /* Text Scramble Effect */
+    .m-scramble {
+      display: inline-block;
+      position: relative;
+    }
+
+    .m-scramble::after {
+      content: attr(data-scramble);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      color: var(--m-text);
+      background-color: var(--m-bg);
+      overflow: hidden;
+      animation: scramble-text 3s steps(30) forwards;
+    }
+
+    @keyframes scramble-text {
+      0% {
+        width: 100%;
+      }
+      100% {
+        width: 0;
+      }
+    }
+
+    /* Terminal Component */
+    .m-term-interactive {
+      position: relative;
+      background-color: rgba(0, 10, 0, 0.8);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      padding: 1rem;
+      font-family: monospace;
+      min-height: 300px;
+      overflow: hidden;
+    }
+
+    .m-term-interactive::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background-color: var(--m-secondary);
+      border-bottom: 1px solid var(--m-border);
+    }
+
+    .m-term-interactive::after {
+      content: '● ○ ○';
+      position: absolute;
+      top: 0;
+      left: 10px;
+      width: 100%;
+      height: 20px;
+      color: var(--m-text);
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .m-term-content {
+      margin-top: 20px;
+      color: var(--m-text);
+      line-height: 1.4;
+    }
+
+    .m-term-line {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .m-term-prompt {
+      color: var(--m-text-bright);
+      margin-right: 0.5rem;
+    }
+
+    .m-term-cursor {
+      position: relative;
+    }
+
+    .m-term-cursor::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -0.8rem;
+      width: 0.6rem;
+      height: 1.2rem;
+      background-color: var(--m-text);
+      animation: cursor-blink 1s infinite step-end;
+    }
+
+    @keyframes cursor-blink {
+      0%, 50% { opacity: 0; }
+      51%, 100% { opacity: 1; }
+    }
+
+    /* Loading Bar */
+    .m-loading {
+      width: 100%;
+      height: 30px;
+      background-color: rgba(0, 20, 0, 0.3);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .m-loading::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background-color: var(--m-text);
+      animation: m-loading 5s infinite;
+      box-shadow: 0 0 10px var(--m-glow);
+    }
+
+    .m-loading::after {
+      content: attr(data-percent) "%";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--m-text-bright);
+      font-family: var(--m-font-main);
+      z-index: 1;
+    }
+
+    @keyframes m-loading {
+      0% { width: 0%; }
+      50% { width: var(--percent, 50%); }
+      100% { width: var(--percent, 50%); }
+    }
+
+    /* Glitch Text Effect */
+    .m-glitch-text {
+      position: relative;
+      display: inline-block;
+      color: var(--m-text-bright);
+    }
+
+    .m-glitch-text::before,
+    .m-glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--m-bg);
+    }
+
+    .m-glitch-text::before {
+      left: 2px;
+      text-shadow: -1px 0 red;
+      animation: m-glitch-anim-1 2s infinite linear alternate-reverse;
+    }
+
+    .m-glitch-text::after {
+      left: -2px;
+      text-shadow: 1px 0 blue;
+      animation: m-glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+
+    @keyframes m-glitch-anim-1 {
+      0%, 100% { clip-path: inset(0 0 98% 0); }
+      20% { clip-path: inset(20% 0 80% 0); }
+      40% { clip-path: inset(40% 0 60% 0); }
+      60% { clip-path: inset(60% 0 40% 0); }
+      80% { clip-path: inset(80% 0 20% 0); }
+    }
+
+    @keyframes m-glitch-anim-2 {
+      0%, 100% { clip-path: inset(0 0 98% 0); }
+      25% { clip-path: inset(25% 0 75% 0); }
+      50% { clip-path: inset(50% 0 50% 0); }
+      75% { clip-path: inset(75% 0 25% 0); }
+    }
+
+    /* Digital Counter */
+    .m-counter {
+      font-family: var(--m-font-main);
+      font-size: 2rem;
+      color: var(--m-text);
+      background-color: rgba(0, 20, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: var(--m-radius);
+      border: 1px solid var(--m-border);
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      text-shadow: 0 0 5px var(--m-glow);
+    }
+
+    .m-counter::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(transparent 50%, rgba(0, 255, 65, 0.1) 50%);
+      background-size: 100% 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .m-counter-digit {
+      display: inline-block;
+      width: 1ch;
+      text-align: center;
+      position: relative;
+      animation: m-counter-flicker 2s infinite;
+    }
+
+    .m-counter-digit:nth-child(odd) {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes m-counter-flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    /* System Status Display */
+    .m-status-display {
+      background-color: var(--m-panel);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      padding: 1rem;
+    }
+
+    .m-status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+    }
+
+    .m-status-item:last-child {
+      border-bottom: none;
+    }
+
+    .m-status-label {
+      display: flex;
+      align-items: center;
+    }
+
+    .m-status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .m-status-online {
+      background-color: var(--m-success);
+      box-shadow: 0 0 5px var(--m-success);
+      animation: m-pulse 2s infinite;
+    }
+
+    .m-status-warning {
+      background-color: var(--m-warning);
+      box-shadow: 0 0 5px var(--m-warning);
+    }
+
+    .m-status-offline {
+      background-color: var(--m-danger);
+      box-shadow: 0 0 5px var(--m-danger);
+    }
+
+    .m-status-details {
+      color: var(--m-text-dim);
+      font-size: 0.8rem;
+    }
+
+    /* Section Styling */
+    section {
+      margin-bottom: 3rem;
+    }
+
+    .example-header {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--m-border);
+      padding-bottom: 0.5rem;
+    }
+
+    .example-box {
+      background-color: var(--m-panel);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Utility Classes */
+    .mb-3 {
+      margin-bottom: 1rem;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Login Form Example */
+    .m-login-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: var(--m-panel);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    }
+
+    .m-form-control {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      background-color: rgba(0, 20, 0, 0.3);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      color: var(--m-text);
+      font-family: var(--m-font-main);
+    }
+
+    .m-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--m-secondary);
+      color: var(--m-text);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: var(--m-font-main);
+      text-align: center;
+    }
+
+    .m-btn:hover {
+      background-color: var(--m-text-dim);
+      color: var(--m-text-bright);
+      box-shadow: 0 0 10px var(--m-glow);
+    }
+
+    .m-btn-block {
+      display: block;
+      width: 100%;
+    }
+
+    /* Dashboard Example */
+    .m-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .m-dashboard-panel {
+      background-color: var(--m-panel);
+      border: 1px solid var(--m-border);
+      border-radius: var(--m-radius);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .m-dashboard-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--m-bg), var(--m-text), var(--m-bg));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .m-dashboard-panel:hover::before {
+      opacity: 1;
+    }
+
+    .m-dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--m-border);
+    }
+
+    .m-dashboard-title {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .m-dashboard-value {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 5px var(--m-glow);
+    }
+  </style>
+</head>
+<body>
+  <div class="m-container">
+    <h1 class="m-glow">Matrix.css UI Examples</h1>
+    <p>Advanced components and implementation examples for the Matrix CSS framework.</p>
+
+    <!-- Text Effects Section -->
+    <section>
+      <h2 class="example-header">Text Effects</h2>
+      <div class="m-row">
+        <div class="m-col-6">
+          <div class="example-box">
+            <h3 class="mb-3">Text Scramble Effect</h3>
+            <p class="m-scramble" data-scramble="01001001010100110010">Decoding Matrix</p>
+            <p class="mb-3">Text appears to decode from Matrix code.</p>
+          </div>
+        </div>
+
+        <div class="m-col-6">
+          <div class="example-box">
+            <h3 class="mb-3">Glitch Text Effect</h3>
+            <p><span class="m-glitch-text" data-text="System Malfunction">System Malfunction</span></p>
+            <p class="mb-3">Text appears to glitch like a system error.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Effects Section -->
+    <section>
+      <h2 class="example-header">Visual Effects</h2>
+      <div class="m-row">
+        <div class="m-col-6">
+          <div class="example-box">
+            <h3 class="mb-3">Matrix Code Rain</h3>
+            <div class="m-code-rain">
+              <div class="m-code-column">
+                <span class="m-code-char">0</span>
+                <span class="m-code-char">1</span>
+                <span class="m-code-char">ﾊ</span>
+                <span class="m-code-char">ﾐ</span>
+                <span class="m-code-char">ﾋ</span>
+                <span class="m-code-char">ｰ</span>
+                <span class="m-code-char">ｳ</span>
+                <span class="m-code-char">ｼ</span>
+              </div>
+              <div class="m-code-column">
+                <span class="m-code-char">ﾅ</span>
+                <span class="m-code-char">ﾓ</span>
+                <span class="m-code-char">ﾆ</span>
+                <span class="m-code-char">ｻ</span>
+                <span class="m-code-char">ﾜ</span>
+                <span class="m-code-char">ﾂ</span>
+                <span class="m-code-char">ｵ</span>
+              </div>
+              <div class="m-code-column">
+                <span class="m-code-char">ﾘ</span>
+                <span class="m-code-char">ｱ</span>
+                <span class="m-code-char">ﾎ</span>
+                <span class="m-code-char">ﾃ</span>
+                <span class="m-code-char">ﾏ</span>
+                <span class="m-code-char">1</span>
+                <span class="m-code-char">0</span>
+              </div>
+              <div class="m-code-column">
+                <span class="m-code-char">1</span>
+                <span class="m-code-char">0</span>
+                <span class="m-code-char">ﾊ</span>
+                <span class="m-code-char">ﾐ</span>
+                <span class="m-code-char">ﾋ</span>
+                <span class="m-code-char">ｰ</span>
+              </div>
+              <div class="m-code-column">
+                <span class="m-code-char">ｰ</span>
+                <span class="m-code-char">ｳ</span>
+                <span class="m-code-char">ｼ</span>
+                <span class="m-code-char">ﾅ</span>
+                <span class="m-code-char">ﾓ</span>
+                <span class="m-code-char">1</span>
+              </div>
+            </div>
+            <p class="mb-3">Classic Matrix digital rain effect.</p>
+          </div>
+        </div>
+
+        <div class="m-col-6">
+          <div class="example-box">
+            <h3 class="mb-3">Loading Progress</h3>
+            <div class="m-loading" data-percent="67" style="--percent: 67%"></div>
+            <p class="mb-3">Matrix-styled progress indicator.</p>
+
+            <h3 class="mb-3 mt-4">Digital Counter</h3>
+            <div class="m-counter">
+              <span class="m-counter-digit">1</span>
+              <span class="m-counter-digit">3</span>
+              <span class="m-counter-digit">3</span>
+              <span class="m-counter-digit">7</span>
+            </div>
+            <p class="mb-3">Digital counter with scan effect.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminal Section -->
+    <section>
+      <h2 class="example-header">Terminal Interface</h2>
+      <div class="example-box">
+        <div class="m-term-interactive">
+          <div class="m-term-content">
+            <div class="m-term-line">
+              <span class="m-term-prompt">C:\></span>
+              <span>connect 192.168.1.1</span>
+            </div>
+            <div class="m-term-line">
+              <span>Establishing connection...</span>
+            </div>
+            <div class="m-term-line">
+              <span>Connection established.</span>
+            </div>
+            <div class="m-term-line">
+              <span>Welcome to the Matrix. The system is online.</span>
+            </div>
+            <div class="m-term-line">
+              <span class="m-term-prompt">MATRIX:~$</span>
+              <span>run --sys-check</span>
+            </div>
+            <div class="m-term-line">
+              <span>Running system diagnostics...</span>
+            </div>
+            <div class="m-term-line">
+              <span>All systems operational.</span>
+            </div>
+            <div class="m-term-line">
+              <span class="m-term-prompt">MATRIX:~$</span>
+              <span class="m-term-cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Status Section -->
+    <section>
+      <h2 class="example-header">System Status</h2>
+      <div class="example-box">
+        <div class="m-status-display">
+          <div class="m-status-item">
+            <div class="m-status-label">
+              <span class="m-status-indicator m-status-online"></span>
+              <span>Main Server</span>
+            </div>
+            <div class="m-status-details">100% Uptime</div>
+          </div>
+          <div class="m-status-item">
+            <div class="m-status-label">
+              <span class="m-status-indicator m-status-warning"></span>
+              <span>Backup Node</span>
+            </div>
+            <div class="m-status-details">87% Capacity</div>
+          </div>
+          <div class="m-status-item">
+            <div class="m-status-label">
+              <span class="m-status-indicator m-status-offline"></span>
+              <span>Remote Access</span>
+            </div>
+            <div class="m-status-details">Maintenance Mode</div>
+          </div>
+          <div class="m-status-item">
+            <div class="m-status-label">
+              <span class="m-status-indicator m-status-online"></span>
+              <span>Firewall</span>
+            </div>
+            <div class="m-status-details">Active</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Login Screen Example -->
+    <section>
+      <h2 class="example-header">Login Screen Example</h2>
+      <div class="m-login-container">
+        <h3 class="m-glow text-center mb-3">MATRIX ACCESS</h3>
+        <div class="mb-3">
+          <input type="text" class="m-form-control" placeholder="Username">
+        </div>
+        <div class="mb-3">
+          <input type="password" class="m-form-control" placeholder="Password">
+        </div>
+        <button class="m-btn m-btn-block mb-3">CONNECT</button>
+        <p class="text-center mb-3">
+          <small>Authorization required for system access.</small>
+        </p>
+      </div>
+    </section>
+
+    <!-- Dashboard Example -->
+    <section>
+      <h2 class="example-header">Dashboard Example</h2>
+      <div class="m-dashboard">
+        <div class="m-dashboard-panel">
+          <div class="m-dashboard-header">
+            <div class="m-dashboard-title">CPU Load</div>
+          </div>
+          <div class="m-dashboard-value">42%</div>
+          <div class="m-loading" data-percent="42" style="--percent: 42%"></div>
+        </div>
+        
+        <div class="m-dashboard-panel">
+          <div class="m-dashboard-header">
+            <div class="m-dashboard-title">Memory Usage</div>
+          </div>
+          <div class="m-dashboard-value">78%</div>
+          <div class="m-loading" data-percent="78" style="--percent: 78%"></div>
+        </div>
+        
+        <div class="m-dashboard-panel">
+          <div class="m-dashboard-header">
+            <div class="m-dashboard-title">Network Traffic</div>
+          </div>
+          <div class="m-dashboard-value">1.3 TB</div>
+          <div class="m-loading" data-percent="56" style="--percent: 56%"></div>
+        </div>
+        
+        <div class="m-dashboard-panel">
+          <div class="m-dashboard-header">
+            <div class="m-dashboard-title">Active Users</div>
+          </div>
+          <div class="m-dashboard-value">42</div>
+          <div class="m-loading" data-percent="21" style="--percent: 21%"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Simple script to make the Matrix code columns continue to generate characters
+    function updateMatrixColumns() {
+      const columns = document.querySelectorAll('.m-code-column');
+      const matrixChars = "日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ01";
+      
+      columns.forEach(column => {
+        // Add new character at top occasionally
+        if (Math.random() < 0.1) {
+          const newChar = document.createElement('span');
+          newChar.className = 'm-code-char';
+          newChar.textContent = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+          column.prepend(newChar);
+          
+          // Remove character at bottom if too many
+          if (column.children.length > 15) {
+            column.removeChild(column.lastChild);
+          }
+        }
+      });
+      
+      requestAnimationFrame(updateMatrixColumns);
+    }
+    
+    // Start the animation
+    updateMatrixColumns();
+  </script>
+</body>
+</html>

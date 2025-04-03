@@ -1,0 +1,1262 @@
+/* Matrix.css AI Extensions - Neural Network and AI Visualizations */
+
+/* ========== Neural Network Visualization ========== */
+.m-neural-network {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+    padding: 1rem;
+  }
+  
+  .m-neural-network::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0, 255, 65, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .m-layer {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .m-neuron {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+  
+  .m-neuron.active {
+    background-color: var(--m-text-dim);
+    box-shadow: 0 0 10px var(--m-glow);
+  }
+  
+  .m-neuron:hover {
+    transform: scale(1.3);
+    background-color: var(--m-text-dim);
+    box-shadow: 0 0 15px var(--m-glow);
+  }
+  
+  .m-synapse {
+    position: absolute;
+    height: 1px;
+    background-color: var(--m-border);
+    transform-origin: 0 0;
+    z-index: 1;
+  }
+  
+  .m-synapse.active {
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-synapse-pulse 1.5s infinite ease-in-out;
+  }
+  
+  @keyframes m-synapse-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  
+  .m-input-label, .m-output-label {
+    position: absolute;
+    font-size: 0.7rem;
+    color: var(--m-text-dim);
+    pointer-events: none;
+  }
+  
+  .m-input-label {
+    left: 40px;
+  }
+  
+  .m-output-label {
+    right: 40px;
+  }
+  
+  /* Activation Animation */
+  .m-activation-wave {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--m-text-bright);
+    border-radius: 50%;
+    transform: scale(0);
+    z-index: 3;
+    pointer-events: none;
+    animation: m-activation 1.5s ease-out forwards;
+  }
+  
+  @keyframes m-activation {
+    0% { transform: scale(0); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+  
+  /* ========== Deep Learning Training Visualization ========== */
+  .m-training-panel {
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-training-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-training-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-bright);
+  }
+  
+  .m-training-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    background-color: rgba(0, 255, 65, 0.1);
+    color: var(--m-text);
+  }
+  
+  .m-training-status.active {
+    animation: m-training-pulse 1s infinite;
+  }
+  
+  @keyframes m-training-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  .m-training-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-stat-box {
+    padding: 1rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .m-stat-label {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+    margin-bottom: 0.5rem;
+  }
+  
+  .m-stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--m-text-bright);
+  }
+  
+  .m-loss-chart {
+    height: 150px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 1rem;
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-loss-line {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: 1px;
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    clip-path: polygon(
+      0% 0%,
+      5% 40%,
+      10% 30%,
+      15% 20%,
+      20% 10%,
+      25% 15%,
+      30% 5%,
+      35% 8%,
+      40% 7%,
+      45% 5%,
+      50% 3%,
+      55% 6%,
+      60% 2%,
+      65% 4%,
+      70% 1%,
+      75% 3%,
+      80% 0%,
+      85% 2%,
+      90% 0%,
+      95% 1%,
+      100% 0%
+    );
+    transform-origin: bottom left;
+    animation: m-loss-draw 3s forwards;
+  }
+  
+  @keyframes m-loss-draw {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  
+  .m-axis-label {
+    position: absolute;
+    font-size: 0.7rem;
+    color: var(--m-text-dim);
+  }
+  
+  .m-axis-label.x {
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .m-axis-label.y {
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: left center;
+  }
+  
+  .m-epoch-progress {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(0, 20, 0, 0.3);
+    border-radius: var(--m-radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  
+  .m-epoch-bar {
+    height: 100%;
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    width: 0;
+    animation: m-epoch-progress 20s linear infinite;
+  }
+  
+  @keyframes m-epoch-progress {
+    0% { width: 0; }
+    100% { width: 100%; }
+  }
+  
+  .m-epoch-counter {
+    font-family: monospace;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-epoch-label {
+    font-size: 0.8rem;
+    color: var(--m-text-dim);
+    margin-right: 0.5rem;
+  }
+  
+  .m-epoch-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--m-text-bright);
+  }
+  
+  /* ========== Data Clustering Visualization ========== */
+  .m-cluster-plot {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-cluster-plot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .m-data-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+    z-index: 2;
+  }
+  
+  .m-cluster-1 {
+    background-color: #00ff41; /* Green */
+  }
+  
+  .m-cluster-2 {
+    background-color: #ff3e3e; /* Red */
+  }
+  
+  .m-cluster-3 {
+    background-color: #3e9fff; /* Blue */
+  }
+  
+  .m-cluster-4 {
+    background-color: #ffbb3e; /* Yellow */
+  }
+  
+  .m-cluster-centroid {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--m-text-bright);
+    box-shadow: 0 0 10px var(--m-glow);
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    animation: m-centroid-pulse 2s infinite;
+  }
+  
+  @keyframes m-centroid-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+  }
+  
+  .m-cluster-label {
+    position: absolute;
+    font-size: 0.7rem;
+    color: var(--m-text-bright);
+    transform: translate(-50%, -150%);
+    background-color: rgba(0, 10, 0, 0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 3;
+  }
+  
+  /* ========== Decision Tree Visualization ========== */
+  .m-decision-tree {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 2rem 1rem;
+    overflow: auto;
+  }
+  
+  .m-tree-node {
+    position: absolute;
+    max-width: 120px;
+    padding: 0.5rem;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    font-size: 0.8rem;
+    text-align: center;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+  
+  .m-tree-node:hover {
+    background-color: var(--m-text-dim);
+    box-shadow: 0 0 10px var(--m-glow);
+    transform: scale(1.1);
+    z-index: 10;
+  }
+  
+  .m-tree-node.decision {
+    background-color: rgba(0, 30, 0, 0.5);
+  }
+  
+  .m-tree-node.leaf {
+    background-color: rgba(0, 60, 0, 0.3);
+    border-color: var(--m-text-dim);
+  }
+  
+  .m-tree-edge {
+    position: absolute;
+    height: 2px;
+    background-color: var(--m-border);
+    transform-origin: 0 0;
+    z-index: 1;
+  }
+  
+  .m-tree-edge::after {
+    content: attr(data-condition);
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: var(--m-text-dim);
+    background-color: rgba(0, 10, 0, 0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  
+  .m-tree-edge.true-branch {
+    background-color: rgba(0, 255, 65, 0.4);
+  }
+  
+  .m-tree-edge.false-branch {
+    background-color: rgba(255, 50, 50, 0.4);
+  }
+  
+  /* ========== AI Chat Conversation ========== */
+  .m-ai-chat {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-chat-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-bright);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .m-ai-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--m-text);
+    box-shadow: 0 0 5px var(--m-glow);
+    animation: m-ai-pulse 2s infinite;
+  }
+  
+  @keyframes m-ai-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  .m-chat-container {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+  }
+  
+  .m-chat-message {
+    margin-bottom: 1rem;
+    max-width: 85%;
+    animation: m-message-appear 0.3s forwards;
+  }
+  
+  @keyframes m-message-appear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .m-chat-user {
+    margin-left: auto;
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: 10px 10px 0 10px;
+    padding: 0.75rem;
+  }
+  
+  .m-chat-ai {
+    margin-right: auto;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: 10px 10px 10px 0;
+    padding: 0.75rem;
+    position: relative;
+  }
+  
+  .m-chat-ai::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    width: 28px;
+    height: 14px;
+    background-color: var(--m-text-dim);
+    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    animation: m-thinking 1.5s infinite;
+    opacity: 0;
+  }
+  
+  @keyframes m-thinking {
+    0%, 100% { clip-path: polygon(0% 100%, 50% 0%, 100% 100%); }
+    50% { clip-path: polygon(0% 0%, 50% 100%, 100% 0%); }
+  }
+  
+  .m-chat-ai.thinking::before {
+    opacity: 1;
+  }
+  
+  .m-chat-timestamp {
+    font-size: 0.7rem;
+    color: var(--m-text-dim);
+    margin-top: 0.25rem;
+    text-align: right;
+  }
+  
+  .m-chat-input-container {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+  }
+  
+  .m-chat-input {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    color: var(--m-text);
+    font-family: var(--m-font-main);
+    resize: none;
+  }
+  
+  .m-chat-send-btn {
+    width: 40px;
+    height: 40px;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    color: var(--m-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .m-chat-send-btn:hover {
+    background-color: var(--m-text-dim);
+    color: var(--m-text-bright);
+    box-shadow: 0 0 5px var(--m-glow);
+  }
+  
+  .m-chat-send-btn::before {
+    content: "➤";
+    transform: rotate(90deg);
+    display: inline-block;
+  }
+  
+  /* ========== AI Processing Animation ========== */
+  .m-ai-processing {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 2rem auto;
+  }
+  
+  .m-processing-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--m-border);
+    border-radius: 50%;
+    animation: m-processing-rotate 3s linear infinite;
+  }
+  
+  .m-processing-circle:nth-child(1) {
+    border-color: transparent;
+    border-top-color: var(--m-text);
+  }
+  
+  .m-processing-circle:nth-child(2) {
+    border-color: transparent;
+    border-right-color: var(--m-text-bright);
+    animation-delay: -0.5s;
+  }
+  
+  .m-processing-circle:nth-child(3) {
+    border-color: transparent;
+    border-bottom-color: var(--m-text);
+    animation-delay: -1s;
+  }
+  
+  .m-processing-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%, -50%);
+    background-color: var(--m-secondary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--m-glow);
+    animation: m-core-pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes m-processing-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes m-core-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px var(--m-glow); }
+    50% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 20px var(--m-glow); }
+  }
+  
+  .m-processing-data {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: var(--m-text);
+    border-radius: 50%;
+    opacity: 0;
+    animation: m-data-flow 2s linear infinite;
+  }
+  
+  .m-processing-data:nth-child(5) { animation-delay: 0s; }
+  .m-processing-data:nth-child(6) { animation-delay: 0.4s; }
+  .m-processing-data:nth-child(7) { animation-delay: 0.8s; }
+  .m-processing-data:nth-child(8) { animation-delay: 1.2s; }
+  .m-processing-data:nth-child(9) { animation-delay: 1.6s; }
+  
+  @keyframes m-data-flow {
+    0% { 
+      transform: translate(0, 0); 
+      opacity: 1;
+    }
+    100% { 
+      transform: translate(var(--x, 40px), var(--y, 40px)); 
+      opacity: 0;
+    }
+  }
+  
+  /* ========== Sentiment Analysis Visualization ========== */
+  .m-sentiment-analysis {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-sentiment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-sentiment-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-bright);
+  }
+  
+  .m-sentiment-meter {
+    height: 30px;
+    background: linear-gradient(to right, #ff3e3e 0%, #ffcc00 50%, #00ff41 100%);
+    border-radius: var(--m-radius);
+    position: relative;
+    margin: 2rem 0;
+  }
+  
+  .m-sentiment-indicator {
+    position: absolute;
+    top: -10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 50px;
+    background-color: white;
+    transition: left 1s ease;
+  }
+  
+  .m-sentiment-indicator::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+  }
+  
+  .m-sentiment-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .m-sentiment-text-container {
+    position: relative;
+    padding: 1rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-top: 1rem;
+    min-height: 100px;
+  }
+  
+  .m-sentiment-text {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .m-word {
+    display: inline-block;
+    margin: 0 2px;
+    position: relative;
+    transition: all 0.3s;
+  }
+  
+  .m-word.positive {
+    color: #00ff41; /* Green for positive */
+  }
+  
+  .m-word.negative {
+    color: #ff3e3e; /* Red for negative */
+  }
+  
+  .m-word.neutral {
+    color: #ffcc00; /* Yellow for neutral */
+  }
+  
+  .m-word.highlighted {
+    transform: scale(1.1);
+    text-shadow: 0 0 5px currentColor;
+    z-index: 3;
+  }
+  
+  .m-word::after {
+    content: attr(data-score);
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    background-color: var(--m-panel);
+    padding: 2px 5px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  
+  .m-word:hover::after {
+    opacity: 1;
+  }
+  
+  /* ========== Image Recognition Visualization ========== */
+  .m-image-recognition {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-image-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  
+  .m-detection-box {
+    position: absolute;
+    border: 2px solid var(--m-text-bright);
+    border-radius: 3px;
+    box-shadow: 0 0 5px var(--m-glow);
+    pointer-events: none;
+    animation: m-box-appear 0.5s forwards;
+  }
+  
+  @keyframes m-box-appear {
+    from { opacity: 0; transform: scale(1.1); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  .m-detection-label {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    background-color: var(--m-text-bright);
+    color: var(--m-bg);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  
+  .m-confidence {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 20, 0, 0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+  }
+  
+  .m-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--m-text-bright);
+    box-shadow: 0 0 10px var(--m-glow);
+    animation: m-scan 3s linear infinite;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  
+  @keyframes m-scan {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+  
+  .m-recognition-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .m-recognition-item {
+    padding: 0.5rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .m-recognition-label {
+    font-weight: bold;
+    color: var(--m-text-bright);
+  }
+  
+  .m-recognition-confidence {
+    color: var(--m-text-dim);
+    font-size: 0.7rem;
+  }
+  
+  /* ========== Chatbot Interface ========== */
+  .m-chatbot {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+  }
+  
+  .m-chatbot-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-bright);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .m-chatbot-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--m-text);
+    animation: m-chatbot-pulse 2s infinite;
+  }
+  
+  @keyframes m-chatbot-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  
+  .m-chatbot-conversation {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+  }
+  
+  .m-chatbot-message {
+    margin-bottom: 1rem;
+    max-width: 80%;
+    opacity: 0;
+    animation: m-chatbot-message-appear 0.5s forwards;
+  }
+  
+  @keyframes m-chatbot-message-appear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .m-chatbot-user {
+    margin-left: auto;
+    background-color: rgba(0, 30, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: 15px 15px 0 15px;
+    padding: 0.75rem;
+  }
+  
+  .m-chatbot-bot {
+    margin-right: auto;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: 0 15px 15px 15px;
+    padding: 0.75rem;
+    position: relative;
+  }
+  
+  .m-chatbot-typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0.5rem;
+  }
+  
+  .m-typing-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--m-text);
+    border-radius: 50%;
+    animation: m-typing-dot-pulse 1.5s infinite;
+  }
+  
+  .m-typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .m-typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes m-typing-dot-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  
+  .m-chatbot-input-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .m-chatbot-input {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--m-border);
+    border-radius: 20px;
+    color: var(--m-text);
+    font-family: var(--m-font-main);
+  }
+  
+  .m-chatbot-send {
+    width: 40px;
+    height: 40px;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    border-radius: 50%;
+    color: var(--m-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .m-chatbot-send:hover {
+    background-color: var(--m-text-dim);
+    color: var(--m-text-bright);
+    box-shadow: 0 0 5px var(--m-glow);
+  }
+  
+  /* ========== Voice Recognition Visualization ========== */
+  .m-voice-recognition {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-voice-visualizer {
+    height: 100px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1rem;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2px;
+  }
+  
+  .m-voice-bar {
+    flex: 1;
+    background-color: var(--m-text);
+    height: 5%;
+    border-radius: 2px;
+    animation: m-voice-pulse 1s infinite;
+  }
+  
+  @keyframes m-voice-pulse {
+    0%, 100% { height: var(--height, 20%); }
+    50% { height: var(--height-alt, 80%); }
+  }
+  
+  .m-voice-bar:nth-child(1) { animation-delay: 0s; --height: 20%; --height-alt: 60%; }
+  .m-voice-bar:nth-child(2) { animation-delay: 0.1s; --height: 30%; --height-alt: 40%; }
+  .m-voice-bar:nth-child(3) { animation-delay: 0.2s; --height: 40%; --height-alt: 70%; }
+  .m-voice-bar:nth-child(4) { animation-delay: 0.3s; --height: 60%; --height-alt: 30%; }
+  .m-voice-bar:nth-child(5) { animation-delay: 0.4s; --height: 70%; --height-alt: 90%; }
+  .m-voice-bar:nth-child(6) { animation-delay: 0.5s; --height: 50%; --height-alt: 20%; }
+  .m-voice-bar:nth-child(7) { animation-delay: 0.6s; --height: 30%; --height-alt: 50%; }
+  .m-voice-bar:nth-child(8) { animation-delay: 0.7s; --height: 80%; --height-alt: 40%; }
+  .m-voice-bar:nth-child(9) { animation-delay: 0.8s; --height: 20%; --height-alt: 60%; }
+  .m-voice-bar:nth-child(10) { animation-delay: 0.9s; --height: 40%; --height-alt: 80%; }
+  .m-voice-bar:nth-child(11) { animation-delay: 0.95s; --height: 60%; --height-alt: 30%; }
+  .m-voice-bar:nth-child(12) { animation-delay: 0.85s; --height: 70%; --height-alt: 50%; }
+  .m-voice-bar:nth-child(13) { animation-delay: 0.75s; --height: 50%; --height-alt: 70%; }
+  .m-voice-bar:nth-child(14) { animation-delay: 0.65s; --height: 30%; --height-alt: 90%; }
+  .m-voice-bar:nth-child(15) { animation-delay: 0.55s; --height: 90%; --height-alt: 30%; }
+  .m-voice-bar:nth-child(16) { animation-delay: 0.45s; --height: 30%; --height-alt: 60%; }
+  .m-voice-bar:nth-child(17) { animation-delay: 0.35s; --height: 50%; --height-alt: 80%; }
+  .m-voice-bar:nth-child(18) { animation-delay: 0.25s; --height: 70%; --height-alt: 20%; }
+  .m-voice-bar:nth-child(19) { animation-delay: 0.15s; --height: 20%; --height-alt: 50%; }
+  .m-voice-bar:nth-child(20) { animation-delay: 0.05s; --height: 60%; --height-alt: 40%; }
+  
+  .m-voice-result {
+    font-family: monospace;
+    font-size: 1.2rem;
+    text-align: center;
+    min-height: 1.5em;
+    margin-bottom: 1rem;
+  }
+  
+  .m-voice-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .m-voice-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--m-secondary);
+    border: 1px solid var(--m-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .m-voice-btn:hover {
+    background-color: var(--m-text-dim);
+    box-shadow: 0 0 10px var(--m-glow);
+  }
+  
+  .m-voice-btn.active {
+    background-color: var(--m-text-dim);
+    box-shadow: 0 0 10px var(--m-glow);
+    animation: m-voice-btn-pulse 1s infinite;
+  }
+  
+  @keyframes m-voice-btn-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  .m-voice-mic::before {
+    content: "⚫";
+    font-size: 2rem;
+    color: var(--m-text);
+  }
+  
+  .m-voice-stop::before {
+    content: "■";
+    font-size: 1.5rem;
+    color: var(--m-text);
+  }
+  
+  .m-voice-status {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--m-text-dim);
+    margin-bottom: 1rem;
+  }
+  
+  /* ========== Generative Art Animation ========== */
+  .m-generative-art {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 10, 0, 0.5);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: var(--m-text);
+    box-shadow: 0 0 2px var(--m-glow);
+    border-radius: 50%;
+    z-index: 1;
+  }
+  
+  .m-node-point {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: var(--m-text-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--m-glow);
+    z-index: 2;
+  }
+  
+  .m-connection-line {
+    position: absolute;
+    height: 1px;
+    background-color: rgba(0, 255, 65, 0.3);
+    transform-origin: 0 0;
+    z-index: 1;
+  }
+  
+  /* ========== Text Generation Animation ========== */
+  .m-text-generation {
+    padding: 1.5rem;
+    background-color: var(--m-panel);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    margin-bottom: 1.5rem;
+  }
+  
+  .m-gen-container {
+    font-family: monospace;
+    line-height: 1.5;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .m-gen-text {
+    min-height: 200px;
+  }
+  
+  .m-gen-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    background-color: var(--m-text);
+    animation: m-cursor-blink 1s infinite step-end;
+    vertical-align: text-bottom;
+  }
+  
+  @keyframes m-cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  .m-gen-thinking {
+    position: absolute;
+    top: -20px;
+    height: 20px;
+    width: 100%;
+    background-color: var(--m-secondary);
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .m-gen-dot {
+    width: 4px;
+    height: 4px;
+    background-color: var(--m-text);
+    border-radius: 50%;
+    animation: m-gen-dot-pulse 1.5s infinite;
+  }
+  
+  .m-gen-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .m-gen-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes m-gen-dot-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
