@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix AI Extensions Demo</title>
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/matrix-ai-extension.css">
+    <style>
+        body {
+            background-color: var(--m-bg);
+            color: var(--m-text);
+            font-family: var(--m-font-main);
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--m-border);
+            padding-bottom: 1rem;
+        }
+
+        .component-panel {
+            background-color: var(--m-panel);
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .component-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--m-text-bright);
+        }
+    </style>
+</head>
+<body>
+    <h1 class="section-title">Matrix AI Extensions Showcase</h1>
+
+    <div class="container">
+        <!-- Neural Network Visualization -->
+        <div class="component-panel">
+            <h2 class="component-title">Neural Network Visualization</h2>
+            <div class="m-neural-network" id="neuralNetworkDemo">
+                <div class="m-input-label">Input Layer</div>
+                <div class="m-output-label">Output Layer</div>
+            </div>
+        </div>
+
+        <!-- Training Panel -->
+        <div class="component-panel">
+            <h2 class="component-title">Deep Learning Training</h2>
+            <div class="m-training-panel">
+                <div class="m-training-header">
+                    <div class="m-training-title">Model Training</div>
+                    <div class="m-training-status active">Training</div>
+                </div>
+                <div class="m-training-stats">
+                    <div class="m-stat-box">
+                        <div class="m-stat-label">Epochs</div>
+                        <div class="m-stat-value">50</div>
+                    </div>
+                    <div class="m-stat-box">
+                        <div class="m-stat-label">Accuracy</div>
+                        <div class="m-stat-value">92.5%</div>
+                    </div>
+                    <div class="m-stat-box">
+                        <div class="m-stat-label">Loss</div>
+                        <div class="m-stat-value">0.085</div>
+                    </div>
+                </div>
+                <div class="m-loss-chart">
+                    <div class="m-loss-line"></div>
+                    <div class="m-axis-label x">Iterations</div>
+                    <div class="m-axis-label y">Loss</div>
+                </div>
+                <div class="m-epoch-progress">
+                    <div class="m-epoch-bar"></div>
+                </div>
+                <div class="m-epoch-counter">
+                    <span class="m-epoch-label">Current Epoch:</span>
+                    <span class="m-epoch-value">34</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Clustering -->
+        <div class="component-panel">
+            <h2 class="component-title">Data Clustering Visualization</h2>
+            <div class="m-cluster-plot"></div>
+        </div>
+
+        <!-- Decision Tree -->
+        <div class="component-panel">
+            <h2 class="component-title">Decision Tree</h2>
+            <div class="m-decision-tree"></div>
+        </div>
+
+        <!-- AI Chat Interface -->
+        <div class="component-panel">
+            <h2 class="component-title">AI Chat Interface</h2>
+            <div class="m-ai-chat">
+                <div class="m-chat-header">
+                    <div class="m-chat-title">
+                        <div class="m-ai-indicator"></div>
+                        Matrix AI
+                    </div>
+                </div>
+                <div class="m-chat-container">
+                    <div class="m-chat-message m-chat-ai">
+                        Hello! How can I assist you today?
+                    </div>
+                </div>
+                <div class="m-chat-input-container">
+                    <textarea class="m-chat-input" placeholder="Type your message..."></textarea>
+                    <button class="m-chat-send-btn"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Processing Visualization -->
+        <div class="component-panel">
+            <h2 class="component-title">AI Processing</h2>
+            <div class="m-ai-processing">
+                <div class="m-processing-circle"></div>
+                <div class="m-processing-circle"></div>
+                <div class="m-processing-circle"></div>
+                <div class="m-processing-core"></div>
+                <div class="m-processing-data" style="--x: 40px; --y: 40px;"></div>
+                <div class="m-processing-data" style="--x: -40px; --y: -40px;"></div>
+                <div class="m-processing-data" style="--x: 30px; --y: -30px;"></div>
+                <div class="m-processing-data" style="--x: -30px; --y: 30px;"></div>
+                <div class="m-processing-data" style="--x: 50px; --y: 50px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Neural Network Visualization
+        function initNeuralNetwork() {
+            const network = document.getElementById('neuralNetworkDemo');
+            const layers = [5, 10, 8, 3]; // Neurons per layer
+            const colors = ['#00ff41', '#00cc41', '#00aa41', '#008841'];
+
+            layers.forEach((neuronCount, layerIndex) => {
+                const layer = document.createElement('div');
+                layer.className = 'm-layer';
+                layer.style.left = `${(layerIndex + 1) * 20}%`;
+
+                for (let i = 0; i < neuronCount; i++) {
+                    const neuron = document.createElement('div');
+                    neuron.className = 'm-neuron';
+                    neuron.style.backgroundColor = colors[layerIndex];
+                    
+                    // Randomly activate some neurons
+                    if (Math.random() < 0.3) {
+                        neuron.classList.add('active');
+                        
+                        // Add activation wave
+                        const wave = document.createElement('div');
+                        wave.className = 'm-activation-wave';
+                        neuron.appendChild(wave);
+                    }
+
+                    layer.appendChild(neuron);
+                }
+
+                network.appendChild(layer);
+            });
+
+            // Add synapses between layers
+            const layers = network.querySelectorAll('.m-layer');
+            for (let i = 0; i < layers.length - 1; i++) {
+                const sourceLayer = layers[i];
+                const targetLayer = layers[i + 1];
+                const sourceNeurons = sourceLayer.querySelectorAll('.m-neuron');
+                const targetNeurons = targetLayer.querySelectorAll('.m-neuron');
+
+                sourceNeurons.forEach(sourceNeuron => {
+                    if (!sourceNeuron.classList.contains('active')) return;
+
+                    targetNeurons.forEach(targetNeuron => {
+                        if (Math.random() < 0.4) {
+                            const synapse = document.createElement('div');
+                            synapse.className = 'm-synapse';
+                            synapse.style.top = `${sourceNeuron.offsetTop + sourceNeuron.offsetHeight / 2}px`;
+                            synapse.style.left = `${sourceLayer.offsetLeft + sourceNeuron.offsetLeft + sourceNeuron.offsetWidth / 2}px`;
+                            
+                            const angle = Math.atan2(
+                                targetNeuron.offsetTop + targetLayer.offsetTop - (sourceNeuron.offsetTop + sourceLayer.offsetTop),
+                                targetNeuron.offsetLeft + targetLayer.offsetLeft - (sourceNeuron.offsetLeft + sourceLayer.offsetLeft)
+                            ) * 180 / Math.PI;
+                            
+                            const length = Math.sqrt(
+                                Math.pow(targetNeuron.offsetLeft + targetLayer.offsetLeft - (sourceNeuron.offsetLeft + sourceLayer.offsetLeft), 2) +
+                                Math.pow(targetNeuron.offsetTop + targetLayer.offsetTop - (sourceNeuron.offsetTop + sourceLayer.offsetTop), 2)
+                            );
+                            
+                            synapse.style.transform = `rotate(${angle}deg)`;
+                            synapse.style.width = `${length}px`;
+                            
+                            synapse.classList.add('active');
+                            network.appendChild(synapse);
+                        }
+                    });
+                });
+            }
+        }
+
+        // Initialize components on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initNeuralNetwork();
+        });
+    </script>
+</body>
+</html>

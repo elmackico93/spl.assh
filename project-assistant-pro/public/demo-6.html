@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix AR/VR Extensions Demo</title>
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/matrix-arvr-extension.css">
+    <style>
+        body {
+            background-color: var(--m-bg);
+            color: var(--m-text);
+            font-family: var(--m-font-main);
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--m-border);
+            padding-bottom: 1rem;
+        }
+
+        .component-panel {
+            background-color: var(--m-panel);
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .component-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--m-text-bright);
+        }
+    </style>
+</head>
+<body>
+    <h1 class="section-title">Matrix AR/VR Extensions Showcase</h1>
+
+    <div class="container">
+        <!-- VR Headset Interface -->
+        <div class="component-panel">
+            <h2 class="component-title">VR Headset Interface</h2>
+            <div class="m-vr-interface">
+                <div class="m-vr-header">
+                    <div class="m-vr-title">Virtual Reality Environment</div>
+                </div>
+                <div class="m-vr-container">
+                    <div class="m-vr-view">
+                        <div class="m-vr-eye">
+                            <div class="m-vr-scene">
+                                <div class="m-vr-floor"></div>
+                                <div class="m-vr-object m-vr-cube" style="left: 30%; top: 50%; --z-distance: -100px;">
+                                    <div class="m-vr-cube-face front">1</div>
+                                    <div class="m-vr-cube-face back">2</div>
+                                    <div class="m-vr-cube-face left">3</div>
+                                    <div class="m-vr-cube-face right">4</div>
+                                    <div class="m-vr-cube-face top">5</div>
+                                    <div class="m-vr-cube-face bottom">6</div>
+                                </div>
+                                <div class="m-vr-data-panel">
+                                    <div>X: 30%</div>
+                                    <div>Y: 50%</div>
+                                    <div>Z: -100px</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-vr-eye">
+                            <div class="m-vr-scene">
+                                <div class="m-vr-floor"></div>
+                                <div class="m-vr-object m-vr-cube" style="left: 30%; top: 50%; --z-distance: -100px;">
+                                    <div class="m-vr-cube-face front">1</div>
+                                    <div class="m-vr-cube-face back">2</div>
+                                    <div class="m-vr-cube-face left">3</div>
+                                    <div class="m-vr-cube-face right">4</div>
+                                    <div class="m-vr-cube-face top">5</div>
+                                    <div class="m-vr-cube-face bottom">6</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-vr-controls">
+                    <div class="m-vr-joystick">
+                        <div class="m-vr-stick"></div>
+                    </div>
+                    <button class="m-vr-button">↑</button>
+                    <button class="m-vr-button">↓</button>
+                    <button class="m-vr-button">←</button>
+                    <button class="m-vr-button">→</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AR Overlay Interface -->
+        <div class="component-panel">
+            <h2 class="component-title">AR Overlay Interface</h2>
+            <div class="m-ar-interface">
+                <div class="m-ar-view">
+                    <div class="m-ar-overlay">
+                        <div class="m-ar-hud">
+                            <div class="m-ar-hud-row">
+                                <div class="m-ar-hud-label">Distance</div>
+                                <div class="m-ar-hud-value">12.5m</div>
+                            </div>
+                            <div class="m-ar-hud-row">
+                                <div class="m-ar-hud-label">Object</div>
+                                <div class="m-ar-hud-value">Cube</div>
+                            </div>
+                        </div>
+                        <div class="m-ar-reticle">
+                            <div class="m-ar-reticle-circle"></div>
+                        </div>
+                        <div class="m-ar-marker" style="left: 30%; top: 50%;">
+                            <div class="m-ar-marker-label">Target</div>
+                        </div>
+                        <div class="m-ar-data-box">
+                            <div>X: 30%</div>
+                            <div>Y: 50%</div>
+                        </div>
+                        <div class="m-ar-scan-line"></div>
+                        <div class="m-ar-notification">
+                            Object detected and tracked
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Holographic Interface -->
+        <div class="component-panel">
+            <h2 class="component-title">Holographic Interface</h2>
+            <div class="m-holographic">
+                <div class="m-holo-container">
+                    <div class="m-holo-projection">
+                        <div class="m-holo-layer"></div>
+                        <div class="m-holo-layer"></div>
+                        <div class="m-holo-layer"></div>
+                        <div class="m-holo-layer"></div>
+                        <div class="m-holo-layer"></div>
+                        
+                        <div class="m-holo-element" style="left: 20%; top: 30%;"></div>
+                        <div class="m-holo-element" style="left: 50%; top: 60%;"></div>
+                        <div class="m-holo-element" style="left: 80%; top: 40%;"></div>
+                        
+                        <div class="m-holo-connection" style="left: 20%; top: 30%; width: 100px; transform: rotate(45deg);"></div>
+                        <div class="m-holo-connection" style="left: 50%; top: 60%; width: 80px; transform: rotate(-30deg);"></div>
+                    </div>
+                    <div class="m-holo-controls">
+                        <div class="m-holo-control">+</div>
+                        <div class="m-holo-control">-</div>
+                        <div class="m-holo-control">⟳</div>
+                    </div>
+                    <div class="m-holo-info">
+                        <div class="m-holo-info-row">
+                            <div class="m-holo-label">Scale</div>
+                            <div class="m-holo-value">100%</div>
+                        </div>
+                        <div class="m-holo-info-row">
+                            <div class="m-holo-label">Rotation</div>
+                            <div class="m-holo-value">0°</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Environment Mapping -->
+        <div class="component-panel">
+            <h2 class="component-title">3D Environment Mapping</h2>
+            <div class="m-environment-map">
+                <div class="m-map-container">
+                    <div class="m-map-grid"></div>
+                    
+                    <div class="m-map-object" style="left: 30%; top: 50%;"></div>
+                    <div class="m-map-object" style="left: 70%; top: 30%;"></div>
+                    <div class="m-map-object" style="left: 50%; top: 80%;"></div>
+                    
+                    <div class="m-map-wall" style="left: 40%; top: 60%;"></div>
+                    <div class="m-map-wall" style="left: 70%; top: 40%;"></div>
+                    
+                    <div class="m-map-scan"></div>
+                    
+                    <div class="m-map-controls">
+                        <div class="m-map-control">+</div>
+                        <div class="m-map-control">-</div>
+                        <div class="m-map-control">⟳</div>
+                    </div>
+                    
+                    <div class="m-map-info">
+                        <div>Objects: 3</div>
+                        <div>Walls: 2</div>
+                        <div>Scan Status: Active</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

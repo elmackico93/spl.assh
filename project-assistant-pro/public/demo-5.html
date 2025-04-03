@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Quantum Extensions Demo</title>
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/matrix-quantum-extension.css">
+    <style>
+        body {
+            background-color: var(--m-bg);
+            color: var(--m-text);
+            font-family: var(--m-font-main);
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--m-border);
+            padding-bottom: 1rem;
+        }
+
+        .component-panel {
+            background-color: var(--m-panel);
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .component-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--m-text-bright);
+        }
+    </style>
+</head>
+<body>
+    <h1 class="section-title">Matrix Quantum Extensions Showcase</h1>
+
+    <div class="container">
+        <!-- Quantum Circuit Visualization -->
+        <div class="component-panel">
+            <h2 class="component-title">Quantum Circuit</h2>
+            <div class="m-quantum-circuit">
+                <div class="m-quantum-header">
+                    <div class="m-quantum-title">Quantum Circuit Simulation</div>
+                </div>
+                <div class="m-circuit-container" id="quantumCircuit">
+                    <!-- Circuit will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum State Visualization -->
+        <div class="component-panel">
+            <h2 class="component-title">Quantum State on Bloch Sphere</h2>
+            <div class="m-quantum-state">
+                <div class="m-bloch-sphere">
+                    <div class="m-bloch-container">
+                        <div class="m-sphere"></div>
+                        <div class="m-axis x"></div>
+                        <div class="m-axis y"></div>
+                        <div class="m-axis z"></div>
+                        <div class="m-axis-label x">X</div>
+                        <div class="m-axis-label y">Y</div>
+                        <div class="m-axis-label z">Z</div>
+                        <div class="m-state-vector" style="--angle-z: 45deg; --angle-y: 30deg;"></div>
+                    </div>
+                </div>
+                <div class="m-probability-display">
+                    <div class="m-probability-state">
+                        <div class="m-state-label ket0"></div>
+                        <div class="m-probability-bar" style="--probability: 70%;">
+                            <div class="m-probability-fill"></div>
+                        </div>
+                        <div class="m-probability-value">0.70</div>
+                    </div>
+                    <div class="m-probability-state">
+                        <div class="m-state-label ket1"></div>
+                        <div class="m-probability-bar" style="--probability: 30%;">
+                            <div class="m-probability-fill"></div>
+                        </div>
+                        <div class="m-probability-value">0.30</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Entanglement -->
+        <div class="component-panel">
+            <h2 class="component-title">Quantum Entanglement</h2>
+            <div class="m-entanglement">
+                <div class="m-entanglement-visual">
+                    <div class="m-qubit" style="left: 50px;">
+                        <div class="m-qubit-state">|0⟩</div>
+                    </div>
+                    <div class="m-entanglement-link"></div>
+                    <div class="m-qubit" style="right: 50px;">
+                        <div class="m-qubit-state">|1⟩</div>
+                    </div>
+                    <div class="m-entanglement-particle"></div>
+                </div>
+                <div class="m-measurement-panel">
+                    <div class="m-measurement-box">
+                        <div class="m-measurement-label">Qubit A</div>
+                        <div class="m-measurement-value">0</div>
+                    </div>
+                    <div class="m-measurement-box">
+                        <div class="m-measurement-label">Qubit B</div>
+                        <div class="m-measurement-value">1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Teleportation -->
+        <div class="component-panel">
+            <h2 class="component-title">Quantum Teleportation</h2>
+            <div class="m-teleportation">
+                <div class="m-teleport-container">
+                    <div class="m-teleport-station sender">
+                        <div class="m-teleport-label">Sender</div>
+                        <div class="m-teleport-qubit">|ψ⟩</div>
+                    </div>
+                    <div class="m-teleport-station receiver">
+                        <div class="m-teleport-label">Receiver</div>
+                        <div class="m-teleport-qubit">|0⟩</div>
+                    </div>
+                    <div class="m-teleport-path"></div>
+                    <div class="m-teleport-data"></div>
+                    <div class="m-teleport-bit">0</div>
+                    <div class="m-teleport-bit">1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Key Distribution -->
+        <div class="component-panel">
+            <h2 class="component-title">Quantum Key Distribution</h2>
+            <div class="m-quantum-encryption">
+                <div class="m-qkd-header">
+                    <div class="m-qkd-title">Quantum Key Exchange</div>
+                </div>
+                <div class="m-qkd-container">
+                    <div class="m-qkd-party sender">
+                        <div class="m-qkd-label">Alice</div>
+                        <div class="m-qkd-bits">
+                            <div class="m-qkd-bit">
+                                <div class="m-qkd-bit-value">1</div>
+                                <div class="m-qkd-basis plus"></div>
+                            </div>
+                            <div class="m-qkd-bit">
+                                <div class="m-qkd-bit-value">0</div>
+                                <div class="m-qkd-basis cross"></div>
+                            </div>
+                        </div>
+                        <div class="m-qkd-key">Key: 10</div>
+                    </div>
+                    <div class="m-qkd-channel">
+                        <div class="m-qkd-photon"></div>
+                    </div>
+                    <div class="m-qkd-party receiver">
+                        <div class="m-qkd-label">Bob</div>
+                        <div class="m-qkd-bits">
+                            <div class="m-qkd-bit">
+                                <div class="m-qkd-bit-value">1</div>
+                                <div class="m-qkd-basis cross"></div>
+                            </div>
+                            <div class="m-qkd-bit">
+                                <div class="m-qkd-bit-value">0</div>
+                                <div class="m-qkd-basis plus"></div>
+                            </div>
+                        </div>
+                        <div class="m-qkd-key">Key: 10</div>
+                    </div>
+                </div>
+                <div class="m-qkd-illustration">
+                    <div class="m-polarization">
+                        <div class="m-polarization-label">Sender Polarization</div>
+                        <div class="m-polarization-visual">
+                            <div class="m-polarization-arrow horizontal"></div>
+                        </div>
+                    </div>
+                    <div class="m-polarization">
+                        <div class="m-polarization-label">Receiver Polarization</div>
+                        <div class="m-polarization-visual">
+                            <div class="m-polarization-arrow vertical"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Superposition -->
+        <div class="component-panel">
+            <h2 class="component-title">Quantum Superposition</h2>
+            <div class="m-superposition-anim">
+                <div class="m-wave-container">
+                    <div class="m-sine-wave"></div>
+                </div>
+                <div class="m-ket-labels">
+                    <div class="m-ket-label">|0⟩</div>
+                    <div class="m-ket-label">|1⟩</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quantum Circuit Generation
+        function initQuantumCircuit() {
+            const circuit = document.getElementById('quantumCircuit');
+            const qubitLines = 4; // Number of qubits
+            const gateTypes = ['hadamard', 'pauli-x', 'pauli-y', 'pauli-z', 'cnot', 'measure'];
+
+            // Create qubit lines
+            for (let i = 0; i < qubitLines; i++) {
+                const qubitLine = document.createElement('div');
+                qubitLine.className = 'm-qubit-line';
+
+                // Qubit label
+                const qubitLabel = document.createElement('div');
+                qubitLabel.className = 'm-qubit-label';
+                qubitLabel.textContent = `Q${i}`;
+                qubitLine.appendChild(qubitLabel);
+
+                // Qubit wire
+                const qubitWire = document.createElement('div');
+                qubitWire.className = 'm-qubit-wire';
+                qubitLine.appendChild(qubitWire);
+
+                // Add random gates
+                const numGates = Math.floor(Math.random() * 4) + 2;
+                for (let j = 0; j < numGates; j++) {
+                    const gate = document.createElement('div');
+                    gate.className = 'm-quantum-gate';
+                    
+                    // Randomly select gate type
+                    const gateType = gateTypes[Math.floor(Math.random() * gateTypes.length)];
+                    gate.classList.add(gateType);
+                    
+                    // Position gate
+                    gate.style.left = `${(j + 1) * 15}%`;
+                    gate.style.top = '50%';
+
+                    qubitLine.appendChild(gate);
+                }
+
+                // Add result display for last gate
+                if (i === qubitLines - 1) {
+                    const result = document.createElement('div');
+                    result.className = 'm-quantum-result';
+                    result.textContent = '|0⟩';
+                    qubitLine.appendChild(result);
+                }
+
+                circuit.appendChild(qubitLine);
+            }
+
+            // Add superposition visualization
+            const superposition = document.createElement('div');
+            superposition.className = 'm-quantum-superposition';
+            const superpositionWave = document.createElement('div');
+            superpositionWave.className = 'm-superposition-wave';
+            superposition.appendChild(superpositionWave);
+            circuit.appendChild(superposition);
+        }
+
+        // Initialize components on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuantumCircuit();
+        });
+    </script>
+</body>
+</html>

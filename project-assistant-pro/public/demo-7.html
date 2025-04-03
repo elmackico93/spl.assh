@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Intelligence Dashboard</title>
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/matrix-hacker-extension.css">
+    <style>
+        :root {
+            --dashboard-bg: #0a1128;
+            --dashboard-text: #e6f1ff;
+            --dashboard-accent: #00b4ff;
+            --dashboard-border: #1a2c4f;
+            --dashboard-secondary: #1f3d7a;
+        }
+
+        body {
+            background-color: var(--dashboard-bg);
+            color: var(--dashboard-text);
+            font-family: 'Inter', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .dashboard-card {
+            background-color: var(--dashboard-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--dashboard-border);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--dashboard-border);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dashboard-accent);
+            margin: 0;
+        }
+
+        .card-icon {
+            color: var(--dashboard-accent);
+            font-size: 1.5rem;
+        }
+
+        .network-map {
+            position: relative;
+            height: 250px;
+            background-color: var(--dashboard-bg);
+            border-radius: 8px;
+            border: 1px solid var(--dashboard-border);
+        }
+
+        .network-node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .network-node:hover {
+            transform: scale(1.1);
+        }
+
+        .network-node.server { 
+            background-color: #00b4ff; 
+            left: 20%; 
+            top: 30%; 
+        }
+
+        .network-node.client { 
+            background-color: #00ff87; 
+            left: 60%; 
+            top: 60%; 
+        }
+
+        .network-node.router { 
+            background-color: #ff6b6b; 
+            left: 80%; 
+            top: 40%; 
+        }
+
+        .network-connection {
+            position: absolute;
+            height: 2px;
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .threat-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .threat-indicator {
+            background-color: var(--dashboard-bg);
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .threat-level {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .threat-label {
+            font-size: 0.8rem;
+            color: var(--dashboard-accent);
+        }
+
+        .terminal {
+            background-color: #000;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            padding: 1rem;
+            border-radius: 8px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-prompt {
+            color: var(--dashboard-accent);
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Network Overview -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2 class="card-title">Network Topology</h2>
+                <div class="card-icon">🌐</div>
+            </div>
+            <div class="network-map">
+                <div class="network-node server" title="Primary Server">SRV</div>
+                <div class="network-node client" title="Client Node">CLI</div>
+                <div class="network-node router" title="Network Router">RTR</div>
+                <div class="network-connection" style="left: 20%; top: 35%; width: 200px; transform: rotate(35deg);"></div>
+                <div class="network-connection" style="left: 60%; top: 50%; width: 150px; transform: rotate(-25deg);"></div>
+            </div>
+        </div>
+
+        <!-- Threat Summary -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2 class="card-title">Threat Landscape</h2>
+                <div class="card-icon">⚠️</div>
+            </div>
+            <div class="threat-summary">
+                <div class="threat-indicator">
+                    <div class="threat-level">24</div>
+                    <div class="threat-label">Active Threats</div>
+                </div>
+                <div class="threat-indicator">
+                    <div class="threat-level">3</div>
+                    <div class="threat-label">Critical</div>
+                </div>
+                <div class="threat-indicator">
+                    <div class="threat-level">12</div>
+                    <div class="threat-label">High Risk</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal Log -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2 class="card-title">System Log</h2>
+                <div class="card-icon">📋</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    Initializing security scan...
+                </div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">></span>
+                    Detected potential network anomaly
+                </div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">!</span>
+                    Threat level: Moderate
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
