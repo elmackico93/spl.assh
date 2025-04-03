@@ -1,0 +1,971 @@
+/* 
+ * Matrix.css Terminal Extensions - Advanced Terminal Components
+ * For SPLASSH Matrix Framework - v1.0.0
+ */
+
+/* ========== Terminal Variables ========== */
+:root {
+    /* Matrix Terminal Colors */
+    --m-term-bg: #000000;
+    --m-term-bg-translucent: rgba(0, 8, 2, 0.85);
+    --m-term-primary: #00ff00;
+    --m-term-primary-dim: #00cc00;
+    --m-term-primary-bright: #50fa7b;
+    --m-term-primary-glow: rgba(0, 255, 0, 0.6);
+    --m-term-secondary: #001f00;
+    --m-term-text: #ccffcc;
+    --m-term-border: #003b00;
+    
+    /* Terminal Dimensions */
+    --m-term-min-width: 400px;
+    --m-term-max-width: 1200px;
+    --m-term-min-height: 300px;
+    --m-term-height: 60vh;
+    --m-term-border-radius: 0.6rem;
+    --m-term-header-height: 36px;
+    
+    /* Terminal Effects */
+    --m-term-backdrop-blur: 6px;
+    --m-term-glow-intensity: 0.4;
+    --m-term-shadow: 0 0 20px rgba(0, 255, 0, 0.4), 0 0 30px rgba(0, 0, 0, 0.6);
+    --m-term-shadow-hover: 0 0 25px rgba(0, 255, 0, 0.5), 0 0 35px rgba(0, 0, 0, 0.65);
+    
+    /* Matrix "Digital Rain" Effect Variables */
+    --m-term-rain-columns: 24;
+    --m-term-rain-speed-min: 1.5s;
+    --m-term-rain-speed-max: 3.5s;
+    --m-term-rain-opacity: 0.8;
+    --m-term-rain-bg-opacity: 0.15;
+  }
+  
+  /* Light Theme Overrides */
+  [data-theme="light"] {
+    --m-term-bg: #e6ffe6;
+    --m-term-bg-translucent: rgba(240, 255, 240, 0.85);
+    --m-term-primary: #005000;
+    --m-term-primary-dim: #003b00;
+    --m-term-primary-bright: #007700;
+    --m-term-primary-glow: rgba(0, 100, 0, 0.3);
+    --m-term-secondary: #d9ffd9;
+    --m-term-text: #003000;
+    --m-term-border: #00a000;
+    
+    /* Terminal Effects - Light Theme */
+    --m-term-shadow: 0 4px 15px rgba(0, 80, 0, 0.15), 0 6px 20px rgba(0, 0, 0, 0.1);
+    --m-term-shadow-hover: 0 6px 20px rgba(0, 80, 0, 0.2), 0 8px 25px rgba(0, 0, 0, 0.15);
+    --m-term-glow-intensity: 0.2;
+    
+    /* Matrix Rain Effect - Light Theme */
+    --m-term-rain-opacity: 0.4;
+    --m-term-rain-bg-opacity: 0.08;
+  }
+  
+  /* ========== Advanced Terminal Container ========== */
+  .m-term-advanced {
+    width: var(--m-term-width, 100%);
+    min-width: var(--m-term-min-width);
+    max-width: var(--m-term-max-width);
+    height: var(--m-term-height);
+    min-height: var(--m-term-min-height);
+    background-color: var(--m-term-bg);
+    color: var(--m-term-text);
+    border-radius: var(--m-term-border-radius);
+    box-shadow: var(--m-term-shadow);
+    position: relative;
+    overflow: hidden;
+    transition: 
+      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: var(--m-font-main, monospace);
+    border: 1px solid var(--m-term-border);
+    backdrop-filter: blur(var(--m-term-backdrop-blur));
+    z-index: 10;
+  }
+  
+  .m-term-advanced:hover, 
+  .m-term-advanced:focus-within {
+    box-shadow: var(--m-term-shadow-hover);
+    transform: translateY(-2px);
+  }
+  
+  /* Optional glass effect class */
+  .m-term-glass {
+    background-color: var(--m-term-bg-translucent);
+    backdrop-filter: blur(var(--m-term-backdrop-blur)) saturate(180%);
+  }
+  
+  /* Terminal fullscreen overlay */
+  .m-term-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  
+  .m-term-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* ========== Terminal Header & Controls ========== */
+  .m-term-header {
+    height: var(--m-term-header-height);
+    background-color: var(--m-term-secondary);
+    border-bottom: 1px solid var(--m-term-border);
+    border-top-left-radius: var(--m-term-border-radius);
+    border-top-right-radius: var(--m-term-border-radius);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    user-select: none;
+    -webkit-app-region: drag;
+    z-index: 15;
+    position: relative;
+  }
+  
+  .m-term-dots {
+    display: flex;
+    gap: 8px;
+    margin-right: 12px;
+  }
+  
+  .m-term-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    position: relative;
+    animation: m-term-dot-pulse 2s infinite;
+  }
+  
+  .m-term-dot::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .m-term-dot:hover::after {
+    box-shadow: 0 0 12px var(--m-term-primary-glow);
+  }
+  
+  .m-term-dot-red {
+    background-color: #FF5F56;
+    animation-delay: 0s;
+  }
+  
+  .m-term-dot-yellow {
+    background-color: #FFBD2E;
+    animation-delay: 0.3s;
+  }
+  
+  .m-term-dot-green {
+    background-color: #27C93F;
+    animation-delay: 0.6s;
+  }
+  
+  .m-term-title {
+    color: var(--m-term-text);
+    font-family: var(--m-font-alt, monospace);
+    font-size: 14px;
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .m-term-controls {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    -webkit-app-region: no-drag;
+  }
+  
+  .m-term-control-btn {
+    background: none;
+    border: none;
+    color: var(--m-term-text);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+  }
+  
+  .m-term-control-btn:hover {
+    background-color: rgba(0, 255, 0, 0.2);
+  }
+  
+  /* ========== Terminal Body & Content ========== */
+  .m-term-body {
+    height: calc(100% - var(--m-term-header-height));
+    overflow-y: auto;
+    padding: 0.75rem 1rem;
+    position: relative;
+    font-family: var(--m-font-main, monospace);
+    font-size: 14px;
+    line-height: 1.6;
+    z-index: 11;
+  }
+  
+  .m-term-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      repeating-linear-gradient(
+        transparent 0px,
+        rgba(0, 255, 0, 0.03) 1px,
+        transparent 2px
+      );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.4;
+  }
+  
+  /* Custom scrollbar styles */
+  .m-term-body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .m-term-body::-webkit-scrollbar-track {
+    background-color: var(--m-term-secondary);
+  }
+  
+  .m-term-body::-webkit-scrollbar-thumb {
+    background-color: var(--m-term-primary-dim);
+    border-radius: 4px;
+  }
+  
+  .m-term-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--m-term-primary);
+  }
+  
+  /* Terminal output line styling */
+  .m-term-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 0.2rem;
+    position: relative;
+    padding-left: 20px;
+    min-height: 20px;
+  }
+  
+  .m-term-line::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--m-term-primary);
+    font-weight: bold;
+  }
+  
+  /* Message types */
+  .m-term-line[data-type="system"] {
+    color: var(--m-info);
+    font-style: italic;
+  }
+  
+  .m-term-line[data-type="error"] {
+    color: var(--m-danger);
+    font-weight: bold;
+  }
+  
+  .m-term-line[data-type="success"] {
+    color: var(--m-success);
+  }
+  
+  .m-term-line[data-type="warning"] {
+    color: var(--m-warning);
+  }
+  
+  .m-term-line[data-type="command"] {
+    color: var(--m-term-primary-bright);
+    font-weight: bold;
+  }
+  
+  /* Terminal output container */
+  .m-term-output {
+    margin-bottom: 1rem;
+  }
+  
+  /* Code block styling */
+  .m-term-code-block {
+    background-color: rgba(0, 20, 0, 0.3);
+    border-left: 3px solid var(--m-term-primary-dim);
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 13px;
+  }
+  
+  [data-theme="light"] .m-term-code-block {
+    background-color: rgba(0, 50, 0, 0.08);
+  }
+  
+  /* Line numbers */
+  .m-term-line-numbers {
+    display: inline-block;
+    user-select: none;
+    margin-right: 1rem;
+    color: var(--m-term-primary-dim);
+    text-align: right;
+    min-width: 2rem;
+  }
+  
+  /* ========== Terminal Input & Cursor ========== */
+  .m-term-input-area {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    position: relative;
+  }
+  
+  .m-term-prompt {
+    color: var(--m-term-primary-bright);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    user-select: none;
+  }
+  
+  .m-term-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--m-term-text);
+    font-family: var(--m-font-main, monospace);
+    font-size: 14px;
+    padding: 4px 0;
+    caret-color: transparent; /* Hide default caret */
+    outline: none;
+  }
+  
+  .m-term-input:focus {
+    outline: none;
+  }
+  
+  /* Custom cursor */
+  .m-term-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background-color: var(--m-term-primary);
+    animation: m-term-cursor-blink 1s step-end infinite;
+    margin-left: 2px;
+    vertical-align: middle;
+    position: absolute;
+  }
+  
+  /* Password input masking */
+  .m-term-input[type="password"] {
+    font-family: var(--m-font-main, monospace);
+    letter-spacing: 0.2em;
+  }
+  
+  /* Selection styling */
+  .m-term-advanced ::selection {
+    background-color: rgba(0, 255, 0, 0.25);
+    color: var(--m-term-text);
+  }
+  
+  [data-theme="light"] .m-term-advanced ::selection {
+    background-color: rgba(0, 100, 0, 0.15);
+  }
+  
+  /* ========== Matrix Background Effects ========== */
+  /* Matrix digital rain container */
+  .m-term-rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 5;
+    pointer-events: none;
+    opacity: var(--m-term-rain-bg-opacity);
+  }
+  
+  /* Individual Matrix rain column */
+  .m-term-rain-column {
+    position: absolute;
+    top: -100%;
+    width: calc(100% / var(--m-term-rain-columns));
+    color: var(--m-term-primary);
+    font-family: monospace;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    animation: m-term-fall linear infinite;
+    animation-duration: calc(var(--m-term-rain-speed-min) + var(--m-term-rain-speed-max) * var(--column-index) / var(--m-term-rain-columns));
+    opacity: var(--m-term-rain-opacity);
+    text-shadow: 0 0 5px var(--m-term-primary-glow);
+  }
+  
+  /* Generate individual column animations */
+  .m-term-rain-column:nth-child(1) { left: calc(0 * 100% / var(--m-term-rain-columns)); --column-index: 1; }
+  .m-term-rain-column:nth-child(2) { left: calc(1 * 100% / var(--m-term-rain-columns)); --column-index: 2; animation-delay: 0.3s; }
+  .m-term-rain-column:nth-child(3) { left: calc(2 * 100% / var(--m-term-rain-columns)); --column-index: 3; animation-delay: 1.1s; }
+  .m-term-rain-column:nth-child(4) { left: calc(3 * 100% / var(--m-term-rain-columns)); --column-index: 4; animation-delay: 0.5s; }
+  .m-term-rain-column:nth-child(5) { left: calc(4 * 100% / var(--m-term-rain-columns)); --column-index: 5; animation-delay: 1.7s; }
+  .m-term-rain-column:nth-child(6) { left: calc(5 * 100% / var(--m-term-rain-columns)); --column-index: 6; animation-delay: 0.2s; }
+  .m-term-rain-column:nth-child(7) { left: calc(6 * 100% / var(--m-term-rain-columns)); --column-index: 7; animation-delay: 0.9s; }
+  .m-term-rain-column:nth-child(8) { left: calc(7 * 100% / var(--m-term-rain-columns)); --column-index: 8; animation-delay: 1.5s; }
+  .m-term-rain-column:nth-child(9) { left: calc(8 * 100% / var(--m-term-rain-columns)); --column-index: 9; animation-delay: 0.7s; }
+  .m-term-rain-column:nth-child(10) { left: calc(9 * 100% / var(--m-term-rain-columns)); --column-index: 10; animation-delay: 1.3s; }
+  .m-term-rain-column:nth-child(11) { left: calc(10 * 100% / var(--m-term-rain-columns)); --column-index: 11; animation-delay: 0.4s; }
+  .m-term-rain-column:nth-child(12) { left: calc(11 * 100% / var(--m-term-rain-columns)); --column-index: 12; animation-delay: 1.9s; }
+  /* Add more columns as needed */
+  
+  /* Enhanced styling for the highlighted character in Matrix rain */
+  .m-term-rain-highlight {
+    color: white;
+    text-shadow: 0 0 8px white, 0 0 12px var(--m-term-primary);
+    opacity: 1;
+  }
+  
+  /* CRT scan line effect */
+  .m-term-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(0, 255, 0, 0.1);
+    opacity: var(--m-term-glow-intensity);
+    z-index: 12;
+    pointer-events: none;
+    animation: m-term-scanline 8s linear infinite;
+  }
+  
+  /* Terminal Glitch effect container */
+  .m-term-glitch-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 12;
+    overflow: hidden;
+    opacity: 0;
+  }
+  
+  .m-term-glitch-container.active {
+    animation: m-term-glitch 0.5s linear;
+  }
+  
+  /* ========== Terminal Animations ========== */
+  /* Terminal element appearance animation */
+  @keyframes m-term-appear {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* Cursor blinking animation */
+  @keyframes m-term-cursor-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  
+  /* Terminal dot pulse animation */
+  @keyframes m-term-dot-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  
+  /* Matrix falling text animation */
+  @keyframes m-term-fall {
+    0% { top: -100%; }
+    100% { top: 100%; }
+  }
+  
+  /* Scan line animation */
+  @keyframes m-term-scanline {
+    0% { top: 0%; }
+    100% { top: 100%; }
+  }
+  
+  /* Terminal typing animation */
+  @keyframes m-term-typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  
+  /* Terminal screen flicker animation */
+  @keyframes m-term-flicker {
+    0% { opacity: 0.95; }
+    5% { opacity: 0.85; }
+    10% { opacity: 0.95; }
+    15% { opacity: 0.9; }
+    20% { opacity: 0.95; }
+    55% { opacity: 0.95; }
+    60% { opacity: 0.9; }
+    65% { opacity: 0.95; }
+    100% { opacity: 0.95; }
+  }
+  
+  /* Terminal loading animation */
+  @keyframes m-term-load {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+  
+  /* Terminal glitch effect animation */
+  @keyframes m-term-glitch {
+    0% { opacity: 0; }
+    10% { opacity: 0.2; }
+    12% { opacity: 0.1; }
+    13% { opacity: 0.2; }
+    14% { opacity: 0; }
+    20% { opacity: 0; }
+    21% { opacity: 0.2; }
+    22% { opacity: 0.1; }
+    23% { opacity: 0; }
+    30% { opacity: 0; }
+    35% { opacity: 0.3; }
+    40% { opacity: 0; }
+    45% { opacity: 0; }
+    46% { opacity: 0.4; }
+    50% { opacity: 0.2; }
+    55% { opacity: 0; }
+    70% { opacity: 0; }
+    71% { opacity: 0.3; }
+    75% { opacity: 0.1; }
+    80% { opacity: 0; }
+    90% { opacity: 0; }
+    91% { opacity: 0.2; }
+    95% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  
+  /* Gradient loading animation */
+  @keyframes m-term-gradient-shift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  
+  /* ========== Terminal Typography & Text Effects ========== */
+  /* Text color variations */
+  .m-term-text-primary { color: var(--m-term-primary); }
+  .m-term-text-dim { color: var(--m-term-primary-dim); }
+  .m-term-text-bright { color: var(--m-term-primary-bright); }
+  .m-term-text-success { color: var(--m-success); }
+  .m-term-text-warning { color: var(--m-warning); }
+  .m-term-text-error { color: var(--m-danger); }
+  .m-term-text-info { color: var(--m-info); }
+  
+  /* Text effects */
+  .m-term-typing {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: m-term-typing 2s steps(40, end);
+  }
+  
+  .m-term-text-glow {
+    text-shadow: 0 0 8px var(--m-term-primary-glow);
+  }
+  
+  .m-term-text-flicker {
+    animation: m-term-text-flicker 2s linear infinite;
+  }
+  
+  @keyframes m-term-text-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  /* Code output syntax highlighting */
+  .m-term-code-string { color: #ff8b39; }
+  .m-term-code-number { color: #c792ea; }
+  .m-term-code-boolean { color: #ff5874; }
+  .m-term-code-keyword { color: #50fa7b; font-weight: bold; }
+  .m-term-code-function { color: #82aaff; }
+  .m-term-code-comment { color: #676e95; font-style: italic; }
+  
+  /* ========== Terminal Variants ========== */
+  /* Classic Terminal */
+  .m-term-classic {
+    --m-term-bg: #0a0a0a;
+    --m-term-primary: #33ff33;
+    --m-term-primary-dim: #1f9f1f;
+    --m-term-secondary: #060606;
+    --m-term-border: #1f1f1f;
+  }
+  
+  /* Cyberspace Terminal */
+  .m-term-cyber {
+    --m-term-bg: #0c1021;
+    --m-term-primary: #00ffff;
+    --m-term-primary-dim: #008b8b;
+    --m-term-primary-bright: #7fffff;
+    --m-term-primary-glow: rgba(0, 255, 255, 0.6);
+    --m-term-secondary: #080f1f;
+    --m-term-text: #e0e0ff;
+    --m-term-border: #1a3a5a;
+  }
+  
+  /* Amber Terminal */
+  .m-term-amber {
+    --m-term-bg: #0a0a00;
+    --m-term-primary: #ffb000;
+    --m-term-primary-dim: #bb8000;
+    --m-term-primary-bright: #ffd700;
+    --m-term-primary-glow: rgba(255, 176, 0, 0.6);
+    --m-term-secondary: #0a0800;
+    --m-term-text: #ffffdd;
+    --m-term-border: #5a4a00;
+  }
+  
+  /* Shadow Terminal (dark low-contrast) */
+  .m-term-shadow {
+    --m-term-bg: #101010;
+    --m-term-primary: #555555;
+    --m-term-primary-dim: #333333;
+    --m-term-primary-bright: #777777;
+    --m-term-primary-glow: rgba(100, 100, 100, 0.6);
+    --m-term-secondary: #0c0c0c;
+    --m-term-text: #aaaaaa;
+    --m-term-border: #222222;
+  }
+  
+  /* ========== Terminal Prompt Variants ========== */
+  .m-term-prompt-unix::before {
+    content: "user@matrix:~$ ";
+    color: var(--m-term-primary-bright);
+    margin-right: 0.5rem;
+  }
+  
+  .m-term-prompt-windows::before {
+    content: "C:\\MATRIX> ";
+    color: var(--m-term-primary-bright);
+    margin-right: 0.5rem;
+  }
+  
+  .m-term-prompt-root::before {
+    content: "root@matrix:# ";
+    color: var(--m-danger);
+    margin-right: 0.5rem;
+  }
+  
+  .m-term-prompt-neural::before {
+    content: "neural# ";
+    color: var(--m-info);
+    margin-right: 0.5rem;
+  }
+  
+  /* ========== Terminal Components ========== */
+  /* Progress Bar */
+  .m-term-progress {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 20, 0, 0.3);
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .m-term-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, 
+      var(--m-term-primary) 0%, 
+      var(--m-term-primary-bright) 50%, 
+      var(--m-term-primary) 100%);
+    background-size: 200% 100%;
+    box-shadow: 0 0 10px var(--m-term-primary-glow);
+    animation: m-term-load 1.5s ease-in-out, m-term-gradient-shift 2s infinite linear;
+  }
+  
+  /* Loading spinner */
+  .m-term-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0, 255, 0, 0.1);
+    border-top-color: var(--m-term-primary);
+    border-radius: 50%;
+    animation: m-term-spin 0.8s linear infinite;
+  }
+  
+  @keyframes m-term-spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Command history container */
+  .m-term-history {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* File browser */
+  .m-term-file-browser {
+    display: flex;
+    border: 1px solid var(--m-term-border);
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+  }
+  
+  .m-term-file-sidebar {
+    width: 30%;
+    background-color: rgba(0, 20, 0, 0.2);
+    border-right: 1px solid var(--m-term-border);
+    padding: 0.5rem;
+  }
+  
+  .m-term-file-content {
+    flex: 1;
+    padding: 0.5rem;
+    overflow: auto;
+  }
+  
+  .m-term-file-item {
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .m-term-file-item:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
+  
+  .m-term-file-item.active {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: var(--m-term-primary-bright);
+  }
+  
+  .m-term-file-directory::before {
+    content: "📁 ";
+  }
+  
+  .m-term-file-text::before {
+    content: "📄 ";
+  }
+  
+  /* Split terminal */
+  .m-term-split {
+    display: flex;
+    height: 100%;
+  }
+  
+  .m-term-split-pane {
+    flex: 1;
+    border-right: 1px solid var(--m-term-border);
+    padding: 0.5rem;
+    overflow: auto;
+  }
+  
+  .m-term-split-pane:last-child {
+    border-right: none;
+  }
+  
+  .m-term-split-vertical {
+    flex-direction: column;
+  }
+  
+  .m-term-split-vertical .m-term-split-pane {
+    border-right: none;
+    border-bottom: 1px solid var(--m-term-border);
+  }
+  
+  .m-term-split-vertical .m-term-split-pane:last-child {
+    border-bottom: none;
+  }
+  
+  /* Terminal tabs */
+  .m-term-tabs {
+    display: flex;
+    background-color: var(--m-term-secondary);
+    border-bottom: 1px solid var(--m-term-border);
+  }
+  
+  .m-term-tab {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-right: 1px solid var(--m-term-border);
+    color: var(--m-term-text);
+    transition: background-color 0.2s ease;
+  }
+  
+  .m-term-tab:hover {
+    background-color: rgba(0, 255, 0, 0.05);
+  }
+  
+  .m-term-tab.active {
+    background-color: var(--m-term-bg);
+    color: var(--m-term-primary-bright);
+    border-bottom: 2px solid var(--m-term-primary);
+    margin-bottom: -1px;
+  }
+  
+  /* Terminal notifications */
+  .m-term-notification {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: rgba(0, 20, 0, 0.8);
+    border: 1px solid var(--m-term-border);
+    border-left: 3px solid var(--m-term-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    max-width: 300px;
+    animation: m-term-notification-in 0.3s ease-out forwards, m-term-notification-out 0.3s ease-in forwards 5s;
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  
+  @keyframes m-term-notification-in {
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes m-term-notification-out {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+  
+  .m-term-notification-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: var(--m-term-text);
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* ========== Utility Classes ========== */
+  /* Animation trigger classes */
+  .m-term-animate-appear {
+    animation: m-term-appear 0.5s forwards;
+  }
+  
+  .m-term-animate-typing {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: m-term-typing 2s steps(40, end);
+  }
+  
+  .m-term-animate-flicker {
+    animation: m-term-flicker 5s linear infinite;
+  }
+  
+  /* Status colors */
+  .m-term-status-online {
+    color: var(--m-success);
+  }
+  
+  .m-term-status-offline {
+    color: var(--m-danger);
+  }
+  
+  .m-term-status-warning {
+    color: var(--m-warning);
+  }
+  
+  /* ========== Media Queries ========== */
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .m-term-advanced {
+      width: 100%;
+      height: 80vh;
+      border-radius: calc(var(--m-term-border-radius) / 2);
+    }
+    
+    .m-term-body {
+      padding: 0.5rem;
+      font-size: 13px;
+    }
+    
+    .m-term-title {
+      font-size: 12px;
+    }
+    
+    /* Reduce Matrix rain columns on mobile */
+    :root {
+      --m-term-rain-columns: 12;
+    }
+    
+    .m-term-line {
+      padding-left: 16px;
+    }
+    
+    .m-term-split {
+      flex-direction: column;
+    }
+    
+    .m-term-split-pane {
+      border-right: none;
+      border-bottom: 1px solid var(--m-term-border);
+    }
+    
+    .m-term-split-pane:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  /* Small desktop & tablets */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .m-term-advanced {
+      width: 90%;
+    }
+    
+    /* Adjust Matrix rain columns */
+    :root {
+      --m-term-rain-columns: 18;
+    }
+  }
+  
+  /* Accessibility - Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .m-term-advanced *,
+    .m-term-advanced *::before,
+    .m-term-advanced *::after {
+      animation-duration: 0.001s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001s !important;
+    }
+    
+    .m-term-scan-line,
+    .m-term-rain-container {
+      display: none !important;
+    }
+  }

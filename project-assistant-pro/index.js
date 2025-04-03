@@ -21,8 +21,8 @@ const CONFIG_FILE = path.join(APP_DIR, 'config.json');
 function displayBanner() {
   console.log(chalk.cyan(`
 ╔══════════════════════════════════════════════════════════════╗
-║                 PROJECT ASSISTANT PRO                         ║
-║       Advanced AI-powered Next.js/React Development Tool      ║
+║                 PROJECT ASSISTANT PRO                        ║
+║       Advanced AI-powered Next.js/React Development Tool     ║
 ║                         v3.0.0                               ║
 ╚══════════════════════════════════════════════════════════════╝
   `));

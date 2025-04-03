@@ -30,8 +30,8 @@ const colors = {
 function displayBanner() {
   const title = `
 ╔══════════════════════════════════════════════════════════════╗
-║                 PROJECT ASSISTANT PRO                         ║
-║                  DEPENDENCY INSTALLER                         ║
+║                 PROJECT ASSISTANT PRO                        ║
+║                  DEPENDENCY INSTALLER                        ║
 ║                         v3.0.0                               ║
 ╚══════════════════════════════════════════════════════════════╝
   `;

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Terminal Showcase</title>
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/matrix-terminal-extension.css">
+    <style>
+        body {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .control-panel {
+            background-color: var(--m-panel);
+            border: 1px solid var(--m-border);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--m-radius);
+        }
+        
+        .control-btn {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--m-secondary);
+            color: var(--m-text);
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .control-btn:hover {
+            background-color: var(--m-primary);
+            color: var(--m-dark);
+        }
+        
+        /* Fix for overlapping text */
+        .m-term-line {
+            line-height: 1.6;
+            margin-bottom: 0.4rem !important;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        /* Tab styling */
+        .tab-content {
+            display: none;
+            padding: 0;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Advanced Typography Styles */
+        .m-term-text-retro {
+            font-family: 'Courier New', monospace;
+            color: #ffb000;
+            text-shadow: 0 0 5px rgba(255, 176, 0, 0.7);
+            letter-spacing: 0.1em;
+        }
+        
+        .m-term-text-cyber {
+            font-family: 'Arial', sans-serif;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+        
+        .m-term-text-glitch {
+            position: relative;
+            color: #ffffff;
+            text-shadow: 
+                -1px -1px 0 #0ff, 
+                1px 1px 0 #f00;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-1px, 1px); }
+            40% { transform: translate(-2px, -1px); }
+            60% { transform: translate(1px, -2px); }
+            80% { transform: translate(2px, -1px); }
+        }
+        
+        .m-term-text-gradient {
+            background: linear-gradient(to right, #00ff00, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        .m-term-text-shadow {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #00ff00,
+                0 0 10px #00ff00,
+                0 0 15px #00ff00,
+                0 0 20px #00ff00;
+        }
+        
+        .m-term-text-blink {
+            animation: text-blink 1s infinite;
+        }
+        
+        @keyframes text-blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        .m-term-text-3d {
+            color: #00ff00;
+            text-shadow: 
+                0 1px 0 #00cc00,
+                0 2px 0 #009900,
+                0 3px 0 #006600,
+                0 4px 0 #003300,
+                0 5px 10px rgba(0, 0, 0, 0.9);
+        }
+        
+        .m-term-text-circuit {
+            background: 
+                linear-gradient(90deg, 
+                    transparent 0%, 
+                    transparent 25%, 
+                    #00ff00 25%,
+                    #00ff00 50%,
+                    transparent 50%,
+                    transparent 75%,
+                    #00ff00 75%,
+                    #00ff00 100%);
+            background-size: 8px 1px;
+            background-repeat: repeat-x;
+            background-position: 0 bottom;
+            color: #00ff00;
+            padding-bottom: 3px;
+        }
+        
+        /* Advanced Typing Effects */
+        .m-term-typing-fast {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 0.15em solid var(--m-term-primary);
+            animation: typing 1s steps(30, end), blink-caret 0.5s step-end infinite;
+            display: inline-block;
+        }
+        
+        .m-term-typing-glitch {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 0.15em solid var(--m-term-primary);
+            animation: typing-glitch 3s steps(30, end);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .m-term-typing-glitch::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: transparent;
+            background: black;
+            overflow: hidden;
+            clip-path: inset(0 calc(100% - var(--typing-width, 0%)) 0 0);
+            animation: typing-glitch-effect 3s infinite linear, typing 3s steps(30, end);
+        }
+        
+        @keyframes typing-glitch-effect {
+            0% {
+                color: transparent;
+            }
+            10%, 15% {
+                color: #ff0000;
+                text-shadow: 0 0 5px #ff0000;
+                transform: translateX(-2px);
+            }
+            20%, 25% {
+                color: transparent;
+            }
+            30%, 35% {
+                color: #00ffff;
+                text-shadow: 0 0 5px #00ffff;
+                transform: translateX(2px);
+            }
+            40%, 100% {
+                color: transparent;
+            }
+        }
+        
+        .m-term-typing-matrix {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 0.15em solid var(--m-term-primary);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .m-term-typing-matrix::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            color: var(--m-term-primary);
+            background-color: var(--m-term-bg);
+            overflow: hidden;
+            animation: typing-matrix 3s steps(30, end);
+        }
+        
+        @keyframes typing-matrix {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0;
+            }
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--m-term-primary) }
+        }
+        
+        /* Super Hacker Effects */
+        .m-term-hacker-code {
+            position: relative;
+            font-family: monospace;
+            overflow: hidden;
+        }
+        
+        .m-term-hacker-code::before {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 300%;
+            background: linear-gradient(0deg, 
+                transparent 0%, 
+                rgba(0, 255, 0, 0.2) 50%, 
+                transparent 100%);
+            animation: hacker-scan 2s linear infinite;
+        }
+        
+        @keyframes hacker-scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+        
+        .m-term-hacker-decrypt {
+            font-family: monospace;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .m-term-hacker-decrypt::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            animation: hacker-decrypt 3s steps(30) forwards;
+        }
+        
+        @keyframes hacker-decrypt {
+            0% {
+                color: transparent;
+                text-shadow: 0 0 8px var(--m-term-primary);
+            }
+            50% {
+                color: transparent;
+                text-shadow: 0 0 8px var(--m-term-primary);
+            }
+            100% {
+                color: var(--m-term-primary);
+                text-shadow: 0 0 0 transparent;
+            }
+        }
+        
+        .m-term-hacker-binary {
+            position: relative;
+            color: transparent;
+            font-family: monospace;
+        }
+        
+        .m-term-hacker-binary::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: var(--m-term-primary);
+            animation: hacker-binary 3s linear forwards;
+        }
+        
+        @keyframes hacker-binary {
+            0%, 30% {
+                content: attr(data-binary);
+                opacity: 0.7;
+            }
+            60%, 70% {
+                content: attr(data-binary);
+                opacity: 0.3;
+            }
+            75%, 85% {
+                content: attr(data-text);
+                opacity: 0.7;
+            }
+            100% {
+                content: attr(data-text);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="m-rain">
+    <header>
+        <h1 class="m-text-glow">Matrix Terminal Extension Demo</h1>
+        <p class="m-lead">A showcase of advanced terminal components with Matrix styling</p>
+    </header>
+    
+    <div class="section">
+        <h2>Terminal Variants</h2>
+        <p>Four different terminal themes with distinctive colors and styling.</p>
+        
+        <div class="demo-grid">
+            <!-- Classic Green Terminal -->
+            <div>
+                <h3>Classic Terminal</h3>
+                <div class="m-term-advanced m-term-classic" style="height: 250px;">
+                    <div class="m-term-header">
+                        <div class="m-term-dots">
+                            <div class="m-term-dot m-term-dot-red"></div>
+                            <div class="m-term-dot m-term-dot-yellow"></div>
+                            <div class="m-term-dot m-term-dot-green"></div>
+                        </div>
+                        <div class="m-term-title">CLASSIC-MATRIX</div>
+                    </div>
+                    <div class="m-term-body">
+                        <div class="m-term-line">Matrix Framework initialized.</div>
+                        <div class="m-term-line">System check: All systems green.</div>
+                        <div class="m-term-line m-term-text-bright">Ready for input.</div>
+                        <div class="m-term-line" data-type="command">access secure_database</div>
+                        <div class="m-term-line" data-type="error">Access denied. Authorization required.</div>
+                        <div class="m-term-line" data-type="command">override security --auth "neo"</div>
+                        <div class="m-term-line" data-type="success">Security override accepted.</div>
+                        <div class="m-term-line">Entering The Matrix...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cyber Terminal -->
+            <div>
+                <h3>Cyber Terminal</h3>
+                <div class="m-term-advanced m-term-cyber" style="height: 250px;">
+                    <div class="m-term-header">
+                        <div class="m-term-dots">
+                            <div class="m-term-dot m-term-dot-red"></div>
+                            <div class="m-term-dot m-term-dot-yellow"></div>
+                            <div class="m-term-dot m-term-dot-green"></div>
+                        </div>
+                        <div class="m-term-title">CYBERSPACE-TERMINAL</div>
+                    </div>
+                    <div class="m-term-body">
+                        <div class="m-term-line">Initializing cyberspace connection...</div>
+                        <div class="m-term-line">Neural link established.</div>
+                        <div class="m-term-line m-term-text-bright">Welcome to the Cyberspace Network.</div>
+                        <div class="m-term-line" data-type="command">ping central_hub</div>
+                        <div class="m-term-line" data-type="success">Central Hub responding. Latency: 12ms</div>
+                        <div class="m-term-line" data-type="command">download neural_implant.cfg</div>
+                        <div class="m-term-progress">
+                            <div class="m-term-progress-bar" style="width: 75%"></div>
+                        </div>
+                        <div class="m-term-line">Connection stable. Downloading...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Amber Terminal -->
+            <div>
+                <h3>Amber Terminal</h3>
+                <div class="m-term-advanced m-term-amber" style="height: 250px;">
+                    <div class="m-term-header">
+                        <div class="m-term-dots">
+                            <div class="m-term-dot m-term-dot-red"></div>
+                            <div class="m-term-dot m-term-dot-yellow"></div>
+                            <div class="m-term-dot m-term-dot-green"></div>
+                        </div>
+                        <div class="m-term-title">RETRO-CONSOLE</div>
+                    </div>
+                    <div class="m-term-body">
+                        <div class="m-term-line">RETRO-OS booting...</div>
+                        <div class="m-term-line">BIOS v2.4 initialized</div>
+                        <div class="m-term-line m-term-text-bright">System ready.</div>
+                        <div class="m-term-line" data-type="command">DIR /A</div>
+                        <div class="m-term-line">SYSTEM.DAT    &lt;DIR&gt;    06-12-1992</div>
+                        <div class="m-term-line">PROGRAMS.DAT  &lt;DIR&gt;    11-05-1992</div>
+                        <div class="m-term-line">README.TXT    12KB      02-28-1992</div>
+                        <div class="m-term-line">GAME.EXE      156KB     04-15-1992</div>
+                        <div class="m-term-line m-term-text-dim">4 file(s) found. 640K memory free.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shadow Terminal -->
+            <div>
+                <h3>Shadow Terminal</h3>
+                <div class="m-term-advanced m-term-shadow" style="height: 250px;">
+                    <div class="m-term-header">
+                        <div class="m-term-dots">
+                            <div class="m-term-dot m-term-dot-red"></div>
+                            <div class="m-term-dot m-term-dot-yellow"></div>
+                            <div class="m-term-dot m-term-dot-green"></div>
+                        </div>
+                        <div class="m-term-title">SHADOW-NET</div>
+                    </div>
+                    <div class="m-term-body">
+                        <div class="m-term-line">Establishing secure connection...</div>
+                        <div class="m-term-line">Encryption enabled. Trace protection active.</div>
+                        <div class="m-term-line m-term-text-bright">Shadow-Net terminal active.</div>
+                        <div class="m-term-line" data-type="command">status</div>
+                        <div class="m-term-line">Network: SECURE</div>
+                        <div class="m-term-line">Proxy chain: ACTIVE (7 nodes)</div>
+                        <div class="m-term-line">Intrusion detection: NO ALERTS</div>
+                        <div class="m-term-line">Location masking: ENABLED</div>
+                        <div class="m-term-line m-term-text-dim">You are invisible.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Interactive Terminal</h2>
+        <p>A terminal with digital rain effect, input area, and command history.</p>
+        
+        <div class="control-panel">
+            <button class="control-btn" id="rain-toggle">Toggle Rain Effect</button>
+            <button class="control-btn" id="scanline-toggle">Toggle Scan Line</button>
+            <button class="control-btn" id="add-notification">Show Notification</button>
+        </div>
+        
+        <div class="m-term-advanced" style="height: 400px;" id="interactive-terminal">
+            <div class="m-term-header">
+                <div class="m-term-dots">
+                    <div class="m-term-dot m-term-dot-red"></div>
+                    <div class="m-term-dot m-term-dot-yellow"></div>
+                    <div class="m-term-dot m-term-dot-green"></div>
+                </div>
+                <div class="m-term-title">MATRIX-CONSOLE</div>
+                <div class="m-term-controls">
+                    <button class="m-term-control-btn">□</button>
+                    <button class="m-term-control-btn">⚙</button>
+                </div>
+            </div>
+            <div class="m-term-body">
+                <div class="m-term-rain-container" id="rain-container">
+                    <div class="m-term-rain-column">1001010101<span class="m-term-rain-highlight">0</span>10101</div>
+                    <div class="m-term-rain-column">0101<span class="m-term-rain-highlight">1</span>0101010101</div>
+                    <div class="m-term-rain-column">1010<span class="m-term-rain-highlight">0</span>1010101010</div>
+                    <div class="m-term-rain-column">0101<span class="m-term-rain-highlight">1</span>01010101</div>
+                    <div class="m-term-rain-column">10101<span class="m-term-rain-highlight">0</span>10101010</div>
+                    <div class="m-term-rain-column">0101<span class="m-term-rain-highlight">1</span>01010101</div>
+                    <div class="m-term-rain-column">1010<span class="m-term-rain-highlight">0</span>1010101</div>
+                    <div class="m-term-rain-column">0101<span class="m-term-rain-highlight">1</span>01010</div>
+                </div>
+                <div class="m-term-scan-line" id="scan-line"></div>
+                
+                <div class="m-term-history" id="terminal-history">
+                    <div class="m-term-line">Terminal initialized successfully.</div>
+                    <div class="m-term-line">Type 'help' for available commands.</div>
+                </div>
+                
+                <div class="m-term-input-area">
+                    <div class="m-term-prompt">></div>
+                    <input type="text" class="m-term-input" id="terminal-input" placeholder="Enter command...">
+                    <div class="m-term-cursor"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Terminal with Tabs and Split View</h2>
+        <p>Multiple terminal tabs and split terminal views.</p>
+        
+        <div class="m-term-advanced" style="height: 350px;">
+            <div class="m-term-header">
+                <div class="m-term-dots">
+                    <div class="m-term-dot m-term-dot-red"></div>
+                    <div class="m-term-dot m-term-dot-yellow"></div>
+                    <div class="m-term-dot m-term-dot-green"></div>
+                </div>
+                <div class="m-term-title">MULTI-TERMINAL</div>
+            </div>
+            
+            <div class="m-term-tabs">
+                <div class="m-term-tab active" data-tab="main">Main Terminal</div>
+                <div class="m-term-tab" data-tab="logs">Logs</div>
+                <div class="m-term-tab" data-tab="network">Network</div>
+                <div class="m-term-tab" data-tab="scripts">Scripts</div>
+            </div>
+            
+            <div class="m-term-body" style="padding: 0;">
+                <!-- Main Terminal Tab -->
+                <div id="tab-main" class="tab-content active">
+                    <div class="m-term-split">
+                        <div class="m-term-split-pane" style="flex: 2; padding: 0.75rem 1rem;">
+                            <div class="m-term-line m-term-prompt-unix">cd /opt/matrix/core</div>
+                            <div class="m-term-line">Changed directory to /opt/matrix/core</div>
+                            <div class="m-term-line m-term-prompt-unix">ls -la</div>
+                            <div class="m-term-line">total 428</div>
+                            <div class="m-term-line">drwxr-xr-x  8 neo matrix 4096 Apr 3 10:24 .</div>
+                            <div class="m-term-line">drwxr-xr-x 12 neo matrix 4096 Apr 3 09:18 ..</div>
+                            <div class="m-term-line">-rw-r--r--  1 neo matrix 2851 Apr 3 10:24 config.json</div>
+                            <div class="m-term-line">-rw-r--r--  1 neo matrix 1204 Apr 3 10:24 .env</div>
+                            <div class="m-term-line">drwxr-xr-x  3 neo matrix 4096 Apr 3 09:18 libs</div>
+                            <div class="m-term-line">-rwxr-xr-x  1 neo matrix 5432 Apr 3 10:24 matrix.js</div>
+                            <div class="m-term-line m-term-prompt-unix">cat config.json</div>
+                            <div class="m-term-code-block">
+                                <span class="m-term-code-string">{
+  "version": "3.7.2",
+  "environment": "production",
+  "debug": false,
+  "connections": {
+    "maximum": 100,
+    "timeout": 30000
+  },
+  "security": {
+    "encryption": "AES-256",
+    "allowRemoteAccess": false
+  }
+}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="m-term-split-pane" style="padding: 0.75rem 1rem;">
+                            <div class="m-term-line" data-type="system">System Monitoring</div>
+                            <div class="m-term-line">CPU: 24%</div>
+                            <div class="m-term-line">Memory: 1.2GB / 8GB</div>
+                            <div class="m-term-line">Network: 5.4 Mbps ↓ / 1.2 Mbps ↑</div>
+                            <div class="m-term-line">Processes: 48</div>
+                            <div class="m-term-line">Uptime: 4d 12h 35m</div>
+                            
+                            <div class="m-term-line m-term-text-bright">Active Connections</div>
+                            <div class="m-term-line">192.168.1.24 - <span class="m-term-status-online">ACTIVE</span></div>
+                            <div class="m-term-line">10.0.45.76 - <span class="m-term-status-warning">IDLE</span></div>
+                            <div class="m-term-line">172.16.10.3 - <span class="m-term-status-offline">TERMINATED</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Logs Tab -->
+                <div id="tab-logs" class="tab-content">
+                    <div style="padding: 0.75rem 1rem; height: 100%; overflow: auto;">
+                        <div class="m-term-line" data-type="system">System Logs - Last 24 hours</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 00:12:15] System startup completed</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 00:13:22] Network interfaces initialized</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 02:45:19] Scheduled backup completed</div>
+                        <div class="m-term-line m-term-text-warning">[2025-04-03 03:12:45] Warning: High CPU usage detected</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 03:14:10] CPU usage normalized</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 06:00:01] Daily maintenance started</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 06:15:33] Daily maintenance completed</div>
+                        <div class="m-term-line m-term-text-error">[2025-04-03 08:23:17] Error: Failed to connect to external API</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 08:25:42] Retry: Connection to external API successful</div>
+                        <div class="m-term-line m-term-text-warning">[2025-04-03 09:30:55] Warning: Low disk space on /var partition</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 09:45:12] Cleanup: Freed 1.2GB on /var partition</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 10:15:40] User 'neo' logged in</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 10:18:22] Configuration updated</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 10:20:15] Services restarted</div>
+                        <div class="m-term-line m-term-text-warning">[2025-04-03 11:05:33] Warning: Unusual network activity detected</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 11:10:45] Security scan initiated</div>
+                        <div class="m-term-line m-term-text-dim">[2025-04-03 11:25:18] Security scan completed - No threats found</div>
+                    </div>
+                </div>
+                
+                <!-- Network Tab -->
+                <div id="tab-network" class="tab-content">
+                    <div style="padding: 0.75rem 1rem; height: 100%; overflow: auto;">
+                        <div class="m-term-line" data-type="system">Network Status Dashboard</div>
+                        
+                        <div class="m-term-line m-term-text-bright" style="margin-top: 0.5rem;">Interface Status</div>
+                        <div class="m-term-line">eth0: <span class="m-term-text-success">UP</span> - 1000Mbps Full Duplex</div>
+                        <div class="m-term-line">eth1: <span class="m-term-text-dim">DOWN</span> - Disabled</div>
+                        <div class="m-term-line">wlan0: <span class="m-term-text-success">UP</span> - 866Mbps</div>
+                        
+                        <div class="m-term-line m-term-text-bright" style="margin-top: 0.5rem;">Traffic Statistics</div>
+                        <div class="m-term-line">Total TX: 2.5 GB (24 hours)</div>
+                        <div class="m-term-line">Total RX: 8.3 GB (24 hours)</div>
+                        <div class="m-term-line">Current Bandwidth: 5.4 Mbps ↓ / 1.2 Mbps ↑</div>
+                        
+                        <div class="m-term-line m-term-text-bright" style="margin-top: 0.5rem;">Connection Pool</div>
+                        <div class="m-term-line">Active Connections: 24/100</div>
+                        <div class="m-term-line">Connection Types: TCP (20), UDP (4)</div>
+                        <div class="m-term-line">Average Latency: 12ms</div>
+                        <div class="m-term-line">Error Rate: 0.02%</div>
+                        
+                        <div class="m-term-line m-term-text-bright" style="margin-top: 0.5rem;">Firewall Status</div>
+                        <div class="m-term-line">Firewall: <span class="m-term-text-success">ACTIVE</span></div>
+                        <div class="m-term-line">Blocked Connections (24h): 1,245</div>
+                        <div class="m-term-line">Top Blocked Source: 45.12.63.178 (142 attempts)</div>
+                    </div>
+                </div>
+                
+                <!-- Scripts Tab -->
+                <div id="tab-scripts" class="tab-content">
+                    <div style="padding: 0.75rem 1rem; height: 100%; overflow: auto;">
+                        <div class="m-term-line" data-type="system">Script Management</div>
+                        
+                        <div class="m-term-code-block" style="margin-top: 0.5rem;">
+#!/bin/bash
+# Matrix System Maintenance Script
+# Runs daily cleanup and optimization routines
+
+echo "Starting system maintenance..."
+
+# Check disk space
+echo "Checking disk space..."
+df -h
+
+# Clean temporary files
+echo "Cleaning temporary files..."
+find /tmp -type f -atime +7 -delete
+
+# Update package lists
+echo "Updating package lists..."
+apt-get update -qq
+
+# Check for security updates
+echo "Checking for security updates..."
+apt-get -s dist-upgrade | grep "^Inst" | grep -i securi
+
+echo "Maintenance completed."
+exit 0
+                        </div>
+                        
+                        <div class="m-term-line" style="margin-top: 0.5rem;">
+                            <span class="m-term-prompt">></span> Available Scripts:
+                        </div>
+                        <div class="m-term-line">1. <span class="m-term-text-bright">maintenance.sh</span> - Daily system maintenance</div>
+                        <div class="m-term-line">2. <span class="m-term-text-bright">backup.sh</span> - System backup</div>
+                        <div class="m-term-line">3. <span class="m-term-text-bright">security_scan.sh</span> - Security vulnerability scan</div>
+                        <div class="m-term-line">4. <span class="m-term-text-bright">performance_test.sh</span> - System benchmark</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>File Browser Terminal</h2>
+        <p>Terminal with integrated file system browser.</p>
+        
+        <div class="m-term-advanced" style="height: 350px;">
+            <div class="m-term-header">
+                <div class="m-term-dots">
+                    <div class="m-term-dot m-term-dot-red"></div>
+                    <div class="m-term-dot m-term-dot-yellow"></div>
+                    <div class="m-term-dot m-term-dot-green"></div>
+                </div>
+                <div class="m-term-title">FILE-SYSTEM</div>
+            </div>
+            <div class="m-term-body" style="padding: 0;">
+                <div class="m-term-file-browser">
+                    <div class="m-term-file-sidebar">
+                        <div class="m-term-file-item m-term-file-directory active">project</div>
+                        <div class="m-term-file-item m-term-file-directory">src</div>
+                        <div class="m-term-file-item m-term-file-directory">dist</div>
+                        <div class="m-term-file-item m-term-file-directory">configs</div>
+                        <div class="m-term-file-item m-term-file-directory">logs</div>
+                        <div class="m-term-file-item m-term-file-directory">backups</div>
+                        <div class="m-term-file-item m-term-file-text">readme.md</div>
+                        <div class="m-term-file-item m-term-file-text">package.json</div>
+                    </div>
+                    <div class="m-term-file-content">
+                        <div class="m-term-line" data-type="system">/project</div>
+                        <div class="m-term-line m-term-text-bright">Directory contents:</div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; margin-top: 0.5rem;">
+                            <div class="m-term-file-item m-term-file-directory">components</div>
+                            <div class="m-term-file-item m-term-file-directory">layouts</div>
+                            <div class="m-term-file-item m-term-file-directory">styles</div>
+                            <div class="m-term-file-item m-term-file-directory">utils</div>
+                            <div class="m-term-file-item m-term-file-text">index.js</div>
+                            <div class="m-term-file-item m-term-file-text">app.js</div>
+                            <div class="m-term-file-item m-term-file-text">config.js</div>
+                            <div class="m-term-file-item m-term-file-text">routes.js</div>
+                            <div class="m-term-file-item m-term-file-text">server.js</div>
+                            <div class="m-term-file-item m-term-file-text">database.js</div>
+                        </div>
+                        
+                        <div class="m-term-line m-term-text-dim" style="margin-top: 1rem;">10 items (4 directories, 6 files)</div>
+                        
+                        <div class="m-term-line" style="margin-top: 1rem;">
+                            <span class="m-term-prompt">></span> Selected directory: <span class="m-term-text-bright">/project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Terminal Typography & Effects</h2>
+        <p>Various text styling options and effects for terminal output.</p>
+        
+        <div class="m-term-advanced" style="height: 500px;">
+            <div class="m-term-header">
+                <div class="m-term-dots">
+                    <div class="m-term-dot m-term-dot-red"></div>
+                    <div class="m-term-dot m-term-dot-yellow"></div>
+                    <div class="m-term-dot m-term-dot-green"></div>
+                </div>
+                <div class="m-term-title">TEXT-EFFECTS</div>
+            </div>
+            <div class="m-term-body">
+                <div class="m-term-line m-term-text-bright">Advanced Text Styling</div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-text-retro">Retro Amber Terminal Text</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-cyber">Cyberpunk Neon Blue Text</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-glitch">Glitchy Distorted Text</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-gradient">Colorful Gradient Text</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-shadow">Neon Glow Text Effect</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-blink">Blinking Alert Text</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-3d">3D Extruded Text</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 0.5rem;">
+                    <span class="m-term-text-circuit">Circuit Board Text</span>
+                </div>
+                
+                <div class="m-term-line m-term-text-bright" style="margin-top: 1.5rem;">Typing Animation Effects</div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-animate-typing">Standard typing animation</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-typing-fast">Fast typing animation</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-typing-glitch" data-text="Glitchy typing with interference">Glitchy typing with interference</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-typing-matrix" data-text="Matrix-style reveal animation">Matrix-style reveal animation</span>
+                </div>
+                
+                <div class="m-term-line m-term-text-bright" style="margin-top: 1.5rem;">Super Hacker Effects</div>
+                
+                <div class="m-term-line m-term-hacker-code" style="margin-top: 1rem; padding: 0.5rem; background: rgba(0, 20, 0, 0.3);">
+                    Gaining system access through encrypted channels...
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-hacker-decrypt" data-text="Decrypting secure communication">Decrypting secure communication</span>
+                </div>
+                
+                <div class="m-term-line" style="margin-top: 1rem;">
+                    <span class="m-term-hacker-binary" 
+                          data-text="Binary to text conversion" 
+                          data-binary="01000010 01101001 01101110 01100001 01110010 01111001">Binary to text conversion</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="m-py-4 m-text-center m-text-dim">
+        <p>Matrix Terminal Extension Demo - SPLASSH Framework &copy; 2025</p>
+    </footer>
+
+    <script>
+        // Interactive terminal functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalInput = document.getElementById('terminal-input');
+            const terminalHistory = document.getElementById('terminal-history');
+            const rainContainer = document.getElementById('rain-container');
+            const scanLine = document.getElementById('scan-line');
+            const rainToggle = document.getElementById('rain-toggle');
+            const scanlineToggle = document.getElementById('scanline-toggle');
+            const addNotification = document.getElementById('add-notification');
+            const interactiveTerminal = document.getElementById('interactive-terminal');
+            
+            // Terminal Tabs Functionality
+            const tabs = document.querySelectorAll('.m-term-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Hide all tab content
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show the corresponding tab content
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+            
+            // Enable rain toggle
+            rainToggle.addEventListener('click', () => {
+                rainContainer.style.display = 
+                    rainContainer.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Enable scanline toggle
+            scanlineToggle.addEventListener('click', () => {
+                scanLine.style.display = 
+                    scanLine.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Process terminal input
+            terminalInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const command = terminalInput.value;
+                    
+                    if (!command.trim()) return;
+                    
+                    // Add command to history
+                    const commandLine = document.createElement('div');
+                    commandLine.className = 'm-term-line';
+                    commandLine.setAttribute('data-type', 'command');
+                    commandLine.textContent = command;
+                    terminalHistory.appendChild(commandLine);
+                    
+                    // Process command (simple demo)
+                    let response;
+                    if (command.toLowerCase() === 'help') {
+                        response = 'Available commands: help, clear, echo, status, effect';
+                    } else if (command.toLowerCase() === 'clear') {
+                        terminalHistory.innerHTML = '';
+                        terminalInput.value = '';
+                        return;
+                    } else if (command.toLowerCase().startsWith('echo ')) {
+                        response = command.substring(5);
+                    } else if (command.toLowerCase() === 'status') {
+                        response = 'All systems operational. Running Matrix Terminal Extension Demo.';
+                    } else if (command.toLowerCase() === 'effect') {
+                        const responseLine = document.createElement('div');
+                        responseLine.className = 'm-term-line m-term-hacker-code';
+                        responseLine.textContent = 'Initializing special effect...';
+                        terminalHistory.appendChild(responseLine);
+                        
+                        setTimeout(() => {
+                            const effectLine = document.createElement('div');
+                            effectLine.className = 'm-term-line';
+                            effectLine.innerHTML = '<span class="m-term-hacker-binary" data-text="Effect completed successfully" data-binary="01000101 01100110 01100110 01100101 01100011 01110100">Effect completed successfully</span>';
+                            terminalHistory.appendChild(effectLine);
+                            terminalHistory.scrollTop = terminalHistory.scrollHeight;
+                        }, 1500);
+                        
+                        terminalInput.value = '';
+                        return;
+                    } else {
+                        response = `Unknown command: ${command}. Type 'help' for available commands.`;
+                    }
+                    
+                    // Add response to history
+                    const responseLine = document.createElement('div');
+                    responseLine.className = 'm-term-line';
+                    responseLine.textContent = response;
+                    terminalHistory.appendChild(responseLine);
+                    
+                    // Clear input and scroll to bottom
+                    terminalInput.value = '';
+                    terminalHistory.scrollTop = terminalHistory.scrollHeight;
+                }
+            });
+            
+            // Add notification
+            addNotification.addEventListener('click', () => {
+                // Remove any existing notification
+                const existingNotification = document.querySelector('.m-term-notification');
+                if (existingNotification) {
+                    existingNotification.remove();
+                }
+                
+                // Create notification
+                const notification = document.createElement('div');
+                notification.className = 'm-term-notification';
+                notification.innerHTML = `
+                    <button class="m-term-notification-close">×</button>
+                    <div class="m-term-text-bright">System Alert</div>
+                    <div>New security update available for installation.</div>
+                `;
+                
+                // Add close button functionality
+                notification.querySelector('.m-term-notification-close').addEventListener('click', () => {
+                    notification.remove();
+                });
+                
+                // Add to terminal
+                interactiveTerminal.appendChild(notification);
+                
+                // Auto remove after 5s (in addition to the CSS animation)
+                setTimeout(() => {
+                    if (notification.parentNode === interactiveTerminal) {
+                        interactiveTerminal.removeChild(notification);
+                    }
+                }, 5000);
+            });
+            
+            // Focus the input when clicking on terminal
+            interactiveTerminal.addEventListener('click', () => {
+                terminalInput.focus();
+            });
+            
+            // Initialize file browser interactivity
+            const fileItems = document.querySelectorAll('.m-term-file-item');
+            fileItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove active class from all items
+                    fileItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    item.classList.add('active');
+                });
+            });
+            
+            // Focus the input on load
+            terminalInput.focus();
+        });
+    </script>
+</body>
+</html>
