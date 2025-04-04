@@ -1,1262 +1,1617 @@
-/* Matrix.css AI Extensions - Neural Network and AI Visualizations */
+/* Matrix-AI.css - Advanced AI Component Library for Matrix.css - v1.0 */
 
-/* ========== Neural Network Visualization ========== */
-.m-neural-network {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    overflow: hidden;
-    padding: 1rem;
+/*
+ * A comprehensive extension to Matrix.css focusing on AI visualization, 
+ * interaction, and analysis components while maintaining the signature
+ * Matrix cyberpunk aesthetic.
+ * 
+ * Requires matrix.css as a base dependency.
+ */
+
+/* ========== AI Core Variables ========== */
+:root {
+  /* Extended color palette */
+  --m-ai-primary: #00ff97;
+  --m-ai-secondary: #00cc6a;
+  --m-ai-accent: #8c00ff;
+  --m-ai-accent-dim: #3a0057;
+  --m-ai-caution: #ffd500;
+  --m-ai-caution-dim: #665500;
+  --m-ai-critical: #ff2a6d;
+  --m-ai-critical-dim: #590d28;
+  --m-ai-info: #05d8e8;
+  --m-ai-info-dim: #025d65;
+  
+  /* Gradients */
+  --m-ai-gradient-primary: linear-gradient(135deg, var(--m-text) 0%, var(--m-ai-primary) 100%);
+  --m-ai-gradient-accent: linear-gradient(135deg, var(--m-ai-primary) 0%, var(--m-ai-accent) 100%);
+  --m-ai-gradient-alert: linear-gradient(135deg, var(--m-ai-caution) 0%, var(--m-ai-critical) 100%);
+  
+  /* Animation speeds */
+  --m-ai-time-rapid: 0.15s;
+  --m-ai-time-swift: 0.3s;
+  --m-ai-time-standard: 0.6s;
+  --m-ai-time-deliberate: 1.2s;
+  --m-ai-time-prolonged: 3s;
+  
+  /* Depths and layers */
+  --m-ai-depth-bg: 0;
+  --m-ai-depth-base: 1;
+  --m-ai-depth-raised: 10;
+  --m-ai-depth-overlay: 100;
+  --m-ai-depth-modal: 1000;
+  --m-ai-depth-tooltip: 1500;
+  
+  /* Specialized glows */
+  --m-ai-glow-subtle: 0 0 5px rgba(0, 255, 151, 0.3);
+  --m-ai-glow-standard: 0 0 10px rgba(0, 255, 151, 0.5);
+  --m-ai-glow-intense: 0 0 15px rgba(0, 255, 151, 0.7), 0 0 30px rgba(0, 255, 151, 0.4);
+  --m-ai-glow-accent: 0 0 15px rgba(140, 0, 255, 0.7);
+  --m-ai-glow-caution: 0 0 15px rgba(255, 213, 0, 0.7);
+  --m-ai-glow-critical: 0 0 15px rgba(255, 42, 109, 0.7);
+}
+
+/* ========== Core Utility Classes ========== */
+.m-ai-hidden { display: none !important; }
+.m-ai-invisible { visibility: hidden !important; }
+.m-ai-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.m-ai-fixed { position: fixed !important; }
+.m-ai-absolute { position: absolute !important; }
+.m-ai-relative { position: relative !important; }
+
+/* ========== Data Visualization Components ========== */
+
+/* Multi-dimensional Data Projection */
+.m-ai-projection {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: rgba(0, 10, 0, 0.7);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.m-ai-projection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 255, 151, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.m-ai-projection-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 151, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 151, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transform: rotateX(60deg);
+  animation: m-ai-grid-pulse 10s infinite alternate;
+}
+
+@keyframes m-ai-grid-pulse {
+  0%, 100% { opacity: 0.7; background-size: 40px 40px; }
+  50% { opacity: 0.9; background-size: 45px 45px; }
+}
+
+.m-ai-datapoint {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  box-shadow: var(--m-ai-glow-subtle);
+  transition: all var(--m-ai-time-standard);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.m-ai-datapoint::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 6px;
+  width: 1px;
+  height: 15px;
+  background: linear-gradient(to bottom, currentColor, transparent);
+  transform-origin: top;
+  opacity: 0.5;
+}
+
+.m-ai-datapoint:hover {
+  transform: scale(1.5);
+  box-shadow: var(--m-ai-glow-standard);
+  z-index: 10;
+}
+
+.m-ai-datapoint.cluster-1 { background-color: var(--m-ai-primary); color: var(--m-ai-primary); }
+.m-ai-datapoint.cluster-2 { background-color: var(--m-ai-accent); color: var(--m-ai-accent); }
+.m-ai-datapoint.cluster-3 { background-color: var(--m-ai-info); color: var(--m-ai-info); }
+.m-ai-datapoint.cluster-4 { background-color: var(--m-ai-caution); color: var(--m-ai-caution); }
+.m-ai-datapoint.cluster-5 { background-color: var(--m-ai-critical); color: var(--m-ai-critical); }
+
+.m-ai-datapoint-tooltip {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--m-panel);
+  border: 1px solid var(--m-border);
+  color: var(--m-text);
+  padding: 4px 8px;
+  border-radius: var(--m-radius);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--m-ai-time-swift);
+  z-index: 11;
+}
+
+.m-ai-datapoint:hover .m-ai-datapoint-tooltip {
+  opacity: 1;
+}
+
+/* Neural Network Visualization */
+.m-ai-neural {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: rgba(0, 10, 0, 0.8);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.m-ai-neural::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0, 255, 151, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.m-ai-neural-network {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.m-ai-layer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.m-ai-layer-label {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--m-text-dim);
+  background-color: rgba(0, 10, 0, 0.7);
+  padding: 2px 8px;
+  border-radius: var(--m-radius);
+  white-space: nowrap;
+}
+
+.m-ai-neuron {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--m-secondary);
+  border: 1px solid var(--m-border);
+  transition: all var(--m-ai-time-swift);
+  z-index: 3;
+}
+
+.m-ai-neuron:hover {
+  transform: scale(1.3);
+  background-color: var(--m-ai-primary);
+  box-shadow: var(--m-ai-glow-standard);
+  z-index: 10;
+}
+
+.m-ai-neuron.active {
+  background-color: var(--m-ai-primary);
+  box-shadow: var(--m-ai-glow-standard);
+  animation: m-ai-neuron-pulse 1s infinite;
+}
+
+@keyframes m-ai-neuron-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.m-ai-connection {
+  position: absolute;
+  height: 2px;
+  background-color: var(--m-border);
+  transform-origin: 0 0;
+  z-index: 2;
+  opacity: 0.6;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-connection.active {
+  background-color: var(--m-ai-primary);
+  box-shadow: var(--m-ai-glow-subtle);
+  opacity: 1;
+}
+
+.m-ai-connection:hover {
+  background-color: var(--m-ai-primary);
+  box-shadow: var(--m-ai-glow-subtle);
+  opacity: 1;
+  height: 3px;
+}
+
+.m-ai-connection-weight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  color: var(--m-text-bright);
+  background-color: rgba(0, 10, 0, 0.8);
+  padding: 1px 4px;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity var(--m-ai-time-swift);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.m-ai-connection:hover .m-ai-connection-weight {
+  opacity: 1;
+}
+
+/* Advanced Charts */
+.m-ai-chart {
+  position: relative;
+  height: 200px;
+  background-color: rgba(0, 10, 0, 0.5);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-ai-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.m-ai-chart-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--m-text);
+}
+
+.m-ai-chart-legend {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.m-ai-legend-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.m-ai-legend-marker {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.m-ai-chart-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.m-ai-chart-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 151, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 151, 0.05) 1px, transparent 1px);
+  background-size: calc(100% / 10) calc(100% / 5);
+}
+
+.m-ai-chart-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.m-ai-chart-line.training {
+  stroke: var(--m-ai-primary);
+}
+
+.m-ai-chart-line.validation {
+  stroke: var(--m-ai-accent);
+  stroke-dasharray: 3 3;
+}
+
+.m-ai-chart-line-animate {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: m-ai-line-draw 2s forwards;
+}
+
+@keyframes m-ai-line-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Loading and Progress Indicators */
+.m-ai-progress-bar {
+  height: 8px;
+  background-color: rgba(0, 20, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.m-ai-progress-fill {
+  height: 100%;
+  background-color: var(--m-ai-primary);
+  border-radius: 4px;
+  width: var(--progress, 0%);
+  box-shadow: var(--m-ai-glow-subtle);
+  transition: width var(--m-ai-time-standard);
+}
+
+.m-ai-progress-fill.pulsing {
+  animation: m-ai-progress-pulse 2s infinite;
+}
+
+@keyframes m-ai-progress-pulse {
+  0%, 100% { background-color: var(--m-ai-primary); }
+  50% { background-color: var(--m-ai-secondary); }
+}
+
+/* ========== AI Dashboard Components ========== */
+
+/* AI Model Training Dashboard */
+.m-ai-training-dashboard {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+}
+
+.m-ai-training-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-ai-training-title {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--m-text-bright);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.m-ai-training-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--m-radius);
+  font-size: 0.85rem;
+  color: var(--m-text);
+  background-color: var(--m-secondary);
+}
+
+.m-ai-training-status.active {
+  background-color: var(--m-ai-secondary);
+  animation: m-ai-status-pulse 2s infinite;
+}
+
+.m-ai-training-status.paused {
+  background-color: var(--m-ai-caution-dim);
+  color: var(--m-ai-caution);
+}
+
+.m-ai-training-status.completed {
+  background-color: var(--m-ai-secondary);
+}
+
+.m-ai-training-status.error {
+  background-color: var(--m-ai-critical-dim);
+  color: var(--m-ai-critical);
+}
+
+.m-ai-status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.m-ai-status-indicator.active {
+  animation: m-ai-status-indicator-pulse 1s infinite;
+}
+
+@keyframes m-ai-status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes m-ai-status-indicator-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+.m-ai-metrics-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.m-ai-metric-card {
+  padding: 1rem;
+  background-color: rgba(0, 20, 0, 0.3);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  display: flex;
+  flex-direction: column;
+}
+
+.m-ai-metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.m-ai-metric-title {
+  font-size: 0.85rem;
+  color: var(--m-text-dim);
+}
+
+.m-ai-metric-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.m-ai-trend-up {
+  color: var(--m-ai-primary);
+}
+
+.m-ai-trend-down {
+  color: var(--m-ai-critical);
+}
+
+.m-ai-metric-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--m-text-bright);
+  margin-bottom: 0.25rem;
+}
+
+.m-ai-metric-change {
+  font-size: 0.75rem;
+  color: var(--m-text-dim);
+}
+
+/* LLM Inference Dashboard */
+.m-ai-llm-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  height: 550px;
+}
+
+.m-ai-llm-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-ai-llm-title {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--m-text-bright);
+}
+
+.m-ai-llm-settings {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.m-ai-model-selector {
+  position: relative;
+  padding: 0.3rem 0.75rem;
+  padding-right: 2.5rem;
+  background-color: var(--m-secondary);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  color: var(--m-text);
+  font-size: 0.9rem;
+  appearance: none;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-model-selector:hover {
+  background-color: var(--m-text-dim);
+  color: var(--m-text-bright);
+}
+
+.m-ai-model-selector:focus {
+  outline: none;
+  box-shadow: var(--m-ai-glow-subtle);
+}
+
+.m-ai-temperature-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.m-ai-temperature-slider input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 4px;
+  background: var(--m-border);
+  border-radius: 2px;
+  outline: none;
+}
+
+.m-ai-temperature-slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--m-ai-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-temperature-slider input:hover::-webkit-slider-thumb {
+  box-shadow: var(--m-ai-glow-standard);
+}
+
+.m-ai-temperature-value {
+  min-width: 40px;
+  text-align: center;
+  font-family: monospace;
+}
+
+.m-ai-input-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.m-ai-input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.m-ai-input-title {
+  font-size: 0.9rem;
+  color: var(--m-text);
+  font-weight: bold;
+}
+
+.m-ai-prompt-length {
+  font-size: 0.8rem;
+  color: var(--m-text-dim);
+  font-family: monospace;
+}
+
+.m-ai-prompt-length.warning {
+  color: var(--m-ai-caution);
+}
+
+.m-ai-prompt-length.error {
+  color: var(--m-ai-critical);
+}
+
+.m-ai-prompt-editor {
+  flex: 1;
+  resize: none;
+  padding: 0.75rem;
+  background-color: rgba(0, 20, 0, 0.3);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  color: var(--m-text);
+  font-family: var(--m-font-alt);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-prompt-editor:focus {
+  outline: none;
+  border-color: var(--m-ai-primary);
+  box-shadow: var(--m-ai-glow-subtle);
+}
+
+.m-ai-token-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--m-text-dim);
+}
+
+.m-ai-token-bar {
+  width: 100px;
+  height: 6px;
+  background-color: rgba(0, 20, 0, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.m-ai-token-fill {
+  height: 100%;
+  background-color: var(--m-ai-primary);
+  border-radius: 3px;
+  width: var(--token-percent, 0%);
+  transition: width var(--m-ai-time-swift), background-color var(--m-ai-time-swift);
+}
+
+.m-ai-token-fill.warning {
+  background-color: var(--m-ai-caution);
+}
+
+.m-ai-token-fill.error {
+  background-color: var(--m-ai-critical);
+}
+
+.m-ai-prompt-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.m-ai-prompt-button {
+  padding: 0.4rem 0.75rem;
+  background-color: var(--m-secondary);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  color: var(--m-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.m-ai-prompt-button:hover {
+  background-color: var(--m-text-dim);
+  color: var(--m-text-bright);
+  box-shadow: var(--m-ai-glow-subtle);
+}
+
+.m-ai-generate-button {
+  background-color: var(--m-ai-secondary);
+  color: var(--m-text-bright);
+}
+
+.m-ai-generate-button:hover {
+  background-color: var(--m-ai-primary);
+  color: var(--m-dark);
+  box-shadow: var(--m-ai-glow-standard);
+}
+
+.m-ai-output-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.m-ai-response-container {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  padding: 0.75rem;
+  background-color: rgba(0, 20, 0, 0.3);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  line-height: 1.5;
+}
+
+.m-ai-response {
+  color: var(--m-text);
+  font-family: var(--m-font-main);
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.m-ai-response-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  background-color: var(--m-ai-primary);
+  animation: m-ai-cursor-blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+.m-ai-token-stream {
+  position: relative;
+}
+
+.m-ai-token-highlight {
+  display: inline-block;
+  position: relative;
+  animation: m-ai-token-appear 0.2s forwards;
+  background-color: rgba(0, 255, 151, 0.2);
+  border-radius: 2px;
+}
+
+@keyframes m-ai-token-appear {
+  from { background-color: rgba(0, 255, 151, 0.4); }
+  to { background-color: transparent; }
+}
+
+@keyframes m-ai-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ========== Advanced AI Analysis Components ========== */
+
+/* Decision Tree Visualizer */
+.m-ai-decision-tree {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  background-color: rgba(0, 10, 0, 0.7);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+.m-ai-decision-tree::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 255, 151, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.m-ai-tree-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+.m-ai-tree-node {
+  position: absolute;
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  padding: 0.75rem;
+  min-width: 150px;
+  max-width: 200px;
+  z-index: 2;
+  transition: all var(--m-ai-time-swift);
+  transform-origin: center;
+}
+
+.m-ai-tree-node:hover {
+  transform: scale(1.05);
+  box-shadow: var(--m-ai-glow-subtle);
+  z-index: 10;
+}
+
+.m-ai-tree-node.root {
+  background-color: rgba(0, 255, 151, 0.1);
+  border-color: var(--m-ai-primary);
+}
+
+.m-ai-tree-node.leaf {
+  background-color: rgba(0, 20, 0, 0.3);
+}
+
+.m-ai-node-condition {
+  font-weight: bold;
+  color: var(--m-text-bright);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+.m-ai-node-details {
+  font-size: 0.85rem;
+  color: var(--m-text);
+}
+
+.m-ai-node-samples {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--m-text-dim);
+  margin-top: 0.5rem;
+}
+
+.m-ai-node-samples-count {
+  font-family: monospace;
+}
+
+.m-ai-node-class {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(140, 0, 255, 0.1);
+  border: 1px solid var(--m-ai-accent-dim);
+  border-radius: var(--m-radius);
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--m-ai-accent);
+}
+
+.m-ai-tree-edge {
+  position: absolute;
+  height: 2px;
+  background-color: var(--m-border);
+  transform-origin: 0 0;
+  z-index: 1;
+}
+
+.m-ai-edge-label {
+  position: absolute;
+  background-color: rgba(0, 10, 0, 0.8);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: var(--m-radius);
+  color: var(--m-text);
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--m-border);
+  z-index: 2;
+}
+
+/* Time Series Forecast Visualization */
+.m-ai-time-forecast {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: rgba(0, 10, 0, 0.7);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.m-ai-forecast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.m-ai-forecast-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--m-text-bright);
+}
+
+.m-ai-forecast-legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+.m-ai-legend-actual {
+  background-color: var(--m-ai-primary);
+}
+
+.m-ai-legend-predicted {
+  background-color: var(--m-ai-accent);
+}
+
+.m-ai-legend-confidence {
+  background-color: var(--m-ai-info-dim);
+}
+
+.m-ai-forecast-chart {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 30px);
+}
+
+.m-ai-chart-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 151, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 151, 0.05) 1px, transparent 1px);
+  background-size: calc(100% / 10) calc(100% / 5);
+  z-index: 1;
+}
+
+.m-ai-actual-line {
+  position: absolute;
+  z-index: 5;
+  stroke: var(--m-ai-primary);
+  stroke-width: 2;
+  fill: none;
+}
+
+.m-ai-predicted-line {
+  position: absolute;
+  z-index: 5;
+  stroke: var(--m-ai-accent);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 5 3;
+}
+
+.m-ai-confidence-area {
+  position: absolute;
+  z-index: 4;
+  fill: var(--m-ai-info-dim);
+  opacity: 0.2;
+}
+
+.m-ai-data-point {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-point-actual {
+  background-color: var(--m-ai-primary);
+}
+
+.m-ai-point-predicted {
+  background-color: var(--m-ai-accent);
+}
+
+.m-ai-data-point:hover {
+  transform: translate(-50%, -50%) scale(1.5);
+  box-shadow: var(--m-ai-glow-subtle);
+}
+
+/* NLP Workbench Components */
+.m-ai-nlp-workbench {
+  position: relative;
+  width: 100%;
+  background-color: rgba(0, 10, 0, 0.7);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 600px;
+}
+
+.m-ai-nlp-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 20, 0, 0.3);
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-ai-tokens-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.m-ai-token {
+  display: inline-block;
+  margin: 0.1rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  background-color: rgba(0, 30, 0, 0.5);
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+  position: relative;
+}
+
+.m-ai-token:hover {
+  background-color: rgba(0, 255, 151, 0.1);
+  transform: translateY(-2px);
+  z-index: 10;
+}
+
+.m-ai-token-tooltip {
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--m-panel);
+  border: 1px solid var(--m-border);
+  color: var(--m-text);
+  padding: 0.5rem;
+  border-radius: var(--m-radius);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--m-ai-time-swift);
+  z-index: 20;
+  min-width: 150px;
+}
+
+.m-ai-token:hover .m-ai-token-tooltip {
+  opacity: 1;
+}
+
+.m-ai-pos-noun { background-color: rgba(0, 255, 151, 0.1); }
+.m-ai-pos-verb { background-color: rgba(140, 0, 255, 0.1); }
+.m-ai-pos-adj { background-color: rgba(255, 213, 0, 0.1); }
+.m-ai-pos-adv { background-color: rgba(5, 216, 232, 0.1); }
+.m-ai-pos-pron { background-color: rgba(255, 42, 109, 0.1); }
+.m-ai-pos-prep { background-color: rgba(255, 255, 255, 0.05); }
+.m-ai-pos-conj { background-color: rgba(0, 128, 255, 0.1); }
+.m-ai-pos-det { background-color: rgba(255, 128, 0, 0.1); }
+.m-ai-pos-num { background-color: rgba(192, 0, 255, 0.1); }
+
+/* ========== AI Code Assistant Components ========== */
+.m-ai-code-assistant {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+}
+
+.m-ai-code-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-ai-code-title {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--m-text-bright);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.m-ai-code-editor {
+  flex: 1;
+  position: relative;
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+}
+
+.m-ai-line-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0.75rem 0.5rem;
+  background-color: rgba(0, 10, 0, 0.5);
+  color: var(--m-text-dim);
+  font-size: 0.85rem;
+  user-select: none;
+  min-width: 40px;
+  text-align: right;
+}
+
+.m-ai-line-number {
+  height: 1.5em;
+}
+
+.m-ai-code-content {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: rgba(0, 20, 0, 0.3);
+  color: var(--m-text);
+  white-space: pre;
+  overflow: auto;
+  tab-size: 4;
+}
+
+.m-ai-code-content:focus {
+  outline: none;
+}
+
+.m-ai-code-highlight {
+  background-color: rgba(0, 255, 151, 0.1);
+  border-radius: 2px;
+}
+
+.m-ai-code-suggestion {
+  position: relative;
+  background-color: rgba(140, 0, 255, 0.1);
+  border-radius: 2px;
+  border-bottom: 1px dashed var(--m-ai-accent);
+  cursor: pointer;
+}
+
+.m-ai-code-suggestion:hover {
+  background-color: rgba(140, 0, 255, 0.2);
+}
+
+/* Syntax highlighting */
+.m-ai-kw { color: var(--m-ai-primary); }  /* Keywords */
+.m-ai-fn { color: var(--m-ai-info); }     /* Functions */
+.m-ai-str { color: var(--m-ai-caution); } /* Strings */
+.m-ai-num { color: var(--m-ai-accent); }  /* Numbers */
+.m-ai-com { color: var(--m-text-dim); }   /* Comments */
+.m-ai-cls { color: #FF5277; }             /* Classes */
+.m-ai-op { color: #05d8e8; }              /* Operators */
+.m-ai-var { color: #E0E0E0; }             /* Variables */
+
+/* ========== Computer Vision Analysis Interface ========== */
+.m-ai-cv-toolkit {
+  position: relative;
+  width: 100%;
+  background-color: rgba(0, 10, 0, 0.7);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 600px;
+}
+
+.m-ai-cv-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 20, 0, 0.3);
+  border-bottom: 1px solid var(--m-border);
+}
+
+.m-ai-cv-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--m-text-bright);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.m-ai-cv-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.m-ai-cv-action {
+  padding: 0.4rem 0.75rem;
+  background-color: var(--m-secondary);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  color: var(--m-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.m-ai-cv-action:hover {
+  background-color: var(--m-text-dim);
+  color: var(--m-text-bright);
+  box-shadow: var(--m-ai-glow-subtle);
+}
+
+.m-ai-analyze-btn {
+  background-color: var(--m-ai-secondary);
+  color: var(--m-text-bright);
+}
+
+.m-ai-analyze-btn:hover {
+  background-color: var(--m-ai-primary);
+  color: var(--m-dark);
+  box-shadow: var(--m-ai-glow-standard);
+}
+
+.m-ai-image-panel {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-right: 1px solid var(--m-border);
+}
+
+.m-ai-image-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 5, 0, 0.5);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  overflow: hidden;
+}
+
+.m-ai-image-upload {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-upload-icon {
+  font-size: 2rem;
+  color: var(--m-text-dim);
+}
+
+.m-ai-upload-text {
+  font-size: 0.9rem;
+  color: var(--m-text-dim);
+  text-align: center;
+}
+
+.m-ai-image-upload:hover {
+  background-color: rgba(0, 255, 151, 0.05);
+}
+
+.m-ai-image-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.m-ai-analysis-panel {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.m-ai-analysis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.m-ai-analysis-title {
+  font-size: 0.9rem;
+  color: var(--m-text);
+  font-weight: bold;
+}
+
+.m-ai-analysis-tabs {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.m-ai-analysis-tab {
+  padding: 0.3rem 0.75rem;
+  background-color: var(--m-secondary);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  color: var(--m-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--m-ai-time-swift);
+}
+
+.m-ai-analysis-tab:hover {
+  background-color: var(--m-text-dim);
+  color: var(--m-text-bright);
+}
+
+.m-ai-analysis-tab.active {
+  background-color: var(--m-text-dim);
+  color: var(--m-text-bright);
+  box-shadow: var(--m-ai-glow-subtle);
+}
+
+.m-ai-analysis-container {
+  flex: 1;
+  overflow-y: auto;
+  background-color: rgba(0, 20, 0, 0.3);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  padding: 0.75rem;
+}
+
+/* ========== System Status & Notification Components ========== */
+
+/* System Status Display */
+.m-ai-status-display {
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius);
+  padding: 1rem;
+}
+
+.m-ai-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+}
+
+.m-ai-status-item:last-child {
+  border-bottom: none;
+}
+
+.m-ai-status-label {
+  display: flex;
+  align-items: center;
+}
+
+.m-ai-status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.m-ai-status-online {
+  background-color: var(--m-success);
+  box-shadow: 0 0 5px var(--m-success);
+  animation: m-ai-pulse 2s infinite;
+}
+
+.m-ai-status-warning {
+  background-color: var(--m-warning);
+  box-shadow: 0 0 5px var(--m-warning);
+}
+
+.m-ai-status-offline {
+  background-color: var(--m-danger);
+  box-shadow: 0 0 5px var(--m-danger);
+}
+
+.m-ai-status-details {
+  color: var(--m-text-dim);
+  font-size: 0.8rem;
+}
+
+/* Notification System */
+.m-ai-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--m-panel);
+  border: 1px solid var(--m-border);
+  border-left: 4px solid var(--m-text);
+  padding: 1rem;
+  border-radius: var(--m-radius);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(50px);
+  animation: m-ai-notification-in 0.3s forwards, m-ai-notification-out 0.3s 5s forwards;
+  max-width: 300px;
+}
+
+@keyframes m-ai-notification-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes m-ai-notification-out {
+  to { opacity: 0; transform: translateX(50px); }
+}
+
+.m-ai-notification-title {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.m-ai-notification-message {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.m-ai-notification-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--m-text);
+  cursor: pointer;
+}
+
+.m-ai-notification-success {
+  border-left-color: var(--m-success);
+}
+
+.m-ai-notification-warning {
+  border-left-color: var(--m-warning);
+}
+
+.m-ai-notification-error {
+  border-left-color: var(--m-danger);
+}
+
+/* ========== Responsive Adjustments ========== */
+@media (max-width: 1400px) {
+  .m-ai-nlp-workbench,
+  .m-ai-cv-toolkit {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
   }
   
-  .m-neural-network::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(0, 255, 65, 0.05) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .m-layer {
-    position: absolute;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .m-neuron {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: var(--m-secondary);
-    border: 1px solid var(--m-border);
-    position: relative;
-    z-index: 2;
-    transition: all 0.3s ease;
-  }
-  
-  .m-neuron.active {
-    background-color: var(--m-text-dim);
-    box-shadow: 0 0 10px var(--m-glow);
-  }
-  
-  .m-neuron:hover {
-    transform: scale(1.3);
-    background-color: var(--m-text-dim);
-    box-shadow: 0 0 15px var(--m-glow);
-  }
-  
-  .m-synapse {
-    position: absolute;
-    height: 1px;
-    background-color: var(--m-border);
-    transform-origin: 0 0;
-    z-index: 1;
-  }
-  
-  .m-synapse.active {
-    background-color: var(--m-text);
-    box-shadow: 0 0 5px var(--m-glow);
-    animation: m-synapse-pulse 1.5s infinite ease-in-out;
-  }
-  
-  @keyframes m-synapse-pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
-  }
-  
-  .m-input-label, .m-output-label {
-    position: absolute;
-    font-size: 0.7rem;
-    color: var(--m-text-dim);
-    pointer-events: none;
-  }
-  
-  .m-input-label {
-    left: 40px;
-  }
-  
-  .m-output-label {
-    right: 40px;
-  }
-  
-  /* Activation Animation */
-  .m-activation-wave {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: var(--m-text-bright);
-    border-radius: 50%;
-    transform: scale(0);
-    z-index: 3;
-    pointer-events: none;
-    animation: m-activation 1.5s ease-out forwards;
-  }
-  
-  @keyframes m-activation {
-    0% { transform: scale(0); opacity: 1; }
-    50% { transform: scale(1.5); opacity: 0.5; }
-    100% { transform: scale(3); opacity: 0; }
-  }
-  
-  /* ========== Deep Learning Training Visualization ========== */
-  .m-training-panel {
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-training-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
+  .m-ai-nlp-input,
+  .m-ai-image-panel {
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    border-right: none;
     border-bottom: 1px solid var(--m-border);
   }
   
-  .m-training-title {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--m-text-bright);
+  .m-ai-nlp-results,
+  .m-ai-analysis-panel {
+    grid-row: 3 / 4;
+    grid-column: 1 / 2;
+  }
+}
+
+@media (max-width: 992px) {
+  .m-ai-code-assistant {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
   }
   
-  .m-training-status {
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.8rem;
-    background-color: rgba(0, 255, 65, 0.1);
-    color: var(--m-text);
+  .m-ai-code-area {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
   }
   
-  .m-training-status.active {
-    animation: m-training-pulse 1s infinite;
+  .m-ai-analysis-panel {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
   }
   
-  @keyframes m-training-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+  .m-ai-code-footer {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
   }
   
-  .m-training-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+  .m-ai-llm-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto auto;
+    height: auto;
   }
   
-  .m-stat-box {
-    padding: 1rem;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .m-stat-label {
-    font-size: 0.8rem;
-    color: var(--m-text-dim);
-    margin-bottom: 0.5rem;
-  }
-  
-  .m-stat-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--m-text-bright);
-  }
-  
-  .m-loss-chart {
-    height: 150px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    padding: 1rem;
-    position: relative;
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-loss-line {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: calc(100% - 40px);
-    height: 1px;
-    background-color: var(--m-text);
-    box-shadow: 0 0 5px var(--m-glow);
-    clip-path: polygon(
-      0% 0%,
-      5% 40%,
-      10% 30%,
-      15% 20%,
-      20% 10%,
-      25% 15%,
-      30% 5%,
-      35% 8%,
-      40% 7%,
-      45% 5%,
-      50% 3%,
-      55% 6%,
-      60% 2%,
-      65% 4%,
-      70% 1%,
-      75% 3%,
-      80% 0%,
-      85% 2%,
-      90% 0%,
-      95% 1%,
-      100% 0%
-    );
-    transform-origin: bottom left;
-    animation: m-loss-draw 3s forwards;
-  }
-  
-  @keyframes m-loss-draw {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-  }
-  
-  .m-axis-label {
-    position: absolute;
-    font-size: 0.7rem;
-    color: var(--m-text-dim);
-  }
-  
-  .m-axis-label.x {
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .m-axis-label.y {
-    top: 50%;
-    left: 5px;
-    transform: translateY(-50%) rotate(-90deg);
-    transform-origin: left center;
-  }
-  
-  .m-epoch-progress {
-    width: 100%;
-    height: 10px;
-    background-color: rgba(0, 20, 0, 0.3);
-    border-radius: var(--m-radius);
+  .m-ai-input-panel,
+  .m-ai-output-panel {
+    grid-column: 1 / 2;
     margin-bottom: 1rem;
-    overflow: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .m-ai-metrics-grid,
+  .m-ai-tools-grid {
+    grid-template-columns: 1fr;
   }
   
-  .m-epoch-bar {
-    height: 100%;
-    background-color: var(--m-text);
-    box-shadow: 0 0 5px var(--m-glow);
-    width: 0;
-    animation: m-epoch-progress 20s linear infinite;
-  }
-  
-  @keyframes m-epoch-progress {
-    0% { width: 0; }
-    100% { width: 100%; }
-  }
-  
-  .m-epoch-counter {
-    font-family: monospace;
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-epoch-label {
-    font-size: 0.8rem;
-    color: var(--m-text-dim);
-    margin-right: 0.5rem;
-  }
-  
-  .m-epoch-value {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--m-text-bright);
-  }
-  
-  /* ========== Data Clustering Visualization ========== */
-  .m-cluster-plot {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-cluster-plot::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: 
-      linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-    background-size: 20px 20px;
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .m-data-point {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--m-text);
-    box-shadow: 0 0 5px var(--m-glow);
-    transform: translate(-50%, -50%);
-    transition: all 0.5s ease;
-    z-index: 2;
-  }
-  
-  .m-cluster-1 {
-    background-color: #00ff41; /* Green */
-  }
-  
-  .m-cluster-2 {
-    background-color: #ff3e3e; /* Red */
-  }
-  
-  .m-cluster-3 {
-    background-color: #3e9fff; /* Blue */
-  }
-  
-  .m-cluster-4 {
-    background-color: #ffbb3e; /* Yellow */
-  }
-  
-  .m-cluster-centroid {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid var(--m-text-bright);
-    box-shadow: 0 0 10px var(--m-glow);
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    animation: m-centroid-pulse 2s infinite;
-  }
-  
-  @keyframes m-centroid-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.2); }
-  }
-  
-  .m-cluster-label {
-    position: absolute;
-    font-size: 0.7rem;
-    color: var(--m-text-bright);
-    transform: translate(-50%, -150%);
-    background-color: rgba(0, 10, 0, 0.7);
-    padding: 2px 5px;
-    border-radius: 3px;
-    z-index: 3;
-  }
-  
-  /* ========== Decision Tree Visualization ========== */
-  .m-decision-tree {
-    position: relative;
-    width: 100%;
+  .m-ai-neural,
+  .m-ai-projection,
+  .m-ai-decision-tree,
+  .m-ai-time-forecast {
+    height: auto;
     min-height: 300px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    padding: 2rem 1rem;
-    overflow: auto;
   }
-  
-  .m-tree-node {
-    position: absolute;
-    max-width: 120px;
-    padding: 0.5rem;
-    background-color: var(--m-secondary);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    font-size: 0.8rem;
-    text-align: center;
-    z-index: 2;
-    transition: all 0.3s ease;
-  }
-  
-  .m-tree-node:hover {
-    background-color: var(--m-text-dim);
-    box-shadow: 0 0 10px var(--m-glow);
-    transform: scale(1.1);
-    z-index: 10;
-  }
-  
-  .m-tree-node.decision {
-    background-color: rgba(0, 30, 0, 0.5);
-  }
-  
-  .m-tree-node.leaf {
-    background-color: rgba(0, 60, 0, 0.3);
-    border-color: var(--m-text-dim);
-  }
-  
-  .m-tree-edge {
-    position: absolute;
-    height: 2px;
-    background-color: var(--m-border);
-    transform-origin: 0 0;
-    z-index: 1;
-  }
-  
-  .m-tree-edge::after {
-    content: attr(data-condition);
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7rem;
-    color: var(--m-text-dim);
-    background-color: rgba(0, 10, 0, 0.7);
-    padding: 2px 5px;
-    border-radius: 3px;
-    white-space: nowrap;
-  }
-  
-  .m-tree-edge.true-branch {
-    background-color: rgba(0, 255, 65, 0.4);
-  }
-  
-  .m-tree-edge.false-branch {
-    background-color: rgba(255, 50, 50, 0.4);
-  }
-  
-  /* ========== AI Chat Conversation ========== */
-  .m-ai-chat {
-    padding: 1.5rem;
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--m-border);
-  }
-  
-  .m-chat-title {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--m-text-bright);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .m-ai-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--m-text);
-    box-shadow: 0 0 5px var(--m-glow);
-    animation: m-ai-pulse 2s infinite;
-  }
-  
-  @keyframes m-ai-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-  
-  .m-chat-container {
-    height: 300px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-    padding-right: 0.5rem;
-  }
-  
-  .m-chat-message {
-    margin-bottom: 1rem;
-    max-width: 85%;
-    animation: m-message-appear 0.3s forwards;
-  }
-  
-  @keyframes m-message-appear {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .m-chat-user {
-    margin-left: auto;
-    background-color: rgba(0, 30, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: 10px 10px 0 10px;
-    padding: 0.75rem;
-  }
-  
-  .m-chat-ai {
-    margin-right: auto;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: 10px 10px 10px 0;
-    padding: 0.75rem;
-    position: relative;
-  }
-  
-  .m-chat-ai::before {
-    content: "";
-    position: absolute;
-    top: -15px;
-    left: 10px;
-    width: 28px;
-    height: 14px;
-    background-color: var(--m-text-dim);
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
-    animation: m-thinking 1.5s infinite;
-    opacity: 0;
-  }
-  
-  @keyframes m-thinking {
-    0%, 100% { clip-path: polygon(0% 100%, 50% 0%, 100% 100%); }
-    50% { clip-path: polygon(0% 0%, 50% 100%, 100% 0%); }
-  }
-  
-  .m-chat-ai.thinking::before {
-    opacity: 1;
-  }
-  
-  .m-chat-timestamp {
-    font-size: 0.7rem;
-    color: var(--m-text-dim);
-    margin-top: 0.25rem;
-    text-align: right;
-  }
-  
-  .m-chat-input-container {
-    display: flex;
-    gap: 0.5rem;
-    position: relative;
-  }
-  
-  .m-chat-input {
-    flex: 1;
-    padding: 0.75rem;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    color: var(--m-text);
-    font-family: var(--m-font-main);
-    resize: none;
-  }
-  
-  .m-chat-send-btn {
-    width: 40px;
-    height: 40px;
-    background-color: var(--m-secondary);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    color: var(--m-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
-  .m-chat-send-btn:hover {
-    background-color: var(--m-text-dim);
-    color: var(--m-text-bright);
-    box-shadow: 0 0 5px var(--m-glow);
-  }
-  
-  .m-chat-send-btn::before {
-    content: "➤";
-    transform: rotate(90deg);
-    display: inline-block;
-  }
-  
-  /* ========== AI Processing Animation ========== */
-  .m-ai-processing {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin: 2rem auto;
-  }
-  
-  .m-processing-circle {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 2px solid var(--m-border);
-    border-radius: 50%;
-    animation: m-processing-rotate 3s linear infinite;
-  }
-  
-  .m-processing-circle:nth-child(1) {
-    border-color: transparent;
-    border-top-color: var(--m-text);
-  }
-  
-  .m-processing-circle:nth-child(2) {
-    border-color: transparent;
-    border-right-color: var(--m-text-bright);
-    animation-delay: -0.5s;
-  }
-  
-  .m-processing-circle:nth-child(3) {
-    border-color: transparent;
-    border-bottom-color: var(--m-text);
-    animation-delay: -1s;
-  }
-  
-  .m-processing-core {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30px;
-    height: 30px;
-    transform: translate(-50%, -50%);
-    background-color: var(--m-secondary);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--m-glow);
-    animation: m-core-pulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes m-processing-rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  @keyframes m-core-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px var(--m-glow); }
-    50% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 20px var(--m-glow); }
-  }
-  
-  .m-processing-data {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    background-color: var(--m-text);
-    border-radius: 50%;
-    opacity: 0;
-    animation: m-data-flow 2s linear infinite;
-  }
-  
-  .m-processing-data:nth-child(5) { animation-delay: 0s; }
-  .m-processing-data:nth-child(6) { animation-delay: 0.4s; }
-  .m-processing-data:nth-child(7) { animation-delay: 0.8s; }
-  .m-processing-data:nth-child(8) { animation-delay: 1.2s; }
-  .m-processing-data:nth-child(9) { animation-delay: 1.6s; }
-  
-  @keyframes m-data-flow {
-    0% { 
-      transform: translate(0, 0); 
-      opacity: 1;
-    }
-    100% { 
-      transform: translate(var(--x, 40px), var(--y, 40px)); 
-      opacity: 0;
-    }
-  }
-  
-  /* ========== Sentiment Analysis Visualization ========== */
-  .m-sentiment-analysis {
-    padding: 1.5rem;
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-sentiment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--m-border);
-  }
-  
-  .m-sentiment-title {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--m-text-bright);
-  }
-  
-  .m-sentiment-meter {
-    height: 30px;
-    background: linear-gradient(to right, #ff3e3e 0%, #ffcc00 50%, #00ff41 100%);
-    border-radius: var(--m-radius);
-    position: relative;
-    margin: 2rem 0;
-  }
-  
-  .m-sentiment-indicator {
-    position: absolute;
-    top: -10px;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 50px;
-    background-color: white;
-    transition: left 1s ease;
-  }
-  
-  .m-sentiment-indicator::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
-    background-color: white;
-    border-radius: 50%;
-  }
-  
-  .m-sentiment-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-  }
-  
-  .m-sentiment-text-container {
-    position: relative;
-    padding: 1rem;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-top: 1rem;
-    min-height: 100px;
-  }
-  
-  .m-sentiment-text {
-    position: relative;
-    z-index: 2;
-  }
-  
-  .m-word {
-    display: inline-block;
-    margin: 0 2px;
-    position: relative;
-    transition: all 0.3s;
-  }
-  
-  .m-word.positive {
-    color: #00ff41; /* Green for positive */
-  }
-  
-  .m-word.negative {
-    color: #ff3e3e; /* Red for negative */
-  }
-  
-  .m-word.neutral {
-    color: #ffcc00; /* Yellow for neutral */
-  }
-  
-  .m-word.highlighted {
-    transform: scale(1.1);
-    text-shadow: 0 0 5px currentColor;
-    z-index: 3;
-  }
-  
-  .m-word::after {
-    content: attr(data-score);
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7rem;
-    background-color: var(--m-panel);
-    padding: 2px 5px;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-  }
-  
-  .m-word:hover::after {
-    opacity: 1;
-  }
-  
-  /* ========== Image Recognition Visualization ========== */
-  .m-image-recognition {
-    padding: 1.5rem;
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-image-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    overflow: hidden;
-    margin-bottom: 1rem;
-  }
-  
-  .m-detection-box {
-    position: absolute;
-    border: 2px solid var(--m-text-bright);
-    border-radius: 3px;
-    box-shadow: 0 0 5px var(--m-glow);
-    pointer-events: none;
-    animation: m-box-appear 0.5s forwards;
-  }
-  
-  @keyframes m-box-appear {
-    from { opacity: 0; transform: scale(1.1); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  
-  .m-detection-label {
-    position: absolute;
-    top: -25px;
-    left: 0;
-    background-color: var(--m-text-bright);
-    color: var(--m-bg);
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-  }
-  
-  .m-confidence {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0, 20, 0, 0.7);
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 0.7rem;
-  }
-  
-  .m-scan-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--m-text-bright);
-    box-shadow: 0 0 10px var(--m-glow);
-    animation: m-scan 3s linear infinite;
-    opacity: 0.7;
-    pointer-events: none;
-  }
-  
-  @keyframes m-scan {
-    0% { top: 0; }
-    100% { top: 100%; }
-  }
-  
-  .m-recognition-results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .m-recognition-item {
-    padding: 0.5rem;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .m-recognition-label {
-    font-weight: bold;
-    color: var(--m-text-bright);
-  }
-  
-  .m-recognition-confidence {
-    color: var(--m-text-dim);
-    font-size: 0.7rem;
-  }
-  
-  /* ========== Chatbot Interface ========== */
-  .m-chatbot {
-    padding: 1.5rem;
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-chatbot-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--m-border);
-  }
-  
-  .m-chatbot-title {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--m-text-bright);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .m-chatbot-status {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: var(--m-text);
-    animation: m-chatbot-pulse 2s infinite;
-  }
-  
-  @keyframes m-chatbot-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-  
-  .m-chatbot-conversation {
-    height: 300px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-    padding: 0 0.5rem;
-  }
-  
-  .m-chatbot-message {
-    margin-bottom: 1rem;
-    max-width: 80%;
-    opacity: 0;
-    animation: m-chatbot-message-appear 0.5s forwards;
-  }
-  
-  @keyframes m-chatbot-message-appear {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .m-chatbot-user {
-    margin-left: auto;
-    background-color: rgba(0, 30, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: 15px 15px 0 15px;
-    padding: 0.75rem;
-  }
-  
-  .m-chatbot-bot {
-    margin-right: auto;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: 0 15px 15px 15px;
-    padding: 0.75rem;
-    position: relative;
-  }
-  
-  .m-chatbot-typing {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0.5rem;
-  }
-  
-  .m-typing-dot {
-    width: 6px;
-    height: 6px;
-    background-color: var(--m-text);
-    border-radius: 50%;
-    animation: m-typing-dot-pulse 1.5s infinite;
-  }
-  
-  .m-typing-dot:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .m-typing-dot:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  
-  @keyframes m-typing-dot-pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
-  }
-  
-  .m-chatbot-input-container {
-    display: flex;
-    gap: 0.5rem;
-  }
-  
-  .m-chatbot-input {
-    flex: 1;
-    padding: 0.75rem;
-    background-color: rgba(0, 20, 0, 0.3);
-    border: 1px solid var(--m-border);
-    border-radius: 20px;
-    color: var(--m-text);
-    font-family: var(--m-font-main);
-  }
-  
-  .m-chatbot-send {
-    width: 40px;
-    height: 40px;
-    background-color: var(--m-secondary);
-    border: 1px solid var(--m-border);
-    border-radius: 50%;
-    color: var(--m-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
-  .m-chatbot-send:hover {
-    background-color: var(--m-text-dim);
-    color: var(--m-text-bright);
-    box-shadow: 0 0 5px var(--m-glow);
-  }
-  
-  /* ========== Voice Recognition Visualization ========== */
-  .m-voice-recognition {
-    padding: 1.5rem;
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-voice-visualizer {
-    height: 100px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1rem;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2px;
-  }
-  
-  .m-voice-bar {
-    flex: 1;
-    background-color: var(--m-text);
-    height: 5%;
-    border-radius: 2px;
-    animation: m-voice-pulse 1s infinite;
-  }
-  
-  @keyframes m-voice-pulse {
-    0%, 100% { height: var(--height, 20%); }
-    50% { height: var(--height-alt, 80%); }
-  }
-  
-  .m-voice-bar:nth-child(1) { animation-delay: 0s; --height: 20%; --height-alt: 60%; }
-  .m-voice-bar:nth-child(2) { animation-delay: 0.1s; --height: 30%; --height-alt: 40%; }
-  .m-voice-bar:nth-child(3) { animation-delay: 0.2s; --height: 40%; --height-alt: 70%; }
-  .m-voice-bar:nth-child(4) { animation-delay: 0.3s; --height: 60%; --height-alt: 30%; }
-  .m-voice-bar:nth-child(5) { animation-delay: 0.4s; --height: 70%; --height-alt: 90%; }
-  .m-voice-bar:nth-child(6) { animation-delay: 0.5s; --height: 50%; --height-alt: 20%; }
-  .m-voice-bar:nth-child(7) { animation-delay: 0.6s; --height: 30%; --height-alt: 50%; }
-  .m-voice-bar:nth-child(8) { animation-delay: 0.7s; --height: 80%; --height-alt: 40%; }
-  .m-voice-bar:nth-child(9) { animation-delay: 0.8s; --height: 20%; --height-alt: 60%; }
-  .m-voice-bar:nth-child(10) { animation-delay: 0.9s; --height: 40%; --height-alt: 80%; }
-  .m-voice-bar:nth-child(11) { animation-delay: 0.95s; --height: 60%; --height-alt: 30%; }
-  .m-voice-bar:nth-child(12) { animation-delay: 0.85s; --height: 70%; --height-alt: 50%; }
-  .m-voice-bar:nth-child(13) { animation-delay: 0.75s; --height: 50%; --height-alt: 70%; }
-  .m-voice-bar:nth-child(14) { animation-delay: 0.65s; --height: 30%; --height-alt: 90%; }
-  .m-voice-bar:nth-child(15) { animation-delay: 0.55s; --height: 90%; --height-alt: 30%; }
-  .m-voice-bar:nth-child(16) { animation-delay: 0.45s; --height: 30%; --height-alt: 60%; }
-  .m-voice-bar:nth-child(17) { animation-delay: 0.35s; --height: 50%; --height-alt: 80%; }
-  .m-voice-bar:nth-child(18) { animation-delay: 0.25s; --height: 70%; --height-alt: 20%; }
-  .m-voice-bar:nth-child(19) { animation-delay: 0.15s; --height: 20%; --height-alt: 50%; }
-  .m-voice-bar:nth-child(20) { animation-delay: 0.05s; --height: 60%; --height-alt: 40%; }
-  
-  .m-voice-result {
-    font-family: monospace;
-    font-size: 1.2rem;
-    text-align: center;
-    min-height: 1.5em;
-    margin-bottom: 1rem;
-  }
-  
-  .m-voice-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .m-voice-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: var(--m-secondary);
-    border: 1px solid var(--m-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
-  .m-voice-btn:hover {
-    background-color: var(--m-text-dim);
-    box-shadow: 0 0 10px var(--m-glow);
-  }
-  
-  .m-voice-btn.active {
-    background-color: var(--m-text-dim);
-    box-shadow: 0 0 10px var(--m-glow);
-    animation: m-voice-btn-pulse 1s infinite;
-  }
-  
-  @keyframes m-voice-btn-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-  
-  .m-voice-mic::before {
-    content: "⚫";
-    font-size: 2rem;
-    color: var(--m-text);
-  }
-  
-  .m-voice-stop::before {
-    content: "■";
-    font-size: 1.5rem;
-    color: var(--m-text);
-  }
-  
-  .m-voice-status {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--m-text-dim);
-    margin-bottom: 1rem;
-  }
-  
-  /* ========== Generative Art Animation ========== */
-  .m-generative-art {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background-color: rgba(0, 10, 0, 0.5);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background-color: var(--m-text);
-    box-shadow: 0 0 2px var(--m-glow);
-    border-radius: 50%;
-    z-index: 1;
-  }
-  
-  .m-node-point {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: var(--m-text-bright);
-    border-radius: 50%;
-    box-shadow: 0 0 5px var(--m-glow);
-    z-index: 2;
-  }
-  
-  .m-connection-line {
-    position: absolute;
-    height: 1px;
-    background-color: rgba(0, 255, 65, 0.3);
-    transform-origin: 0 0;
-    z-index: 1;
-  }
-  
-  /* ========== Text Generation Animation ========== */
-  .m-text-generation {
-    padding: 1.5rem;
-    background-color: var(--m-panel);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius);
-    margin-bottom: 1.5rem;
-  }
-  
-  .m-gen-container {
-    font-family: monospace;
-    line-height: 1.5;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .m-gen-text {
-    min-height: 200px;
-  }
-  
-  .m-gen-cursor {
-    display: inline-block;
-    width: 0.6em;
-    height: 1.2em;
-    background-color: var(--m-text);
-    animation: m-cursor-blink 1s infinite step-end;
-    vertical-align: text-bottom;
-  }
-  
-  @keyframes m-cursor-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-  
-  .m-gen-thinking {
-    position: absolute;
-    top: -20px;
-    height: 20px;
-    width: 100%;
-    background-color: var(--m-secondary);
-    padding: 2px 10px;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .m-gen-dot {
-    width: 4px;
-    height: 4px;
-    background-color: var(--m-text);
-    border-radius: 50%;
-    animation: m-gen-dot-pulse 1.5s infinite;
-  }
-  
-  .m-gen-dot:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .m-gen-dot:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  
-  @keyframes m-gen-dot-pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
-  }
+}
+
+/* ========== Performance Optimizations ========== */
+/* GPU acceleration for animations */
+.m-ai-datapoint, 
+.m-ai-neuron, 
+.m-ai-connection,
+.m-ai-tree-node,
+.m-ai-data-point,
+.m-ai-token,
+.m-ai-code-suggestion {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce reflow for data grid components */
+.m-ai-code-editor,
+.m-ai-tokens-view,
+.m-ai-analysis-container {
+  contain: content;
+}

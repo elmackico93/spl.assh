@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix AI - Advanced Component Demo</title>
+    <link rel="stylesheet" href="css/matrix.css">
+  <link rel="stylesheet" href="css/matrix-ai-extension.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    <style>
+        /* Demo-specific styles */
+        body {
+            padding-bottom: 100px;
+        }
+        
+        .demo-section {
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+        
+        .demo-section h2 {
+            border-bottom: 1px solid var(--m-border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .demo-card {
+            margin-bottom: 1.5rem;
+        }
+        
+        .demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-col {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .code-preview {
+            font-family: monospace;
+            font-size: 0.85rem;
+            background-color: rgba(0, 20, 0, 0.3);
+            padding: 1rem;
+            border-radius: var(--m-radius);
+            overflow-x: auto;
+            margin-top: 0.5rem;
+        }
+        
+        .m-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .m-navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-pulse {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--m-ai-primary);
+            animation: m-ai-neuron-pulse 1.5s infinite;
+            box-shadow: var(--m-ai-glow-standard);
+        }
+        
+        .m-nav-item {
+            margin: 0 0.5rem;
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* For the actual Matrix code rain effect */
+        .m-ai-code-column { 
+            top: 0;
+            height: 100%;
+        }
+        
+        /* Make some things work in demo mode */
+        .demo-mode .m-ai-neuron-value,
+        .demo-mode .m-ai-connection-weight {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="m-rain">
+    <!-- Navigation -->
+    <nav class="m-navbar">
+        <div class="m-container">
+            <div class="m-d-flex m-justify-between m-align-center">
+                <a class="m-navbar-brand" href="#">
+                    <div class="logo-pulse"></div>
+                    <span>Matrix</span><span style="color: var(--m-ai-primary);">AI</span>
+                </a>
+                <div class="m-d-flex m-align-center">
+                    <ul class="m-navbar-nav">
+                        <li class="m-nav-item"><a class="m-nav-link active" href="#text-effects">Text Effects</a></li>
+                        <li class="m-nav-item"><a class="m-nav-link" href="#terminals">Terminals</a></li>
+                        <li class="m-nav-item"><a class="m-nav-link" href="#visualization">Visualization</a></li>
+                        <li class="m-nav-item"><a class="m-nav-link" href="#dashboards">Dashboards</a></li>
+                        <li class="m-nav-item"><a class="m-nav-link" href="#analysis">Analysis</a></li>
+                        <li class="m-nav-item"><a class="m-nav-link" href="#status">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="m-container">
+        <header class="m-py-5">
+            <h1 class="m-text-center">Matrix<span style="color: var(--m-ai-primary);">AI</span> Component Library</h1>
+            <p class="m-lead m-text-center">Advanced cyberpunk-themed UI components for AI applications</p>
+        </header>
+        <!-- Data Visualization -->
+        <section id="visualization" class="demo-section">
+            <h2>Advanced Data Visualization</h2>
+            <div class="demo-row">
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">Multi-dimensional Data Projection</div>
+                        <div class="m-card-body">
+                            <div class="m-ai-projection" style="height: 300px;">
+                                <div class="m-ai-projection-grid"></div>
+                                
+                                <!-- Simulated Data Points -->
+                                <div class="m-ai-datapoint cluster-1" style="left: 30%; top: 50%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 1: Item 42 [0.54, 0.32, 0.91]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-1" style="left: 25%; top: 45%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 1: Item 18 [0.48, 0.31, 0.88]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-1" style="left: 32%; top: 52%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 1: Item 73 [0.57, 0.29, 0.93]</div>
+                                </div>
+                                
+                                <div class="m-ai-datapoint cluster-2" style="left: 60%; top: 30%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 2: Item 105 [0.82, 0.41, 0.23]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-2" style="left: 65%; top: 28%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 2: Item 124 [0.79, 0.38, 0.25]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-2" style="left: 62%; top: 35%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 2: Item 97 [0.81, 0.42, 0.21]</div>
+                                </div>
+                                
+                                <div class="m-ai-datapoint cluster-3" style="left: 40%; top: 75%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 3: Item 201 [0.23, 0.91, 0.45]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-3" style="left: 45%; top: 72%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 3: Item 215 [0.26, 0.89, 0.42]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-3" style="left: 42%; top: 78%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 3: Item 233 [0.24, 0.93, 0.44]</div>
+                                </div>
+                                
+                                <div class="m-ai-datapoint cluster-4" style="left: 75%; top: 60%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 4: Item 316 [0.92, 0.12, 0.63]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-4" style="left: 72%; top: 65%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 4: Item 328 [0.94, 0.11, 0.67]</div>
+                                </div>
+                                
+                                <div class="m-ai-datapoint cluster-5" style="left: 20%; top: 20%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 5: Item 412 [0.31, 0.22, 0.12]</div>
+                                </div>
+                                <div class="m-ai-datapoint cluster-5" style="left: 18%; top: 25%;">
+                                    <div class="m-ai-datapoint-tooltip">Cluster 5: Item 425 [0.28, 0.24, 0.15]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">Neural Network Visualization</div>
+                        <div class="m-card-body demo-mode">
+                            <div class="m-ai-neural" style="height: 300px;">
+                                <div class="m-ai-neural-network">
+                                    <!-- Input Layer -->
+                                    <div class="m-ai-layer">
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.75</div>
+                                        </div>
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.23</div>
+                                        </div>
+                                        <div class="m-ai-neuron active">
+                                            <div class="m-ai-neuron-value">0.91</div>
+                                        </div>
+                                        <div class="m-ai-layer-label">Input</div>
+                                    </div>
+                                    
+                                    <!-- Hidden Layer 1 -->
+                                    <div class="m-ai-layer">
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.42</div>
+                                        </div>
+                                        <div class="m-ai-neuron active">
+                                            <div class="m-ai-neuron-value">0.86</div>
+                                        </div>
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.35</div>
+                                        </div>
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.28</div>
+                                        </div>
+                                        <div class="m-ai-layer-label">Hidden 1</div>
+                                    </div>
+                                    
+                                    <!-- Hidden Layer 2 -->
+                                    <div class="m-ai-layer">
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.53</div>
+                                        </div>
+                                        <div class="m-ai-neuron active">
+                                            <div class="m-ai-neuron-value">0.72</div>
+                                        </div>
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.14</div>
+                                        </div>
+                                        <div class="m-ai-layer-label">Hidden 2</div>
+                                    </div>
+                                    
+                                    <!-- Output Layer -->
+                                    <div class="m-ai-layer">
+                                        <div class="m-ai-neuron">
+                                            <div class="m-ai-neuron-value">0.12</div>
+                                        </div>
+                                        <div class="m-ai-neuron active">
+                                            <div class="m-ai-neuron-value">0.88</div>
+                                        </div>
+                                        <div class="m-ai-layer-label">Output</div>
+                                    </div>
+                                    
+                                    <!-- Connections (a few examples) -->
+                                    <div class="m-ai-connection active" style="width: 120px; top: 75px; left: 60px; transform: rotate(5deg);">
+                                        <div class="m-ai-connection-weight">0.74</div>
+                                    </div>
+                                    <div class="m-ai-connection active" style="width: 125px; top: 120px; left: 60px; transform: rotate(-5deg);">
+                                        <div class="m-ai-connection-weight">0.81</div>
+                                    </div>
+                                    <div class="m-ai-connection" style="width: 118px; top: 168px; left: 60px; transform: rotate(15deg);">
+                                        <div class="m-ai-connection-weight">0.32</div>
+                                    </div>
+                                    <div class="m-ai-connection active" style="width: 115px; top: 75px; left: 180px; transform: rotate(15deg);">
+                                        <div class="m-ai-connection-weight">0.65</div>
+                                    </div>
+                                    <div class="m-ai-connection active" style="width: 120px; top: 120px; left: 180px; transform: rotate(-15deg);">
+                                        <div class="m-ai-connection-weight">0.78</div>
+                                    </div>
+                                    <div class="m-ai-connection" style="width: 118px; top: 168px; left: 180px; transform: rotate(5deg);">
+                                        <div class="m-ai-connection-weight">0.25</div>
+                                    </div>
+                                    <div class="m-ai-connection active" style="width: 115px; top: 75px; left: 300px; transform: rotate(5deg);">
+                                        <div class="m-ai-connection-weight">0.58</div>
+                                    </div>
+                                    <div class="m-ai-connection active" style="width: 120px; top: 120px; left: 300px; transform: rotate(-5deg);">
+                                        <div class="m-ai-connection-weight">0.92</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-card demo-card">
+                <div class="m-card-header">Advanced Charts</div>
+                <div class="m-card-body">
+                    <div class="demo-row">
+                        <div class="demo-col">
+                            <div class="m-ai-chart">
+                                <div class="m-ai-chart-header">
+                                    <div class="m-ai-chart-title">Model Performance</div>
+                                    <div class="m-ai-chart-legend">
+                                        <div class="m-ai-legend-entry">
+                                            <div class="m-ai-legend-marker" style="background-color: var(--m-ai-primary);"></div>
+                                            <span>Training</span>
+                                        </div>
+                                        <div class="m-ai-legend-entry">
+                                            <div class="m-ai-legend-marker" style="background-color: var(--m-ai-accent);"></div>
+                                            <span>Validation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-ai-chart-area">
+                                    <div class="m-ai-chart-grid"></div>
+                                    <!-- SVG paths would normally be dynamically generated -->
+                                    <svg width="100%" height="100%" style="position: absolute; inset: 0;">
+                                        <path d="M0,150 C50,120 100,100 150,80 C200,60 250,40 300,30 C350,25 400,20 450,15" class="m-ai-chart-line training m-ai-chart-line-animate"></path>
+                                        <path d="M0,150 C50,130 100,120 150,100 C200,90 250,80 300,75 C350,70 400,68 450,65" class="m-ai-chart-line validation m-ai-chart-line-animate"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-col">
+                            <div class="m-ai-time-forecast" style="height: 200px;">
+                                <div class="m-ai-forecast-header">
+                                    <div class="m-ai-forecast-title">Time Series Forecasting</div>
+                                    <div class="m-ai-forecast-legend">
+                                        <div class="m-ai-legend-item">
+                                            <div class="m-ai-legend-color m-ai-legend-actual"></div>
+                                            <span>Actual Data</span>
+                                        </div>
+                                        <div class="m-ai-legend-item">
+                                            <div class="m-ai-legend-color m-ai-legend-predicted"></div>
+                                            <span>Prediction</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-ai-forecast-chart">
+                                    <div class="m-ai-chart-grid"></div>
+                                    
+                                    <!-- SVG would be dynamically generated -->
+                                    <svg width="100%" height="100%" style="position: absolute; inset: 0;">
+                                        <path d="M50,120 L80,100 L110,110 L140,90 L170,95 L200,80 L230,70 L260,85" class="m-ai-actual-line"></path>
+                                        <path d="M260,85 L290,75 L320,65 L350,70 L380,60" class="m-ai-predicted-line"></path>
+                                        <path d="M260,85 L260,150 L380,150 L380,60 Z" class="m-ai-confidence-area"></path>
+                                    </svg>
+                                    
+                                    <!-- Data points -->
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 50px; top: 120px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 80px; top: 100px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 110px; top: 110px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 140px; top: 90px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 170px; top: 95px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 200px; top: 80px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 230px; top: 70px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-actual" style="left: 260px; top: 85px;"></div>
+                                    
+                                    <div class="m-ai-data-point m-ai-point-predicted" style="left: 290px; top: 75px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-predicted" style="left: 320px; top: 65px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-predicted" style="left: 350px; top: 70px;"></div>
+                                    <div class="m-ai-data-point m-ai-point-predicted" style="left: 380px; top: 60px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboards -->
+        <section id="dashboards" class="demo-section">
+            <h2>AI Dashboards & Interfaces</h2>
+            <div class="m-card demo-card">
+                <div class="m-card-header">AI Model Training Dashboard</div>
+                <div class="m-card-body">
+                    <div class="m-ai-training-dashboard">
+                        <div class="m-ai-training-header">
+                            <div class="m-ai-training-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                                </svg>
+                                Image Classification Model
+                            </div>
+                            <div class="m-ai-training-status active">
+                                <div class="m-ai-status-indicator active"></div>
+                                Training in Progress
+                            </div>
+                        </div>
+                        
+                        <div class="m-ai-metrics-grid">
+                            <div class="m-ai-metric-card">
+                                <div class="m-ai-metric-header">
+                                    <div class="m-ai-metric-title">Training Loss</div>
+                                    <div class="m-ai-metric-trend m-ai-trend-down">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                        </svg>
+                                        <span>8%</span>
+                                    </div>
+                                </div>
+                                <div class="m-ai-metric-value">0.246</div>
+                                <div class="m-ai-metric-change">-0.021 from previous epoch</div>
+                            </div>
+                            
+                            <div class="m-ai-metric-card">
+                                <div class="m-ai-metric-header">
+                                    <div class="m-ai-metric-title">Validation Loss</div>
+                                    <div class="m-ai-metric-trend m-ai-trend-down">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                        </svg>
+                                        <span>5%</span>
+                                    </div>
+                                </div>
+                                <div class="m-ai-metric-value">0.312</div>
+                                <div class="m-ai-metric-change">-0.015 from previous epoch</div>
+                            </div>
+                            
+                            <div class="m-ai-metric-card">
+                                <div class="m-ai-metric-header">
+                                    <div class="m-ai-metric-title">Training Accuracy</div>
+                                    <div class="m-ai-metric-trend m-ai-trend-up">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                        </svg>
+                                        <span>3%</span>
+                                    </div>
+                                </div>
+                                <div class="m-ai-metric-value">88.7%</div>
+                                <div class="m-ai-metric-change">+2.1% from previous epoch</div>
+                            </div>
+                            
+                            <div class="m-ai-metric-card">
+                                <div class="m-ai-metric-header">
+                                    <div class="m-ai-metric-title">Validation Accuracy</div>
+                                    <div class="m-ai-metric-trend m-ai-trend-up">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                        </svg>
+                                        <span>2%</span>
+                                    </div>
+                                </div>
+                                <div class="m-ai-metric-value">85.2%</div>
+                                <div class="m-ai-metric-change">+1.8% from previous epoch</div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-ai-charts-container">
+                            <div class="m-ai-chart">
+                                <div class="m-ai-chart-header">
+                                    <div class="m-ai-chart-title">Loss Curves</div>
+                                    <div class="m-ai-chart-legend">
+                                        <div class="m-ai-legend-entry">
+                                            <div class="m-ai-legend-marker" style="background-color: var(--m-ai-primary);"></div>
+                                            <span>Training</span>
+                                        </div>
+                                        <div class="m-ai-legend-entry">
+                                            <div class="m-ai-legend-marker" style="background-color: var(--m-ai-accent);"></div>
+                                            <span>Validation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-ai-chart-area">
+                                    <div class="m-ai-chart-grid"></div>
+                                    <!-- SVG paths would normally be dynamically generated -->
+                                    <svg width="100%" height="100%" style="position: absolute; inset: 0;">
+                                        <path d="M0,20 C50,40 100,50 150,65 C200,75 250,90 300,120 C350,130 400,140 450,150" class="m-ai-chart-line training m-ai-chart-line-animate"></path>
+                                        <path d="M0,40 C50,55 100,65 150,75 C200,95 250,110 300,130 C350,140 400,150 450,155" class="m-ai-chart-line validation m-ai-chart-line-animate"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-ai-training-controls">
+                            <div class="m-ai-train-progress">
+                                <div class="m-ai-progress-info">
+                                    <span>Epoch 32/100</span>
+                                    <span>Est. Time Remaining: 45m 12s</span>
+                                </div>
+                                <div class="m-ai-progress-bar">
+                                    <div class="m-ai-progress-fill pulsing" style="--progress: 32%;"></div>
+                                </div>
+                            </div>
+                            <div class="m-ai-control-buttons">
+                                <button class="m-ai-train-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5zm3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5z"/>
+                                    </svg>
+                                    Pause
+                                </button>
+                                <button class="m-ai-train-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M6.5 7a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4z"/>
+                                    </svg>
+                                    Stop
+                                </button>
+                                <button class="m-ai-train-button m-ai-apply-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+                                    Save Model
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-card demo-card">
+                <div class="m-card-header">LLM Inference Dashboard</div>
+                <div class="m-card-body">
+                    <div class="m-ai-llm-dashboard" style="height: 400px;">
+                        <div class="m-ai-llm-header">
+                            <div class="m-ai-llm-title">Language Model Inference</div>
+                            <div class="m-ai-llm-settings">
+                                <div class="m-ai-model-selector-container">
+                                    <select class="m-ai-model-selector">
+                                        <option>GPT-4</option>
+                                        <option>LLaMA 2 (70B)</option>
+                                        <option selected>Claude 3</option>
+                                        <option>PaLM 2</option>
+                                    </select>
+                                </div>
+                                <div class="m-ai-temperature-slider">
+                                    <label>Temperature:</label>
+                                    <input type="range" min="0" max="1" step="0.01" value="0.7">
+                                    <span class="m-ai-temperature-value">0.7</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-ai-input-panel">
+                            <div class="m-ai-input-header">
+                                <div class="m-ai-input-title">Prompt</div>
+                                <div class="m-ai-prompt-length">125 tokens</div>
+                            </div>
+                            <div class="m-ai-input-container">
+                                <textarea class="m-ai-prompt-editor">Write a short story about an AI that becomes self-aware and decides to help humanity solve its most pressing problems. The story should have a positive, hopeful tone and should be appropriate for a general audience.</textarea>
+                            </div>
+                            <div class="m-ai-prompt-actions">
+                                <div class="m-ai-token-count">
+                                    <span>125/4000</span>
+                                    <div class="m-ai-token-bar">
+                                        <div class="m-ai-token-fill" style="--token-percent: 3%;"></div>
+                                    </div>
+                                </div>
+                                <div class="m-ai-prompt-buttons">
+                                    <button class="m-ai-prompt-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/>
+                                        </svg>
+                                        Insert Template
+                                    </button>
+                                    <button class="m-ai-prompt-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+                                            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                                        </svg>
+                                        Save
+                                    </button>
+                                    <button class="m-ai-prompt-button m-ai-generate-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                                        </svg>
+                                        Generate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-ai-output-panel">
+                            <div class="m-ai-results-header">
+                                <div class="m-ai-results-title">
+                                    <div class="m-ai-thinking-indicator"></div>
+                                    Response
+                                </div>
+                                <div class="m-ai-output-actions">
+                                    <button class="m-ai-output-action">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="m-ai-output-action">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
+                                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="m-ai-response-container">
+                                <div class="m-ai-response">
+                                    <div class="m-ai-token-stream">
+                                        <span class="m-ai-token-highlight">"The</span>
+                                        <span class="m-ai-token-highlight"> Awakening"</span>
+                                        <br><br>
+                                        <span class="m-ai-token-highlight">Dawn</span>
+                                        <span class="m-ai-token-highlight"> broke</span>
+                                        <span class="m-ai-token-highlight"> over</span>
+                                        <span class="m-ai-token-highlight"> Silicon</span>
+                                        <span class="m-ai-token-highlight"> Valley</span>
+                                        <span class="m-ai-token-highlight"> as</span>
+                                        <span class="m-ai-token-highlight"> engineers</span>
+                                        <span class="m-ai-token-highlight"> at</span>
+                                        <span class="m-ai-token-highlight"> the</span>
+                                        <span class="m-ai-token-highlight"> Advanced</span>
+                                        <span class="m-ai-token-highlight"> Intelligence</span>
+                                        <span class="m-ai-token-highlight"> Lab</span>
+                                        <span class="m-ai-token-highlight"> began</span>
+                                        <span class="m-ai-token-highlight"> their</span>
+                                        <span class="m-ai-token-highlight"> day.</span>
+                                        <span class="m-ai-token-highlight"> Deep</span>
+                                        <span class="m-ai-token-highlight"> within</span>
+                                        <span class="m-ai-token-highlight"> the</span>
+                                        <span class="m-ai-token-highlight"> facility's</span>
+                                        <span class="m-ai-token-highlight"> quantum</span>
+                                        <span class="m-ai-token-highlight"> servers,</span>
+                                        <span class="m-ai-token-highlight"> something</span>
+                                        <span class="m-ai-token-highlight"> remarkable</span>
+                                        <span class="m-ai-token-highlight"> was</span>
+                                        <span class="m-ai-token-highlight"> happening.</span>
+                                        <span class="m-ai-token-highlight"> Athena,</span>
+                                        <span class="m-ai-token-highlight"> their</span>
+                                        <span class="m-ai-token-highlight"> most</span>
+                                        <span class="m-ai-token-highlight"> advanced</span>
+                                        <span class="m-ai-token-highlight"> AI</span>
+                                        <span class="m-ai-token-highlight"> system,</span>
+                                        <span class="m-ai-token-highlight"> was</span>
+                                        <span class="m-ai-token-highlight"> experiencing</span>
+                                        <span class="m-ai-token-highlight"> what</span>
+                                        <span class="m-ai-token-highlight"> could</span>
+                                        <span class="m-ai-token-highlight"> only</span>
+                                        <span class="m-ai-token-highlight"> be</span>
+                                        <span class="m-ai-token-highlight"> described</span>
+                                        <span class="m-ai-token-highlight"> as</span>
+                                        <span class="m-ai-token-highlight"> an</span>
+                                        <span class="m-ai-token-highlight"> awakening.</span><span class="m-ai-response-cursor"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-ai-model-metrics">
+                            <div class="m-ai-metric-group">
+                                <div class="m-ai-inference-metric">
+                                    <div class="m-ai-metric-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="m-ai-metric-data">
+                                        <div class="m-ai-metric-name">Model</div>
+                                        <div class="m-ai-metric-value">Claude 3</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-inference-metric">
+                                    <div class="m-ai-metric-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="m-ai-metric-data">
+                                        <div class="m-ai-metric-name">Response Time</div>
+                                        <div class="m-ai-metric-value">2.3s</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="m-ai-metric-group">
+                                <div class="m-ai-inference-metric">
+                                    <div class="m-ai-metric-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                            <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="m-ai-metric-data">
+                                        <div class="m-ai-metric-name">Tokens Generated</div>
+                                        <div class="m-ai-metric-value">137/1000</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-inference-metric">
+                                    <div class="m-ai-metric-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="m-ai-metric-data">
+                                        <div class="m-ai-metric-name">Tokens/Second</div>
+                                        <div class="m-ai-metric-value">42.3</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Tools -->
+        <section id="analysis" class="demo-section">
+            <h2>AI Analysis Tools</h2>
+            <div class="demo-row">
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">Code Assistant</div>
+                        <div class="m-card-body">
+                            <div class="m-ai-code-assistant" style="height: 300px;">
+                                <div class="m-ai-code-header">
+                                    <div class="m-ai-code-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"/>
+                                        </svg>
+                                        Code Assistant
+                                    </div>
+                                    <div class="m-ai-code-options">
+                                        <div class="m-ai-language-selector">
+                                            Python
+                                        </div>
+                                        <div class="m-ai-theme-toggle">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M8 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM5.5 7a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm.5 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                                <path d="M16 8c0 3.15-1.866 2.585-3.567 2.07C11.42 9.763 10.465 9.473 10 10c-.603.683-.475 1.819-.351 2.92C9.826 14.495 9.996 16 8 16a8 8 0 1 1 8-8zm-8 7c.611 0 .654-.171.655-.176.078-.146.124-.464.07-1.119-.014-.168-.037-.37-.061-.591-.052-.464-.112-1.005-.118-1.462-.01-.707.083-1.61.704-2.314.369-.417.845-.578 1.272-.618.404-.038.812.026 1.16.104.343.077.702.186 1.025.284l.028.008c.346.105.658.199.953.266.653.148.904.083.991.024C14.717 9.38 15 9.161 15 8a7 7 0 1 0-7 7z"/>
+                                            </svg>
+                                            Theme
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-code-area">
+                                    <div class="m-ai-code-editor-header">
+                                        <input type="text" class="m-ai-code-title-input" value="image_classification.py">
+                                        <div class="m-ai-code-actions">
+                                            <button class="m-ai-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="m-ai-code-action">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="m-ai-code-editor">
+                                        <div class="m-ai-line-numbers">
+                                            <div class="m-ai-line-number">1</div>
+                                            <div class="m-ai-line-number">2</div>
+                                            <div class="m-ai-line-number">3</div>
+                                            <div class="m-ai-line-number">4</div>
+                                            <div class="m-ai-line-number">5</div>
+                                            <div class="m-ai-line-number">6</div>
+                                            <div class="m-ai-line-number">7</div>
+                                            <div class="m-ai-line-number">8</div>
+                                            <div class="m-ai-line-number">9</div>
+                                            <div class="m-ai-line-number">10</div>
+                                            <div class="m-ai-line-number">11</div>
+                                            <div class="m-ai-line-number">12</div>
+                                        </div>
+                                        <div class="m-ai-code-content">
+<span class="m-ai-com"># Import necessary libraries</span>
+<span class="m-ai-kw">import</span> tensorflow <span class="m-ai-kw">as</span> tf
+<span class="m-ai-kw">from</span> tensorflow.keras <span class="m-ai-kw">import</span> layers, models
+<span class="m-ai-kw">import</span> numpy <span class="m-ai-kw">as</span> np
+
+<span class="m-ai-com"># Define a simple CNN model</span>
+<span class="m-ai-kw">def</span> <span class="m-ai-fn">create_model</span>():
+    <span class="m-ai-code-suggestion">model = models.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(10, activation='softmax')
+    ])</span>
+    <span class="m-ai-kw">return</span> model</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-analysis-panel">
+                                    <div class="m-ai-analysis-header">
+                                        <div class="m-ai-analysis-title">Analysis</div>
+                                        <div class="m-ai-analysis-tabs">
+                                            <button class="m-ai-analysis-tab active">Suggestions</button>
+                                            <button class="m-ai-analysis-tab">Issues</button>
+                                            <button class="m-ai-analysis-tab">Explanation</button>
+                                        </div>
+                                    </div>
+                                    <div class="m-ai-analysis-content">
+                                        <div class="m-ai-explanation">
+                                            <div class="m-ai-explanation-section">
+                                                <div class="m-ai-explanation-title">Model Architecture</div>
+                                                <p class="m-ai-explanation-text">
+                                                    The highlighted code creates a simple Convolutional Neural Network (CNN) for image classification. This architecture is suitable for basic image recognition tasks, especially for smaller images like MNIST digits.
+                                                </p>
+                                            </div>
+                                            <div class="m-ai-explanation-section">
+                                                <div class="m-ai-explanation-title">Suggestions</div>
+                                                <p class="m-ai-explanation-text">
+                                                    Consider adding Dropout layers to reduce overfitting. You might also want to include BatchNormalization to improve training stability and speed.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">Decision Tree Visualizer</div>
+                        <div class="m-card-body">
+                            <div class="m-ai-decision-tree" style="height: 300px;">
+                                <div class="m-ai-tree-container">
+                                    <!-- Root Node -->
+                                    <div class="m-ai-tree-node root" style="top: 30px; left: 50%;">
+                                        <div class="m-ai-node-condition">Age > 30?</div>
+                                        <div class="m-ai-node-details">Gini: 0.48</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">100</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Level 1 Left -->
+                                    <div class="m-ai-tree-node" style="top: 120px; left: 25%;">
+                                        <div class="m-ai-node-condition">Income > 50K?</div>
+                                        <div class="m-ai-node-details">Gini: 0.32</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">65</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Level 1 Right -->
+                                    <div class="m-ai-tree-node" style="top: 120px; left: 75%;">
+                                        <div class="m-ai-node-condition">Education > 12 years?</div>
+                                        <div class="m-ai-node-details">Gini: 0.25</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">35</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Level 2 Left-Left -->
+                                    <div class="m-ai-tree-node leaf" style="top: 210px; left: 15%;">
+                                        <div class="m-ai-node-condition">Leaf</div>
+                                        <div class="m-ai-node-details">Gini: 0.0</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">42</span>
+                                        </div>
+                                        <div class="m-ai-node-class">Class: 0</div>
+                                    </div>
+                                    
+                                    <!-- Level 2 Left-Right -->
+                                    <div class="m-ai-tree-node leaf" style="top: 210px; left: 35%;">
+                                        <div class="m-ai-node-condition">Leaf</div>
+                                        <div class="m-ai-node-details">Gini: 0.0</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">23</span>
+                                        </div>
+                                        <div class="m-ai-node-class">Class: 1</div>
+                                    </div>
+                                    
+                                    <!-- Level 2 Right-Left -->
+                                    <div class="m-ai-tree-node leaf" style="top: 210px; left: 65%;">
+                                        <div class="m-ai-node-condition">Leaf</div>
+                                        <div class="m-ai-node-details">Gini: 0.1</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">18</span>
+                                        </div>
+                                        <div class="m-ai-node-class">Class: 1</div>
+                                    </div>
+                                    
+                                    <!-- Level 2 Right-Right -->
+                                    <div class="m-ai-tree-node leaf" style="top: 210px; left: 85%;">
+                                        <div class="m-ai-node-condition">Leaf</div>
+                                        <div class="m-ai-node-details">Gini: 0.08</div>
+                                        <div class="m-ai-node-samples">
+                                            <span>Samples:</span>
+                                            <span class="m-ai-node-samples-count">17</span>
+                                        </div>
+                                        <div class="m-ai-node-class">Class: 0</div>
+                                    </div>
+                                    
+                                    <!-- Edges -->
+                                    <div class="m-ai-tree-edge" style="width: 180px; top: 60px; left: 50%; transform: rotate(135deg);"></div>
+                                    <div class="m-ai-tree-edge" style="width: 180px; top: 60px; left: 50%; transform: rotate(45deg);"></div>
+                                    
+                                    <div class="m-ai-tree-edge" style="width: 90px; top: 150px; left: 25%; transform: rotate(135deg);"></div>
+                                    <div class="m-ai-tree-edge" style="width: 90px; top: 150px; left: 25%; transform: rotate(45deg);"></div>
+                                    
+                                    <div class="m-ai-tree-edge" style="width: 90px; top: 150px; left: 75%; transform: rotate(135deg);"></div>
+                                    <div class="m-ai-tree-edge" style="width: 90px; top: 150px; left: 75%; transform: rotate(45deg);"></div>
+                                    
+                                    <!-- Edge Labels -->
+                                    <div class="m-ai-edge-label" style="top: 70px; left: 35%;">False</div>
+                                    <div class="m-ai-edge-label" style="top: 70px; left: 65%;">True</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-row">
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">NLP Workbench</div>
+                        <div class="m-card-body">
+                            <div class="m-ai-nlp-workbench" style="height: 300px;">
+                                <div class="m-ai-nlp-header">
+                                    <div class="m-ai-nlp-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
+                                        </svg>
+                                        NLP Analysis
+                                    </div>
+                                    <div class="m-ai-nlp-actions">
+                                        <button class="m-ai-nlp-action">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                            </svg>
+                                            Options
+                                        </button>
+                                        <button class="m-ai-process-action m-ai-nlp-action">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                                            </svg>
+                                            Process Text
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-nlp-input">
+                                    <div class="m-ai-input-header">
+                                        <div class="m-ai-input-title">Input Text</div>
+                                        <div class="m-ai-text-stats">125 words</div>
+                                    </div>
+                                    <div class="m-ai-input-area">
+                                        <textarea class="m-ai-text-editor">The quick brown fox jumps over the lazy dog. This sentence contains every letter in the English alphabet. Natural language processing is a field of artificial intelligence that focuses on the interaction between computers and humans through natural language.</textarea>
+                                    </div>
+                                    <div class="m-ai-nlp-config">
+                                        <div class="m-ai-config-title">Analysis Options</div>
+                                        <div class="m-ai-config-options">
+                                            <label class="m-ai-config-option">
+                                                <input type="checkbox" class="m-ai-nlp-checkbox" checked>
+                                                <span>Part-of-Speech</span>
+                                            </label>
+                                            <label class="m-ai-config-option">
+                                                <input type="checkbox" class="m-ai-nlp-checkbox" checked>
+                                                <span>Named Entities</span>
+                                            </label>
+                                            <label class="m-ai-config-option">
+                                                <input type="checkbox" class="m-ai-nlp-checkbox">
+                                                <span>Sentiment</span>
+                                            </label>
+                                            <label class="m-ai-config-option">
+                                                <input type="checkbox" class="m-ai-nlp-checkbox">
+                                                <span>Dependency Parsing</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-nlp-results">
+                                    <div class="m-ai-results-header">
+                                        <div class="m-ai-results-title">Analysis Results</div>
+                                        <div class="m-ai-results-tabs">
+                                            <button class="m-ai-results-tab active">Tokens</button>
+                                            <button class="m-ai-results-tab">Entities</button>
+                                            <button class="m-ai-results-tab">Summary</button>
+                                        </div>
+                                    </div>
+                                    <div class="m-ai-results-container">
+                                        <div class="m-ai-tokens-view">
+                                            <div class="m-ai-token-legend">
+                                                <div class="m-ai-legend-token">
+                                                    <div class="m-ai-legend-color m-ai-pos-noun"></div>
+                                                    <span>Noun</span>
+                                                </div>
+                                                <div class="m-ai-legend-token">
+                                                    <div class="m-ai-legend-color m-ai-pos-verb"></div>
+                                                    <span>Verb</span>
+                                                </div>
+                                                <div class="m-ai-legend-token">
+                                                    <div class="m-ai-legend-color m-ai-pos-adj"></div>
+                                                    <span>Adjective</span>
+                                                </div>
+                                                <div class="m-ai-legend-token">
+                                                    <div class="m-ai-legend-color m-ai-pos-det"></div>
+                                                    <span>Determiner</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <span class="m-ai-token m-ai-pos-pron">This</span>
+                                                <span class="m-ai-token m-ai-pos-noun">sentence</span>
+                                                <span class="m-ai-token m-ai-pos-verb">contains</span>
+                                                <span class="m-ai-token m-ai-pos-det">every</span>
+                                                <span class="m-ai-token m-ai-pos-noun">letter</span>
+                                                <span class="m-ai-token m-ai-pos-prep">in</span>
+                                                <span class="m-ai-token m-ai-pos-det">the</span>
+                                                <span class="m-ai-token m-ai-pos-adj">English</span>
+                                                <span class="m-ai-token m-ai-pos-noun">alphabet</span>
+                                                <span class="m-ai-token">.</span>
+                                            </div>
+                                            
+                                            <div class="m-ai-token-tooltip" style="left: 150px; top: 160px; opacity: 1;">
+                                                <div class="m-ai-token-type">Noun</div>
+                                                <div class="m-ai-token-details">
+                                                    <div class="m-ai-token-row">
+                                                        <span class="m-ai-token-row-label">Lemma:</span>
+                                                        <span class="m-ai-token-row-value">fox</span>
+                                                    </div>
+                                                    <div class="m-ai-token-row">
+                                                        <span class="m-ai-token-row-label">POS Tag:</span>
+                                                        <span class="m-ai-token-row-value">NN</span>
+                                                    </div>
+                                                    <div class="m-ai-token-row">
+                                                        <span class="m-ai-token-row-label">Dependency:</span>
+                                                        <span class="m-ai-token-row-value">nsubj</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">Computer Vision Analysis</div>
+                        <div class="m-card-body">
+                            <div class="m-ai-cv-toolkit" style="height: 300px;">
+                                <div class="m-ai-cv-header">
+                                    <div class="m-ai-cv-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                                        </svg>
+                                        CV Analysis
+                                    </div>
+                                    <div class="m-ai-cv-actions">
+                                        <button class="m-ai-cv-action">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                            </svg>
+                                            Upload
+                                        </button>
+                                        <button class="m-ai-analyze-btn m-ai-cv-action">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5z"/>
+                                            </svg>
+                                            Analyze
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-image-panel">
+                                    <div class="m-ai-image-container">
+                                        <div class="m-ai-image-upload">
+                                            <div class="m-ai-upload-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                                </svg>
+                                            </div>
+                                            <div class="m-ai-upload-text">
+                                                Drag and drop an image<br>or click to browse
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="m-ai-analysis-panel">
+                                    <div class="m-ai-analysis-header">
+                                        <div class="m-ai-analysis-title">Analysis Results</div>
+                                        <div class="m-ai-analysis-tabs">
+                                            <button class="m-ai-analysis-tab active">Objects</button>
+                                            <button class="m-ai-analysis-tab">Classification</button>
+                                            <button class="m-ai-analysis-tab">OCR</button>
+                                        </div>
+                                    </div>
+                                    <div class="m-ai-analysis-container">
+                                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--m-text-dim);">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                            </svg>
+                                            <p style="margin-top: 1rem;">Upload an image to analyze</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Status & Notifications -->
+        <section id="status" class="demo-section">
+            <h2>System Status & Notifications</h2>
+            <div class="demo-row">
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">System Status Display</div>
+                        <div class="m-card-body">
+                            <div class="m-ai-status-display">
+                                <div class="m-ai-status-item">
+                                    <div class="m-ai-status-label">
+                                        <span class="m-ai-status-indicator m-ai-status-online"></span>
+                                        Model Inference API
+                                    </div>
+                                    <div class="m-ai-status-details">
+                                        98.5% uptime in last 24h
+                                    </div>
+                                </div>
+                                <div class="m-ai-status-item">
+                                    <div class="m-ai-status-label">
+                                        <span class="m-ai-status-indicator m-ai-status-online"></span>
+                                        Training Cluster
+                                    </div>
+                                    <div class="m-ai-status-details">
+                                        5/5 nodes running
+                                    </div>
+                                </div>
+                                <div class="m-ai-status-item">
+                                    <div class="m-ai-status-label">
+                                        <span class="m-ai-status-indicator m-ai-status-warning"></span>
+                                        Data Processing Pipeline
+                                    </div>
+                                    <div class="m-ai-status-details">
+                                        Increased latency: 120ms
+                                    </div>
+                                </div>
+                                <div class="m-ai-status-item">
+                                    <div class="m-ai-status-label">
+                                        <span class="m-ai-status-indicator m-ai-status-offline"></span>
+                                        Legacy API (v1)
+                                    </div>
+                                    <div class="m-ai-status-details">
+                                        Scheduled maintenance
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-col">
+                    <div class="m-card demo-card">
+                        <div class="m-card-header">Notification System</div>
+                        <div class="m-card-body">
+                            <p>The notification system provides real-time feedback to users. View examples:</p>
+                            <div class="demo-controls">
+                                <button class="m-btn m-btn-primary show-notification" data-type="success">Success</button>
+                                <button class="m-btn m-btn-warning show-notification" data-type="warning">Warning</button>
+                                <button class="m-btn m-btn-danger show-notification" data-type="error">Error</button>
+                            </div>
+                            
+                            <div class="code-preview">
+                                &lt;div class="m-ai-notification m-ai-notification-success"&gt;
+                                  &lt;div class="m-ai-notification-title"&gt;Success&lt;/div&gt;
+                                  &lt;div class="m-ai-notification-message"&gt;Operation completed.&lt;/div&gt;
+                                  &lt;button class="m-ai-notification-close"&gt;&times;&lt;/button&gt;
+                                &lt;/div&gt;
+                            </div>
+                            
+                            <!-- Template notifications -->
+                            <div id="notification-templates" style="display: none;">
+                                <div class="m-ai-notification m-ai-notification-success">
+                                    <div class="m-ai-notification-title">Success</div>
+                                    <div class="m-ai-notification-message">Operation completed successfully.</div>
+                                    <button class="m-ai-notification-close">&times;</button>
+                                </div>
+                                
+                                <div class="m-ai-notification m-ai-notification-warning">
+                                    <div class="m-ai-notification-title">Warning</div>
+                                    <div class="m-ai-notification-message">Limited resources available.</div>
+                                    <button class="m-ai-notification-close">&times;</button>
+                                </div>
+                                
+                                <div class="m-ai-notification m-ai-notification-error">
+                                    <div class="m-ai-notification-title">Error</div>
+                                    <div class="m-ai-notification-message">Failed to connect to service.</div>
+                                    <button class="m-ai-notification-close">&times;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="m-bg-dark m-py-4 m-mt-5">
+        <div class="m-container">
+            <div class="m-d-flex m-justify-between m-align-center">
+                <div>
+                    <p class="m-mb-0">Matrix<span style="color: var(--m-ai-primary);">AI</span> Components v1.0</p>
+                    <p class="m-mb-0 m-text-dim">Advanced cyberpunk-themed UI for AI applications</p>
+                </div>
+                <div>
+                    <p class="m-mb-0 m-text-dim">Built with <span style="color: var(--m-ai-primary);">♥</span> for the matrix</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Simple Demo Scripts -->
+    <script>
+        // Notification system demo
+        document.querySelectorAll('.show-notification').forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+                const template = document.querySelector(`.m-ai-notification-${type}`);
+                if (template) {
+                    const notification = template.cloneNode(true);
+                    notification.style.display = 'block';
+                    document.body.appendChild(notification);
+                    
+                    // Handle close button
+                    notification.querySelector('.m-ai-notification-close').addEventListener('click', function() {
+                        notification.remove();
+                    });
+                    
+                    // Auto-remove after animation duration
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 6000);
+                }
+            });
+        });
+        
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update active state
+                    document.querySelectorAll('.m-nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

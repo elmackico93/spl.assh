@@ -1,226 +1,1664 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Intelligence Dashboard</title>
-    <link rel="stylesheet" href="css/matrix.css">
-    <link rel="stylesheet" href="css/matrix-hacker-extension.css">
-    <style>
-        :root {
-            --dashboard-bg: #0a1128;
-            --dashboard-text: #e6f1ff;
-            --dashboard-accent: #00b4ff;
-            --dashboard-border: #1a2c4f;
-            --dashboard-secondary: #1f3d7a;
-        }
-
-        body {
-            background-color: var(--dashboard-bg);
-            color: var(--dashboard-text);
-            font-family: 'Inter', 'Helvetica Neue', sans-serif;
-            margin: 0;
-            padding: 2rem;
-            line-height: 1.6;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .dashboard-card {
-            background-color: var(--dashboard-secondary);
-            border-radius: 8px;
-            border: 1px solid var(--dashboard-border);
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--dashboard-border);
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dashboard-accent);
-            margin: 0;
-        }
-
-        .card-icon {
-            color: var(--dashboard-accent);
-            font-size: 1.5rem;
-        }
-
-        .network-map {
-            position: relative;
-            height: 250px;
-            background-color: var(--dashboard-bg);
-            border-radius: 8px;
-            border: 1px solid var(--dashboard-border);
-        }
-
-        .network-node {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .network-node:hover {
-            transform: scale(1.1);
-        }
-
-        .network-node.server { 
-            background-color: #00b4ff; 
-            left: 20%; 
-            top: 30%; 
-        }
-
-        .network-node.client { 
-            background-color: #00ff87; 
-            left: 60%; 
-            top: 60%; 
-        }
-
-        .network-node.router { 
-            background-color: #ff6b6b; 
-            left: 80%; 
-            top: 40%; 
-        }
-
-        .network-connection {
-            position: absolute;
-            height: 2px;
-            background-color: rgba(255,255,255,0.2);
-        }
-
-        .threat-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 1rem;
-        }
-
-        .threat-indicator {
-            background-color: var(--dashboard-bg);
-            border-radius: 6px;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .threat-level {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
-        .threat-label {
-            font-size: 0.8rem;
-            color: var(--dashboard-accent);
-        }
-
-        .terminal {
-            background-color: #000;
-            color: #00ff41;
-            font-family: 'Courier New', monospace;
-            padding: 1rem;
-            border-radius: 8px;
-            height: 300px;
-            overflow-y: auto;
-        }
-
-        .terminal-line {
-            margin-bottom: 0.5rem;
-        }
-
-        .terminal-prompt {
-            color: var(--dashboard-accent);
-            margin-right: 0.5rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackMatrix Command Center</title>
+  <link rel="stylesheet" href="css/matrix.css">
+  <link rel="stylesheet" href="css/matrix-hacker-extension.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --header-height: 60px;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--h-bg);
+      color: var(--h-text-white);
+      font-family: var(--h-font-mono);
+      overflow-x: hidden;
+    }
+    
+    .dashboard-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .dashboard-header {
+      height: var(--header-height);
+      background-color: var(--h-panel);
+      border-bottom: 1px solid var(--h-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .dashboard-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--h-accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .dashboard-logo-icon {
+      font-size: 1.8rem;
+    }
+    
+    .dashboard-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .dashboard-status {
+      padding: 5px 10px;
+      background-color: rgba(0, 153, 255, 0.1);
+      border: 1px solid rgba(0, 153, 255, 0.3);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .dashboard-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--h-text-success);
+      box-shadow: 0 0 5px rgba(0, 204, 102, 0.7);
+    }
+    
+    .dashboard-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+    
+    .dashboard-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--h-panel-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--h-accent);
+      font-size: 1.2rem;
+    }
+    
+    .dashboard-username {
+      font-weight: 500;
+    }
+    
+    .dashboard-main {
+      display: flex;
+      flex: 1;
+    }
+    
+    .dashboard-sidebar {
+      width: 60px;
+      background-color: var(--h-panel);
+      border-right: 1px solid var(--h-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      transition: width 0.3s;
+    }
+    
+    .dashboard-sidebar:hover {
+      width: 200px;
+    }
+    
+    .dashboard-sidebar-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      cursor: pointer;
+      color: var(--h-text-dim);
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .dashboard-sidebar-item:hover {
+      color: var(--h-text-white);
+      background-color: var(--h-panel-alt);
+    }
+    
+    .dashboard-sidebar-item.active {
+      color: var(--h-accent);
+      background-color: var(--h-panel-alt);
+    }
+    
+    .dashboard-sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background-color: var(--h-accent);
+    }
+    
+    .dashboard-sidebar-icon {
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .dashboard-sidebar-label {
+      display: none;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.3s;
+    }
+    
+    .dashboard-sidebar:hover .dashboard-sidebar-label {
+      display: block;
+      opacity: 1;
+    }
+    
+    .dashboard-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .dashboard-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .dashboard-row-full {
+      margin-bottom: 20px;
+    }
+    
+    .dashboard-card {
+      background-color: var(--h-panel);
+      border: 1px solid var(--h-border);
+      border-radius: 6px;
+      overflow: hidden;
+      height: 100%;
+    }
+    
+    .dashboard-card-header {
+      padding: 15px;
+      border-bottom: 1px solid var(--h-border);
+      background-color: var(--h-panel-alt);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .dashboard-card-title {
+      font-family: var(--h-font-ui);
+      font-size: 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .dashboard-card-icon {
+      color: var(--h-accent);
+    }
+    
+    .dashboard-card-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .dashboard-card-action {
+      background: none;
+      border: none;
+      color: var(--h-text-dim);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .dashboard-card-action:hover {
+      color: var(--h-text-white);
+    }
+    
+    .dashboard-card-body {
+      padding: 15px;
+      height: calc(100% - 56px); /* Adjust based on header height */
+    }
+    
+    /* Alert banner */
+    .alert-banner {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      background-color: rgba(255, 62, 62, 0.1);
+      border: 1px solid rgba(255, 62, 62, 0.3);
+      border-left: 4px solid var(--h-text-alert);
+      border-radius: 4px;
+      padding: 15px;
+      box-shadow: var(--h-shadow);
+      width: 300px;
+      z-index: 9999;
+      animation: alert-slide-in 0.3s forwards;
+      display: none;
+    }
+    
+    @keyframes alert-slide-in {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .alert-title {
+      color: var(--h-text-alert);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .alert-close {
+      background: none;
+      border: none;
+      color: var(--h-text-dim);
+      cursor: pointer;
+    }
+    
+    .alert-message {
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+    }
+    
+    .alert-progress {
+      height: 3px;
+      background-color: rgba(255, 62, 62, 0.3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .alert-progress-bar {
+      height: 100%;
+      background-color: var(--h-text-alert);
+      width: 100%;
+      animation: alert-progress 5s linear forwards;
+    }
+    
+    @keyframes alert-progress {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard-main {
+        flex-direction: column;
+      }
+      
+      .dashboard-sidebar {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0;
+      }
+      
+      .dashboard-sidebar:hover {
+        width: 100%;
+      }
+      
+      .dashboard-sidebar-item {
+        padding: 0;
+        height: 60px;
+        justify-content: center;
+        flex-direction: column;
+        font-size: 0.7rem;
+      }
+      
+      .dashboard-sidebar-icon {
+        width: auto;
+        margin-bottom: 5px;
+      }
+      
+      .dashboard-sidebar-label {
+        display: block;
+        font-size: 0.7rem;
+      }
+      
+      .dashboard-sidebar-item.active::before {
+        left: 0;
+        top: 0;
+        height: 3px;
+        width: 100%;
+      }
+      
+      .alert-banner {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="dashboard">
-        <!-- Network Overview -->
-        <div class="dashboard-card">
-            <div class="card-header">
-                <h2 class="card-title">Network Topology</h2>
-                <div class="card-icon">🌐</div>
-            </div>
-            <div class="network-map">
-                <div class="network-node server" title="Primary Server">SRV</div>
-                <div class="network-node client" title="Client Node">CLI</div>
-                <div class="network-node router" title="Network Router">RTR</div>
-                <div class="network-connection" style="left: 20%; top: 35%; width: 200px; transform: rotate(35deg);"></div>
-                <div class="network-connection" style="left: 60%; top: 50%; width: 150px; transform: rotate(-25deg);"></div>
-            </div>
-        </div>
+  <!-- Scan line effect -->
+  <div class="h-scan-line"></div>
 
-        <!-- Threat Summary -->
-        <div class="dashboard-card">
-            <div class="card-header">
-                <h2 class="card-title">Threat Landscape</h2>
-                <div class="card-icon">⚠️</div>
-            </div>
-            <div class="threat-summary">
-                <div class="threat-indicator">
-                    <div class="threat-level">24</div>
-                    <div class="threat-label">Active Threats</div>
-                </div>
-                <div class="threat-indicator">
-                    <div class="threat-level">3</div>
-                    <div class="threat-label">Critical</div>
-                </div>
-                <div class="threat-indicator">
-                    <div class="threat-level">12</div>
-                    <div class="threat-label">High Risk</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Terminal Log -->
-        <div class="dashboard-card">
-            <div class="card-header">
-                <h2 class="card-title">System Log</h2>
-                <div class="card-icon">📋</div>
-            </div>
-            <div class="terminal">
-                <div class="terminal-line">
-                    <span class="terminal-prompt">$</span>
-                    Initializing security scan...
-                </div>
-                <div class="terminal-line">
-                    <span class="terminal-prompt">></span>
-                    Detected potential network anomaly
-                </div>
-                <div class="terminal-line">
-                    <span class="terminal-prompt">!</span>
-                    Threat level: Moderate
-                </div>
-            </div>
-        </div>
+  <!-- Alert Banner -->
+  <div id="alertBanner" class="alert-banner">
+    <div class="alert-header">
+      <div class="alert-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Security Alert</span>
+      </div>
+      <button class="alert-close" onclick="document.getElementById('alertBanner').style.display='none'">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
+    <div class="alert-message">
+      Potential intrusion detected from IP 192.168.1.45. Unusual port scanning activity observed.
+    </div>
+    <div class="alert-progress">
+      <div class="alert-progress-bar"></div>
+    </div>
+  </div>
+
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="dashboard-logo">
+        <i class="fas fa-shield-alt dashboard-logo-icon"></i>
+        <span class="h-glitch" data-text="HackMatrix">HackMatrix</span>
+      </div>
+      
+      <div class="dashboard-controls">
+        <div class="dashboard-status">
+          <div class="dashboard-status-dot"></div>
+          <span>System Online</span>
+        </div>
+        
+        <div class="dashboard-user">
+          <div class="dashboard-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="dashboard-username">root@system</span>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Dashboard -->
+    <div class="dashboard-main">
+      <!-- Sidebar -->
+      <div class="dashboard-sidebar">
+        <div class="dashboard-sidebar-item active">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Dashboard</div>
+        </div>
+        
+        <div class="dashboard-sidebar-item">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-network-wired"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Network</div>
+        </div>
+        
+        <div class="dashboard-sidebar-item">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-terminal"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Terminal</div>
+        </div>
+        
+        <div class="dashboard-sidebar-item">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Exploits</div>
+        </div>
+        
+        <div class="dashboard-sidebar-item">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-file-code"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Payloads</div>
+        </div>
+        
+        <div class="dashboard-sidebar-item">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Crypto</div>
+        </div>
+        
+        <div class="dashboard-sidebar-item">
+          <div class="dashboard-sidebar-icon">
+            <i class="fas fa-cog"></i>
+          </div>
+          <div class="dashboard-sidebar-label">Settings</div>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="dashboard-content">
+        <!-- Terminal Demo -->
+        <div class="dashboard-row">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-terminal dashboard-card-icon"></i>
+                <span>Advanced Terminal</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action" onclick="addTerminalLine()">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-expand-alt"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-terminal" style="height: 300px;">
+                <div class="h-terminal-actions">
+                  <button class="h-terminal-btn minimize"></button>
+                  <button class="h-terminal-btn maximize"></button>
+                  <button class="h-terminal-btn close"></button>
+                </div>
+                <div class="h-terminal-content" id="terminalContent">
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-prompt">
+                      <span class="h-terminal-root">root</span>@<span class="h-terminal-host">kali</span>:<span class="h-terminal-path">~</span>#
+                    </span>
+                    <span class="h-terminal-input">nmap -sV 192.168.1.1/24</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output">Starting Nmap 7.92 ( https://nmap.org ) at 2025-04-04 15:30 EDT</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output">Scanning 254 hosts...</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <div class="h-terminal-progress">
+                      <div class="h-terminal-progress-bar"></div>
+                    </div>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output h-terminal-success">Discovered host: 192.168.1.1 (Router) - Open ports: 80, 443, 22</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output h-terminal-success">Discovered host: 192.168.1.45 (Unknown) - Open ports: 21, 22, 80, 443, 8080</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output h-terminal-warning">Unusual port configuration detected on 192.168.1.45</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-prompt">
+                      <span class="h-terminal-root">root</span>@<span class="h-terminal-host">kali</span>:<span class="h-terminal-path">~</span>#
+                    </span>
+                    <span class="h-terminal-input">sudo service nginx start</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output">[sudo] password for root: </span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output">* Starting nginx</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output h-terminal-success">[ OK ]</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-prompt">
+                      <span class="h-terminal-root">root</span>@<span class="h-terminal-host">kali</span>:<span class="h-terminal-path">~</span>#
+                    </span>
+                    <span class="h-terminal-input">python3 exploit.py --target 192.168.1.45 --port 8080</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output">[+] Connecting to target...</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-output">[+] Testing vulnerabilities...</span>
+                  </div>
+                  <div class="h-terminal-line">
+                    <span class="h-terminal-spinner"></span>
+                    <span class="h-terminal-output">Launching exploit... </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-code dashboard-card-icon"></i>
+                <span>Code Editor</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action">
+                  <i class="fas fa-save"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-play"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-code-editor">
+                <div class="h-editor-header">
+                  <div class="h-editor-title">
+                    <i class="fas fa-code h-editor-icon"></i>
+                    <span>exploit.py</span>
+                  </div>
+                  <div class="h-editor-actions">
+                    <button class="h-editor-action-btn">
+                      <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="h-editor-action-btn">
+                      <i class="fas fa-save"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="h-editor-tabs">
+                  <div class="h-editor-tab active">
+                    exploit.py
+                    <span class="h-editor-tab-close">×</span>
+                  </div>
+                  <div class="h-editor-tab">
+                    payload.py
+                    <span class="h-editor-tab-close">×</span>
+                  </div>
+                  <div class="h-editor-tab">
+                    config.json
+                    <span class="h-editor-tab-close">×</span>
+                  </div>
+                </div>
+                <div class="h-editor-workspace">
+                  <div class="h-editor-sidebar">
+                    <button class="h-editor-sidebar-btn active">
+                      <i class="fas fa-file-code"></i>
+                    </button>
+                    <button class="h-editor-sidebar-btn">
+                      <i class="fas fa-search"></i>
+                    </button>
+                    <button class="h-editor-sidebar-btn">
+                      <i class="fas fa-bug"></i>
+                    </button>
+                    <button class="h-editor-sidebar-btn">
+                      <i class="fas fa-cog"></i>
+                    </button>
+                  </div>
+                  <div class="h-editor-content">
+                    <div class="h-editor-gutter">
+                      <div class="h-editor-line-number">1</div>
+                      <div class="h-editor-line-number">2</div>
+                      <div class="h-editor-line-number">3</div>
+                      <div class="h-editor-line-number">4</div>
+                      <div class="h-editor-line-number">5</div>
+                      <div class="h-editor-line-number">6</div>
+                      <div class="h-editor-line-number">7</div>
+                      <div class="h-editor-line-number active">8</div>
+                      <div class="h-editor-line-number">9</div>
+                      <div class="h-editor-line-number">10</div>
+                      <div class="h-editor-line-number">11</div>
+                      <div class="h-editor-line-number">12</div>
+                      <div class="h-editor-line-number">13</div>
+                      <div class="h-editor-line-number">14</div>
+                    </div>
+                    <textarea class="h-editor-textarea" readonly>#!/usr/bin/env python3
+import argparse
+import socket
+import sys
+import time
+
+def exploit_target(target, port):
+    """Exploit the target system using CVE-2023-XXXX."""
+    print(f"[+] Connecting to target: {target}:{port}")
+    try:
+        # Create a socket connection
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(5)
+        sock.connect((target, port))
+        
+        # Send the exploit payload
+        payload = b"A" * 1024 + b"\x90" * 32 + shellcode
+</textarea>
+                  </div>
+                </div>
+                <div class="h-editor-footer">
+                  <div class="h-editor-status">
+                    <span>Python</span>
+                    <span>UTF-8</span>
+                  </div>
+                  <div class="h-editor-position">
+                    <span>Ln 8, Col 12</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Network Scanner & Visualization -->
+        <div class="dashboard-row">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-radar dashboard-card-icon"></i>
+                <span>Network Scanner</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action" onclick="document.getElementById('alertBanner').style.display='flex'">
+                  <i class="fas fa-bell"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-sync"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-network-scanner">
+                <div class="h-scanner-controls">
+                  <div class="h-scanner-input-group">
+                    <label class="h-scanner-label">Target IP/Range</label>
+                    <input type="text" class="h-scanner-input" value="192.168.1.1/24">
+                  </div>
+                  <div class="h-scanner-input-group">
+                    <label class="h-scanner-label">Scan Type</label>
+                    <select class="h-scanner-input">
+                      <option>Quick Scan</option>
+                      <option selected>Service Detection</option>
+                      <option>Vulnerability Scan</option>
+                      <option>Full Port Scan</option>
+                    </select>
+                  </div>
+                  <button class="h-scanner-action">
+                    <i class="fas fa-play"></i>
+                    Start Scan
+                  </button>
+                </div>
+                
+                <div class="h-scanner-results">
+                  <table class="h-scanner-table">
+                    <thead>
+                      <tr>
+                        <th>Host</th>
+                        <th>Ports</th>
+                        <th>Services</th>
+                        <th>OS</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="h-scanner-ip">192.168.1.1</span></td>
+                        <td><span class="h-scanner-port">80</span>, <span class="h-scanner-port">443</span>, 22</td>
+                        <td><span class="h-scanner-service">HTTP</span>, <span class="h-scanner-service">HTTPS</span>, SSH</td>
+                        <td>Linux 5.4</td>
+                        <td>Normal</td>
+                      </tr>
+                      <tr>
+                        <td><span class="h-scanner-ip">192.168.1.21</span></td>
+                        <td><span class="h-scanner-port">80</span>, 3389</td>
+                        <td><span class="h-scanner-service">HTTP</span>, RDP</td>
+                        <td>Windows 10</td>
+                        <td>Normal</td>
+                      </tr>
+                      <tr>
+                        <td><span class="h-scanner-ip">192.168.1.45</span></td>
+                        <td><span class="h-scanner-port">21</span>, <span class="h-scanner-port">80</span>, <span class="h-scanner-port">8080</span></td>
+                        <td><span class="h-scanner-service">FTP</span>, <span class="h-scanner-service">HTTP</span>, <span class="h-scanner-vulnerability">HTTP-ALT</span></td>
+                        <td>Unknown</td>
+                        <td><span class="h-scanner-severity high"></span> Suspicious</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div class="h-scanner-details visible">
+                  <div class="h-scanner-details-title">
+                    Host Details: 192.168.1.45
+                  </div>
+                  
+                  <div class="h-scanner-metric">
+                    <div class="h-scanner-metric-item">
+                      <div class="h-scanner-metric-value h-text-warning">5</div>
+                      <div class="h-scanner-metric-label">Open Ports</div>
+                    </div>
+                    <div class="h-scanner-metric-item">
+                      <div class="h-scanner-metric-value h-text-danger">3</div>
+                      <div class="h-scanner-metric-label">Vulnerabilities</div>
+                    </div>
+                    <div class="h-scanner-metric-item">
+                      <div class="h-scanner-metric-value">24ms</div>
+                      <div class="h-scanner-metric-label">Response Time</div>
+                    </div>
+                  </div>
+                  
+                  <div class="h-scanner-details-info">
+                    Host appears to be running an outdated web server with multiple vulnerabilities (CVE-2023-XXXX, CVE-2022-YYYY). 
+                    Unusual port configuration suggests potential backdoor access. Consider immediate investigation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Network Traffic Visualization -->
+        <div class="dashboard-row-full">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-project-diagram dashboard-card-icon"></i>
+                <span>Network Traffic Visualization</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action">
+                  <i class="fas fa-filter"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-expand-alt"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-network-traffic">
+                <div class="h-traffic-header">
+                  <div class="h-traffic-title">Live Network Analysis</div>
+                  <div class="h-traffic-stats">
+                    <div class="h-traffic-stat">
+                      <div class="h-traffic-stat-label">Packets:</div>
+                      <div class="h-traffic-stat-value" id="packetCounter">1,324</div>
+                    </div>
+                    <div class="h-traffic-stat">
+                      <div class="h-traffic-stat-label">Bandwidth:</div>
+                      <div class="h-traffic-stat-value">2.4 MB/s</div>
+                    </div>
+                    <div class="h-traffic-stat">
+                      <div class="h-traffic-stat-label">Connections:</div>
+                      <div class="h-traffic-stat-value">28</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="h-traffic-filter">
+                  <div class="h-traffic-filter-label">Filter:</div>
+                  <input type="text" class="h-traffic-filter-input" placeholder="ip.addr == 192.168.1.45 && http">
+                  <button class="h-traffic-filter-apply">Apply</button>
+                </div>
+                
+                <div class="h-traffic-visualizer" id="trafficVisualizer">
+                  <div class="h-traffic-grid"></div>
+                  
+                  <!-- Network nodes -->
+                  <div class="h-traffic-node server" style="left: 20%; top: 40%;">SRV</div>
+                  <div class="h-traffic-node client" style="left: 80%; top: 60%;">CLI</div>
+                  <div class="h-traffic-node router" style="left: 50%; top: 30%;">RTR</div>
+                  <div class="h-traffic-node suspicious" style="left: 70%; top: 70%;">???</div>
+                  
+                  <!-- Sample packet traces are added by JS -->
+                </div>
+                
+                <div class="h-traffic-log" id="trafficLog">
+                  <div class="h-traffic-log-entry">
+                    <span class="h-traffic-log-time">15:45:23</span>
+                    <span class="h-traffic-log-protocol https">HTTPS</span>
+                    <span class="h-traffic-log-message">192.168.1.21 → 216.58.194.174:443 [TCP] TLSv1.2</span>
+                  </div>
+                  <div class="h-traffic-log-entry">
+                    <span class="h-traffic-log-time">15:45:22</span>
+                    <span class="h-traffic-log-protocol dns">DNS</span>
+                    <span class="h-traffic-log-message">192.168.1.21 → 8.8.8.8:53 query: google.com</span>
+                  </div>
+                  <div class="h-traffic-log-entry">
+                    <span class="h-traffic-log-time">15:45:20</span>
+                    <span class="h-traffic-log-protocol http">HTTP</span>
+                    <span class="h-traffic-log-message">192.168.1.45 → 192.168.1.1:80 [GET /admin.php]</span>
+                  </div>
+                  <div class="h-traffic-log-entry">
+                    <span class="h-traffic-log-time">15:45:18</span>
+                    <span class="h-traffic-log-protocol malicious">ALERT</span>
+                    <span class="h-traffic-log-message">192.168.1.45 → 192.168.1.21:445 [Potential SMB exploit]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hexadecimal/Binary Viewer and Encryption Tool -->
+        <div class="dashboard-row">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-file-binary dashboard-card-icon"></i>
+                <span>Hex Viewer</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action">
+                  <i class="fas fa-upload"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-hex-viewer">
+                <div class="h-hex-header">
+                  <div class="h-hex-title">
+                    <i class="fas fa-file-code"></i>
+                    <span>payload.bin</span>
+                  </div>
+                  <div class="h-hex-view-selector">
+                    <div class="h-hex-view-option active">Hex</div>
+                    <div class="h-hex-view-option">Binary</div>
+                    <div class="h-hex-view-option">ASCII</div>
+                  </div>
+                </div>
+                
+                <div class="h-hex-content">
+                  <div class="h-hex-address">
+                    <div class="h-hex-address-line">0x0000</div>
+                    <div class="h-hex-address-line">0x0010</div>
+                    <div class="h-hex-address-line">0x0020</div>
+                    <div class="h-hex-address-line">0x0030</div>
+                    <div class="h-hex-address-line">0x0040</div>
+                    <div class="h-hex-address-line">0x0050</div>
+                  </div>
+                  
+                  <div class="h-hex-bytes">
+                    <div class="h-hex-row">
+                      <span class="h-hex-byte ascii-printable">4D</span>
+                      <span class="h-hex-byte ascii-printable">5A</span>
+                      <span class="h-hex-byte">90</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">04</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">FF</span>
+                      <span class="h-hex-byte">FF</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-ascii">MZ..............</span>
+                    </div>
+                    <div class="h-hex-row">
+                      <span class="h-hex-byte">B8</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">40</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-ascii">................</span>
+                    </div>
+                    <div class="h-hex-row">
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">80</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-ascii">................</span>
+                    </div>
+                    <div class="h-hex-row">
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">4C</span>
+                      <span class="h-hex-byte ascii-printable">45</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte modified selected">01</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte modified">05</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">FF</span>
+                      <span class="h-hex-byte">FF</span>
+                      <span class="h-hex-ascii">...LE..........</span>
+                    </div>
+                    <div class="h-hex-row">
+                      <span class="h-hex-byte">20</span>
+                      <span class="h-hex-byte">73</span>
+                      <span class="h-hex-byte ascii-printable">68</span>
+                      <span class="h-hex-byte ascii-printable">65</span>
+                      <span class="h-hex-byte ascii-printable">6C</span>
+                      <span class="h-hex-byte ascii-printable">6C</span>
+                      <span class="h-hex-byte ascii-printable">63</span>
+                      <span class="h-hex-byte ascii-printable">6F</span>
+                      <span class="h-hex-byte ascii-printable">64</span>
+                      <span class="h-hex-byte ascii-printable">65</span>
+                      <span class="h-hex-byte ascii-printable">20</span>
+                      <span class="h-hex-byte ascii-printable">70</span>
+                      <span class="h-hex-byte ascii-printable">61</span>
+                      <span class="h-hex-byte ascii-printable">79</span>
+                      <span class="h-hex-byte ascii-printable">6C</span>
+                      <span class="h-hex-byte ascii-printable">6F</span>
+                      <span class="h-hex-ascii"> shellcode paylo</span>
+                    </div>
+                    <div class="h-hex-row">
+                      <span class="h-hex-byte ascii-printable">61</span>
+                      <span class="h-hex-byte ascii-printable">64</span>
+                      <span class="h-hex-byte zero">00</span>
+                      <span class="h-hex-byte">90</span>
+                      <span class="h-hex-byte">90</span>
+                      <span class="h-hex-byte">90</span>
+                      <span class="h-hex-byte">90</span>
+                      <span class="h-hex-byte">90</span>
+                      <span class="h-hex-byte">EB</span>
+                      <span class="h-hex-byte">10</span>
+                      <span class="h-hex-byte">5E</span>
+                      <span class="h-hex-byte">31</span>
+                      <span class="h-hex-byte">C9</span>
+                      <span class="h-hex-byte">B1</span>
+                      <span class="h-hex-byte">19</span>
+                      <span class="h-hex-byte">80</span>
+                      <span class="h-hex-ascii">ad..............
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="h-hex-footer">
+                  <div class="h-hex-stat">
+                    <span class="h-hex-stat-label">Size:</span>
+                    <span class="h-hex-stat-value">1.2 KB</span>
+                  </div>
+                  <div class="h-hex-stat">
+                    <span class="h-hex-stat-label">Type:</span>
+                    <span class="h-hex-stat-value">PE32 Executable</span>
+                  </div>
+                  <div class="h-hex-stat">
+                    <span class="h-hex-stat-label">Position:</span>
+                    <span class="h-hex-stat-value">0x0038</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-key dashboard-card-icon"></i>
+                <span>Encryption Tool</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action">
+                  <i class="fas fa-sync"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-clipboard"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-encryption">
+                <div class="h-encryption-header">
+                  <div class="h-encryption-title">Encryption/Decryption</div>
+                  <div class="h-encryption-selector">
+                    <div class="h-encryption-option active">Encrypt</div>
+                    <div class="h-encryption-option">Decrypt</div>
+                  </div>
+                </div>
+                
+                <div class="h-encryption-algorithm">
+                  <div class="h-encryption-algorithm-header">
+                    <div class="h-encryption-algorithm-title">Algorithm</div>
+                    <select class="h-encryption-algorithm-select">
+                      <option>AES-256</option>
+                      <option>RSA</option>
+                      <option>ChaCha20</option>
+                      <option>Blowfish</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="h-encryption-io">
+                  <div class="h-encryption-input">
+                    <div class="h-encryption-label">Input</div>
+                    <textarea class="h-encryption-textarea">Top secret information: Access credentials for internal server - username: admin, password: Sup3rS3cur3</textarea>
+                  </div>
+                  <div class="h-encryption-output">
+                    <div class="h-encryption-label">Output</div>
+                    <textarea class="h-encryption-textarea result" readonly>U2FsdGVkX1/7EQHkKBSQN+RnL5NqZYUbfJ3ey1vZ5trYjTR1N8K4CpL4Z+tKKXwe6Mv1BtL8m+OKgLJI5QX6j5L2HHSxF9W1+FiKA63JBACvGkuVX6BjdI7MwVlJxBcQp8UTokb4H/9WVfpX+KKw0LPUiDYeFnqVR</textarea>
+                  </div>
+                </div>
+                
+                <div class="h-encryption-key">
+                  <div class="h-encryption-label">Encryption Key</div>
+                  <input type="text" class="h-encryption-key-input" value="a1b2c3d4e5f6g7h8i9j0">
+                </div>
+                
+                <div class="h-encryption-actions">
+                  <button class="h-encryption-action">
+                    <i class="fas fa-lock"></i>
+                    Encrypt
+                  </button>
+                  <button class="h-encryption-action">
+                    <i class="fas fa-broom"></i>
+                    Clear
+                  </button>
+                </div>
+                
+                <div class="h-encryption-visual">
+                  <div class="h-encryption-step" style="width: 25%;">
+                    <div class="h-encryption-step-label">Preparation</div>
+                  </div>
+                  <div class="h-encryption-step active" style="left: 25%; width: 25%;">
+                    <div class="h-encryption-step-label">Key Derivation</div>
+                  </div>
+                  <div class="h-encryption-step" style="left: 50%; width: 25%;">
+                    <div class="h-encryption-step-label">Encryption</div>
+                  </div>
+                  <div class="h-encryption-step" style="left: 75%; width: 25%;">
+                    <div class="h-encryption-step-label">Encoding</div>
+                  </div>
+                  
+                  <div class="h-encryption-block" style="left: 30%; top: 50%;">A</div>
+                  <div class="h-encryption-block" style="left: 40%; top: 30%;">B</div>
+                  <div class="h-encryption-block encrypted" style="left: 50%; top: 40%;">C</div>
+                  <div class="h-encryption-block encrypted" style="left: 60%; top: 60%;">D</div>
+                  <div class="h-encryption-block" style="left: 70%; top: 35%;">E</div>
+                </div>
+                
+                <div class="h-encryption-info">
+                  <div class="h-encryption-stat">
+                    <div class="h-encryption-stat-label">Encryption Type:</div>
+                    <div>AES-256-CBC with PBKDF2</div>
+                  </div>
+                  <div class="h-encryption-stat">
+                    <div class="h-encryption-stat-label">Output Format:</div>
+                    <div>Base64</div>
+                  </div>
+                  <div class="h-encryption-stat">
+                    <div class="h-encryption-stat-label">Key Strength:</div>
+                    <div>Strong (160 bits)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Password Cracker & Authentication Interface -->
+        <div class="dashboard-row">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-unlock dashboard-card-icon"></i>
+                <span>Password Cracker</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action">
+                  <i class="fas fa-pause"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-stop"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-password-cracker">
+                <div class="h-cracker-header">
+                  <div class="h-cracker-title">
+                    <i class="fas fa-bolt"></i>
+                    <span>Brute Force Attack</span>
+                  </div>
+                  <div class="h-cracker-status active">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Running</span>
+                  </div>
+                </div>
+                
+                <div class="h-cracker-input">
+                  <div class="h-cracker-input-group">
+                    <label class="h-cracker-label">Target Hash</label>
+                    <input type="text" class="h-cracker-text-input" value="5f4dcc3b5aa765d61d8327deb882cf99">
+                  </div>
+                  <div class="h-cracker-input-group">
+                    <label class="h-cracker-label">Hash Type</label>
+                    <select class="h-cracker-text-input">
+                      <option>MD5</option>
+                      <option>SHA-1</option>
+                      <option>SHA-256</option>
+                      <option>bcrypt</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="h-cracker-options">
+                  <div class="h-cracker-option">
+                    <input type="checkbox" class="h-cracker-checkbox" checked>
+                    <label class="h-cracker-checkbox-label">Lowercase</label>
+                  </div>
+                  <div class="h-cracker-option">
+                    <input type="checkbox" class="h-cracker-checkbox" checked>
+                    <label class="h-cracker-checkbox-label">Uppercase</label>
+                  </div>
+                  <div class="h-cracker-option">
+                    <input type="checkbox" class="h-cracker-checkbox" checked>
+                    <label class="h-cracker-checkbox-label">Numbers</label>
+                  </div>
+                  <div class="h-cracker-option">
+                    <input type="checkbox" class="h-cracker-checkbox">
+                    <label class="h-cracker-checkbox-label">Symbols</label>
+                  </div>
+                </div>
+                
+                <button class="h-cracker-action">
+                  <i class="fas fa-play"></i>
+                  Start Attack
+                </button>
+                
+                <div class="h-cracker-progress">
+                  <div class="h-cracker-progress-bar" style="width: 37%;"></div>
+                </div>
+                
+                <div class="h-cracker-progress-info">
+                  <div>37% complete</div>
+                  <div>est. time remaining: 14m 32s</div>
+                </div>
+                
+                <div class="h-cracker-result">
+                  <div class="h-cracker-result-title">Passwords Tried</div>
+                  <div class="h-cracker-passwords">
+                    <div class="h-cracker-password">
+                      <div class="h-cracker-password-text">sunshine</div>
+                      <div class="h-cracker-password-time">2.3s</div>
+                    </div>
+                    <div class="h-cracker-password">
+                      <div class="h-cracker-password-text">qwerty123</div>
+                      <div class="h-cracker-password-time">4.5s</div>
+                    </div>
+                    <div class="h-cracker-password">
+                      <div class="h-cracker-password-text">baseball</div>
+                      <div class="h-cracker-password-time">6.8s</div>
+                    </div>
+                    <div class="h-cracker-password">
+                      <div class="h-cracker-password-text">football</div>
+                      <div class="h-cracker-password-time">8.2s</div>
+                    </div>
+                    <div class="h-cracker-password">
+                      <div class="h-cracker-password-text">monkey</div>
+                      <div class="h-cracker-password-time">11.4s</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="h-cracker-stats">
+                  <div class="h-cracker-stat">
+                    <div class="h-cracker-stat-value">982,341</div>
+                    <div class="h-cracker-stat-label">Attempts</div>
+                  </div>
+                  <div class="h-cracker-stat">
+                    <div class="h-cracker-stat-value">53,742/s</div>
+                    <div class="h-cracker-stat-label">Speed</div>
+                  </div>
+                  <div class="h-cracker-stat">
+                    <div class="h-cracker-stat-value">9 / 16</div>
+                    <div class="h-cracker-stat-label">Cores</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">
+                <i class="fas fa-user-lock dashboard-card-icon"></i>
+                <span>Authentication</span>
+              </div>
+              <div class="dashboard-card-actions">
+                <button class="dashboard-card-action">
+                  <i class="fas fa-redo"></i>
+                </button>
+                <button class="dashboard-card-action">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-card-body">
+              <div class="h-auth">
+                <div class="h-auth-logo">SecureAccess</div>
+                
+                <div class="h-auth-fingerprint">
+                  <!-- Fingerprint scanner animation handled by CSS -->
+                </div>
+                
+                <h2 class="h-auth-title">System Login</h2>
+                
+                <div class="h-auth-alert">
+                  <i class="fas fa-exclamation-triangle h-auth-alert-icon"></i>
+                  <div>Access restricted. Biometric verification required.</div>
+                </div>
+                
+                <form class="h-auth-form">
+                  <div class="h-auth-input-group">
+                    <label class="h-auth-label">Username</label>
+                    <input type="text" class="h-auth-input" value="admin">
+                    <i class="fas fa-user h-auth-icon"></i>
+                  </div>
+                  
+                  <div class="h-auth-input-group">
+                    <label class="h-auth-label">Password</label>
+                    <input type="password" class="h-auth-input" value="••••••••">
+                    <i class="fas fa-lock h-auth-icon"></i>
+                  </div>
+                  
+                  <div class="h-auth-remember">
+                    <input type="checkbox" class="h-auth-checkbox" id="rememberMe">
+                    <label class="h-auth-remember-label" for="rememberMe">Remember this device</label>
+                  </div>
+                  
+                  <button type="button" class="h-auth-submit">
+                    <i class="fas fa-fingerprint"></i>
+                    Verify Identity
+                  </button>
+                </form>
+                
+                <div class="h-auth-separator">
+                  <span class="h-auth-separator-text">OR</span>
+                </div>
+                
+                <div class="h-auth-footer">
+                  <a href="#" class="h-auth-link">Use security key</a> • 
+                  <a href="#" class="h-auth-link">Emergency access</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Cyberdeck Cards -->
+        <div class="h-cyberdeck">
+          <div class="h-deck-card">
+            <div class="h-deck-header">
+              <div class="h-deck-title">
+                <i class="fas fa-server h-deck-icon"></i>
+                <span>Web Server</span>
+              </div>
+              <div class="h-deck-status"></div>
+            </div>
+            <div class="h-deck-body">
+              <div class="h-deck-content">
+                <div class="h-data-stream">
+                  <!-- Data particles and animations added by JS -->
+                </div>
+              </div>
+              <div class="h-deck-stats">
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value">98.2%</div>
+                  <div class="h-deck-stat-label">Uptime</div>
+                </div>
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value">1.28TB</div>
+                  <div class="h-deck-stat-label">Traffic</div>
+                </div>
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value">187</div>
+                  <div class="h-deck-stat-label">Connections</div>
+                </div>
+              </div>
+            </div>
+            <div class="h-deck-footer">
+              <div class="h-deck-username">nginx/1.20.1</div>
+              <div class="h-deck-timestamp">Last scan: 15m ago</div>
+            </div>
+          </div>
+          
+          <div class="h-deck-card">
+            <div class="h-deck-header">
+              <div class="h-deck-title">
+                <i class="fas fa-database h-deck-icon"></i>
+                <span>Database</span>
+              </div>
+              <div class="h-deck-status warning"></div>
+            </div>
+            <div class="h-deck-body">
+              <div class="h-deck-content">
+                <pre class="h-terminal" style="height: 100%; margin: 0; font-size: 0.7rem;">
+mysql> SHOW PROCESSLIST;
++----+------+-----------+------+---------+------+-------+------------------+
+| Id | User | Host      | db   | Command | Time | State | Info             |
++----+------+-----------+------+---------+------+-------+------------------+
+| 51 | root | localhost | NULL | Query   |    0 | init  | SHOW PROCESSLIST |
+| 48 | app  | localhost | prod | Sleep   |  354 |       | NULL             |
+| 42 | app  | localhost | prod | Query   |   43 | Locked| SELECT * FROM... |
++----+------+-----------+------+---------+------+-------+------------------+
+3 rows in set (0.00 sec)
+                </pre>
+              </div>
+              <div class="h-deck-stats">
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value h-text-warning">76.4%</div>
+                  <div class="h-deck-stat-label">CPU</div>
+                </div>
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value">4.2GB</div>
+                  <div class="h-deck-stat-label">Memory</div>
+                </div>
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value">43</div>
+                  <div class="h-deck-stat-label">Queries/s</div>
+                </div>
+              </div>
+            </div>
+            <div class="h-deck-footer">
+              <div class="h-deck-username">MySQL 8.0.27</div>
+              <div class="h-deck-timestamp">Last backup: 2d ago</div>
+            </div>
+          </div>
+          
+          <div class="h-deck-card">
+            <div class="h-deck-header">
+              <div class="h-deck-title">
+                <i class="fas fa-shield-alt h-deck-icon"></i>
+                <span>Firewall</span>
+              </div>
+              <div class="h-deck-status danger"></div>
+            </div>
+            <div class="h-deck-body">
+              <div class="h-deck-content h-distortion">
+                <div class="h-noise" style="height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                  <div style="font-size: 2rem; color: var(--h-text-alert);" class="h-flicker">ALERT</div>
+                  <div style="margin-top: 10px;">Intrusion attempt detected</div>
+                  <div style="margin-top: 10px;">23 connections blocked</div>
+                </div>
+              </div>
+              <div class="h-deck-stats">
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value h-text-danger">352</div>
+                  <div class="h-deck-stat-label">Blocked</div>
+                </div>
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value h-text-danger">23</div>
+                  <div class="h-deck-stat-label">Attacks</div>
+                </div>
+                <div class="h-deck-stat">
+                  <div class="h-deck-stat-value">12,483</div>
+                  <div class="h-deck-stat-label">Allowed</div>
+                </div>
+              </div>
+            </div>
+            <div class="h-deck-footer">
+              <div class="h-deck-username">iptables</div>
+              <div class="h-deck-timestamp">Last update: 5h ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Terminal effect
+    function addTerminalLine() {
+      const terminal = document.getElementById('terminalContent');
+      const lines = [
+        '<div class="h-terminal-line"><span class="h-terminal-output">[!] Buffer overflow vulnerability detected in target system</span></div>',
+        '<div class="h-terminal-line"><span class="h-terminal-output h-terminal-success">[+] Payload execution successful</span></div>',
+        '<div class="h-terminal-line"><span class="h-terminal-output">Establishing reverse shell...</span></div>',
+        '<div class="h-terminal-line"><span class="h-terminal-output h-terminal-warning">[!] Connection attempt detected by NIDS</span></div>',
+        '<div class="h-terminal-line"><span class="h-terminal-output">Retrieving system information...</span></div>'
+      ];
+      
+      const randomLine = lines[Math.floor(Math.random() * lines.length)];
+      terminal.innerHTML += randomLine;
+      terminal.scrollTop = terminal.scrollHeight;
+      
+      // Show alert after a few terminal outputs
+      if (Math.random() > 0.7) {
+        document.getElementById('alertBanner').style.display = 'block';
+      }
+    }
+    
+    // Traffic visualization
+    document.addEventListener('DOMContentLoaded', function() {
+      const visualizer = document.getElementById('trafficVisualizer');
+      const packetCounter = document.getElementById('packetCounter');
+      const trafficLog = document.getElementById('trafficLog');
+      
+      // Initialize packet count
+      let packetCount = 1324;
+      
+      // Create random packet
+      function createPacket() {
+        // Increment counter
+        packetCount++;
+        packetCounter.textContent = packetCount.toLocaleString();
+        
+        // Add active class to counter
+        packetCounter.classList.add('active');
+        setTimeout(() => {
+          packetCounter.classList.remove('active');
+        }, 500);
+        
+        // Create random packet
+        const packet = document.createElement('div');
+        packet.className = 'h-traffic-packet';
+        
+        // Random packet type
+        const packetTypes = ['http', 'https', 'dns', 'malicious'];
+        const packetType = packetTypes[Math.floor(Math.random() * packetTypes.length)];
+        packet.classList.add(packetType);
+        
+        // Random start and end position
+        const nodeElements = document.querySelectorAll('.h-traffic-node');
+        const nodes = Array.from(nodeElements);
+        
+        const startNode = nodes[Math.floor(Math.random() * nodes.length)];
+        let endNode;
+        do {
+          endNode = nodes[Math.floor(Math.random() * nodes.length)];
+        } while (endNode === startNode);
+        
+        // Get positions
+        const startRect = startNode.getBoundingClientRect();
+        const endRect = endNode.getBoundingClientRect();
+        const visualizerRect = visualizer.getBoundingClientRect();
+        
+        const startX = startRect.left + startRect.width/2 - visualizerRect.left;
+        const startY = startRect.top + startRect.height/2 - visualizerRect.top;
+        const endX = endRect.left + endRect.width/2 - visualizerRect.left;
+        const endY = endRect.top + endRect.height/2 - visualizerRect.top;
+        
+        // Create trace line
+        const trace = document.createElement('div');
+        trace.className = 'h-traffic-packet-trace ' + packetType;
+        
+        // Calculate line length and angle
+        const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+        const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+        
+        // Set line position
+        trace.style.left = startX + 'px';
+        trace.style.top = startY + 'px';
+        trace.style.width = length + 'px';
+        trace.style.transform = 'rotate(' + angle + 'deg)';
+        
+        // Set packet position
+        packet.style.left = startX + 'px';
+        packet.style.top = startY + 'px';
+        
+        // Animate packet
+        visualizer.appendChild(trace);
+        visualizer.appendChild(packet);
+        
+        // Animate packet
+        setTimeout(() => {
+          packet.style.transform = 'translate(' + (endX - startX) + 'px, ' + (endY - startY) + 'px)';
+        }, 10);
+        
+        // Remove elements after animation
+        setTimeout(() => {
+          packet.remove();
+          trace.remove();
+          
+          // Add entry to log with 50% chance
+          if (Math.random() > 0.5) {
+            addLogEntry(packetType, startNode, endNode);
+          }
+        }, 1000);
+      }
+      
+      // Add log entry
+      function addLogEntry(packetType, startNode, endNode) {
+        const time = new Date();
+        const timeStr = time.getHours().toString().padStart(2, '0') + ':' + 
+                       time.getMinutes().toString().padStart(2, '0') + ':' + 
+                       time.getSeconds().toString().padStart(2, '0');
+        
+        let protocol, message;
+        
+        switch(packetType) {
+          case 'http':
+            protocol = 'HTTP';
+            message = '192.168.1.21 → 104.18.22.46:80 [GET /index.html]';
+            break;
+          case 'https':
+            protocol = 'HTTPS';
+            message = '192.168.1.21 → 151.101.1.140:443 [TLSv1.3]';
+            break;
+          case 'dns':
+            protocol = 'DNS';
+            message = '192.168.1.21 → 8.8.8.8:53 query: example.com';
+            break;
+          case 'malicious':
+            protocol = 'ALERT';
+            message = '192.168.1.45 → 192.168.1.21:445 [Potential exploit]';
+            break;
+        }
+        
+        const entry = document.createElement('div');
+        entry.className = 'h-traffic-log-entry';
+        entry.innerHTML = `
+          <span class="h-traffic-log-time">${timeStr}</span>
+          <span class="h-traffic-log-protocol ${packetType}">${protocol}</span>
+          <span class="h-traffic-log-message">${message}</span>
+        `;
+        
+        trafficLog.insertBefore(entry, trafficLog.firstChild);
+        
+        // Keep only the last 10 entries
+        if (trafficLog.children.length > 10) {
+          trafficLog.removeChild(trafficLog.lastChild);
+        }
+      }
+      
+      // Data stream animation
+      function createDataStreamParticles() {
+        const containers = document.querySelectorAll('.h-data-stream');
+        
+        containers.forEach(container => {
+          // Create endpoint
+          const sender = document.createElement('div');
+          sender.className = 'h-data-endpoint sender';
+          sender.style.left = '20%';
+          sender.style.top = '50%';
+          
+          const receiver = document.createElement('div');
+          receiver.className = 'h-data-endpoint receiver';
+          receiver.style.left = '80%';
+          receiver.style.top = '50%';
+          
+          container.appendChild(sender);
+          container.appendChild(receiver);
+          
+          // Create stream line
+          const streamLine = document.createElement('div');
+          streamLine.className = 'h-data-stream-line';
+          streamLine.style.left = '20%';
+          streamLine.style.top = '50%';
+          streamLine.style.width = '60%';
+          streamLine.style.transform = 'rotate(0deg)';
+          
+          container.appendChild(streamLine);
+          
+          // Create particles
+          setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'h-data-particle';
+            particle.style.left = '20%';
+            particle.style.top = '50%';
+            
+            container.appendChild(particle);
+            
+            // Animate particle
+            setTimeout(() => {
+              particle.style.transform = 'translate(calc(60vw * 0.6), 0)';
+            }, 10);
+            
+            // Remove particle
+            setTimeout(() => {
+              particle.remove();
+            }, 2000);
+          }, 200);
+        });
+      }
+      
+      // Start animations
+      setInterval(createPacket, 500);
+      createDataStreamParticles();
+      
+      // Show alert after a delay
+      setTimeout(() => {
+        document.getElementById('alertBanner').style.display = 'block';
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
