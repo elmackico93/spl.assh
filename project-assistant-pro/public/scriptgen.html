@@ -1,0 +1,3061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script Generator Pro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Matrix-inspired Theme */
+    :root {
+      --matrix-bg: #0c0c0c;
+      --matrix-text: #00ff41;
+      --matrix-glow: #00ff4155;
+      --matrix-dim: #0f3d0f;
+      --matrix-highlight: #00ff97;
+      --matrix-panel: #0f0f0f;
+      --matrix-border: #143214;
+      --matrix-error: #ff2222;
+      --matrix-warning: #ffe100;
+      --matrix-success: #00ff41;
+      --matrix-font: 'Courier New', monospace;
+      --matrix-secondary: #072707;
+      --animation-speed: 0.5s;
+    }
+
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--matrix-font);
+    }
+
+    body {
+      background-color: var(--matrix-bg);
+      color: var(--matrix-text);
+      font-family: var(--matrix-font);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Digital Rain Effect */
+    .digital-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    /* Glow and Text Effects */
+    .glow {
+      text-shadow: 0 0 10px var(--matrix-glow);
+      animation: pulse 2s infinite;
+    }
+
+    .matrix-text {
+      color: var(--matrix-text);
+      font-family: var(--matrix-font);
+    }
+
+    .highlight {
+      color: var(--matrix-highlight);
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 4px var(--matrix-glow); }
+      50% { text-shadow: 0 0 16px var(--matrix-glow); }
+      100% { text-shadow: 0 0 4px var(--matrix-glow); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Layout Components */
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--matrix-border);
+      margin-bottom: 20px;
+      animation: slideInRight 0.7s forwards;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo i {
+      margin-right: 10px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      gap: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 0.3s forwards;
+    }
+
+    .sidebar {
+      width: 270px;
+      background-color: var(--matrix-panel);
+      border-radius: 5px;
+      border: 1px solid var(--matrix-border);
+      padding: 15px;
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+      animation: slideInLeft 0.5s forwards;
+    }
+
+    .content {
+      flex: 1;
+      border-radius: 5px;
+      animation: slideInRight 0.5s forwards;
+    }
+
+    /* Panels and Cards */
+    .panel {
+      background-color: var(--matrix-panel);
+      border: 1px solid var(--matrix-border);
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--matrix-bg), var(--matrix-text), var(--matrix-bg));
+      opacity: 0;
+      transition: opacity var(--animation-speed);
+    }
+
+    .panel:hover::before {
+      opacity: 1;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Form Elements */
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      background-color: rgba(0, 30, 0, 0.3);
+      border: 1px solid var(--matrix-border);
+      border-radius: 3px;
+      color: var(--matrix-text);
+      font-family: var(--matrix-font);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--matrix-text);
+      box-shadow: 0 0 5px var(--matrix-glow);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px;
+      background-color: var(--matrix-secondary);
+      color: var(--matrix-text);
+      border: 1px solid var(--matrix-border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--matrix-font);
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(transparent, rgba(0, 255, 65, 0.1), transparent);
+      transform: rotate(30deg);
+      transition: transform 0.5s;
+      transform-origin: center;
+      opacity: 0;
+    }
+
+    .btn:hover {
+      background-color: var(--matrix-dim);
+      box-shadow: 0 0 10px var(--matrix-glow);
+    }
+
+    .btn:hover::after {
+      transform: rotate(30deg) translateY(0);
+      opacity: 1;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    .btn-primary {
+      background-color: var(--matrix-dim);
+    }
+
+    .btn-danger {
+      background-color: #3d0000;
+      color: var(--matrix-error);
+    }
+
+    .btn-warn {
+      background-color: #3d3d00;
+      color: var(--matrix-warning);
+    }
+
+    /* Status and Indicators */
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .status-success {
+      background-color: rgba(0, 255, 65, 0.2);
+      color: var(--matrix-success);
+    }
+
+    .status-warning {
+      background-color: rgba(255, 225, 0, 0.2);
+      color: var(--matrix-warning);
+    }
+
+    .status-error {
+      background-color: rgba(255, 34, 34, 0.2);
+      color: var(--matrix-error);
+    }
+
+    /* Lists and Tables */
+    .list {
+      list-style: none;
+    }
+
+    .list-item {
+      padding: 10px;
+      border-bottom: 1px solid var(--matrix-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+
+    .list-item:hover {
+      background-color: var(--matrix-secondary);
+      cursor: pointer;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item-title {
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    th {
+      background-color: var(--matrix-secondary);
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    tr:hover {
+      background-color: var(--matrix-secondary);
+    }
+
+    /* Code Display */
+    .code-container {
+      position: relative;
+      margin-bottom: 20px;
+      background-color: rgba(0, 30, 0, 0.3);
+      padding: 15px;
+      border-radius: 3px;
+      border: 1px solid var(--matrix-border);
+    }
+
+    .code {
+      font-family: monospace;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.4;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    .code-title {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .code-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Terminal Effect */
+    .terminal {
+      height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: rgba(0, 10, 0, 0.5);
+      font-family: monospace;
+      border-radius: 3px;
+      border: 1px solid var(--matrix-border);
+    }
+
+    .terminal-line {
+      margin-bottom: 5px;
+      display: flex;
+    }
+
+    .terminal-prompt {
+      color: var(--matrix-highlight);
+      margin-right: 10px;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top-color: var(--matrix-text);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--matrix-border);
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 10px 15px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--matrix-text);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .tab:hover, .tab.active {
+      color: var(--matrix-highlight);
+    }
+
+    .tab.active::after {
+      transform: scaleX(1);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      background-color: var(--matrix-dim);
+      color: var(--matrix-text);
+      margin-right: 5px;
+      white-space: nowrap;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 10px;
+      background-color: var(--matrix-secondary);
+      border-radius: 5px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--matrix-text);
+      transition: width 0.3s ease;
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--matrix-secondary);
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: var(--matrix-text);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--matrix-dim);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    /* Scroll to Top Button */
+    .scroll-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--matrix-dim);
+      color: var(--matrix-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 100;
+      border: 1px solid var(--matrix-border);
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 10px var(--matrix-glow);
+    }
+
+    /* Settings */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--matrix-border);
+      border-radius: 3px;
+      background-color: rgba(0, 30, 0, 0.3);
+    }
+
+    .setting-label {
+      font-weight: bold;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      max-width: 300px;
+      background-color: var(--matrix-panel);
+      border: 1px solid var(--matrix-border);
+      border-left: 4px solid var(--matrix-text);
+      padding: 15px;
+      border-radius: 3px;
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .notification-success {
+      border-left-color: var(--matrix-success);
+    }
+
+    .notification-error {
+      border-left-color: var(--matrix-error);
+    }
+
+    .notification-warning {
+      border-left-color: var(--matrix-warning);
+    }
+
+    .notification-icon {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+    .notification-message {
+      flex: 1;
+    }
+
+    .notification-close {
+      margin-left: 10px;
+      cursor: pointer;
+      color: var(--matrix-text);
+      transition: color 0.3s;
+    }
+
+    .notification-close:hover {
+      color: var(--matrix-highlight);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 10, 0, 0.8);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .modal-backdrop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 600px;
+      background-color: var(--matrix-panel);
+      border: 1px solid var(--matrix-border);
+      border-radius: 5px;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+
+    .modal-backdrop.show .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .modal-close {
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--matrix-text);
+      transition: color 0.3s;
+      background: none;
+      border: none;
+    }
+
+    .modal-close:hover {
+      color: var(--matrix-highlight);
+    }
+
+    .modal-body {
+      padding: 15px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 15px;
+      border-top: 1px solid var(--matrix-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Category Pills */
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .category-pill {
+      padding: 5px 10px;
+      border-radius: 15px;
+      background-color: var(--matrix-secondary);
+      color: var(--matrix-text);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+
+    .category-pill:hover, .category-pill.active {
+      background-color: var(--matrix-dim);
+      box-shadow: 0 0 5px var(--matrix-glow);
+    }
+
+    /* Script Item */
+    .script-item {
+      border: 1px solid var(--matrix-border);
+      border-radius: 5px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      background-color: rgba(0, 30, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .script-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
+    }
+
+    .script-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: var(--matrix-secondary);
+      border-bottom: 1px solid var(--matrix-border);
+    }
+
+    .script-title {
+      font-weight: bold;
+      flex: 1;
+    }
+
+    .script-subtitle {
+      color: rgba(0, 255, 65, 0.7);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .script-body {
+      height: 0;
+      overflow: hidden;
+      transition: height 0.3s;
+    }
+
+    .script-body.open {
+      height: auto;
+    }
+
+    .script-content {
+      padding: 15px;
+    }
+
+    .script-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: rgba(0, 30, 0, 0.3);
+      border-top: 1px solid var(--matrix-border);
+    }
+
+    .script-meta {
+      font-size: 12px;
+      color: rgba(0, 255, 65, 0.7);
+    }
+
+    .script-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Flex Utilities */
+    .d-flex {
+      display: flex;
+    }
+
+    .flex-column {
+      flex-direction: column;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .align-center {
+      align-items: center;
+    }
+
+    .flex-grow {
+      flex-grow: 1;
+    }
+
+    /* Spacing Utilities */
+    .mt-2 {
+      margin-top: 10px;
+    }
+
+    .mb-2 {
+      margin-bottom: 10px;
+    }
+
+    .mb-3 {
+      margin-bottom: 15px;
+    }
+
+    .ml-2 {
+      margin-left: 10px;
+    }
+
+    .mr-2 {
+      margin-right: 10px;
+    }
+
+    /* Media Queries */
+    @media (max-width: 992px) {
+      .main {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        margin-top: 10px;
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--matrix-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--matrix-dim);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--matrix-text);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--matrix-border);
+      padding-top: 20px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(0, 255, 65, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <!-- Digital Rain Canvas -->
+  <canvas id="digitalRain" class="digital-rain"></canvas>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo glow">
+        <i class="fas fa-terminal"></i>
+        <span>SCRIPT GENERATOR PRO</span>
+      </div>
+      <nav class="nav">
+        <button id="settingsBtn" class="btn">
+          <i class="fas fa-cog"></i> Settings
+        </button>
+        <button id="exportBtn" class="btn">
+          <i class="fas fa-download"></i> Export
+        </button>
+        <button id="modeToggle" class="btn">
+          <i class="fas fa-adjust"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Status</div>
+          </div>
+          <div id="statusPanel">
+            <div class="d-flex justify-between align-center mb-2">
+              <span>Service Status:</span>
+              <span class="status status-success" id="serviceStatus">Running</span>
+            </div>
+            <div class="d-flex justify-between align-center mb-2">
+              <span>API Status:</span>
+              <span class="status status-success" id="apiStatus">Connected</span>
+            </div>
+            <div class="d-flex justify-between align-center mb-2">
+              <span>Last Update:</span>
+              <span id="lastUpdate">Just now</span>
+            </div>
+            <div class="d-flex justify-between align-center mb-2">
+              <span>Scripts Generated:</span>
+              <span id="scriptsCount">0</span>
+            </div>
+            <div class="d-flex justify-between align-center mb-2">
+              <span>Queue:</span>
+              <span id="queueCount">0</span>
+            </div>
+            <div class="d-flex flex-column mb-2">
+              <span class="mb-2">API Usage:</span>
+              <div class="progress-bar">
+                <div class="progress-bar-fill" id="apiUsage" style="width: 0%"></div>
+              </div>
+              <span class="script-meta" id="apiUsageText">0%</span>
+            </div>
+          </div>
+          <div class="d-flex justify-between mt-2">
+            <button id="startBtn" class="btn btn-primary">
+              <i class="fas fa-play"></i> Start
+            </button>
+            <button id="pauseBtn" class="btn btn-warn" disabled>
+              <i class="fas fa-pause"></i> Pause
+            </button>
+            <button id="stopBtn" class="btn btn-danger" disabled>
+              <i class="fas fa-stop"></i> Stop
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Categories</div>
+            <div class="panel-actions">
+              <button id="addCategoryBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div id="categoriesList" class="list">
+            <div class="list-item">
+              <span class="list-item-title">Windows</span>
+              <div class="d-flex align-center">
+                <span class="badge">12</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-windows" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-item-title">Mac</span>
+              <div class="d-flex align-center">
+                <span class="badge">8</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-mac" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-item-title">Linux</span>
+              <div class="d-flex align-center">
+                <span class="badge">10</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-linux" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-item-title">Network</span>
+              <div class="d-flex align-center">
+                <span class="badge">6</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-network" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+            <div class="list-item">
+              <span class="list-item-title">Security</span>
+              <div class="d-flex align-center">
+                <span class="badge">4</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-security" checked>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Top Keywords</div>
+          </div>
+          <div class="terminal" id="keywordsTerminal" style="height: 200px">
+            <div class="terminal-line">
+              <span class="terminal-prompt">$</span>
+              <span>System initializing...</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content Area -->
+      <section class="content">
+        <!-- Scripts Generator Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Script Generator</div>
+            <div class="panel-actions">
+              <button id="refreshBtn" class="btn">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+              <select id="scriptTypeFilter">
+                <option value="all">All Types</option>
+                <option value="bash">Bash (.sh)</option>
+                <option value="powershell">PowerShell (.ps1)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="category-pills" id="categoryPills">
+            <div class="category-pill active" data-category="all">All</div>
+            <div class="category-pill" data-category="windows">Windows</div>
+            <div class="category-pill" data-category="mac">Mac</div>
+            <div class="category-pill" data-category="linux">Linux</div>
+            <div class="category-pill" data-category="network">Network</div>
+            <div class="category-pill" data-category="security">Security</div>
+          </div>
+
+          <div id="searchContainer" class="mb-3">
+            <input type="text" id="searchInput" placeholder="Search scripts...">
+            <div class="d-flex justify-between align-center">
+              <span id="searchResults">Showing all scripts</span>
+              <div>
+                <label for="sortOrder">Sort by:</label>
+                <select id="sortOrder">
+                  <option value="date-desc">Newest First</option>
+                  <option value="date-asc">Oldest First</option>
+                  <option value="name-asc">Name (A-Z)</option>
+                  <option value="name-desc">Name (Z-A)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div id="scriptsList">
+            <!-- Scripts will be dynamically added here -->
+          </div>
+
+          <div id="loadingScripts" class="d-flex align-center justify-between" style="display: none;">
+            <span>Loading scripts...</span>
+            <div class="spinner"></div>
+          </div>
+
+          <div id="noScripts" class="d-flex align-center justify-between" style="display: none;">
+            <span>No scripts found. Start the generator to create new scripts.</span>
+          </div>
+        </div>
+
+        <!-- Log Terminal Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Activity Log</div>
+            <div class="panel-actions">
+              <button id="clearLogBtn" class="btn">
+                <i class="fas fa-trash"></i> Clear
+              </button>
+            </div>
+          </div>
+          <div class="terminal" id="logTerminal">
+            <div class="terminal-line">
+              <span class="terminal-prompt">$</span>
+              <span>System initialized. Ready to generate scripts.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Script Generator Pro v1.0.0 | Copyright © 2025 | Matrix Interface</p>
+    </footer>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Settings</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <span class="setting-label">API Key</span>
+            <input type="password" id="apiKey" placeholder="Enter API Key">
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">GPT Model</span>
+            <select id="gptModel">
+              <option value="gpt-4-turbo">GPT-4 Turbo</option>
+              <option value="gpt-4">GPT-4</option>
+              <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Update Interval (minutes)</span>
+            <input type="number" id="updateInterval" min="5" max="1440" value="30">
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Scripts Per Update</span>
+            <input type="number" id="scriptsPerUpdate" min="1" max="20" value="5">
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Auto-Start</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="autoStart">
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Include SEO Keywords</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="includeSeo" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Generate Bash Scripts (.sh)</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="generateBash" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Generate PowerShell Scripts (.ps1)</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="generatePowershell" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Balance Categories</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="balanceCategories" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">SEO Keywords API</span>
+            <select id="seoApiSource">
+              <option value="google">Google Trends</option>
+              <option value="semrush">SEMrush</option>
+              <option value="ahrefs">Ahrefs</option>
+              <option value="moz">Moz</option>
+              <option value="custom">Custom API</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="customApiSettings" style="display: none;">
+          <h3 class="mb-2">Custom API Settings</h3>
+          <div class="mb-3">
+            <label for="customApiUrl">API URL:</label>
+            <input type="text" id="customApiUrl" placeholder="https://api.example.com/keywords">
+          </div>
+          <div class="mb-3">
+            <label for="customApiKey">API Key:</label>
+            <input type="password" id="customApiKey" placeholder="Your API Key">
+          </div>
+        </div>
+
+        <div>
+          <h3 class="mb-2">Advanced Settings</h3>
+          <div class="mb-3">
+            <label for="maxTokens">Max Tokens per Request:</label>
+            <input type="number" id="maxTokens" min="100" max="8000" value="2000">
+          </div>
+          <div class="mb-3">
+            <label for="temperature">Temperature:</label>
+            <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+            <span id="temperatureValue">0.7</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="resetSettingsBtn" class="btn btn-danger">Reset to Default</button>
+        <button id="saveSettingsBtn" class="btn btn-primary">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Category Modal -->
+  <div id="addCategoryModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Add New Category</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="newCategoryName">Category Name:</label>
+          <input type="text" id="newCategoryName" placeholder="Enter category name">
+        </div>
+        <div class="mb-3">
+          <label for="newCategoryDesc">Description (optional):</label>
+          <textarea id="newCategoryDesc" placeholder="Enter category description"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="newCategoryKeywords">Related Keywords (comma separated):</label>
+          <textarea id="newCategoryKeywords" placeholder="keyword1, keyword2, keyword3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelAddCategoryBtn" class="btn">Cancel</button>
+        <button id="saveNewCategoryBtn" class="btn btn-primary">Add Category</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="exportModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Export Scripts</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label>Select Export Format:</label>
+          <div class="d-flex mt-2">
+            <label class="mr-2">
+              <input type="radio" name="exportFormat" value="zip" checked> ZIP Archive
+            </label>
+            <label class="mr-2">
+              <input type="radio" name="exportFormat" value="folder"> Folder Structure
+            </label>
+            <label>
+              <input type="radio" name="exportFormat" value="json"> JSON
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label>Select Categories to Export:</label>
+          <div id="exportCategories" class="mt-2">
+            <label class="mr-2">
+              <input type="checkbox" value="all" checked> All Categories
+            </label>
+            <label class="mr-2">
+              <input type="checkbox" value="windows"> Windows
+            </label>
+            <label class="mr-2">
+              <input type="checkbox" value="mac"> Mac
+            </label>
+            <label class="mr-2">
+              <input type="checkbox" value="linux"> Linux
+            </label>
+            <label class="mr-2">
+              <input type="checkbox" value="network"> Network
+            </label>
+            <label>
+              <input type="checkbox" value="security"> Security
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label>Script Types:</label>
+          <div class="d-flex mt-2">
+            <label class="mr-2">
+              <input type="checkbox" id="exportBash" checked> Bash (.sh)
+            </label>
+            <label>
+              <input type="checkbox" id="exportPowershell" checked> PowerShell (.ps1)
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="exportPath">Export Path:</label>
+          <input type="text" id="exportPath" placeholder="/path/to/export">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelExportBtn" class="btn">Cancel</button>
+        <button id="confirmExportBtn" class="btn btn-primary">Export</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Script Modal -->
+  <div id="viewScriptModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="viewScriptTitle">Script Title</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="d-flex justify-between align-center mb-2">
+            <div>
+              <span id="viewScriptType" class="badge">Type</span>
+              <span id="viewScriptCategory" class="badge">Category</span>
+              <span id="viewScriptDate">Date</span>
+            </div>
+            <div class="d-flex align-center">
+              <span class="mr-2">Keywords:</span>
+              <div id="viewScriptKeywords"></div>
+            </div>
+          </div>
+          <div class="code-container">
+            <pre class="code" id="viewScriptCode"></pre>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="copyScriptBtn" class="btn">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+        <button id="downloadScriptBtn" class="btn">
+          <i class="fas fa-download"></i> Download
+        </button>
+        <button id="editScriptBtn" class="btn btn-primary">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Script Modal -->
+  <div id="editScriptModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Edit Script</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="editScriptTitle">Title:</label>
+          <input type="text" id="editScriptTitle">
+        </div>
+        <div class="mb-3">
+          <label for="editScriptCategory">Category:</label>
+          <select id="editScriptCategory">
+            <option value="windows">Windows</option>
+            <option value="mac">Mac</option>
+            <option value="linux">Linux</option>
+            <option value="network">Network</option>
+            <option value="security">Security</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="editScriptKeywords">Keywords (comma separated):</label>
+          <input type="text" id="editScriptKeywords">
+        </div>
+        <div class="mb-3">
+          <label for="editScriptCode">Script Code:</label>
+          <textarea id="editScriptCode" rows="15"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelEditBtn" class="btn">Cancel</button>
+        <button id="saveEditBtn" class="btn btn-primary">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="notification">
+    <div class="notification-icon">
+      <i class="fas fa-info-circle"></i>
+    </div>
+    <div class="notification-message">This is a notification message</div>
+    <div class="notification-close">&times;</div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <div id="scrollTop" class="scroll-top">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Digital Rain Effect
+    (function() {
+      const canvas = document.getElementById('digitalRain');
+      const ctx = canvas.getContext('2d');
+      
+      // Set canvas dimensions
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      
+      resize();
+      window.addEventListener('resize', resize);
+      
+      // Define Matrix characters
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      const charArray = chars.split('');
+      
+      // Create rain drops
+      const fontSize = 14;
+      const columns = Math.floor(canvas.width / fontSize);
+      
+      const drops = [];
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+      }
+      
+      // Drawing function
+      function draw() {
+        // Add semi-transparent black rectangle to create fade effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Set text color and font
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+        
+        // Draw characters
+        for (let i = 0; i < drops.length; i++) {
+          // Choose a random character
+          const char = charArray[Math.floor(Math.random() * charArray.length)];
+          
+          // Draw character
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          
+          // If drop reaches bottom or random chance, reset to top
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          
+          // Move drop down
+          drops[i]++;
+        }
+      }
+      
+      // Animation loop
+      function animate() {
+        draw();
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
+    })();
+
+    // Main Application Logic
+    (function() {
+      // State management
+      const state = {
+        isRunning: false,
+        isPaused: false,
+        scripts: [],
+        categories: [
+          { id: 'windows', name: 'Windows', count: 12, enabled: true },
+          { id: 'mac', name: 'Mac', count: 8, enabled: true },
+          { id: 'linux', name: 'Linux', count: 10, enabled: true },
+          { id: 'network', name: 'Network', count: 6, enabled: true },
+          { id: 'security', name: 'Security', count: 4, enabled: true }
+        ],
+        filters: {
+          category: 'all',
+          type: 'all',
+          search: '',
+          sort: 'date-desc'
+        },
+        settings: {
+          apiKey: '',
+          gptModel: 'gpt-4-turbo',
+          updateInterval: 30,
+          scriptsPerUpdate: 5,
+          autoStart: false,
+          includeSeo: true,
+          generateBash: true,
+          generatePowershell: true,
+          balanceCategories: true,
+          seoApiSource: 'google',
+          customApiUrl: '',
+          customApiKey: '',
+          maxTokens: 2000,
+          temperature: 0.7
+        },
+        updateTimer: null,
+        apiUsage: 0,
+        topKeywords: [],
+        activeScriptId: null
+      };
+
+      // DOM Elements - Settings Modal
+      const settingsBtn = document.getElementById('settingsBtn');
+      const settingsModal = document.getElementById('settingsModal');
+      const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+      const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+      const seoApiSource = document.getElementById('seoApiSource');
+      const customApiSettings = document.getElementById('customApiSettings');
+      const temperatureRange = document.getElementById('temperature');
+      const temperatureValue = document.getElementById('temperatureValue');
+
+      // DOM Elements - Control Buttons
+      const startBtn = document.getElementById('startBtn');
+      const pauseBtn = document.getElementById('pauseBtn');
+      const stopBtn = document.getElementById('stopBtn');
+      const refreshBtn = document.getElementById('refreshBtn');
+      const clearLogBtn = document.getElementById('clearLogBtn');
+
+      // DOM Elements - Status Panel
+      const serviceStatus = document.getElementById('serviceStatus');
+      const apiStatus = document.getElementById('apiStatus');
+      const lastUpdate = document.getElementById('lastUpdate');
+      const scriptsCount = document.getElementById('scriptsCount');
+      const queueCount = document.getElementById('queueCount');
+      const apiUsage = document.getElementById('apiUsage');
+      const apiUsageText = document.getElementById('apiUsageText');
+
+      // DOM Elements - Category Management
+      const categoriesList = document.getElementById('categoriesList');
+      const addCategoryBtn = document.getElementById('addCategoryBtn');
+      const addCategoryModal = document.getElementById('addCategoryModal');
+      const saveNewCategoryBtn = document.getElementById('saveNewCategoryBtn');
+      const cancelAddCategoryBtn = document.getElementById('cancelAddCategoryBtn');
+      const categoryPills = document.getElementById('categoryPills');
+
+      // DOM Elements - Scripts List
+      const scriptsList = document.getElementById('scriptsList');
+      const loadingScripts = document.getElementById('loadingScripts');
+      const noScripts = document.getElementById('noScripts');
+      const scriptTypeFilter = document.getElementById('scriptTypeFilter');
+      const searchInput = document.getElementById('searchInput');
+      const searchResults = document.getElementById('searchResults');
+      const sortOrder = document.getElementById('sortOrder');
+
+      // DOM Elements - Export
+      const exportBtn = document.getElementById('exportBtn');
+      const exportModal = document.getElementById('exportModal');
+      const confirmExportBtn = document.getElementById('confirmExportBtn');
+      const cancelExportBtn = document.getElementById('cancelExportBtn');
+
+      // DOM Elements - View Script Modal
+      const viewScriptModal = document.getElementById('viewScriptModal');
+      const viewScriptTitle = document.getElementById('viewScriptTitle');
+      const viewScriptType = document.getElementById('viewScriptType');
+      const viewScriptCategory = document.getElementById('viewScriptCategory');
+      const viewScriptDate = document.getElementById('viewScriptDate');
+      const viewScriptKeywords = document.getElementById('viewScriptKeywords');
+      const viewScriptCode = document.getElementById('viewScriptCode');
+      const copyScriptBtn = document.getElementById('copyScriptBtn');
+      const downloadScriptBtn = document.getElementById('downloadScriptBtn');
+      const editScriptBtn = document.getElementById('editScriptBtn');
+
+      // DOM Elements - Edit Script Modal
+      const editScriptModal = document.getElementById('editScriptModal');
+      const editScriptTitle = document.getElementById('editScriptTitle');
+      const editScriptCategory = document.getElementById('editScriptCategory');
+      const editScriptKeywords = document.getElementById('editScriptKeywords');
+      const editScriptCode = document.getElementById('editScriptCode');
+      const saveEditBtn = document.getElementById('saveEditBtn');
+      const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+      // DOM Elements - Terminals
+      const logTerminal = document.getElementById('logTerminal');
+      const keywordsTerminal = document.getElementById('keywordsTerminal');
+
+      // DOM Elements - Other
+      const notification = document.getElementById('notification');
+      const notificationClose = document.querySelector('.notification-close');
+      const scrollTop = document.getElementById('scrollTop');
+      const modeToggle = document.getElementById('modeToggle');
+
+      // Sample scripts data (for demonstration)
+      const sampleScripts = [
+        {
+          id: 'script-1',
+          title: 'Windows 11 Clock Sync Fix',
+          description: 'Fixes clock synchronization issues in Windows 11',
+          type: 'powershell',
+          category: 'windows',
+          keywords: ['windows 11', 'clock sync', 'time settings', 'ntp'],
+          code: `# Windows 11 Clock Sync Fix Script
+# This script fixes common clock synchronization issues in Windows 11
+# Created: ${new Date().toLocaleDateString()}
+
+# Stop the Windows Time service
+Stop-Service -Name W32Time -Force
+
+# Configure Windows Time service to use reliable NTP servers
+Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\W32Time\\Parameters" -Name "NtpServer" -Value "time.windows.com,0x1 time.nist.gov,0x1"
+
+# Set time synchronization interval (once per day = 86400 seconds)
+Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\W32Time\\TimeProviders\\NtpClient" -Name "SpecialPollInterval" -Value 86400
+
+# Configure the time service to sync with an external source
+Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\W32Time\\Parameters" -Name "Type" -Value "NTP"
+
+# Ensure the service is set to start automatically
+Set-Service -Name W32Time -StartupType Automatic
+
+# Start the Windows Time service
+Start-Service -Name W32Time
+
+# Force a time resynchronization
+W32tm /resync /force
+
+Write-Host "Windows 11 clock synchronization has been fixed. The system will now maintain accurate time."`,
+          created: Date.now() - 3600000,
+          seoScore: 92
+        },
+        {
+          id: 'script-2',
+          title: 'Mac Display Resolution Fix',
+          description: 'Resets and fixes display resolution issues on macOS',
+          type: 'bash',
+          category: 'mac',
+          keywords: ['mac', 'display resolution', 'screen fix', 'retina'],
+          code: `#!/bin/bash
+# Mac Display Resolution Fix
+# This script resets display settings to fix resolution issues
+# Created: ${new Date().toLocaleDateString()}
+
+echo "Starting Mac display resolution fix..."
+
+# Kill the Dock to reset UI settings
+killall Dock
+
+# Delete caches and preference files
+sudo rm -rf ~/Library/Preferences/com.apple.windowserver.plist
+sudo rm -rf ~/Library/Preferences/ByHost/com.apple.windowserver*
+
+# Delete display preference files
+defaults delete com.apple.windowserver DisplayResolutionEnabled
+defaults delete com.apple.windowserver DisplayResolutionDisabled
+
+# Restart CoreDisplay and WindowServer
+sudo killall CoreDisplay
+sudo killall WindowServer
+
+echo "Display settings have been reset. If the issue persists, please restart your Mac."
+echo "Resolution fix complete!"`,
+          created: Date.now() - 7200000,
+          seoScore: 88
+        },
+        {
+          id: 'script-3',
+          title: 'Linux System Performance Optimizer',
+          description: 'Optimizes Linux system performance by adjusting parameters',
+          type: 'bash',
+          category: 'linux',
+          keywords: ['linux', 'performance', 'optimization', 'system tuning'],
+          code: `#!/bin/bash
+# Linux System Performance Optimizer
+# This script improves system performance by optimizing various settings
+# Created: ${new Date().toLocaleDateString()}
+
+echo "Starting Linux system performance optimization..."
+
+# Check if running as root
+if [ "$(id -u)" -ne 0 ]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+# Update system package cache
+apt-get update -y
+
+# Clean up old packages
+apt-get autoremove -y
+apt-get autoclean -y
+
+# Adjust swappiness for better performance
+echo 10 > /proc/sys/vm/swappiness
+echo "vm.swappiness=10" >> /etc/sysctl.conf
+
+# Optimize disk I/O performance
+echo "deadline" > /sys/block/sda/queue/scheduler
+
+# Optimize file system for performance
+mount -o remount,noatime,nodiratime,discard /
+echo "Setting file system optimizations in /etc/fstab..."
+sed -i 's/defaults/defaults,noatime,nodiratime,discard/' /etc/fstab
+
+# Configure prelinking to speed up application loading
+apt-get install prelink -y
+prelink -amR
+
+echo "System optimization complete! You may need to reboot for all changes to take effect."`,
+          created: Date.now() - 10800000,
+          seoScore: 85
+        },
+        {
+          id: 'script-4',
+          title: 'Network Connectivity Troubleshooter',
+          description: 'Diagnoses and fixes common network connectivity issues',
+          type: 'powershell',
+          category: 'network',
+          keywords: ['network', 'connectivity', 'troubleshoot', 'internet', 'dns'],
+          code: `# Network Connectivity Troubleshooter
+# This script diagnoses and fixes common network connectivity issues
+# Created: ${new Date().toLocaleDateString()}
+
+Write-Host "Starting Network Connectivity Troubleshooter..." -ForegroundColor Green
+
+# Get network adapters information
+$adapters = Get-NetAdapter | Where-Object { $_.Status -eq "Up" }
+Write-Host "Found $($adapters.Count) active network adapters" -ForegroundColor Cyan
+
+foreach ($adapter in $adapters) {
+    Write-Host "Checking adapter: $($adapter.Name)" -ForegroundColor Yellow
+    
+    # Reset network adapter
+    Write-Host "Resetting network adapter..."
+    Disable-NetAdapter -Name $adapter.Name -Confirm:$false
+    Start-Sleep -Seconds 5
+    Enable-NetAdapter -Name $adapter.Name -Confirm:$false
+    Start-Sleep -Seconds 5
+    
+    # Flush DNS cache
+    Write-Host "Flushing DNS cache..."
+    ipconfig /flushdns
+    
+    # Reset Winsock catalog
+    Write-Host "Resetting Winsock catalog..."
+    netsh winsock reset
+    
+    # Reset TCP/IP stack
+    Write-Host "Resetting TCP/IP stack..."
+    netsh int ip reset
+    
+    # Renew IP address
+    Write-Host "Renewing IP address..."
+    ipconfig /release
+    ipconfig /renew
+    
+    # Check for connectivity
+    $pingTest = Test-Connection -ComputerName 8.8.8.8 -Count 2 -Quiet
+    if ($pingTest) {
+        Write-Host "Network connectivity restored successfully!" -ForegroundColor Green
+    } else {
+        Write-Host "Network issues persist. Additional troubleshooting required." -ForegroundColor Red
+    }
+}
+
+Write-Host "Network troubleshooting complete. Please restart your computer if issues persist." -ForegroundColor Green`,
+          created: Date.now() - 14400000,
+          seoScore: 90
+        },
+        {
+          id: 'script-5',
+          title: 'Security Vulnerability Scanner',
+          description: 'Scans system for common security vulnerabilities',
+          type: 'bash',
+          category: 'security',
+          keywords: ['security', 'vulnerability', 'scan', 'cybersecurity', 'audit'],
+          code: `#!/bin/bash
+# Security Vulnerability Scanner
+# This script scans your system for common security vulnerabilities
+# Created: ${new Date().toLocaleDateString()}
+
+echo "Starting Security Vulnerability Scanner..."
+echo "--------------------------------------"
+
+# Check for system updates
+echo "Checking for system updates..."
+if command -v apt-get &> /dev/null; then
+    sudo apt-get update -qq
+    updates=$(apt list --upgradable 2>/dev/null | grep -v "Listing..." | wc -l)
+    if [ $updates -gt 0 ]; then
+        echo "[WARNING] $updates system updates available. Please run: sudo apt-get upgrade"
+    else
+        echo "[OK] System is up to date"
+    fi
+elif command -v yum &> /dev/null; then
+    updates=$(sudo yum check-update --quiet | grep -v "^$" | wc -l)
+    if [ $updates -gt 0 ]; then
+        echo "[WARNING] $updates system updates available. Please run: sudo yum update"
+    else
+        echo "[OK] System is up to date"
+    fi
+fi
+
+# Check for open ports
+echo "Checking for open ports..."
+if command -v netstat &> /dev/null; then
+    open_ports=$(netstat -tuln | grep LISTEN | wc -l)
+    echo "[INFO] $open_ports open ports detected"
+    netstat -tuln | grep LISTEN
+fi
+
+# Check for world-writable files
+echo "Checking for world-writable files in sensitive directories..."
+world_writable=$(find /etc /bin /sbin /usr/bin /usr/sbin -type f -perm -o+w 2>/dev/null | wc -l)
+if [ $world_writable -gt 0 ]; then
+    echo "[CRITICAL] $world_writable world-writable files found in system directories!"
+    find /etc /bin /sbin /usr/bin /usr/sbin -type f -perm -o+w 2>/dev/null
+else
+    echo "[OK] No world-writable files found in system directories"
+fi
+
+# Check SSH configuration
+echo "Checking SSH configuration..."
+if [ -f /etc/ssh/sshd_config ]; then
+    root_login=$(grep "PermitRootLogin" /etc/ssh/sshd_config | grep -v "^#" | grep "yes")
+    if [ ! -z "$root_login" ]; then
+        echo "[WARNING] SSH root login is enabled"
+    else
+        echo "[OK] SSH root login is disabled"
+    fi
+    
+    password_auth=$(grep "PasswordAuthentication" /etc/ssh/sshd_config | grep -v "^#" | grep "yes")
+    if [ ! -z "$password_auth" ]; then
+        echo "[WARNING] SSH password authentication is enabled, consider using key-based authentication only"
+    else
+        echo "[OK] SSH password authentication is disabled"
+    fi
+fi
+
+echo "Security vulnerability scan complete"
+echo "Please review the results and address any warnings or critical issues"`,
+          created: Date.now() - 18000000,
+          seoScore: 94
+        }
+      ];
+      
+      // Sample top keywords (for demonstration)
+      const sampleKeywords = [
+        { keyword: 'windows 11 clock sync issues', volume: 12500, growth: '+15%' },
+        { keyword: 'fix mac display resolution', volume: 9800, growth: '+8%' },
+        { keyword: 'linux system performance optimization', volume: 7500, growth: '+12%' },
+        { keyword: 'network connectivity troubleshooting', volume: 15000, growth: '+20%' },
+        { keyword: 'security vulnerability scanner', volume: 11200, growth: '+25%' },
+        { keyword: 'windows update error fix', volume: 18000, growth: '+10%' },
+        { keyword: 'mac battery optimization', volume: 8900, growth: '+5%' },
+        { keyword: 'linux disk cleanup', volume: 6200, growth: '+7%' },
+        { keyword: 'fix wifi connection problems', volume: 14500, growth: '+18%' },
+        { keyword: 'password security audit', volume: 10800, growth: '+22%' }
+      ];
+
+      // Initialize the application
+      function init() {
+        // Load settings from localStorage if available
+        loadSettings();
+        
+        // Load scripts (in a real application, this would be from the server)
+        state.scripts = [...sampleScripts];
+        
+        // Update UI
+        updateScriptsList();
+        updateCategoriesList();
+        updateStatusPanel();
+        
+        // Add event listeners
+        addEventListeners();
+        
+        // Show initial notification
+        showNotification('System initialized. Ready to generate scripts.', 'info');
+        
+        // Load top keywords
+        updateTopKeywords();
+        
+        // Auto-start if configured
+        if (state.settings.autoStart) {
+          startGenerator();
+        }
+        
+        // Log initialization
+        addLogEntry('System initialized');
+      }
+
+      // Load settings from localStorage
+      function loadSettings() {
+        const savedSettings = localStorage.getItem('scriptGeneratorSettings');
+        if (savedSettings) {
+          try {
+            state.settings = JSON.parse(savedSettings);
+            
+            // Update UI to reflect loaded settings
+            document.getElementById('apiKey').value = state.settings.apiKey || '';
+            document.getElementById('gptModel').value = state.settings.gptModel || 'gpt-4-turbo';
+            document.getElementById('updateInterval').value = state.settings.updateInterval || 30;
+            document.getElementById('scriptsPerUpdate').value = state.settings.scriptsPerUpdate || 5;
+            document.getElementById('autoStart').checked = state.settings.autoStart || false;
+            document.getElementById('includeSeo').checked = state.settings.includeSeo !== false;
+            document.getElementById('generateBash').checked = state.settings.generateBash !== false;
+            document.getElementById('generatePowershell').checked = state.settings.generatePowershell !== false;
+            document.getElementById('balanceCategories').checked = state.settings.balanceCategories !== false;
+            document.getElementById('seoApiSource').value = state.settings.seoApiSource || 'google';
+            document.getElementById('customApiUrl').value = state.settings.customApiUrl || '';
+            document.getElementById('customApiKey').value = state.settings.customApiKey || '';
+            document.getElementById('maxTokens').value = state.settings.maxTokens || 2000;
+            document.getElementById('temperature').value = state.settings.temperature || 0.7;
+            temperatureValue.textContent = state.settings.temperature || 0.7;
+            
+            // Show/hide custom API settings
+            if (state.settings.seoApiSource === 'custom') {
+              customApiSettings.style.display = 'block';
+            }
+          } catch (error) {
+            console.error('Error loading settings:', error);
+            addLogEntry('Error loading settings: ' + error.message, 'error');
+          }
+        }
+      }
+
+      // Save settings to localStorage
+      function saveSettings() {
+        // Update state from UI
+        state.settings.apiKey = document.getElementById('apiKey').value;
+        state.settings.gptModel = document.getElementById('gptModel').value;
+        state.settings.updateInterval = parseInt(document.getElementById('updateInterval').value) || 30;
+        state.settings.scriptsPerUpdate = parseInt(document.getElementById('scriptsPerUpdate').value) || 5;
+        state.settings.autoStart = document.getElementById('autoStart').checked;
+        state.settings.includeSeo = document.getElementById('includeSeo').checked;
+        state.settings.generateBash = document.getElementById('generateBash').checked;
+        state.settings.generatePowershell = document.getElementById('generatePowershell').checked;
+        state.settings.balanceCategories = document.getElementById('balanceCategories').checked;
+        state.settings.seoApiSource = document.getElementById('seoApiSource').value;
+        state.settings.customApiUrl = document.getElementById('customApiUrl').value;
+        state.settings.customApiKey = document.getElementById('customApiKey').value;
+        state.settings.maxTokens = parseInt(document.getElementById('maxTokens').value) || 2000;
+        state.settings.temperature = parseFloat(document.getElementById('temperature').value) || 0.7;
+        
+        // Save to localStorage
+        try {
+          localStorage.setItem('scriptGeneratorSettings', JSON.stringify(state.settings));
+          showNotification('Settings saved successfully', 'success');
+          addLogEntry('Settings saved');
+        } catch (error) {
+          console.error('Error saving settings:', error);
+          showNotification('Error saving settings', 'error');
+          addLogEntry('Error saving settings: ' + error.message, 'error');
+        }
+      }
+
+      // Reset settings to default
+      function resetSettings() {
+        state.settings = {
+          apiKey: '',
+          gptModel: 'gpt-4-turbo',
+          updateInterval: 30,
+          scriptsPerUpdate: 5,
+          autoStart: false,
+          includeSeo: true,
+          generateBash: true,
+          generatePowershell: true,
+          balanceCategories: true,
+          seoApiSource: 'google',
+          customApiUrl: '',
+          customApiKey: '',
+          maxTokens: 2000,
+          temperature: 0.7
+        };
+        
+        // Update UI
+        document.getElementById('apiKey').value = '';
+        document.getElementById('gptModel').value = 'gpt-4-turbo';
+        document.getElementById('updateInterval').value = 30;
+        document.getElementById('scriptsPerUpdate').value = 5;
+        document.getElementById('autoStart').checked = false;
+        document.getElementById('includeSeo').checked = true;
+        document.getElementById('generateBash').checked = true;
+        document.getElementById('generatePowershell').checked = true;
+        document.getElementById('balanceCategories').checked = true;
+        document.getElementById('seoApiSource').value = 'google';
+        document.getElementById('customApiUrl').value = '';
+        document.getElementById('customApiKey').value = '';
+        document.getElementById('maxTokens').value = 2000;
+        document.getElementById('temperature').value = 0.7;
+        temperatureValue.textContent = 0.7;
+        
+        // Hide custom API settings
+        customApiSettings.style.display = 'none';
+        
+        // Save to localStorage
+        localStorage.setItem('scriptGeneratorSettings', JSON.stringify(state.settings));
+        
+        showNotification('Settings reset to default', 'success');
+        addLogEntry('Settings reset to default');
+      }
+
+      // Add all event listeners
+      function addEventListeners() {
+        // Settings Modal
+        settingsBtn.addEventListener('click', () => {
+          settingsModal.classList.add('show');
+        });
+        
+        saveSettingsBtn.addEventListener('click', () => {
+          saveSettings();
+          settingsModal.classList.remove('show');
+        });
+        
+        resetSettingsBtn.addEventListener('click', resetSettings);
+        
+        seoApiSource.addEventListener('change', () => {
+          customApiSettings.style.display = seoApiSource.value === 'custom' ? 'block' : 'none';
+        });
+        
+        temperatureRange.addEventListener('input', () => {
+          temperatureValue.textContent = temperatureRange.value;
+        });
+        
+        // Control Buttons
+        startBtn.addEventListener('click', startGenerator);
+        pauseBtn.addEventListener('click', togglePause);
+        stopBtn.addEventListener('click', stopGenerator);
+        refreshBtn.addEventListener('click', refreshScripts);
+        clearLogBtn.addEventListener('click', clearLog);
+        
+        // Category Management
+        addCategoryBtn.addEventListener('click', () => {
+          addCategoryModal.classList.add('show');
+        });
+        
+        saveNewCategoryBtn.addEventListener('click', addNewCategory);
+        cancelAddCategoryBtn.addEventListener('click', () => {
+          addCategoryModal.classList.remove('show');
+        });
+        
+        // Category Pills
+        document.querySelectorAll('.category-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            state.filters.category = pill.getAttribute('data-category');
+            updateScriptsList();
+          });
+        });
+        
+        // Filters
+        scriptTypeFilter.addEventListener('change', () => {
+          state.filters.type = scriptTypeFilter.value;
+          updateScriptsList();
+        });
+        
+        searchInput.addEventListener('input', () => {
+          state.filters.search = searchInput.value.trim().toLowerCase();
+          updateScriptsList();
+        });
+        
+        sortOrder.addEventListener('change', () => {
+          state.filters.sort = sortOrder.value;
+          updateScriptsList();
+        });
+        
+        // Export
+        exportBtn.addEventListener('click', () => {
+          exportModal.classList.add('show');
+        });
+        
+        confirmExportBtn.addEventListener('click', exportScripts);
+        cancelExportBtn.addEventListener('click', () => {
+          exportModal.classList.remove('show');
+        });
+        
+        // Script Actions
+        copyScriptBtn.addEventListener('click', copyScriptToClipboard);
+        downloadScriptBtn.addEventListener('click', downloadScript);
+        editScriptBtn.addEventListener('click', () => {
+          // First get the script data
+          const script = state.scripts.find(s => s.id === state.activeScriptId);
+          if (!script) return;
+          
+          // Fill in the edit form
+          editScriptTitle.value = script.title;
+          editScriptCategory.value = script.category;
+          editScriptKeywords.value = script.keywords.join(', ');
+          editScriptCode.value = script.code;
+          
+          // Hide view modal and show edit modal
+          viewScriptModal.classList.remove('show');
+          editScriptModal.classList.add('show');
+        });
+        
+        // Edit Script
+        saveEditBtn.addEventListener('click', saveScriptEdit);
+        cancelEditBtn.addEventListener('click', () => {
+          editScriptModal.classList.remove('show');
+        });
+        
+        // Notification
+        notificationClose.addEventListener('click', () => {
+          notification.classList.remove('show');
+        });
+        
+        // Scroll to Top
+        scrollTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Window scroll event for scroll to top button
+        window.addEventListener('scroll', () => {
+          if (window.pageYOffset > 300) {
+            scrollTop.classList.add('visible');
+          } else {
+            scrollTop.classList.remove('visible');
+          }
+        });
+        
+        // Theme toggle
+        modeToggle.addEventListener('click', toggleTheme);
+        
+        // Close modals when clicking close button
+        document.querySelectorAll('.modal-close').forEach(button => {
+          button.addEventListener('click', () => {
+            document.querySelectorAll('.modal-backdrop').forEach(modal => {
+              modal.classList.remove('show');
+            });
+          });
+        });
+      }
+
+      // Start the generator
+      function startGenerator() {
+        if (state.isRunning) return;
+        
+        // Check if we have an API key
+        if (!state.settings.apiKey) {
+          showNotification('Please set an API key in settings', 'warning');
+          settingsModal.classList.add('show');
+          return;
+        }
+        
+        state.isRunning = true;
+        state.isPaused = false;
+        
+        // Update button states
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        stopBtn.disabled = false;
+        
+        // Update status
+        serviceStatus.textContent = 'Running';
+        serviceStatus.className = 'status status-success';
+        
+        // Schedule first run
+        runScriptGenerator();
+        
+        // Log action
+        addLogEntry('Generator started');
+        showNotification('Script generator started', 'success');
+      }
+
+      // Toggle pause state
+      function togglePause() {
+        if (!state.isRunning) return;
+        
+        state.isPaused = !state.isPaused;
+        
+        if (state.isPaused) {
+          // Paused state
+          pauseBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+          serviceStatus.textContent = 'Paused';
+          serviceStatus.className = 'status status-warning';
+          addLogEntry('Generator paused');
+          showNotification('Script generator paused', 'warning');
+        } else {
+          // Resumed state
+          pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+          serviceStatus.textContent = 'Running';
+          serviceStatus.className = 'status status-success';
+          addLogEntry('Generator resumed');
+          showNotification('Script generator resumed', 'success');
+          
+          // Run immediately on resume
+          runScriptGenerator();
+        }
+      }
+
+      // Stop the generator
+      function stopGenerator() {
+        if (!state.isRunning) return;
+        
+        state.isRunning = false;
+        state.isPaused = false;
+        
+        // Clear the interval
+        if (state.updateTimer) {
+          clearTimeout(state.updateTimer);
+          state.updateTimer = null;
+        }
+        
+        // Update button states
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        stopBtn.disabled = true;
+        pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+        
+        // Update status
+        serviceStatus.textContent = 'Stopped';
+        serviceStatus.className = 'status status-error';
+        
+        // Log action
+        addLogEntry('Generator stopped');
+        showNotification('Script generator stopped', 'error');
+      }
+
+      // Run the script generator
+      function runScriptGenerator() {
+        if (!state.isRunning || state.isPaused) return;
+        
+        addLogEntry('Generating new scripts...');
+        
+        // In a real application, this would call the API to generate scripts
+        simulateScriptGeneration();
+        
+        // Schedule the next run
+        state.updateTimer = setTimeout(runScriptGenerator, state.settings.updateInterval * 60 * 1000);
+        
+        // Update last update time
+        lastUpdate.textContent = new Date().toLocaleTimeString();
+      }
+
+      // Simulate script generation (for demonstration)
+      function simulateScriptGeneration() {
+        loadingScripts.style.display = 'flex';
+        
+        // Get number of scripts to generate
+        const count = state.settings.scriptsPerUpdate;
+        
+        // Update API usage
+        state.apiUsage = Math.min(100, state.apiUsage + Math.floor(Math.random() * 5) + 1);
+        apiUsage.style.width = `${state.apiUsage}%`;
+        apiUsageText.textContent = `${state.apiUsage}%`;
+        
+        // Get a random keyword
+        const keyword = sampleKeywords[Math.floor(Math.random() * sampleKeywords.length)];
+        
+        setTimeout(() => {
+          for (let i = 0; i < count; i++) {
+            // Determine script type
+            let scriptType = 'bash';
+            if (state.settings.generateBash && state.settings.generatePowershell) {
+              scriptType = Math.random() > 0.5 ? 'bash' : 'powershell';
+            } else if (state.settings.generatePowershell) {
+              scriptType = 'powershell';
+            }
+            
+            // Determine category
+            let category = state.categories[Math.floor(Math.random() * state.categories.length)].id;
+            if (state.settings.balanceCategories) {
+              // Find category with least scripts
+              const categoryCounts = {};
+              state.categories.forEach(cat => {
+                categoryCounts[cat.id] = state.scripts.filter(s => s.category === cat.id).length;
+              });
+              
+              // Sort categories by script count
+              const sortedCategories = Object.entries(categoryCounts)
+                .sort((a, b) => a[1] - b[1])
+                .map(entry => entry[0]);
+              
+              category = sortedCategories[0] || category;
+            }
+            
+            // Create new script
+            const newScript = {
+              id: `script-${Date.now()}-${i}`,
+              title: `Generated ${scriptType === 'bash' ? 'Bash' : 'PowerShell'} Script for "${keyword.keyword}"`,
+              description: `Automatically generated script based on trending keyword: ${keyword.keyword}`,
+              type: scriptType,
+              category: category,
+              keywords: keyword.keyword.split(' '),
+              code: generateSampleCode(scriptType, keyword.keyword, category),
+              created: Date.now(),
+              seoScore: Math.floor(Math.random() * 20) + 80
+            };
+            
+            // Add to scripts list
+            state.scripts.unshift(newScript);
+            
+            // Increment category count
+            const catIndex = state.categories.findIndex(c => c.id === category);
+            if (catIndex !== -1) {
+              state.categories[catIndex].count++;
+            }
+            
+            // Log script generation
+            addLogEntry(`Generated script: ${newScript.title}`, 'success');
+          }
+          
+          // Update UI
+          updateScriptsList();
+          updateCategoriesList();
+          updateStatusPanel();
+          
+          // Hide loading indicator
+          loadingScripts.style.display = 'none';
+          
+          // Show notification
+          showNotification(`Generated ${count} new scripts`, 'success');
+        }, 2000);
+      }
+
+      // Generate sample code (for demonstration)
+      function generateSampleCode(type, keyword, category) {
+        const now = new Date().toLocaleDateString();
+        
+        if (type === 'bash') {
+          return `#!/bin/bash
+# Generated Script for "${keyword}"
+# This script was automatically generated based on top SEO keywords
+# Category: ${category}
+# Created: ${now}
+
+echo "Starting ${keyword} script..."
+
+# Main functionality
+function main() {
+  echo "Checking system requirements..."
+  check_requirements
+  
+  echo "Performing primary operation..."
+  perform_operation
+  
+  echo "Cleaning up..."
+  cleanup
+  
+  echo "Operation completed successfully!"
+}
+
+# Check system requirements
+function check_requirements() {
+  # Check for required commands
+  for cmd in curl wget grep sed; do
+    if ! command -v $cmd &> /dev/null; then
+      echo "Error: Required command '$cmd' not found. Please install it."
+      exit 1
+    fi
+  done
+  
+  # Check for operating system ${category === 'linux' ? '(Linux required)' : ''}
+  if [ "${category}" = "linux" ]; then
+    if [ "$(uname)" != "Linux" ]; then
+      echo "Error: This script requires a Linux operating system."
+      exit 1
+    fi
+  fi
+}
+
+# Main operation
+function perform_operation() {
+  echo "Performing ${keyword} operation..."
+  
+  # Script-specific operations would go here
+  sleep 2
+  
+  echo "Creating backup of system files..."
+  # Backup commands would go here
+  
+  echo "Applying changes..."
+  # Change implementation would go here
+  
+  echo "Verifying changes..."
+  # Verification would go here
+}
+
+# Cleanup function
+function cleanup() {
+  echo "Removing temporary files..."
+  # Cleanup commands would go here
+}
+
+# Run main function
+main
+
+echo "${keyword} script completed successfully!"
+exit 0`;
+        } else {
+          return `# Generated PowerShell Script for "${keyword}"
+# This script was automatically generated based on top SEO keywords
+# Category: ${category}
+# Created: ${now}
+
+Write-Host "Starting ${keyword} script..." -ForegroundColor Green
+
+# Main function
+function Start-MainProcess {
+    Write-Host "Checking system requirements..." -ForegroundColor Cyan
+    Test-Requirements
+    
+    Write-Host "Performing primary operation..." -ForegroundColor Cyan
+    Invoke-MainOperation
+    
+    Write-Host "Cleaning up..." -ForegroundColor Cyan
+    Invoke-Cleanup
+    
+    Write-Host "Operation completed successfully!" -ForegroundColor Green
+}
+
+# Check system requirements
+function Test-Requirements {
+    # Check PowerShell version
+    if ($PSVersionTable.PSVersion.Major -lt 5) {
+        Write-Host "Error: This script requires PowerShell 5.0 or higher." -ForegroundColor Red
+        exit 1
+    }
+    
+    # Check if running as administrator ${category === 'windows' ? '(required for Windows operations)' : ''}
+    if ("${category}" -eq "windows") {
+        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+        if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+            Write-Host "Error: This script must be run as Administrator." -ForegroundColor Red
+            exit 1
+        }
+    }
+}
+
+# Main operation
+function Invoke-MainOperation {
+    Write-Host "Performing ${keyword} operation..." -ForegroundColor Yellow
+    
+    # Script-specific operations would go here
+    Start-Sleep -Seconds 2
+    
+    Write-Host "Creating backup of system settings..." -ForegroundColor Yellow
+    # Backup commands would go here
+    
+    Write-Host "Applying changes..." -ForegroundColor Yellow
+    # Change implementation would go here
+    
+    Write-Host "Verifying changes..." -ForegroundColor Yellow
+    # Verification would go here
+}
+
+# Cleanup function
+function Invoke-Cleanup {
+    Write-Host "Removing temporary files..." -ForegroundColor Yellow
+    # Cleanup commands would go here
+}
+
+# Run the main function
+Start-MainProcess
+
+Write-Host "${keyword} script completed successfully!" -ForegroundColor Green`;
+        }
+      }
+
+      // Refresh scripts list
+      function refreshScripts() {
+        // In a real application, this would fetch scripts from the server
+        addLogEntry('Refreshing scripts list...');
+        loadingScripts.style.display = 'flex';
+        
+        setTimeout(() => {
+          updateScriptsList();
+          loadingScripts.style.display = 'none';
+          addLogEntry('Scripts list refreshed');
+          showNotification('Scripts list refreshed', 'success');
+        }, 1000);
+      }
+
+      // Clear the log terminal
+      function clearLog() {
+        logTerminal.innerHTML = '';
+        addLogEntry('Log cleared');
+      }
+
+      // Add a new category
+      function addNewCategory() {
+        const name = document.getElementById('newCategoryName').value.trim();
+        const description = document.getElementById('newCategoryDesc').value.trim();
+        const keywords = document.getElementById('newCategoryKeywords').value.trim();
+        
+        if (!name) {
+          showNotification('Please enter a category name', 'warning');
+          return;
+        }
+        
+        const id = name.toLowerCase().replace(/\s+/g, '-');
+        
+        // Check if category already exists
+        if (state.categories.some(c => c.id === id)) {
+          showNotification('Category already exists', 'warning');
+          return;
+        }
+        
+        // Add new category
+        state.categories.push({
+          id: id,
+          name: name,
+          description: description,
+          keywords: keywords.split(',').map(k => k.trim()),
+          count: 0,
+          enabled: true
+        });
+        
+        // Update UI
+        updateCategoriesList();
+        
+        // Add category to pills
+        const pillsContainer = document.getElementById('categoryPills');
+        const newPill = document.createElement('div');
+        newPill.className = 'category-pill';
+        newPill.setAttribute('data-category', id);
+        newPill.textContent = name;
+        newPill.addEventListener('click', () => {
+          document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+          newPill.classList.add('active');
+          state.filters.category = id;
+          updateScriptsList();
+        });
+        pillsContainer.appendChild(newPill);
+        
+        // Close modal and reset form
+        addCategoryModal.classList.remove('show');
+        document.getElementById('newCategoryName').value = '';
+        document.getElementById('newCategoryDesc').value = '';
+        document.getElementById('newCategoryKeywords').value = '';
+        
+        // Log and notify
+        addLogEntry(`Added new category: ${name}`);
+        showNotification(`Category "${name}" added successfully`, 'success');
+      }
+
+      // Export scripts
+      function exportScripts() {
+        // In a real application, this would send a request to the server to export scripts
+        const format = document.querySelector('input[name="exportFormat"]:checked').value;
+        const categories = Array.from(document.querySelectorAll('#exportCategories input:checked')).map(input => input.value);
+        const includeBash = document.getElementById('exportBash').checked;
+        const includePowershell = document.getElementById('exportPowershell').checked;
+        const exportPath = document.getElementById('exportPath').value.trim();
+        
+        // Validate inputs
+        if (categories.length === 0) {
+          showNotification('Please select at least one category', 'warning');
+          return;
+        }
+        
+        if (!includeBash && !includePowershell) {
+          showNotification('Please select at least one script type', 'warning');
+          return;
+        }
+        
+        // Simulate export
+        addLogEntry(`Exporting scripts: format=${format}, categories=${categories.join(',')}, types=${includeBash ? 'bash' : ''}${includeBash && includePowershell ? ',' : ''}${includePowershell ? 'powershell' : ''}`);
+        
+        // Show loading notification
+        showNotification('Exporting scripts...', 'info');
+        
+        setTimeout(() => {
+          // Close modal
+          exportModal.classList.remove('show');
+          
+          // Success message
+          showNotification(`Scripts exported successfully to ${exportPath || 'default location'}`, 'success');
+          addLogEntry(`Scripts exported successfully to ${exportPath || 'default location'}`);
+        }, 2000);
+      }
+
+      // Copy script to clipboard
+      function copyScriptToClipboard() {
+        const script = state.scripts.find(s => s.id === state.activeScriptId);
+        if (!script) return;
+        
+        navigator.clipboard.writeText(script.code)
+          .then(() => {
+            showNotification('Script copied to clipboard', 'success');
+          })
+          .catch(err => {
+            console.error('Failed to copy script:', err);
+            showNotification('Failed to copy script', 'error');
+          });
+      }
+
+      // Download script
+      function downloadScript() {
+        const script = state.scripts.find(s => s.id === state.activeScriptId);
+        if (!script) return;
+        
+        const extension = script.type === 'bash' ? '.sh' : '.ps1';
+        const filename = script.title.toLowerCase().replace(/\s+/g, '-') + extension;
+        const blob = new Blob([script.code], { type: 'text/plain' });
+        
+        // Create a download link
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+        
+        addLogEntry(`Script "${script.title}" downloaded as ${filename}`);
+        showNotification(`Script downloaded as ${filename}`, 'success');
+      }
+
+      // Save script edit
+      function saveScriptEdit() {
+        const scriptId = state.activeScriptId;
+        const script = state.scripts.find(s => s.id === scriptId);
+        if (!script) return;
+        
+        // Update script properties
+        script.title = editScriptTitle.value;
+        script.category = editScriptCategory.value;
+        script.keywords = editScriptKeywords.value.split(',').map(k => k.trim()).filter(k => k);
+        script.code = editScriptCode.value;
+        
+        // Update UI
+        updateScriptsList();
+        
+        // Close modal
+        editScriptModal.classList.remove('show');
+        
+        // Log and notify
+        addLogEntry(`Script "${script.title}" updated`);
+        showNotification('Script updated successfully', 'success');
+      }
+
+      // Update scripts list
+      function updateScriptsList() {
+        // Apply filters
+        let filteredScripts = [...state.scripts];
+        
+        // Filter by category
+        if (state.filters.category !== 'all') {
+          filteredScripts = filteredScripts.filter(script => script.category === state.filters.category);
+        }
+        
+        // Filter by type
+        if (state.filters.type !== 'all') {
+          filteredScripts = filteredScripts.filter(script => script.type === state.filters.type);
+        }
+        
+        // Filter by search query
+        if (state.filters.search) {
+          filteredScripts = filteredScripts.filter(script => {
+            const searchTerm = state.filters.search.toLowerCase();
+            return (
+              script.title.toLowerCase().includes(searchTerm) ||
+              script.description.toLowerCase().includes(searchTerm) ||
+              script.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
+            );
+          });
+        }
+        
+        // Sort scripts
+        switch (state.filters.sort) {
+          case 'date-desc':
+            filteredScripts.sort((a, b) => b.created - a.created);
+            break;
+          case 'date-asc':
+            filteredScripts.sort((a, b) => a.created - b.created);
+            break;
+          case 'name-asc':
+            filteredScripts.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+          case 'name-desc':
+            filteredScripts.sort((a, b) => b.title.localeCompare(a.title));
+            break;
+        }
+        
+        // Update search results text
+        searchResults.textContent = `Showing ${filteredScripts.length} of ${state.scripts.length} scripts`;
+        
+        // Show/hide "no scripts" message
+        if (filteredScripts.length === 0) {
+          scriptsList.innerHTML = '';
+          noScripts.style.display = 'flex';
+        } else {
+          noScripts.style.display = 'none';
+          
+          // Build HTML for scripts
+          let html = '';
+          
+          filteredScripts.forEach(script => {
+            const date = new Date(script.created).toLocaleDateString();
+            const time = new Date(script.created).toLocaleTimeString();
+            
+            html += `
+              <div class="script-item" data-id="${script.id}">
+                <div class="script-header">
+                  <div>
+                    <div class="script-title">${script.title}</div>
+                    <div class="script-subtitle">${script.description}</div>
+                  </div>
+                  <div class="script-actions">
+                    <button class="btn view-script-btn">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="script-footer">
+                  <div class="script-meta">
+                    <span class="badge">${script.type === 'bash' ? 'Bash' : 'PowerShell'}</span>
+                    <span class="badge">${script.category}</span>
+                    <span>${date}</span>
+                  </div>
+                  <div>
+                    <span class="badge">SEO: ${script.seoScore}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          
+          scriptsList.innerHTML = html;
+          
+          // Add event listeners to view buttons
+          document.querySelectorAll('.view-script-btn').forEach(button => {
+            button.addEventListener('click', () => {
+              const scriptId = button.closest('.script-item').getAttribute('data-id');
+              viewScript(scriptId);
+            });
+          });
+        }
+        
+        // Update scripts count
+        scriptsCount.textContent = state.scripts.length;
+      }
+
+      // View script details
+      function viewScript(scriptId) {
+        const script = state.scripts.find(s => s.id === scriptId);
+        if (!script) return;
+        
+        // Save active script ID
+        state.activeScriptId = scriptId;
+        
+        // Update modal content
+        viewScriptTitle.textContent = script.title;
+        viewScriptType.textContent = script.type === 'bash' ? 'Bash' : 'PowerShell';
+        viewScriptCategory.textContent = script.category;
+        viewScriptDate.textContent = new Date(script.created).toLocaleString();
+        
+        // Keywords
+        viewScriptKeywords.innerHTML = '';
+        script.keywords.forEach(keyword => {
+          const span = document.createElement('span');
+          span.className = 'badge';
+          span.textContent = keyword;
+          viewScriptKeywords.appendChild(span);
+        });
+        
+        // Code
+        viewScriptCode.textContent = script.code;
+        
+        // Show modal
+        viewScriptModal.classList.add('show');
+      }
+
+      // Update categories list
+      function updateCategoriesList() {
+        let html = '';
+        
+        state.categories.forEach(category => {
+          html += `
+            <div class="list-item">
+              <span class="list-item-title">${category.name}</span>
+              <div class="d-flex align-center">
+                <span class="badge">${category.count}</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-${category.id}" ${category.enabled ? 'checked' : ''}>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        
+        categoriesList.innerHTML = html;
+        
+        // Add event listeners to category toggles
+        state.categories.forEach(category => {
+          const toggle = document.getElementById(`category-${category.id}`);
+          if (toggle) {
+            toggle.addEventListener('change', () => {
+              const index = state.categories.findIndex(c => c.id === category.id);
+              if (index !== -1) {
+                state.categories[index].enabled = toggle.checked;
+                addLogEntry(`Category "${category.name}" ${toggle.checked ? 'enabled' : 'disabled'}`);
+              }
+            });
+          }
+        });
+      }
+
+      // Update status panel
+      function updateStatusPanel() {
+        // Update service status
+        if (state.isRunning) {
+          if (state.isPaused) {
+            serviceStatus.textContent = 'Paused';
+            serviceStatus.className = 'status status-warning';
+          } else {
+            serviceStatus.textContent = 'Running';
+            serviceStatus.className = 'status status-success';
+          }
+        } else {
+          serviceStatus.textContent = 'Stopped';
+          serviceStatus.className = 'status status-error';
+        }
+        
+        // Update API status
+        if (state.settings.apiKey) {
+          apiStatus.textContent = 'Connected';
+          apiStatus.className = 'status status-success';
+        } else {
+          apiStatus.textContent = 'No API Key';
+          apiStatus.className = 'status status-error';
+        }
+        
+        // Update scripts count
+        scriptsCount.textContent = state.scripts.length;
+        
+        // Update queue count (simulated)
+        queueCount.textContent = state.isRunning && !state.isPaused ? Math.floor(Math.random() * 3) : 0;
+        
+        // Update API usage
+        apiUsage.style.width = `${state.apiUsage}%`;
+        apiUsageText.textContent = `${state.apiUsage}%`;
+        
+        // Update last update time
+        if (state.scripts.length > 0) {
+          const lastScriptTime = new Date(Math.max(...state.scripts.map(s => s.created))).toLocaleTimeString();
+          lastUpdate.textContent = lastScriptTime;
+        } else {
+          lastUpdate.textContent = 'Never';
+        }
+      }
+
+      // Update top keywords
+      function updateTopKeywords() {
+        // Clear the terminal
+        keywordsTerminal.innerHTML = '';
+        
+        // Add each keyword to the terminal
+        sampleKeywords.forEach((keyword, index) => {
+          const line = document.createElement('div');
+          line.className = 'terminal-line';
+          
+          const rank = document.createElement('span');
+          rank.className = 'terminal-prompt';
+          rank.textContent = `${index + 1}`;
+          
+          const content = document.createElement('span');
+          content.innerHTML = `<strong>${keyword.keyword}</strong> - ${keyword.volume} searches/mo <span style="color: ${keyword.growth.startsWith('+') ? 'var(--matrix-success)' : 'var(--matrix-error)'};">${keyword.growth}</span>`;
+          
+          line.appendChild(rank);
+          line.appendChild(content);
+          
+          keywordsTerminal.appendChild(line);
+        });
+        
+        // Log update
+        addLogEntry('Top keywords updated');
+      }
+
+      // Show notification
+      function showNotification(message, type = 'info') {
+        const notificationElem = document.getElementById('notification');
+        const messageElem = notificationElem.querySelector('.notification-message');
+        const iconElem = notificationElem.querySelector('.notification-icon i');
+        
+        // Set message
+        messageElem.textContent = message;
+        
+        // Set type
+        notificationElem.className = 'notification';
+        notificationElem.classList.add(`notification-${type}`);
+        
+        // Set icon
+        iconElem.className = '';
+        switch (type) {
+          case 'success':
+            iconElem.className = 'fas fa-check-circle';
+            break;
+          case 'error':
+            iconElem.className = 'fas fa-exclamation-circle';
+            break;
+          case 'warning':
+            iconElem.className = 'fas fa-exclamation-triangle';
+            break;
+          default:
+            iconElem.className = 'fas fa-info-circle';
+        }
+        
+        // Show notification
+        notificationElem.classList.add('show');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          notificationElem.classList.remove('show');
+        }, 5000);
+      }
+
+      // Add log entry
+      function addLogEntry(message, type = 'info') {
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'terminal-prompt';
+        
+        const time = new Date().toLocaleTimeString();
+        
+        switch (type) {
+          case 'success':
+            prompt.textContent = '+';
+            prompt.style.color = 'var(--matrix-success)';
+            break;
+          case 'error':
+            prompt.textContent = '!';
+            prompt.style.color = 'var(--matrix-error)';
+            break;
+          case 'warning':
+            prompt.textContent = '?';
+            prompt.style.color = 'var(--matrix-warning)';
+            break;
+          default:
+            prompt.textContent = '>';
+        }
+        
+        const content = document.createElement('span');
+        content.innerHTML = `[${time}] ${message}`;
+        
+        if (type === 'error') {
+          content.style.color = 'var(--matrix-error)';
+        } else if (type === 'warning') {
+          content.style.color = 'var(--matrix-warning)';
+        } else if (type === 'success') {
+          content.style.color = 'var(--matrix-success)';
+        }
+        
+        line.appendChild(prompt);
+        line.appendChild(content);
+        
+        logTerminal.appendChild(line);
+        logTerminal.scrollTop = logTerminal.scrollHeight;
+      }
+
+      // Toggle theme
+      function toggleTheme() {
+        const root = document.documentElement;
+        const currentBg = getComputedStyle(root).getPropertyValue('--matrix-bg').trim();
+        
+        if (currentBg === '#0c0c0c') {
+          // Switch to light mode
+          root.style.setProperty('--matrix-bg', '#f5f5f5');
+          root.style.setProperty('--matrix-text', '#007c21');
+          root.style.setProperty('--matrix-glow', 'rgba(0, 255, 65, 0)');
+          root.style.setProperty('--matrix-dim', '#e0f5e0');
+          root.style.setProperty('--matrix-panel', '#ffffff');
+          root.style.setProperty('--matrix-border', '#cccccc');
+          root.style.setProperty('--matrix-secondary', '#ebfff1');
+          document.getElementById('digitalRain').style.opacity = '0.1';
+          modeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+          addLogEntry('Switched to light theme');
+        } else {
+          // Switch to matrix mode
+          root.style.setProperty('--matrix-bg', '#0c0c0c');
+          root.style.setProperty('--matrix-text', '#00ff41');
+          root.style.setProperty('--matrix-glow', 'rgba(0, 255, 65, 0.3)');
+          root.style.setProperty('--matrix-dim', '#0f3d0f');
+          root.style.setProperty('--matrix-panel', '#0f0f0f');
+          root.style.setProperty('--matrix-border', '#143214');
+          root.style.setProperty('--matrix-secondary', '#072707');
+          document.getElementById('digitalRain').style.opacity = '0.3';
+          modeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          addLogEntry('Switched to dark theme');
+        }
+      }
+
+      // Initialize the application
+      init();
+    })();
+  </script>
+</body>
+</html>

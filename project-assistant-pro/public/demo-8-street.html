@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MatrixAI - Advanced Component Demo</title>
+    <title>MatrixAI - Underground Tech Elite</title>
     <link rel="stylesheet" href="css/matrix.css">
     <link rel="stylesheet" href="css/matrix-ai-extension.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MatrixAI Security Notice -->
+    <meta name="description" content="Elite tech solutions built by those who hustled from the streets. Respect the code, respect the journey.">
+    <meta property="og:title" content="MatrixAI - From Zero To Empire">
+    <meta property="og:description" content="Born in the underground, now dominating the enterprise. Street-proven tech solutions.">
+    <meta name="keywords" content="matrix, ai, street tech, elite code, untraceable systems">
+    <!-- Security tokens -->
+    <meta name="MatrixAI-auth" content="ST-CERTIFIED-1337-X">
+    <meta name="street-cred" content="100%">
+    <meta name="corporate-level" content="DOMINATING">
     <style>
         /* Core Matrix Cyberpunk Theme */
         :root {
@@ -28,11 +38,213 @@
             --m-radius: 4px;
             --m-ai-primary: #00ff41;
             --m-ai-accent: #0088ff;
+            --m-street-red: #ff0033;
+            --m-street-gold: #ffcc00;
             
             /* New animation timing variables */
             --m-animation-speed-fast: 0.3s;
             --m-animation-speed-normal: 0.6s;
             --m-animation-speed-slow: 1.2s;
+        }
+        
+        /* Street origins styling */
+        @font-face {
+            font-family: 'Matrix Code';
+            src: url('https://cdn.jsdelivr.net/npm/matrix-code-nfi@1.0.0/dist/MatrixCode.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        .m-logo-glitch {
+            font-family: 'Courier New', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            color: var(--m-text-primary);
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.7);
+            letter-spacing: 2px;
+            position: relative;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+        }
+        
+        .m-logo-glitch span {
+            color: var(--m-street-gold);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .m-logo-glitch span::before,
+        .m-logo-glitch span::after {
+            content: "AI";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+        }
+        
+        .m-logo-glitch span::before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            animation: glitch-effect 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            opacity: 0.8;
+        }
+        
+        .m-logo-glitch span::after {
+            left: -2px;
+            text-shadow: 1px 0 blue;
+            animation: glitch-effect 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            opacity: 0.8;
+        }
+        
+        @keyframes glitch-effect {
+            0% { transform: translateX(0); }
+            5% { transform: translateX(3px); }
+            10% { transform: translateX(-3px); }
+            15% { transform: translateX(0); }
+            100% { transform: translateX(0); }
+        }
+        
+        .m-glitch-subtitle {
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--m-street-red);
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .m-glitch-subtitle::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--m-street-red), transparent);
+        }
+        
+        .m-header-tagline {
+            text-align: center;
+            color: var(--m-text-dim);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .m-origins-banner {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .m-origins-tag {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--m-text-primary);
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--m-text-dim);
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .m-origins-tag::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            animation: tag-shine 3s infinite;
+            animation-delay: calc(var(--i) * 1s);
+        }
+        
+        .m-origins-tag:nth-child(1) { --i: 0; }
+        .m-origins-tag:nth-child(2) { --i: 1; }
+        .m-origins-tag:nth-child(3) { --i: 2; }
+        
+        @keyframes tag-shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .m-tag-mark {
+            color: var(--m-street-red);
+            font-weight: bold;
+            margin-right: 2px;
+        }
+        
+        /* Barcode element */
+        .m-barcode {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: var(--m-text-primary);
+            border: 1px solid var(--m-text-dim);
+            border-radius: 2px;
+            transform: rotate(90deg);
+            transform-origin: right top;
+        }
+        
+        .m-barcode::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--m-text-primary);
+        }
+        
+        .m-barcode::after {
+            content: "";
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--m-text-primary);
+        }
+        
+        /* Street-style card enhancements */
+        .m-card {
+            position: relative;
+        }
+        
+        .m-card::before {
+            content: "STREET.CERTIFIED";
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            background-color: var(--m-street-red);
+            color: black;
+            padding: 2px 8px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transform: rotate(-3deg);
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            opacity: 0.9;
         }
         
         /* Global styling improvements */
@@ -44,6 +256,35 @@
             font-family: 'Courier New', monospace;
             line-height: 1.4;
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ff41' stroke-width='2'%3E%3Cpath d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3'/%3E%3C/svg%3E"), auto;
+            position: relative;
+        }
+        
+        body::before {
+            content: "UNDERGROUND ORIGINS. ELITE RESULTS.";
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.6rem;
+            color: var(--m-text-dim);
+            opacity: 0.5;
+            z-index: -1;
+            transform: rotate(-90deg);
+            transform-origin: bottom right;
+            font-family: 'Matrix Code', monospace;
+            letter-spacing: 2px;
+        }
+        
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 0h1L0 6V5zm0 6V5L6 6z' fill='rgba(0,255,65,0.05)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.3;
         }
         
         /* Custom scrollbar */
@@ -115,8 +356,15 @@
             position: relative;
         }
         
-        .m-card:hover {
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.15);
+        /* Street-style VHS-type distortion effect */
+        @keyframes vhsDistortion {
+            0% { opacity: 0; }
+            10% { opacity: 0.8; }
+            11% { opacity: 0; }
+            29% { opacity: 0; }
+            30% { opacity: 0.6; }
+            31% { opacity: 0; }
+            100% { opacity: 0; }
         }
         
         .m-card::after {
@@ -125,14 +373,16 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--m-text-primary), transparent);
+            height: 3px;
+            background: rgba(255, 0, 51, 0.7);
             opacity: 0;
-            transition: opacity var(--m-animation-speed-normal) ease;
+            animation: vhsDistortion 10s infinite;
+            pointer-events: none;
+            z-index: 10;
         }
         
-        .m-card:hover::after {
-            opacity: 0.7;
+        .m-card:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.15);
         }
         
         .m-card-header {
@@ -142,6 +392,35 @@
             font-weight: bold;
             color: var(--m-text-primary);
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .m-card-header::before {
+            content: "UNTRACEABLE";
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 0.5rem;
+            color: var(--m-text-dim);
+            opacity: 0.5;
+            letter-spacing: 1px;
+        }
+        
+        /* Street credibility elements */
+        .m-street-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--m-street-red);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 5px;
+            font-weight: bold;
+            z-index: 10;
+            transform: rotate(45deg) translate(15px, -10px);
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
         
         /* Button improvements */
@@ -157,6 +436,9 @@
             overflow: hidden;
             transition: all var(--m-animation-speed-fast);
             text-shadow: var(--m-glow-green);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
         
         button::after, .m-btn::after {
@@ -187,6 +469,37 @@
         button:hover, .m-btn:hover {
             background-color: rgba(0, 255, 65, 0.2);
             box-shadow: var(--m-glow-green);
+        }
+        
+        /* Street style buttons */
+        .m-btn-street {
+            background-color: var(--m-street-red);
+            color: black;
+            border: none;
+            text-shadow: none;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .m-btn-street::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.3s;
+        }
+        
+        .m-btn-street:hover::before {
+            left: 100%;
+        }
+        
+        .m-btn-street:hover {
+            background-color: var(--m-street-red);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
         }
         
         /* Additional styles for new components */
@@ -312,6 +625,17 @@
             border-radius: 3px;
             pointer-events: none;
             transition: opacity var(--m-animation-speed-fast) ease, transform var(--m-animation-speed-fast) ease;
+            position: relative;
+        }
+        
+        .m-ai-datapoint-tooltip::before {
+            content: "STREET_DATA";
+            position: absolute;
+            top: -3px;
+            right: 3px;
+            font-size: 0.5rem;
+            color: var(--m-street-red);
+            font-weight: bold;
         }
         
         .m-ai-axis-label {
@@ -340,6 +664,62 @@
             padding: 2px 5px;
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 3px;
+        }
+        
+        /* Street Credibility Display */
+        .m-street-cred {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--m-street-red);
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            color: var(--m-text-dim);
+        }
+        
+        .m-street-cred-title {
+            font-weight: bold;
+            color: var(--m-street-red);
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .m-street-cred-bar {
+            height: 4px;
+            width: 100%;
+            background-color: rgba(255, 0, 0, 0.2);
+            margin-top: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .m-street-cred-fill {
+            height: 100%;
+            width: 90%;
+            background-color: var(--m-street-red);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .m-street-cred-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: street-cred-pulse 2s infinite;
+        }
+        
+        @keyframes street-cred-pulse {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         /* Tree visualization improvements */
@@ -790,6 +1170,232 @@
             color: var(--m-text-primary);
         }
         
+        /* Street-style status displays */
+        .m-street-clearance {
+            border: 1px solid var(--m-street-red);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .m-clearance-header {
+            color: var(--m-street-red);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 0, 51, 0.3);
+            padding-bottom: 3px;
+        }
+        
+        .m-clearance-level {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            font-size: 0.75rem;
+        }
+        
+        .m-clearance-label {
+            color: var(--m-text-dim);
+        }
+        
+        .m-clearance-value {
+            color: var(--m-street-gold);
+            font-weight: bold;
+        }
+        
+        .m-verification-code {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 0.7rem;
+            color: var(--m-street-red);
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .m-street-verification {
+            margin-top: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px dashed var(--m-street-gold);
+            padding: 8px;
+            position: relative;
+        }
+        
+        .m-verification-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-bottom: 3px;
+        }
+        
+        .m-verification-tag {
+            color: var(--m-text-dim);
+        }
+        
+        .m-verification-value {
+            color: var(--m-text-primary);
+            font-weight: bold;
+        }
+        
+        .m-verification-stamp {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%) rotate(15deg);
+            font-size: 1rem;
+            color: var(--m-street-red);
+            border: 2px solid var(--m-street-red);
+            padding: 3px 8px;
+            font-weight: bold;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+        
+        /* Timeline street-to-empire */
+        .m-timeline {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .m-timeline::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            left: 70px;
+            height: calc(100% - 40px);
+            width: 1px;
+            background-color: var(--m-street-red);
+        }
+        
+        .m-timeline-header {
+            color: var(--m-street-gold);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .m-timeline-item {
+            display: flex;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .m-timeline-year {
+            width: 50px;
+            color: var(--m-street-red);
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding-top: 2px;
+        }
+        
+        .m-timeline-marker {
+            width: 10px;
+            height: 10px;
+            background-color: var(--m-street-red);
+            border-radius: 50%;
+            margin: 0 15px;
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .m-timeline-content {
+            flex: 1;
+            font-size: 0.75rem;
+            color: var(--m-text-dim);
+            padding: 0 10px;
+            border-left: 1px solid rgba(255, 0, 51, 0.3);
+        }
+        
+        /* Security tape effect */
+        .m-security-tape {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            background-color: var(--m-street-red);
+            color: black;
+            font-size: 0.6rem;
+            padding: 3px 0;
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            transform: rotate(-2deg);
+            letter-spacing: 1px;
+        }
+        
+        .m-security-tape::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--m-street-red);
+            overflow: hidden;
+            animation: securityTapeScroll 15s linear infinite;
+        }
+        
+        @keyframes securityTapeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Origins Easter Egg */
+        .m-origins-easter-egg {
+            position: fixed;
+            bottom: 5px;
+            left: 5px;
+            font-size: 0.6rem;
+            color: rgba(255, 0, 51, 0.3);
+            cursor: help;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+        
+        .m-origins-easter-egg:hover {
+            opacity: 0.8;
+        }
+        
+        .m-origins-easter-egg-content {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--m-street-red);
+            padding: 10px;
+            font-size: 0.7rem;
+            color: var(--m-text-dim);
+            display: none;
+            z-index: 1001;
+        }
+        
+        .m-origins-easter-egg:hover .m-origins-easter-egg-content {
+            display: block;
+        }
+        
+        .m-origins-title {
+            color: var(--m-street-red);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .m-origins-quote {
+            font-style: italic;
+            margin-top: 5px;
+            font-size: 0.65rem;
+        }
+        
         /* Mobile-friendly adjustments */
         @media (max-width: 768px) {
             .demo-row {
@@ -1096,6 +1702,14 @@
     <!-- Matrix scanline effect -->
     <div class="m-scanline"></div>
     
+    <!-- Street-style power status -->
+    <div class="m-power-meter">
+        <div class="m-power-title">STREET_POWER</div>
+        <div class="m-power-bar"><div class="m-power-fill"></div></div>
+        <div class="m-power-bar"><div class="m-power-fill"></div></div>
+        <div class="m-power-bar"><div class="m-power-fill"></div></div>
+    </div>
+    
     <!-- Enhanced Navigation with AI glow effects -->
     <nav class="m-navbar">
         <div class="m-container">
@@ -1119,8 +1733,14 @@
     <!-- Main Content -->
     <div class="m-container">
         <header class="m-py-5">
-            <h1 class="m-text-center">MatrixAI Component Library</h1>
-            <p class="m-lead m-text-center">Advanced cyberpunk-themed UI components for AI applications</p>
+            <div class="m-logo-glitch">Matrix<span>AI</span></div>
+            <div class="m-glitch-subtitle">BORN IN THE UNDERGROUND. DOMINATING THE FUTURE.</div>
+            <div class="m-header-tagline">Advanced cyberpunk-themed UI components for AI applications</div>
+            <div class="m-origins-banner">
+                <div class="m-origins-tag"><span class="m-tag-mark">#</span>STREET_ORIGIN</div>
+                <div class="m-origins-tag"><span class="m-tag-mark">#</span>CORPORATE_POWER</div>
+                <div class="m-origins-tag"><span class="m-tag-mark">#</span>ZERO_TO_EMPIRE</div>
+            </div>
         </header>
 
         <!-- Computer Vision Analysis Section -->
@@ -2020,13 +2640,37 @@
         </section>
 
         <!-- System Status & Notifications -->
+        <!-- Status Content -->
         <section id="status" class="demo-section">
             <h2>System Status & Notifications</h2>
             <div class="demo-row">
                 <div class="demo-col">
                     <div class="m-card demo-card">
-                        <div class="m-card-header">System Status Display</div>
+                        <div class="m-card-header">
+                            <div class="m-card-title-row">
+                                <span>System Status Display</span>
+                                <button class="m-fullscreen-btn" data-tooltip="Expand to fullscreen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                         <div class="m-card-body">
+                            <!-- Street-style security clearance indicators -->
+                            <div class="m-street-clearance">
+                                <div class="m-clearance-header">SYSTEM ACCESS</div>
+                                <div class="m-clearance-level">
+                                    <span class="m-clearance-label">STREET LEVEL:</span>
+                                    <span class="m-clearance-value">MAXIMUM</span>
+                                </div>
+                                <div class="m-clearance-level">
+                                    <span class="m-clearance-label">CORPORATE LEVEL:</span>
+                                    <span class="m-clearance-value">UNTOUCHABLE</span>
+                                </div>
+                                <div class="m-verification-code">MX-1337-ST</div>
+                            </div>
+                            
                             <!-- Using the AI status display component from the extension -->
                             <div class="m-ai-status-display">
                                 <div class="m-ai-status-item">
@@ -2066,7 +2710,48 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Street verification elements -->
+                            <div class="m-street-verification">
+                                <div class="m-verification-line">
+                                    <span class="m-verification-tag">EMPIRE:</span>
+                                    <span class="m-verification-value">VERIFIED</span>
+                                </div>
+                                <div class="m-verification-line">
+                                    <span class="m-verification-tag">STREET ORIGIN:</span>
+                                    <span class="m-verification-value">AUTHENTICATED</span>
+                                </div>
+                                <div class="m-verification-stamp">100% LEGIT</div>
+                            </div>
+                            
+                            <!-- Street-to-empire timeline -->
+                            <div class="m-timeline">
+                                <div class="m-timeline-header">FROM STREETS TO EMPIRE</div>
+                                <div class="m-timeline-item">
+                                    <div class="m-timeline-year">2012</div>
+                                    <div class="m-timeline-marker"></div>
+                                    <div class="m-timeline-content">Started in the underground, coded in basements</div>
+                                </div>
+                                <div class="m-timeline-item">
+                                    <div class="m-timeline-year">2016</div>
+                                    <div class="m-timeline-marker"></div>
+                                    <div class="m-timeline-content">First breakthrough, street respect earned</div>
+                                </div>
+                                <div class="m-timeline-item">
+                                    <div class="m-timeline-year">2019</div>
+                                    <div class="m-timeline-marker"></div>
+                                    <div class="m-timeline-content">Corporations started noticing our code</div>
+                                </div>
+                                <div class="m-timeline-item">
+                                    <div class="m-timeline-year">2023</div>
+                                    <div class="m-timeline-marker"></div>
+                                    <div class="m-timeline-content">Dominating the enterprise, never forgot our roots</div>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <!-- Security tape warning -->
+                        <div class="m-security-tape">STREET AUTHENTIC • CORPORATE DOMINANT • STREET AUTHENTIC • CORPORATE DOMINANT</div>
                     </div>
                 </div>
             </div>
@@ -2078,17 +2763,247 @@
             <div class="m-d-flex m-justify-between m-align-center">
                 <div>
                     <p class="m-mb-0">MatrixAI Components v1.0</p>
-                    <p class="m-mb-0 m-text-dim">Advanced cyberpunk-themed UI for AI applications</p>
+                    <p class="m-mb-0 m-text-dim">Built in the underground. Dominating the enterprise.</p>
                 </div>
-                <div>
-                    <p class="m-mb-0 m-text-dim">Built with <span style="color: var(--m-text-primary);">♥</span> for the matrix</p>
+                <div class="m-footer-tags">
+                    <div class="m-street-badge">FROM ZERO TO EMPIRE</div>
+                    <p class="m-mb-0 m-text-dim">Est. <span style="text-decoration: line-through;">2022</span> 1337</p>
                 </div>
             </div>
+            <div class="m-barcode">NO.00X-0FF1C14L</div>
         </div>
     </footer>
 
-    <!-- Script for interactive features -->
     <script>
+        // Create Matrix code columns
+        function createMatrixColumns() {
+            const container = document.querySelector('.m-columns-container');
+            const windowWidth = window.innerWidth;
+            const columnCount = Math.floor(windowWidth / 30); // Column every 30px
+            
+            for (let i = 0; i < columnCount; i++) {
+                const column = document.createElement('div');
+                column.className = 'm-code-column';
+                
+                // Random position, speed, and characters
+                const left = (i * 30) + Math.random() * 20;
+                const duration = 10 + Math.random() * 20; // 10-30s to fall
+                const delay = Math.random() * 5; // Random start time
+                
+                // Generate random Matrix-like characters
+                let columnText = '';
+                const length = 20 + Math.floor(Math.random() * 30);
+                for (let j = 0; j < length; j++) {
+                    // Mix of numbers, letters, and symbols
+                    const charType = Math.floor(Math.random() * 3);
+                    if (charType === 0) {
+                        // Number
+                        columnText += Math.floor(Math.random() * 10);
+                    } else if (charType === 1) {
+                        // Letter
+                        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        columnText += letters[Math.floor(Math.random() * letters.length)];
+                    } else {
+                        // Symbol
+                        const symbols = "!@#$%^&*()_+-=[]{}|;:,./<>?";
+                        columnText += symbols[Math.floor(Math.random() * symbols.length)];
+                    }
+                    columnText += '<br>';
+                }
+                
+                column.style.left = `${left}px`;
+                column.style.animationDuration = `${duration}s`;
+                column.style.animationDelay = `${delay}s`;
+                column.innerHTML = columnText;
+                
+                container.appendChild(column);
+            }
+        }
+        
+        // Street-style loading sequence
+        function simulateStreetVerification() {
+            const overlay = document.querySelector('.m-restricted-overlay');
+            const status = overlay.querySelector('.m-restricted-status');
+            
+            setTimeout(() => {
+                status.innerHTML = 'ACCESSING UNDERGROUND DATABASE...<span class="m-status-cursor">_</span>';
+            }, 1000);
+            
+            setTimeout(() => {
+                status.innerHTML = 'STREET CREDENTIALS: VERIFIED<span class="m-status-cursor">_</span>';
+            }, 2000);
+            
+            setTimeout(() => {
+                status.innerHTML = 'ACCESS GRANTED - RESPECT THE HUSTLE<span class="m-status-cursor">_</span>';
+            }, 2500);
+        }
+        
+        // Add street lingo to section headers
+        function streetifyHeaders() {
+            const headers = document.querySelectorAll('.demo-section h2');
+            const streetPrefixes = ['ELITE', 'STREET-GRADE', 'UNDERGROUND', 'RAW'];
+            
+            headers.forEach(header => {
+                const randomPrefix = streetPrefixes[Math.floor(Math.random() * streetPrefixes.length)];
+                const originalText = header.textContent;
+                header.innerHTML = `<span class="m-street-prefix">${randomPrefix}</span> ${originalText}`;
+            });
+        }
+        
+        // Add glitch effect to random elements periodically
+        function randomGlitchElements() {
+            const glitchCandidates = document.querySelectorAll('.m-card-header, .m-btn, .demo-section h2');
+            const randomElement = glitchCandidates[Math.floor(Math.random() * glitchCandidates.length)];
+            
+            if (randomElement) {
+                const originalText = randomElement.textContent;
+                randomElement.setAttribute('data-text', originalText);
+                randomElement.classList.add('m-glitch-text');
+                
+                setTimeout(() => {
+                    randomElement.classList.remove('m-glitch-text');
+                }, 2000);
+            }
+            
+            // Continue glitching
+            setTimeout(randomGlitchElements, 7000 + Math.random() * 5000);
+        }
+        
+        // Create custom street badging for cards
+        function createStreetBadging() {
+            const cards = document.querySelectorAll('.m-card');
+            
+            // Street certification badges
+            const streetBadges = [
+                'STREET VERIFIED',
+                'UNDERGROUND APPROVED',
+                'HUSTLE CERTIFIED',
+                'EMPIRE GRADE'
+            ];
+            
+            cards.forEach((card, index) => {
+                if (index % 3 === 0) { // Add badges to some cards
+                    const badgeText = streetBadges[Math.floor(Math.random() * streetBadges.length)];
+                    const badge = document.createElement('div');
+                    badge.className = 'm-street-badge';
+                    badge.textContent = badgeText;
+                    
+                    // Random badge position and rotation
+                    const randomRight = 10 + (Math.random() * 20);
+                    const randomRotation = -5 + (Math.random() * 10);
+                    badge.style.right = `${randomRight}px`;
+                    badge.style.transform = `rotate(${randomRotation}deg)`;
+                    
+                    card.appendChild(badge);
+                }
+            });
+        }
+        
+        // Hidden terminal Easter egg
+        function createHiddenTerminal() {
+            // Create a hidden terminal accessible via a keyboard shortcut
+            const terminal = document.createElement('div');
+            terminal.className = 'm-hidden-terminal';
+            terminal.innerHTML = `
+                <div class="m-terminal-header">STREET TERMINAL v1337</div>
+                <div class="m-terminal-content">
+                    <div class="m-terminal-output">
+                        > Accessing underground network...<br>
+                        > Connection established<br>
+                        > Type 'help' for available commands<br>
+                    </div>
+                    <div class="m-terminal-input-line">
+                        <span class="m-terminal-prompt">$</span>
+                        <input type="text" class="m-terminal-input" autofocus>
+                    </div>
+                </div>
+                <div class="m-terminal-close">&times;</div>
+            `;
+            
+            document.body.appendChild(terminal);
+            
+            // Terminal commands
+            const commands = {
+                'help': 'Available commands: about, status, origins, secrets, exit',
+                'about': 'MatrixAI - Built from the streets, now dominating the corporate world. Never forgot our roots.',
+                'status': 'System operational. Street cred: 100%. Corporate dominance: Achieved.',
+                'origins': 'Started in 2012 by coders who came from nothing. Bootstrapped from underground hackathons to enterprise solutions.',
+                'secrets': 'Nice try. Real ones know the secrets stay in the streets.',
+                'exit': 'Closing terminal...'
+            };
+            
+            // Handle terminal input
+            const input = terminal.querySelector('.m-terminal-input');
+            const output = terminal.querySelector('.m-terminal-output');
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const command = input.value.trim().toLowerCase();
+                    output.innerHTML += `<br>> ${input.value}<br>`;
+                    
+                    if (commands[command]) {
+                        output.innerHTML += commands[command] + '<br>';
+                        
+                        if (command === 'exit') {
+                            setTimeout(() => {
+                                terminal.style.display = 'none';
+                            }, 500);
+                        }
+                    } else {
+                        output.innerHTML += 'Command not recognized. Type "help" for available commands.<br>';
+                    }
+                    
+                    input.value = '';
+                    output.scrollTop = output.scrollHeight;
+                }
+            });
+            
+            // Close terminal
+            terminal.querySelector('.m-terminal-close').addEventListener('click', function() {
+                terminal.style.display = 'none';
+            });
+            
+            // Show terminal with keyboard shortcut (Ctrl+Alt+T)
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.altKey && e.key === 't') {
+                    e.preventDefault();
+                    terminal.style.display = 'block';
+                    input.focus();
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize matrix code columns (but with fewer to not impact performance)
+            createMatrixColumns();
+            
+            // Start street verification simulation
+            simulateStreetVerification();
+            
+            // Street-style headers
+            streetifyHeaders();
+            
+            // Add badging
+            createStreetBadging();
+            
+            // Create hidden terminal Easter egg
+            createHiddenTerminal();
+            
+            // Start random glitch effect
+            setTimeout(randomGlitchElements, 3000);
+            
+            // Load security tape scrolling
+            const securityTape = document.querySelector('.m-security-tape');
+            if (securityTape) {
+                securityTape.setAttribute('data-text', securityTape.textContent);
+            }
+            
+            // Easter egg - matrix code typed into console
+            console.log("%cMATRIX AI - FROM THE STREETS TO THE ENTERPRISE", "color: #00ff41; font-weight: bold; font-size: 14px; text-shadow: 0 0 5px rgba(0,255,65,0.5);");
+            console.log("%cBuilt by those who came from nothing. Now controlling everything.", "color: #ff0033; font-style: italic;");
+            console.log("%cTry Ctrl+Alt+T for a surprise...", "color: #666; font-size: 10px;");
+        });
+        
         // Notification system demo
         document.querySelectorAll('.show-notification').forEach(button => {
             button.addEventListener('click', function() {
@@ -2187,6 +3102,37 @@
                 }
             });
         });
+        
+        // Simulate street-style random glitches
+        function randomGlitch() {
+            const cards = document.querySelectorAll('.m-card');
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            
+            // Create glitch overlay
+            const glitch = document.createElement('div');
+            glitch.className = 'm-glitch-overlay';
+            glitch.style.position = 'absolute';
+            glitch.style.top = '0';
+            glitch.style.left = '0';
+            glitch.style.width = '100%';
+            glitch.style.height = '100%';
+            glitch.style.backgroundColor = 'rgba(255, 0, 51, 0.1)';
+            glitch.style.pointerEvents = 'none';
+            glitch.style.zIndex = '100';
+            
+            randomCard.appendChild(glitch);
+            
+            // Remove after short time
+            setTimeout(() => {
+                glitch.remove();
+            }, 200);
+            
+            // Schedule next glitch
+            setTimeout(randomGlitch, 5000 + Math.random() * 10000);
+        }
+        
+        // Start glitching after 5 seconds
+        setTimeout(randomGlitch, 5000);
         
         // Zoom controls for decision tree
         document.querySelectorAll('.m-ai-zoom-btn').forEach(button => {
@@ -2287,6 +3233,28 @@
                     zoomLevelDisplay.textContent = `${Math.round(newScale * 100)}%`;
                 }
             });
+        });
+        
+        // Street hacker-style typing effect for headings
+        function typeEffect(element, text, speed = 50, startDelay = 0) {
+            setTimeout(() => {
+                element.textContent = '';
+                let i = 0;
+                const timer = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                    }
+                }, speed);
+            }, startDelay);
+        }
+        
+        // Apply typing effect to headings
+        document.querySelectorAll('.m-card-header').forEach((header, index) => {
+            const origText = header.textContent;
+            typeEffect(header, origText, 20, index * 300);
         });
         
         // Keyboard shortcuts

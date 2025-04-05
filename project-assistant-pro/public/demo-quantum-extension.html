@@ -1,0 +1,3071 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Interface Theme Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+/* ==========================================================================
+   Quantum Interface CSS Framework - v1.0
+   A futuristic, elegant design system for next-generation web applications
+   Combining glassmorphism, subtle dimensionality, and cyberpunk aesthetics
+   ========================================================================== */
+
+/* ==========================================================================
+   TABLE OF CONTENTS:
+   1. Tailwind Directives
+   2. Root Variables and Base Styles
+   3. Layout and Container Styles
+   4. Component Styles
+   5. Button and Interactive Element Styles
+   6. Form and Input Styles
+   7. Terminal Styles
+   8. Animation Definitions
+   9. Search and Filter Styles
+   10. Accessibility Styles
+   11. Media Queries
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Tailwind Directives
+   ========================================================================== */
+   @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   2. Root Variables and Base Styles
+   ========================================================================== */
+@layer base {
+  :root {
+    /* System dimensions */
+    --header-height: 64px;
+    --navbar-height: 48px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Core color palette */
+    --quantum-primary: #6366f1;        /* Indigo */
+    --quantum-primary-glow: rgba(99, 102, 241, 0.5);
+    --quantum-secondary: #10b981;      /* Emerald */
+    --quantum-secondary-glow: rgba(16, 185, 129, 0.5);
+    --quantum-tertiary: #f59e0b;       /* Amber */
+    --quantum-accent: #ec4899;         /* Pink */
+    --quantum-accent-glow: rgba(236, 72, 153, 0.5);
+    
+    /* Interface colors */
+    --quantum-surface: rgba(255, 255, 255, 0.95);
+    --quantum-surface-elevated: rgba(255, 255, 255, 0.98);
+    --quantum-surface-glass: rgba(255, 255, 255, 0.7);
+    --quantum-border: rgba(226, 232, 240, 0.8);
+    --quantum-shadow-light: rgba(0, 0, 0, 0.05);
+    --quantum-shadow-medium: rgba(0, 0, 0, 0.1);
+    
+    /* Text colors */
+    --quantum-text-primary: rgba(15, 23, 42, 0.95);
+    --quantum-text-secondary: rgba(51, 65, 85, 0.8);
+    --quantum-text-tertiary: rgba(100, 116, 139, 0.7);
+    
+    /* Status colors */
+    --quantum-success: #10b981;
+    --quantum-warning: #f59e0b;
+    --quantum-error: #ef4444;
+    --quantum-info: #3b82f6;
+    
+    /* Terminal colors modernized */
+    --quantum-terminal-bg: #0f172a;
+    --quantum-terminal-surface: #1e293b;
+    --quantum-terminal-text: #f1f5f9;
+    --quantum-terminal-green: #4ade80;
+    --quantum-terminal-blue: #60a5fa;
+    --quantum-terminal-red: #f87171;
+    --quantum-terminal-yellow: #fbbf24;
+    --quantum-terminal-magenta: #e879f9;
+    --quantum-terminal-cyan: #22d3ee;
+    
+    /* Blur amounts */
+    --quantum-blur-sm: 4px;
+    --quantum-blur-md: 8px;
+    --quantum-blur-lg: 12px;
+    
+    /* Spacing system */
+    --quantum-space-1: 0.25rem;
+    --quantum-space-2: 0.5rem;
+    --quantum-space-3: 0.75rem;
+    --quantum-space-4: 1rem;
+    --quantum-space-5: 1.25rem;
+    --quantum-space-6: 1.5rem;
+    --quantum-space-8: 2rem;
+    --quantum-space-10: 2.5rem;
+    --quantum-space-12: 3rem;
+    
+    /* Border radius */
+    --quantum-radius-sm: 0.375rem;
+    --quantum-radius-md: 0.5rem;
+    --quantum-radius-lg: 0.75rem;
+    --quantum-radius-xl: 1rem;
+    --quantum-radius-full: 9999px;
+  }
+  
+  /* Dark mode variables */
+  .dark {
+    --quantum-surface: rgba(15, 23, 42, 0.95);
+    --quantum-surface-elevated: rgba(15, 23, 42, 0.98);
+    --quantum-surface-glass: rgba(15, 23, 42, 0.8);
+    --quantum-border: rgba(51, 65, 85, 0.6);
+    --quantum-shadow-light: rgba(0, 0, 0, 0.3);
+    --quantum-shadow-medium: rgba(0, 0, 0, 0.4);
+    
+    --quantum-text-primary: rgba(241, 245, 249, 0.95);
+    --quantum-text-secondary: rgba(226, 232, 240, 0.8);
+    --quantum-text-tertiary: rgba(203, 213, 225, 0.6);
+  }
+  
+  /* Global base styles */
+  html {
+    @apply scroll-smooth;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    color: var(--quantum-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color var(--transition-slow);
+  }
+  
+  .dark body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  /* Selection styling */
+  ::selection {
+    background-color: var(--quantum-primary);
+    color: white;
+    text-shadow: 0 0 8px var(--quantum-primary-glow);
+  }
+  
+  /* Focus styling */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--quantum-primary), 0 0 0 4px var(--quantum-primary-glow);
+    transition: box-shadow var(--transition-fast);
+  }
+  
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.3);
+    border-radius: var(--quantum-radius-full);
+    transition: background-color var(--transition-fast);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 116, 139, 0.5);
+  }
+  
+  .dark::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.2);
+  }
+  
+  .dark::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(148, 163, 184, 0.3);
+  }
+}
+
+/* ==========================================================================
+   3. Layout and Container Styles
+   ========================================================================== */
+@layer components {
+  .container {
+    @apply px-4 mx-auto max-w-7xl;
+    position: relative;
+  }
+  
+  /* Glass panel effect */
+  .quantum-glass {
+    background-color: var(--quantum-surface-glass);
+    backdrop-filter: blur(var(--quantum-blur-md));
+    border: 1px solid var(--quantum-border);
+    box-shadow: 
+      0 4px 6px var(--quantum-shadow-light),
+      0 10px 15px var(--quantum-shadow-light);
+  }
+  
+  /* Neumorphic panel */
+  .quantum-panel {
+    background-color: var(--quantum-surface);
+    border-radius: var(--quantum-radius-lg);
+    box-shadow: 
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.3),
+      8px 8px 20px var(--quantum-shadow-light),
+      -8px -8px 20px rgba(255, 255, 255, 0.7);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+  }
+  
+  .dark .quantum-panel {
+    box-shadow: 
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.05),
+      8px 8px 20px var(--quantum-shadow-medium),
+      -8px -8px 20px rgba(255, 255, 255, 0.02);
+  }
+  
+  /* Elevated surface */
+  .quantum-elevated {
+    background-color: var(--quantum-surface-elevated);
+    border-radius: var(--quantum-radius-lg);
+    box-shadow: 
+      0 10px 25px var(--quantum-shadow-light),
+      0 5px 10px var(--quantum-shadow-light);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+  }
+  
+  /* Grid system enhancements */
+  .quantum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--quantum-space-6);
+  }
+}
+
+/* Line clamp refinements */
+.line-clamp-1, .line-clamp-2, .line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-1 { -webkit-line-clamp: 1; }
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
+
+/* Force consistent heights */
+.script-card-content {
+  height: 224px;
+  overflow: hidden;
+  position: relative;
+}
+
+.script-card-content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--quantum-surface));
+  pointer-events: none;
+}
+
+.dark .script-card-content::after {
+  background: linear-gradient(to bottom, transparent, var(--quantum-surface));
+}
+
+/* ==========================================================================
+   4. Component Styles
+   ========================================================================== */
+@layer components {
+  /* Card styles */
+  .card {
+    @apply rounded-lg;
+    background-color: var(--quantum-surface);
+    border: 1px solid var(--quantum-border);
+    box-shadow: 
+      0 4px 6px var(--quantum-shadow-light),
+      0 10px 15px var(--quantum-shadow-light);
+    transition: all var(--transition-base);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--quantum-primary), var(--quantum-secondary));
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 10px 25px var(--quantum-shadow-medium),
+      0 6px 10px var(--quantum-shadow-light);
+  }
+  
+  .card:hover::before {
+    opacity: 1;
+  }
+  
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 text-xs font-medium;
+    border-radius: var(--quantum-radius-full);
+    backdrop-filter: blur(var(--quantum-blur-sm));
+    box-shadow: 0 2px 5px var(--quantum-shadow-light);
+    transition: all var(--transition-fast);
+  }
+  
+  .badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px var(--quantum-shadow-light);
+  }
+  
+  .badge-linux {
+    background-color: rgba(22, 163, 74, 0.15);
+    color: rgb(22, 163, 74);
+    border: 1px solid rgba(22, 163, 74, 0.3);
+  }
+  
+  .badge-windows {
+    background-color: rgba(2, 132, 199, 0.15);
+    color: rgb(2, 132, 199);
+    border: 1px solid rgba(2, 132, 199, 0.3);
+  }
+  
+  .badge-macos {
+    background-color: rgba(100, 116, 139, 0.15);
+    color: rgb(100, 116, 139);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+  }
+  
+  /* Tab styles */
+  .tab-container {
+    display: flex;
+    border-bottom: 1px solid var(--quantum-border);
+    margin-bottom: var(--quantum-space-6);
+    position: relative;
+  }
+  
+  .tab {
+    padding: var(--quantum-space-3) var(--quantum-space-5);
+    color: var(--quantum-text-secondary);
+    position: relative;
+    transition: color var(--transition-fast);
+  }
+  
+  .tab-active {
+    color: var(--quantum-primary);
+    font-weight: 500;
+  }
+  
+  .tab-active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, var(--quantum-primary), var(--quantum-secondary));
+    border-radius: var(--quantum-radius-full);
+  }
+  
+  .tab:hover:not(.tab-active) {
+    color: var(--quantum-text-primary);
+  }
+  
+  /* Version indicator */
+  .version-active {
+    background-color: var(--quantum-primary);
+    color: white;
+    border-radius: var(--quantum-radius-full);
+    padding: var(--quantum-space-1) var(--quantum-space-3);
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 0 10px var(--quantum-primary-glow);
+  }
+}
+
+/* Tooltip styles */
+.tooltip {
+  background-color: var(--quantum-surface-elevated);
+  color: var(--quantum-text-primary);
+  padding: var(--quantum-space-2) var(--quantum-space-3);
+  border-radius: var(--quantum-radius-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  box-shadow: 
+    0 4px 6px var(--quantum-shadow-light), 
+    0 10px 15px var(--quantum-shadow-light);
+  backdrop-filter: blur(var(--quantum-blur-md));
+  border: 1px solid var(--quantum-border);
+  position: absolute;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  z-index: 50;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--quantum-surface-elevated) transparent transparent transparent;
+}
+
+.tooltip-trigger:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Modal styles */
+.modal-backdrop {
+  backdrop-filter: blur(var(--quantum-blur-lg));
+  background-color: rgba(15, 23, 42, 0.3);
+  transition: backdrop-filter var(--transition-base), background-color var(--transition-base);
+}
+
+.modal-content {
+  background-color: var(--quantum-surface-elevated);
+  border-radius: var(--quantum-radius-lg);
+  border: 1px solid var(--quantum-border);
+  box-shadow: 
+    0 20px 25px var(--quantum-shadow-medium),
+    0 10px 10px var(--quantum-shadow-light);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   5. Button and Interactive Element Styles
+   ========================================================================== */
+@layer components {
+  /* Button styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium;
+    border-radius: var(--quantum-radius-full);
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    z-index: 1;
+  }
+  
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.8s;
+    z-index: -1;
+  }
+  
+  .btn:hover::before {
+    transform: translateX(100%);
+  }
+  
+  .btn-primary {
+    background-color: var(--quantum-primary);
+    color: white;
+    box-shadow: 0 0 15px var(--quantum-primary-glow);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--quantum-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--quantum-primary-glow);
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--quantum-text-secondary);
+    border: 1px solid var(--quantum-border);
+    backdrop-filter: blur(var(--quantum-blur-sm));
+  }
+  
+  .btn-secondary:hover {
+    color: var(--quantum-text-primary);
+    border-color: var(--quantum-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--quantum-shadow-light);
+  }
+  
+  .btn-danger {
+    background-color: var(--quantum-error);
+    color: white;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+  }
+  
+  .btn-danger:hover {
+    background-color: rgb(220, 38, 38);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+  }
+}
+
+/* Copy button feedback styles */
+.copy-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.copy-button-success {
+  background-color: var(--quantum-success) !important;
+  color: white !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+.copy-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, transparent 70%);
+  transform: scale(0);
+  transition: transform var(--transition-fast);
+  border-radius: 50%;
+}
+
+.copy-button:active::after {
+  transform: scale(3);
+  opacity: 0;
+  transition: transform 0.6s, opacity 0.6s;
+}
+
+/* Hover group transitions */
+.group:hover .group-hover\:translate-x-0\.5 {
+  transform: translateX(0.125rem);
+}
+
+/* ==========================================================================
+   6. Form and Input Styles
+   ========================================================================== */
+
+/* Input and container styling */
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem;
+  background-color: var(--quantum-surface-glass);
+  color: var(--quantum-text-primary);
+  border: 1px solid var(--quantum-border);
+  border-radius: var(--quantum-radius-full);
+  font-size: 1rem;
+  backdrop-filter: blur(var(--quantum-blur-md));
+  transition: all var(--transition-base);
+  box-shadow: 
+    0 4px 6px var(--quantum-shadow-light),
+    inset 0 2px 4px var(--quantum-shadow-light);
+}
+
+.search-input:focus {
+  border-color: var(--quantum-primary);
+  box-shadow: 
+    0 0 0 3px var(--quantum-primary-glow),
+    0 4px 6px var(--quantum-shadow-light);
+  background-color: var(--quantum-surface);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--quantum-text-tertiary);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.search-input:focus + .search-icon,
+.search-input:focus ~ .search-icon {
+  transform: translateY(-50%) scale(1.1);
+  color: var(--quantum-primary);
+}
+
+.clear-search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--quantum-text-tertiary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-search-icon:hover {
+  background-color: rgba(100, 116, 139, 0.1);
+  color: var(--quantum-text-primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Filter options scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Form inputs */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--quantum-surface-glass);
+  color: var(--quantum-text-primary);
+  border: 1px solid var(--quantum-border);
+  border-radius: var(--quantum-radius-md);
+  font-size: 1rem;
+  backdrop-filter: blur(var(--quantum-blur-sm));
+  transition: all var(--transition-base);
+  box-shadow: inset 0 2px 4px var(--quantum-shadow-light);
+}
+
+.form-input:focus {
+  border-color: var(--quantum-primary);
+  box-shadow: 
+    0 0 0 3px var(--quantum-primary-glow),
+    inset 0 2px 4px var(--quantum-shadow-light);
+  background-color: var(--quantum-surface);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--quantum-text-secondary);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+/* ==========================================================================
+   7. Terminal Styles
+   ========================================================================== */
+/* Terminal UI base */
+.terminal-window {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--quantum-radius-lg);
+  background-color: var(--quantum-terminal-bg);
+  box-shadow: 
+    0 20px 25px rgba(0, 0, 0, 0.3),
+    0 10px 10px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(0, 150, 250, 0.2);
+  transition: all var(--transition-base);
+}
+
+.terminal-window:hover {
+  box-shadow: 
+    0 25px 30px rgba(0, 0, 0, 0.35),
+    0 15px 15px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 0 30px rgba(0, 150, 250, 0.3);
+  transform: translateY(-5px);
+}
+
+/* Terminal header */
+.terminal-header {
+  height: 36px;
+  background: linear-gradient(to right, #2d3748, #1a202c);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-top-left-radius: var(--quantum-radius-lg);
+  border-top-right-radius: var(--quantum-radius-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Terminal dots */
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-dot::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent);
+  opacity: 0.6;
+}
+
+.terminal-dot-red {
+  background: linear-gradient(to bottom right, #ff5f57, #ec4d4a);
+}
+
+.terminal-dot-yellow {
+  background: linear-gradient(to bottom right, #febc2e, #e0a117);
+}
+
+.terminal-dot-green {
+  background: linear-gradient(to bottom right, #28c840, #1eb22e);
+}
+
+/* Terminal body */
+.terminal-body {
+  background-color: var(--quantum-terminal-bg);
+  color: var(--quantum-terminal-text);
+  font-family: 'Fira Code', 'JetBrains Mono', 'Menlo', monospace;
+  padding: var(--quantum-space-5);
+  border-bottom-left-radius: var(--quantum-radius-lg);
+  border-bottom-right-radius: var(--quantum-radius-lg);
+  overflow-y: auto;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Line numbers */
+.line-number {
+  color: rgba(255, 255, 255, 0.25);
+  text-align: right;
+  padding-right: 1rem;
+  user-select: none;
+  min-width: 3rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 1rem;
+}
+
+/* Terminal content styles */
+.terminal-line {
+  line-height: 1.5;
+  white-space: pre-wrap;
+  margin-bottom: 2px;
+  display: flex;
+  position: relative;
+  opacity: 0;
+  animation: terminal-line-appear 0.1s ease-out forwards;
+}
+
+@keyframes terminal-line-appear {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Terminal colorization */
+.text-terminal-green {
+  color: var(--quantum-terminal-green);
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+}
+
+.text-terminal-blue {
+  color: var(--quantum-terminal-blue);
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+}
+
+.text-terminal-red {
+  color: var(--quantum-terminal-red);
+  text-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+}
+
+.text-terminal-yellow {
+  color: var(--quantum-terminal-yellow);
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+
+/* Terminal cursor */
+.terminal-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background-color: var(--quantum-terminal-text);
+  animation: cursor-blink 1s step-end infinite;
+  vertical-align: middle;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Terminal scan line effect */
+.terminal-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(96, 165, 250, 0.5), transparent);
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+  opacity: 0.4;
+  z-index: 10;
+  animation: scanLine 8s linear infinite;
+}
+
+/* Code preview container */
+.code-preview-container {
+  background-color: #1e293b;
+  border-radius: var(--quantum-radius-md);
+  overflow: auto;
+  max-height: 400px;
+  padding: var(--quantum-space-4);
+  font-family: 'Fira Code', 'JetBrains Mono', 'Menlo', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  box-shadow: 
+    inset 0 0 10px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Syntax highlighting enhancements */
+.terminal-code-container .token.comment {
+  font-style: italic;
+  color: #8b9cb3 !important;
+}
+
+.terminal-code-container .token.string {
+  color: #ff7b72 !important;
+}
+
+.terminal-code-container .token.function {
+  color: #d2a8ff !important;
+}
+
+.terminal-code-container .token.keyword {
+  color: #ff7b72 !important;
+  font-weight: bold;
+}
+
+.terminal-code-container .token.operator {
+  color: #79c0ff !important;
+}
+
+.terminal-code-container .token.number {
+  color: #a5d6ff !important;
+}
+
+/* ==========================================================================
+   8. Animation Definitions
+   ========================================================================== */
+
+/* Terminal cursor blink */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Scan line effect */
+@keyframes scanLine {
+  0% { top: -5%; opacity: 0.7; }
+  20% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+  80% { opacity: 0.4; }
+  100% { top: 105%; opacity: 0.7; }
+}
+
+/* Terminal dots pulse */
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.terminal-dot-red {
+  animation: dotPulse 3s infinite;
+}
+
+.terminal-dot-yellow {
+  animation: dotPulse 3s infinite 0.5s;
+}
+
+.terminal-dot-green {
+  animation: dotPulse 3s infinite 1s;
+}
+
+/* Progress bar glow */
+@keyframes progress-glow {
+  0% { text-shadow: 0 0 4px rgba(74, 222, 128, 0.3); }
+  50% { text-shadow: 0 0 12px rgba(74, 222, 128, 0.8); }
+  100% { text-shadow: 0 0 4px rgba(74, 222, 128, 0.3); }
+}
+
+/* Terminal flicker effect */
+@keyframes flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 0.9; }
+  10% { opacity: 0.97; }
+  15% { opacity: 0.94; }
+  20% { opacity: 0.98; }
+  55% { opacity: 0.95; }
+  60% { opacity: 0.93; }
+  65% { opacity: 0.98; }
+  100% { opacity: 0.97; }
+}
+
+.terminal-flicker {
+  animation: flicker 8s linear infinite;
+}
+
+/* Slide animations */
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.97);
+  }
+  to {
+    max-height: 600px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    max-height: 600px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.97);
+  }
+}
+
+.quick-view-enter {
+  animation: slideDown 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.quick-view-exit {
+  animation: slideUp 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Modal animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+.modal-enter {
+  animation: modalFadeIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.modal-exit {
+  animation: modalFadeOut 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Splash effect */
+@keyframes splash {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
+
+.splash-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8rem;
+  height: 8rem;
+  background: radial-gradient(circle, var(--quantum-primary-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: splash 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Loading animations */
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--quantum-primary-glow);
+  border-top-color: var(--quantum-primary);
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+}
+
+/* Text typing animation */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typing-text {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  animation: typing 2s steps(40, end);
+}
+
+/* ==========================================================================
+   9. Search and Filter Styles
+   ========================================================================== */
+
+/* Search results container */
+.search-results-container {
+  background-color: var(--quantum-surface-elevated);
+  border-radius: var(--quantum-radius-lg);
+  border: 1px solid var(--quantum-border);
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.15),
+    0 5px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transform-origin: top center;
+  animation: searchResults 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+@keyframes searchResults {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Search loading indicator */
+.search-loading-indicator {
+  width: 24px;
+  height: 24px;
+  margin: 0 auto 8px;
+  border: 2px solid var(--quantum-primary-glow);
+  border-top-color: var(--quantum-primary);
+  border-radius: 50%;
+  animation: loading-spin 0.8s linear infinite;
+}
+
+/* Search result item */
+.search-result-item {
+  padding: var(--quantum-space-3) var(--quantum-space-4);
+  border-bottom: 1px solid var(--quantum-border);
+  transition: background-color var(--transition-fast);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: rgba(100, 116, 139, 0.05);
+}
+
+/* Highlighted result styling */
+.search-result-highlighted {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.dark .search-result-highlighted {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Search match highlight */
+.search-match-highlight {
+  background-color: rgba(99, 102, 241, 0.2);
+  border-radius: 2px;
+  padding: 0.1em 0.2em;
+  margin: 0 -0.2em;
+  position: relative;
+}
+
+.search-match-highlight::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--quantum-primary);
+  border-radius: var(--quantum-radius-full);
+  opacity: 0.5;
+}
+
+.dark .search-match-highlight {
+  background-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Recent search items */
+.recent-search-item {
+  padding: var(--quantum-space-2) var(--quantum-space-3);
+  transition: background-color var(--transition-fast);
+  border-radius: var(--quantum-radius-md);
+  margin-bottom: var(--quantum-space-1);
+  display: flex;
+  align-items: center;
+}
+
+.recent-search-item:hover {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.dark .recent-search-item:hover {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+.recent-search-icon {
+  color: var(--quantum-text-tertiary);
+  margin-right: var(--quantum-space-2);
+}
+
+/* ==========================================================================
+   10. Accessibility Styles
+   ========================================================================== */
+
+/* Skip link for accessibility */
+.skip-link {
+  @apply sr-only;
+  background-color: var(--quantum-primary);
+  color: white;
+  padding: var(--quantum-space-2) var(--quantum-space-4);
+  z-index: 100;
+  box-shadow: 0 0 15px var(--quantum-primary-glow);
+}
+
+.skip-link:focus {
+  @apply not-sr-only fixed left-0 top-0 z-50;
+}
+
+/* Focus visible improvements */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--quantum-primary), 0 0 0 5px var(--quantum-primary-glow);
+  animation: focus-pulse 2s infinite;
+}
+
+@keyframes focus-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--quantum-primary), 0 0 0 5px var(--quantum-primary-glow); }
+  50% { box-shadow: 0 0 0 3px var(--quantum-primary), 0 0 0 8px var(--quantum-primary-glow); }
+}
+
+/* Reduce motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .terminal-scan-line, .terminal-flicker, .splash-animation, 
+  .focus-pulse, .search-match-highlight {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   11. Media Queries and Print Styles
+   ========================================================================== */
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    @apply bg-white text-black;
+    background: none !important;
+  }
+  
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  
+  .quantum-glass, .quantum-panel, .quantum-elevated, .card {
+    box-shadow: none !important;
+    background: none !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+  
+  .terminal-window {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+  
+  .terminal-body {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .terminal-window {
+    max-height: 85vh;
+  }
+  
+  .terminal-body {
+    padding: 0.75rem;
+    font-size: 14px;
+  }
+  
+  .terminal-line {
+    line-height: 1.4;
+  }
+  
+  .search-input {
+    padding: 0.5rem 2rem;
+    font-size: 0.9rem;
+  }
+  
+  .quantum-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--quantum-space-4);
+  }
+  
+  .badge {
+    font-size: 0.65rem;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .quantum-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  
+  .terminal-header {
+    height: 32px;
+  }
+  
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* Larger screen adjustments */
+@media (min-width: 1536px) {
+  :root {
+    --quantum-space-4: 1.25rem;
+    --quantum-space-5: 1.5rem;
+    --quantum-space-6: 1.75rem;
+    --quantum-space-8: 2.25rem;
+    --quantum-space-10: 2.75rem;
+    --quantum-space-12: 3.25rem;
+  }
+  
+  .container {
+    max-width: 1536px;
+  }
+  
+  .quantum-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--quantum-space-8);
+  }
+}
+
+/* Dark mode specific adjustments */
+@media (prefers-color-scheme: dark) {
+  /* Only apply these if .dark class is not manually set by a theme toggle */
+  :root:not(.light) {
+    --quantum-surface: rgba(15, 23, 42, 0.95);
+    --quantum-surface-elevated: rgba(15, 23, 42, 0.98);
+    --quantum-surface-glass: rgba(15, 23, 42, 0.8);
+    --quantum-border: rgba(51, 65, 85, 0.6);
+    --quantum-shadow-light: rgba(0, 0, 0, 0.3);
+    --quantum-shadow-medium: rgba(0, 0, 0, 0.4);
+    
+    --quantum-text-primary: rgba(241, 245, 249, 0.95);
+    --quantum-text-secondary: rgba(226, 232, 240, 0.8);
+    --quantum-text-tertiary: rgba(203, 213, 225, 0.6);
+  }
+  
+  :root:not(.light) body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+}
+
+/* Enhanced logo and claim text styling */
+.logo-container {
+  transition: all var(--transition-base);
+}
+
+.dark .logo-container img {
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.4));
+  transition: all 0.3s ease;
+}
+
+.dark .logo-container:hover img {
+  filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
+}
+
+.dark #typed-claim {
+  color: var(--quantum-primary);
+  text-shadow: 0 0 10px var(--quantum-primary-glow);
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: currentColor;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+/* Hero search custom styling */
+.hero-search-wrapper {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hero-search input {
+  height: 54px !important;
+  font-size: 1rem !important;
+  padding: 0.75rem 1rem 0.75rem 3rem !important;
+  background-color: var(--quantum-surface-glass) !important;
+  backdrop-filter: blur(var(--quantum-blur-md)) !important;
+  box-shadow: 
+    0 10px 25px var(--quantum-shadow-light),
+    0 5px 10px var(--quantum-shadow-light),
+    inset 0 0 0 1px var(--quantum-border) !important;
+  transition: all var(--transition-base) !important;
+}
+
+/* Add subtle glow for form inputs */
+.form-input, .search-input, .form-select {
+  background-color: var(--quantum-surface-glass);
+  box-shadow: 
+    0 4px 6px var(--quantum-shadow-light),
+    inset 0 0 0 1px var(--quantum-border);
+  transition: all var(--transition-base);
+}
+
+.form-input:focus, .search-input:focus, .form-select:focus {
+  box-shadow: 
+    0 0 0 2px var(--quantum-primary-glow),
+    0 4px 6px var(--quantum-shadow-light),
+    inset 0 0 0 1px var(--quantum-primary);
+  transform: translateY(-1px);
+}
+
+/* Search Results Page Enhancements */
+.search-results-verified::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--quantum-primary), var(--quantum-secondary));
+  opacity: 0;
+  transform: scaleX(0.96);
+  transform-origin: center;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+  z-index: 1;
+  border-radius: 2px;
+}
+
+.search-results-verified:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Advanced hover effects for cards */
+.script-card {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.script-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 
+    0 15px 35px var(--quantum-shadow-medium),
+    0 10px 15px var(--quantum-shadow-light) !important;
+}
+
+.script-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 0%, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: var(--quantum-radius-lg);
+}
+
+.script-card:hover::after {
+  opacity: 1;
+}
+
+/* Enhanced security indication */
+.search-results-security-verified {
+  position: relative;
+}
+
+.search-results-security-verified::after {
+  content: "✓";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background-color: var(--quantum-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 0 10px var(--quantum-primary-glow);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.search-results-security-verified:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/*  */
+        /* ==========================================================================
+   Quantum Interface CSS Framework - v1.0
+   A futuristic, elegant design system for next-generation web applications
+   Combining glassmorphism, subtle dimensionality, and cyberpunk aesthetics
+   ========================================================================== */
+
+/* ==========================================================================
+   TABLE OF CONTENTS:
+   1. Tailwind Directives
+   2. Root Variables and Base Styles
+   3. Layout and Container Styles
+   4. Component Styles
+   5. Button and Interactive Element Styles
+   6. Form and Input Styles
+   7. Terminal Styles
+   8. Animation Definitions
+   9. Search and Filter Styles
+   10. Accessibility Styles
+   11. Media Queries
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Tailwind Directives - We'll assume Tailwind is included externally
+   ========================================================================== */
+
+/* ==========================================================================
+   2. Root Variables and Base Styles
+   ========================================================================== */
+:root {
+    /* System dimensions */
+    --header-height: 64px;
+    --navbar-height: 48px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Core color palette */
+    --quantum-primary: #6366f1;        /* Indigo */
+    --quantum-primary-glow: rgba(99, 102, 241, 0.5);
+    --quantum-secondary: #10b981;      /* Emerald */
+    --quantum-secondary-glow: rgba(16, 185, 129, 0.5);
+    --quantum-tertiary: #f59e0b;       /* Amber */
+    --quantum-accent: #ec4899;         /* Pink */
+    --quantum-accent-glow: rgba(236, 72, 153, 0.5);
+    
+    /* Interface colors */
+    --quantum-surface: rgba(255, 255, 255, 0.95);
+    --quantum-surface-elevated: rgba(255, 255, 255, 0.98);
+    --quantum-surface-glass: rgba(255, 255, 255, 0.7);
+    --quantum-border: rgba(226, 232, 240, 0.8);
+    --quantum-shadow-light: rgba(0, 0, 0, 0.05);
+    --quantum-shadow-medium: rgba(0, 0, 0, 0.1);
+    
+    /* Text colors */
+    --quantum-text-primary: rgba(15, 23, 42, 0.95);
+    --quantum-text-secondary: rgba(51, 65, 85, 0.8);
+    --quantum-text-tertiary: rgba(100, 116, 139, 0.7);
+    
+    /* Status colors */
+    --quantum-success: #10b981;
+    --quantum-warning: #f59e0b;
+    --quantum-error: #ef4444;
+    --quantum-info: #3b82f6;
+    
+    /* Terminal colors modernized */
+    --quantum-terminal-bg: #0f172a;
+    --quantum-terminal-surface: #1e293b;
+    --quantum-terminal-text: #f1f5f9;
+    --quantum-terminal-green: #4ade80;
+    --quantum-terminal-blue: #60a5fa;
+    --quantum-terminal-red: #f87171;
+    --quantum-terminal-yellow: #fbbf24;
+    --quantum-terminal-magenta: #e879f9;
+    --quantum-terminal-cyan: #22d3ee;
+    
+    /* Blur amounts */
+    --quantum-blur-sm: 4px;
+    --quantum-blur-md: 8px;
+    --quantum-blur-lg: 12px;
+    
+    /* Spacing system */
+    --quantum-space-1: 0.25rem;
+    --quantum-space-2: 0.5rem;
+    --quantum-space-3: 0.75rem;
+    --quantum-space-4: 1rem;
+    --quantum-space-5: 1.25rem;
+    --quantum-space-6: 1.5rem;
+    --quantum-space-8: 2rem;
+    --quantum-space-10: 2.5rem;
+    --quantum-space-12: 3rem;
+    
+    /* Border radius */
+    --quantum-radius-sm: 0.375rem;
+    --quantum-radius-md: 0.5rem;
+    --quantum-radius-lg: 0.75rem;
+    --quantum-radius-xl: 1rem;
+    --quantum-radius-full: 9999px;
+}
+
+/* Dark mode variables */
+.dark {
+    --quantum-surface: rgba(15, 23, 42, 0.95);
+    --quantum-surface-elevated: rgba(15, 23, 42, 0.98);
+    --quantum-surface-glass: rgba(15, 23, 42, 0.8);
+    --quantum-border: rgba(51, 65, 85, 0.6);
+    --quantum-shadow-light: rgba(0, 0, 0, 0.3);
+    --quantum-shadow-medium: rgba(0, 0, 0, 0.4);
+    
+    --quantum-text-primary: rgba(241, 245, 249, 0.95);
+    --quantum-text-secondary: rgba(226, 232, 240, 0.8);
+    --quantum-text-tertiary: rgba(203, 213, 225, 0.6);
+}
+
+/* Global base styles */
+html {
+    scroll-smooth: smooth;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    color: var(--quantum-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color var(--transition-slow);
+}
+
+.dark body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Selection styling */
+::selection {
+    background-color: var(--quantum-primary);
+    color: white;
+    text-shadow: 0 0 8px var(--quantum-primary-glow);
+}
+
+/* Focus styling */
+:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--quantum-primary), 0 0 0 4px var(--quantum-primary-glow);
+    transition: box-shadow var(--transition-fast);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.3);
+    border-radius: var(--quantum-radius-full);
+    transition: background-color var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 116, 139, 0.5);
+}
+
+.dark::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.2);
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(148, 163, 184, 0.3);
+}
+
+/* ==========================================================================
+   3. Layout and Container Styles
+   ========================================================================== */
+.container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+    position: relative;
+}
+
+/* Glass panel effect */
+.quantum-glass {
+    background-color: var(--quantum-surface-glass);
+    backdrop-filter: blur(var(--quantum-blur-md));
+    border: 1px solid var(--quantum-border);
+    box-shadow: 
+        0 4px 6px var(--quantum-shadow-light),
+        0 10px 15px var(--quantum-shadow-light);
+}
+
+/* Neumorphic panel */
+.quantum-panel {
+    background-color: var(--quantum-surface);
+    border-radius: var(--quantum-radius-lg);
+    box-shadow: 
+        inset 1px 1px 0 0 rgba(255, 255, 255, 0.3),
+        8px 8px 20px var(--quantum-shadow-light),
+        -8px -8px 20px rgba(255, 255, 255, 0.7);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.dark .quantum-panel {
+    box-shadow: 
+        inset 1px 1px 0 0 rgba(255, 255, 255, 0.05),
+        8px 8px 20px var(--quantum-shadow-medium),
+        -8px -8px 20px rgba(255, 255, 255, 0.02);
+}
+
+/* Elevated surface */
+.quantum-elevated {
+    background-color: var(--quantum-surface-elevated);
+    border-radius: var(--quantum-radius-lg);
+    box-shadow: 
+        0 10px 25px var(--quantum-shadow-light),
+        0 5px 10px var(--quantum-shadow-light);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+/* Grid system enhancements */
+.quantum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--quantum-space-6);
+}
+
+/* Line clamp refinements */
+.line-clamp-1, .line-clamp-2, .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-1 { -webkit-line-clamp: 1; }
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
+
+/* Force consistent heights */
+.script-card-content {
+    height: 224px;
+    overflow: hidden;
+    position: relative;
+}
+
+.script-card-content::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--quantum-surface));
+    pointer-events: none;
+}
+
+.dark .script-card-content::after {
+    background: linear-gradient(to bottom, transparent, var(--quantum-surface));
+}
+
+/* ==========================================================================
+   4. Component Styles
+   ========================================================================== */
+/* Card styles */
+.card {
+    border-radius: 0.5rem;
+    background-color: var(--quantum-surface);
+    border: 1px solid var(--quantum-border);
+    box-shadow: 
+        0 4px 6px var(--quantum-shadow-light),
+        0 10px 15px var(--quantum-shadow-light);
+    transition: all var(--transition-base);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--quantum-primary), var(--quantum-secondary));
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 10px 25px var(--quantum-shadow-medium),
+        0 6px 10px var(--quantum-shadow-light);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+/* Badge styles */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--quantum-radius-full);
+    backdrop-filter: blur(var(--quantum-blur-sm));
+    box-shadow: 0 2px 5px var(--quantum-shadow-light);
+    transition: all var(--transition-fast);
+}
+
+.badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px var(--quantum-shadow-light);
+}
+
+.badge-linux {
+    background-color: rgba(22, 163, 74, 0.15);
+    color: rgb(22, 163, 74);
+    border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.badge-windows {
+    background-color: rgba(2, 132, 199, 0.15);
+    color: rgb(2, 132, 199);
+    border: 1px solid rgba(2, 132, 199, 0.3);
+}
+
+.badge-macos {
+    background-color: rgba(100, 116, 139, 0.15);
+    color: rgb(100, 116, 139);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Tab styles */
+.tab-container {
+    display: flex;
+    border-bottom: 1px solid var(--quantum-border);
+    margin-bottom: var(--quantum-space-6);
+    position: relative;
+}
+
+.tab {
+    padding: var(--quantum-space-3) var(--quantum-space-5);
+    color: var(--quantum-text-secondary);
+    position: relative;
+    transition: color var(--transition-fast);
+}
+
+.tab-active {
+    color: var(--quantum-primary);
+    font-weight: 500;
+}
+
+.tab-active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, var(--quantum-primary), var(--quantum-secondary));
+    border-radius: var(--quantum-radius-full);
+}
+
+.tab:hover:not(.tab-active) {
+    color: var(--quantum-text-primary);
+}
+
+/* Version indicator */
+.version-active {
+    background-color: var(--quantum-primary);
+    color: white;
+    border-radius: var(--quantum-radius-full);
+    padding: var(--quantum-space-1) var(--quantum-space-3);
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 0 10px var(--quantum-primary-glow);
+}
+
+/* Tooltip styles */
+.tooltip {
+    background-color: var(--quantum-surface-elevated);
+    color: var(--quantum-text-primary);
+    padding: var(--quantum-space-2) var(--quantum-space-3);
+    border-radius: var(--quantum-radius-md);
+    font-size: 0.75rem;
+    font-weight: 500;
+    box-shadow: 
+        0 4px 6px var(--quantum-shadow-light), 
+        0 10px 15px var(--quantum-shadow-light);
+    backdrop-filter: blur(var(--quantum-blur-md));
+    border: 1px solid var(--quantum-border);
+    position: absolute;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    z-index: 50;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 5px;
+    white-space: nowrap;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--quantum-surface-elevated) transparent transparent transparent;
+}
+
+.tooltip-trigger:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Modal styles */
+.modal-backdrop {
+    backdrop-filter: blur(var(--quantum-blur-lg));
+    background-color: rgba(15, 23, 42, 0.3);
+    transition: backdrop-filter var(--transition-base), background-color var(--transition-base);
+}
+
+.modal-content {
+    background-color: var(--quantum-surface-elevated);
+    border-radius: var(--quantum-radius-lg);
+    border: 1px solid var(--quantum-border);
+    box-shadow: 
+        0 20px 25px var(--quantum-shadow-medium),
+        0 10px 10px var(--quantum-shadow-light);
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   5. Button and Interactive Element Styles
+   ========================================================================== */
+/* Button styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: var(--quantum-radius-full);
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    z-index: 1;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.8s;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    transform: translateX(100%);
+}
+
+.btn-primary {
+    background-color: var(--quantum-primary);
+    color: white;
+    box-shadow: 0 0 15px var(--quantum-primary-glow);
+}
+
+.btn-primary:hover {
+    background-color: var(--quantum-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--quantum-primary-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--quantum-text-secondary);
+    border: 1px solid var(--quantum-border);
+    backdrop-filter: blur(var(--quantum-blur-sm));
+}
+
+.btn-secondary:hover {
+    color: var(--quantum-text-primary);
+    border-color: var(--quantum-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--quantum-shadow-light);
+}
+
+.btn-danger {
+    background-color: var(--quantum-error);
+    color: white;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+}
+
+.btn-danger:hover {
+    background-color: rgb(220, 38, 38);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+/* Copy button feedback styles */
+.copy-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.copy-button-success {
+    background-color: var(--quantum-success) !important;
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+.copy-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform var(--transition-fast);
+    border-radius: 50%;
+}
+
+.copy-button:active::after {
+    transform: scale(3);
+    opacity: 0;
+    transition: transform 0.6s, opacity 0.6s;
+}
+
+/* ==========================================================================
+   6. Form and Input Styles
+   ========================================================================== */
+
+/* Input and container styling */
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem;
+    background-color: var(--quantum-surface-glass);
+    color: var(--quantum-text-primary);
+    border: 1px solid var(--quantum-border);
+    border-radius: var(--quantum-radius-full);
+    font-size: 1rem;
+    backdrop-filter: blur(var(--quantum-blur-md));
+    transition: all var(--transition-base);
+    box-shadow: 
+        0 4px 6px var(--quantum-shadow-light),
+        inset 0 2px 4px var(--quantum-shadow-light);
+}
+
+.search-input:focus {
+    border-color: var(--quantum-primary);
+    box-shadow: 
+        0 0 0 3px var(--quantum-primary-glow),
+        0 4px 6px var(--quantum-shadow-light);
+    background-color: var(--quantum-surface);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--quantum-text-tertiary);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.search-input:focus + .search-icon,
+.search-input:focus ~ .search-icon {
+    transform: translateY(-50%) scale(1.1);
+    color: var(--quantum-primary);
+}
+
+.clear-search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--quantum-text-tertiary);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-search-icon:hover {
+    background-color: rgba(100, 116, 139, 0.1);
+    color: var(--quantum-text-primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Form inputs */
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--quantum-surface-glass);
+    color: var(--quantum-text-primary);
+    border: 1px solid var(--quantum-border);
+    border-radius: var(--quantum-radius-md);
+    font-size: 1rem;
+    backdrop-filter: blur(var(--quantum-blur-sm));
+    transition: all var(--transition-base);
+    box-shadow: inset 0 2px 4px var(--quantum-shadow-light);
+}
+
+.form-input:focus {
+    border-color: var(--quantum-primary);
+    box-shadow: 
+        0 0 0 3px var(--quantum-primary-glow),
+        inset 0 2px 4px var(--quantum-shadow-light);
+    background-color: var(--quantum-surface);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--quantum-text-secondary);
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--quantum-surface-glass);
+    color: var(--quantum-text-primary);
+    border: 1px solid var(--quantum-border);
+    border-radius: var(--quantum-radius-md);
+    font-size: 1rem;
+    backdrop-filter: blur(var(--quantum-blur-sm));
+    transition: all var(--transition-base);
+}
+
+/* ==========================================================================
+   7. Terminal Styles
+   ========================================================================== */
+/* Terminal UI base */
+.terminal-window {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--quantum-radius-lg);
+    background-color: var(--quantum-terminal-bg);
+    box-shadow: 
+        0 20px 25px rgba(0, 0, 0, 0.3),
+        0 10px 10px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(0, 150, 250, 0.2);
+    transition: all var(--transition-base);
+}
+
+.terminal-window:hover {
+    box-shadow: 
+        0 25px 30px rgba(0, 0, 0, 0.35),
+        0 15px 15px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 0 30px rgba(0, 150, 250, 0.3);
+    transform: translateY(-5px);
+}
+
+/* Terminal header */
+.terminal-header {
+    height: 36px;
+    background: linear-gradient(to right, #2d3748, #1a202c);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border-top-left-radius: var(--quantum-radius-lg);
+    border-top-right-radius: var(--quantum-radius-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Terminal dots */
+.terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    position: relative;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-dot::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.6;
+}
+
+.terminal-dot-red {
+    background: linear-gradient(to bottom right, #ff5f57, #ec4d4a);
+    animation: dotPulse 3s infinite;
+}
+
+.terminal-dot-yellow {
+    background: linear-gradient(to bottom right, #febc2e, #e0a117);
+    animation: dotPulse 3s infinite 0.5s;
+}
+
+.terminal-dot-green {
+    background: linear-gradient(to bottom right, #28c840, #1eb22e);
+    animation: dotPulse 3s infinite 1s;
+}
+
+/* Terminal body */
+.terminal-body {
+    background-color: var(--quantum-terminal-bg);
+    color: var(--quantum-terminal-text);
+    font-family: 'monospace';
+    padding: var(--quantum-space-5);
+    border-bottom-left-radius: var(--quantum-radius-lg);
+    border-bottom-right-radius: var(--quantum-radius-lg);
+    overflow-y: auto;
+    position: relative;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Terminal content styles */
+.terminal-line {
+    line-height: 1.5;
+    white-space: pre-wrap;
+    margin-bottom: 2px;
+    display: flex;
+    position: relative;
+    opacity: 0;
+    animation: terminal-line-appear 0.1s ease-out forwards;
+}
+
+@keyframes terminal-line-appear {
+    from { opacity: 0; transform: translateY(-2px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Terminal colorization */
+.text-terminal-green {
+    color: var(--quantum-terminal-green);
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+}
+
+.text-terminal-blue {
+    color: var(--quantum-terminal-blue);
+    text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+}
+
+.text-terminal-red {
+    color: var(--quantum-terminal-red);
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+}
+
+.text-terminal-yellow {
+    color: var(--quantum-terminal-yellow);
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+
+/* Terminal cursor */
+.terminal-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.1em;
+    background-color: var(--quantum-terminal-text);
+    animation: cursor-blink 1s step-end infinite;
+    vertical-align: middle;
+    border-radius: 1px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Terminal scan line effect */
+.terminal-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, rgba(96, 165, 250, 0.5), transparent);
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+    opacity: 0.4;
+    z-index: 10;
+    animation: scanLine 8s linear infinite;
+}
+
+/* Terminal flicker effect */
+.terminal-flicker {
+    animation: flicker 8s linear infinite;
+}
+
+/* ==========================================================================
+   8. Animation Definitions
+   ========================================================================== */
+
+/* Terminal cursor blink */
+@keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Scan line effect */
+@keyframes scanLine {
+    0% { top: -5%; opacity: 0.7; }
+    20% { opacity: 0.4; }
+    50% { opacity: 0.7; }
+    80% { opacity: 0.4; }
+    100% { top: 105%; opacity: 0.7; }
+}
+
+/* Terminal dots pulse */
+@keyframes dotPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Typing animation */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+.typing-text {
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    animation: typing 2s steps(40, end);
+}
+
+@keyframes flicker {
+    0% { opacity: 0.97; }
+    5% { opacity: 0.9; }
+    10% { opacity: 0.97; }
+    15% { opacity: 0.94; }
+    20% { opacity: 0.98; }
+    55% { opacity: 0.95; }
+    60% { opacity: 0.93; }
+    65% { opacity: 0.98; }
+    100% { opacity: 0.97; }
+}
+
+/* Custom theme toggle switch */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(100, 116, 139, 0.2);
+    transition: .4s;
+    border-radius: 30px;
+}
+
+.theme-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .theme-slider {
+    background-color: var(--quantum-primary);
+}
+
+input:checked + .theme-slider:before {
+    transform: translateX(30px);
+}
+
+.section-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--quantum-text-primary);
+    position: relative;
+    display: inline-block;
+}
+
+.section-heading::after {
+    content: "";
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(to right, var(--quantum-primary), transparent);
+    border-radius: var(--quantum-radius-full);
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(var(--quantum-blur-lg));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.search-input-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="absolute top-4 right-4 z-50">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle" checked>
+            <span class="theme-slider"></span>
+        </label>
+    </div>
+
+    <!-- Header Section -->
+    <header class="quantum-glass fixed top-0 left-0 right-0 z-40 backdrop-blur" style="padding: 1rem 0;">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#paint0_linear)"/>
+                    <path d="M30 50C30 38.954 38.954 30 50 30V70C38.954 70 30 61.046 30 50Z" fill="#6366f1"/>
+                    <path d="M70 50C70 61.046 61.046 70 50 70V30C61.046 30 70 38.954 70 50Z" fill="#10b981"/>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#0f172a" stop-opacity="0.05"/>
+                            <stop offset="1" stop-color="#0f172a" stop-opacity="0.1"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 class="ml-2 text-2xl font-bold">Quantum Interface</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#components" class="hover:text-quantum-primary transition-colors">Components</a></li>
+                    <li><a href="#terminal" class="hover:text-quantum-primary transition-colors">Terminal</a></li>
+                    <li><a href="#forms" class="hover:text-quantum-primary transition-colors">Forms</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 relative">
+        <div class="container mx-auto text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                Quantum Interface <span class="text-quantum-primary">CSS</span>
+            </h1>
+            <p class="text-xl mb-8 text-quantum-text-secondary max-w-3xl mx-auto">
+                A futuristic, elegant design system for next-generation web applications.
+                <span class="typing-text inline-block overflow-hidden ml-1">Combining glassmorphism, subtle dimensionality, and cyberpunk aesthetics.</span>
+                <span class="terminal-cursor"></span>
+            </p>
+
+            <!-- Search Bar -->
+            <div class="search-input-container mx-auto mt-8">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search components, styles, and documentation...">
+                    <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <button class="clear-search-icon hidden">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-8 flex items-center justify-center space-x-4">
+                <button class="btn btn-primary">Get Started</button>
+                <button class="btn btn-secondary">Documentation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Components Section -->
+    <section id="components" class="py-16">
+        <div class="container mx-auto">
+            <h2 class="section-heading mb-8">Components</h2>
+            
+            <!-- Tabs -->
+            <div class="tab-container mb-8">
+                <a href="#" class="tab tab-active">All Components</a>
+                <a href="#" class="tab">Cards</a>
+                <a href="#" class="tab">Buttons</a>
+                <a href="#" class="tab">Badges</a>
+                <a href="#" class="tab">Navigation</a>
+            </div>
+
+            <!-- Card Grid -->
+            <div class="quantum-grid">
+                <!-- Card 1 -->
+                <div class="card script-card">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-lg font-semibold">Neumorphic Card</h3>
+                            <span class="badge badge-linux">Component</span>
+                        </div>
+                        <div class="script-card-content">
+                            <p class="mb-4 text-quantum-text-secondary">This card demonstrates the neumorphic styling capabilities of the Quantum Interface theme. Notice the subtle shadows and highlights that create a sense of physicality.</p>
+                            <p class="mb-4">The content fades out towards the bottom to indicate there's more to see upon interaction.</p>
+                            <p>Additionally, the top border reveals a gradient on hover for added visual feedback.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-quantum-border p-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="text-sm text-quantum-text-tertiary">Last updated: 2 days ago</span>
+                        </div>
+                        <div class="tooltip-trigger">
+                            <button class="btn btn-secondary text-sm py-1">View Details</button>
+                            <div class="tooltip">See full component documentation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="quantum-panel script-card p-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-semibold">Quantum Panel</h3>
+                        <span class="badge badge-windows">UI Element</span>
+                    </div>
+                    <div class="script-card-content">
+                        <p class="mb-4 text-quantum-text-secondary">The Quantum Panel uses neumorphic design principles to create a subtle, tactile appearance that feels like it's emerging from the background.</p>
+                        <p class="mb-4">The inset shadows and highlights create the illusion of a physical surface with depth, making it perfect for important UI elements.</p>
+                        <p>This component is particularly effective in dashboards and card-based interfaces where visual hierarchy is important.</p>
+                    </div>
+                    <div class="border-t border-quantum-border mt-4 pt-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="text-sm text-quantum-text-tertiary">New component</span>
+                        </div>
+                        <button class="btn btn-secondary text-sm py-1">Explore</button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="quantum-elevated script-card p-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-semibold">Elevated Surface</h3>
+                        <span class="badge badge-macos">Layout</span>
+                    </div>
+                    <div class="script-card-content">
+                        <p class="mb-4 text-quantum-text-secondary">The Elevated Surface component uses shadow layering to create a sense of height and importance in the interface hierarchy.</p>
+                        <p class="mb-4">This component is perfect for modal dialogs, popups, and any content that should appear "above" the main interface.</p>
+                        <p>The shadow intensity and blur automatically adapt to both light and dark modes for optimal contrast and visibility.</p>
+                    </div>
+                    <div class="border-t border-quantum-border mt-4 pt-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="text-sm text-quantum-text-tertiary">Responsive</span>
+                        </div>
+                        <button class="btn btn-primary text-sm py-1">Try It</button>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="quantum-glass script-card p-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-semibold">Glass Panel</h3>
+                        <div class="flex space-x-2">
+                            <span class="badge badge-linux">Effect</span>
+                            <span class="version-active">v1.0</span>
+                        </div>
+                    </div>
+                    <div class="script-card-content">
+                        <p class="mb-4 text-quantum-text-secondary">The Glass Panel component creates a modern, translucent surface with backdrop blur effects for a stunning visual appearance.</p>
+                        <p class="mb-4">Perfect for overlays, headers, and floating elements that need to maintain context with the content beneath them.</p>
+                        <p>The frosted glass effect automatically adapts to both light and dark themes, maintaining optimal contrast in both environments.</p>
+                    </div>
+                    <div class="border-t border-quantum-border mt-4 pt-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="text-sm text-quantum-text-tertiary">Premium component</span>
+                        </div>
+                        <button class="copy-button btn btn-secondary text-sm py-1">Copy CSS</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button Showcase -->
+            <div class="mt-16">
+                <h3 class="text-xl font-bold mb-4">Button Variants</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="quantum-panel p-4 flex flex-col items-center">
+                        <button class="btn btn-primary mb-2 w-full">Primary Button</button>
+                        <p class="text-sm text-quantum-text-secondary text-center">Primary action button with glow effect</p>
+                    </div>
+                    <div class="quantum-panel p-4 flex flex-col items-center">
+                        <button class="btn btn-secondary mb-2 w-full">Secondary Button</button>
+                        <p class="text-sm text-quantum-text-secondary text-center">Secondary action with subtle styling</p>
+                    </div>
+                    <div class="quantum-panel p-4 flex flex-col items-center">
+                        <button class="btn btn-danger mb-2 w-full">Danger Button</button>
+                        <p class="text-sm text-quantum-text-secondary text-center">For destructive or warning actions</p>
+                    </div>
+                    <div class="quantum-panel p-4 flex flex-col items-center">
+                        <button class="copy-button btn btn-secondary mb-2 w-full">Copy Button</button>
+                        <p class="text-sm text-quantum-text-secondary text-center">With success feedback animation</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badge Showcase -->
+            <div class="mt-16">
+                <h3 class="text-xl font-bold mb-4">Badge Variants</h3>
+                <div class="quantum-panel p-6 flex flex-wrap gap-4">
+                    <div class="flex flex-col items-center">
+                        <span class="badge badge-linux mb-2">Linux</span>
+                        <p class="text-sm text-quantum-text-secondary">Platform</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="badge badge-windows mb-2">Windows</span>
+                        <p class="text-sm text-quantum-text-secondary">Platform</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="badge badge-macos mb-2">macOS</span>
+                        <p class="text-sm text-quantum-text-secondary">Platform</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="version-active mb-2">v1.0</span>
+                        <p class="text-sm text-quantum-text-secondary">Version</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Section -->
+    <section id="terminal" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto">
+            <h2 class="section-heading mb-8">Terminal Showcase</h2>
+            
+            <div class="terminal-window mx-auto max-w-4xl">
+                <div class="terminal-header">
+                    <div class="terminal-dot terminal-dot-red"></div>
+                    <div class="terminal-dot terminal-dot-yellow"></div>
+                    <div class="terminal-dot terminal-dot-green"></div>
+                    <div class="ml-4 text-white text-sm">quantum-interface ~ SSH</div>
+                </div>
+                <div class="terminal-body terminal-flicker">
+                    <div class="terminal-scan-line"></div>
+                    <div class="terminal-line" style="animation-delay: 0.1s;">
+                        <span class="text-terminal-green">quantum@interface</span>:<span class="text-terminal-blue">~</span>$ ssh server.example.com
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 0.5s;">
+                        <span>Establishing secure connection to server.example.com...</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 1s;">
+                        <span class="text-terminal-green">Connection established. Welcome to Quantum Interface Server.</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 1.5s;">
+                        <span class="text-terminal-yellow">Warning: The system is currently under maintenance.</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 2s;">
+                        <span class="text-terminal-green">quantum@server</span>:<span class="text-terminal-blue">~</span>$ ls -la
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 2.5s;">
+                        <span>total 68</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 2.6s;">
+                        <span>drwxr-xr-x   14 quantum  staff    448 Apr  3 12:42 .</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 2.7s;">
+                        <span>drwxr-xr-x    5 quantum  staff    160 Apr  3 09:15 ..</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 2.8s;">
+                        <span>-rw-r--r--    1 quantum  staff   8196 Apr  3 12:42 .DS_Store</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 2.9s;">
+                        <span>drwxr-xr-x   12 quantum  staff    384 Apr  3 12:29 components</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 3.0s;">
+                        <span>drwxr-xr-x   10 quantum  staff    320 Apr  3 11:54 css</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 3.1s;">
+                        <span>drwxr-xr-x   15 quantum  staff    480 Apr  3 12:00 js</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 3.5s;">
+                        <span class="text-terminal-green">quantum@server</span>:<span class="text-terminal-blue">~</span>$ cat css/quantum-interface.css | head -n 5
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 4s;">
+                        <span class="text-terminal-red">/* ==========================================================================</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 4.1s;">
+                        <span class="text-terminal-red">   Quantum Interface CSS Framework - v1.0</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 4.2s;">
+                        <span class="text-terminal-red">   A futuristic, elegant design system for next-generation web applications</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 4.3s;">
+                        <span class="text-terminal-red">   Combining glassmorphism, subtle dimensionality, and cyberpunk aesthetics</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 4.4s;">
+                        <span class="text-terminal-red">   ========================================================================== */</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 4.9s;">
+                        <span class="text-terminal-green">quantum@server</span>:<span class="text-terminal-blue">~</span>$ <span class="terminal-cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forms Section -->
+    <section id="forms" class="py-16">
+        <div class="container mx-auto">
+            <h2 class="section-heading mb-8">Form Elements</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="quantum-panel p-8">
+                    <h3 class="text-xl font-bold mb-6">Project Configuration</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="form-label" for="project-name">Project Name</label>
+                            <input type="text" id="project-name" class="form-input" placeholder="My Quantum Project">
+                        </div>
+                        
+                        <div>
+                            <label class="form-label" for="project-type">Project Type</label>
+                            <select id="project-type" class="form-select">
+                                <option>Web Application</option>
+                                <option>Mobile Application</option>
+                                <option>Desktop Application</option>
+                                <option>API Service</option>
+                            </select>
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label class="form-label" for="project-description">Description</label>
+                            <textarea id="project-description" class="form-input" rows="3" placeholder="Describe your project..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="form-label" for="start-date">Start Date</label>
+                            <input type="date" id="start-date" class="form-input">
+                        </div>
+                        
+                        <div>
+                            <label class="form-label" for="team-size">Team Size</label>
+                            <input type="number" id="team-size" class="form-input" placeholder="5" min="1" max="100">
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label class="form-label block mb-2">Technologies</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="tech-react" class="mr-2">
+                                    <label for="tech-react">React</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="tech-vue" class="mr-2">
+                                    <label for="tech-vue">Vue</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="tech-angular" class="mr-2">
+                                    <label for="tech-angular">Angular</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="tech-svelte" class="mr-2">
+                                    <label for="tech-svelte">Svelte</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-quantum-border mt-8 pt-6 flex justify-end space-x-4">
+                        <button class="btn btn-secondary">Cancel</button>
+                        <button class="btn btn-primary">Save Configuration</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Form -->
+            <div class="max-w-4xl mx-auto mt-12">
+                <div class="quantum-elevated p-8">
+                    <h3 class="text-xl font-bold mb-6">Advanced Search</h3>
+                    
+                    <div class="search-container mb-6">
+                        <input type="text" class="search-input" placeholder="Search for components...">
+                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <button class="clear-search-icon">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="form-label" for="category">Category</label>
+                            <select id="category" class="form-select">
+                                <option>All Categories</option>
+                                <option>UI Components</option>
+                                <option>Layouts</option>
+                                <option>Effects</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="form-label" for="platform">Platform</label>
+                            <select id="platform" class="form-select">
+                                <option>All Platforms</option>
+                                <option>Web</option>
+                                <option>Mobile</option>
+                                <option>Desktop</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="form-label" for="sort-by">Sort By</label>
+                            <select id="sort-by" class="form-select">
+                                <option>Most Recent</option>
+                                <option>Popularity</option>
+                                <option>Alphabetical</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-quantum-border mt-8 pt-6 flex justify-end space-x-4">
+                        <button class="btn btn-secondary">Reset</button>
+                        <button class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Example (Initially Hidden) -->
+    <div class="modal-backdrop hidden" id="example-modal">
+        <div class="modal-content max-w-md w-full p-6 m-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Welcome to Quantum Interface</h3>
+                <button class="modal-close">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="mb-6">
+                <p class="mb-4">This modal demonstrates the glassmorphic styling capabilities of the Quantum Interface theme.</p>
+                <p>The backdrop uses a blur effect to maintain context while focusing attention on the modal content.</p>
+            </div>
+            <div class="flex justify-end">
+                <button class="btn btn-primary">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="url(#paint1_linear)"/>
+                            <path d="M30 50C30 38.954 38.954 30 50 30V70C38.954 70 30 61.046 30 50Z" fill="#6366f1"/>
+                            <path d="M70 50C70 61.046 61.046 70 50 70V30C61.046 30 70 38.954 70 50Z" fill="#10b981"/>
+                            <defs>
+                                <linearGradient id="paint1_linear" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#0f172a" stop-opacity="0.05"/>
+                                    <stop offset="1" stop-color="#0f172a" stop-opacity="0.1"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="ml-2 font-bold">Quantum Interface</span>
+                    </div>
+                    <p class="text-sm text-quantum-text-tertiary mt-2">A next-generation UI framework</p>
+                </div>
+                <div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-quantum-text-secondary hover:text-quantum-primary transition-colors">GitHub</a>
+                        <a href="#" class="text-quantum-text-secondary hover:text-quantum-primary transition-colors">Documentation</a>
+                        <a href="#" class="text-quantum-text-secondary hover:text-quantum-primary transition-colors">Examples</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-quantum-border mt-6 pt-6 text-center">
+                <p class="text-sm text-quantum-text-tertiary">© 2025 Quantum Interface CSS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('example-modal');
+        const modalClose = modal.querySelector('.modal-close');
+        
+        // Open modal when the Get Started button is clicked
+        const heroButtons = document.querySelectorAll('.hero-section .btn-primary');
+        if (heroButtons.length > 0) {
+            heroButtons[0].addEventListener('click', () => {
+                modal.classList.remove('hidden');
+            });
+        } else {
+            // Fallback to any primary button in the hero area
+            const primaryButton = document.querySelector('section:first-of-type .btn-primary');
+            if (primaryButton) {
+                primaryButton.addEventListener('click', () => {
+                    modal.classList.remove('hidden');
+                });
+            }
+        }
+        
+        // Close modal
+        modalClose.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        // Copy button simulation
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.add('copy-button-success');
+                this.textContent = 'Copied!';
+                
+                // Reset after animation
+                setTimeout(() => {
+                    this.classList.remove('copy-button-success');
+                    this.textContent = 'Copy CSS';
+                }, 2000);
+            });
+        });
+
+        // Search input clear button
+        const searchInputs = document.querySelectorAll('.search-input');
+        const clearButtons = document.querySelectorAll('.clear-search-icon');
+        
+        searchInputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length > 0) {
+                    clearButtons[index].classList.remove('hidden');
+                } else {
+                    clearButtons[index].classList.add('hidden');
+                }
+            });
+        });
+        
+        clearButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                searchInputs[index].value = '';
+                button.classList.add('hidden');
+                searchInputs[index].focus();
+            });
+        });
+
+        // Simulate typing animation for each section
+        function addTypingEffect() {
+            const typingElements = document.querySelectorAll('.typing-text');
+            
+            typingElements.forEach(element => {
+                element.style.width = '0';
+                
+                // Start animation when element is in viewport
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            element.style.animation = 'typing 2s steps(40, end) forwards';
+                            observer.unobserve(element);
+                        }
+                    });
+                });
+                
+                observer.observe(element);
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            addTypingEffect();
+        });
+    </script>
+</body>
+</html>
