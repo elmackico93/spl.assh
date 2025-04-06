@@ -878,6 +878,94 @@
       margin-right: 10px;
     }
 
+    /* Generator Jobs */
+    .generator-job {
+      border: 1px solid var(--matrix-border);
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: rgba(0, 30, 0, 0.3);
+    }
+
+    .generator-job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .generator-job-title {
+      font-weight: bold;
+    }
+
+    .generator-job-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .generator-job-progress {
+      margin: 10px 0;
+    }
+
+    .generator-job-details {
+      font-size: 12px;
+      color: rgba(0, 255, 65, 0.7);
+    }
+
+    .generator-job-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Mode switch styles */
+    .mode-switch-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: var(--matrix-secondary);
+      border-radius: 5px;
+      border: 1px solid var(--matrix-border);
+    }
+
+    .mode-label {
+      margin: 0 10px;
+      font-weight: bold;
+    }
+
+    /* Keyword management */
+    .keyword-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--matrix-border);
+      border-radius: 3px;
+      margin-bottom: 8px;
+      background-color: rgba(0, 30, 0, 0.2);
+    }
+
+    .keyword-text {
+      flex-grow: 1;
+    }
+
+    .keyword-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .keyword-badge {
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      background-color: var(--matrix-dim);
+      color: var(--matrix-text);
+    }
+
     /* Media Queries */
     @media (max-width: 992px) {
       .main {
@@ -950,6 +1038,9 @@
         <span>SCRIPT GENERATOR PRO</span>
       </div>
       <nav class="nav">
+        <button id="keywordsBtn" class="btn">
+          <i class="fas fa-tags"></i> Keywords
+        </button>
         <button id="settingsBtn" class="btn">
           <i class="fas fa-cog"></i> Settings
         </button>
@@ -968,12 +1059,29 @@
       <aside class="sidebar">
         <div class="panel">
           <div class="panel-header">
+            <div class="panel-title">Generation Mode</div>
+          </div>
+          <div class="mode-switch-container">
+            <span class="mode-label">AUTO</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="modeSwitch">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="mode-label">MANUAL</span>
+          </div>
+          <div id="modeDescription" class="mb-2">
+            Auto mode: Scripts are generated automatically based on trending keywords.
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
             <div class="panel-title">Status</div>
           </div>
           <div id="statusPanel">
             <div class="d-flex justify-between align-center mb-2">
               <span>Service Status:</span>
-              <span class="status status-success" id="serviceStatus">Running</span>
+              <span class="status status-success" id="serviceStatus">Ready</span>
             </div>
             <div class="d-flex justify-between align-center mb-2">
               <span>API Status:</span>
@@ -981,15 +1089,15 @@
             </div>
             <div class="d-flex justify-between align-center mb-2">
               <span>Last Update:</span>
-              <span id="lastUpdate">Just now</span>
+              <span id="lastUpdate">Never</span>
             </div>
             <div class="d-flex justify-between align-center mb-2">
               <span>Scripts Generated:</span>
               <span id="scriptsCount">0</span>
             </div>
             <div class="d-flex justify-between align-center mb-2">
-              <span>Queue:</span>
-              <span id="queueCount">0</span>
+              <span>Active Jobs:</span>
+              <span id="activeJobsCount">0</span>
             </div>
             <div class="d-flex flex-column mb-2">
               <span class="mb-2">API Usage:</span>
@@ -999,7 +1107,7 @@
               <span class="script-meta" id="apiUsageText">0%</span>
             </div>
           </div>
-          <div class="d-flex justify-between mt-2">
+          <div id="autoModeControls" class="d-flex justify-between mt-2">
             <button id="startBtn" class="btn btn-primary">
               <i class="fas fa-play"></i> Start
             </button>
@@ -1008,6 +1116,11 @@
             </button>
             <button id="stopBtn" class="btn btn-danger" disabled>
               <i class="fas fa-stop"></i> Stop
+            </button>
+          </div>
+          <div id="manualModeControls" class="mt-2" style="display: none;">
+            <button id="createJobBtn" class="btn btn-primary w-100">
+              <i class="fas fa-plus"></i> Create New Job
             </button>
           </div>
         </div>
@@ -1075,9 +1188,9 @@
           </div>
         </div>
 
-        <div class="panel">
+        <div id="topKeywordsPanel" class="panel">
           <div class="panel-header">
-            <div class="panel-title">Top Keywords</div>
+            <div class="panel-title">Active Keywords</div>
           </div>
           <div class="terminal" id="keywordsTerminal" style="height: 200px">
             <div class="terminal-line">
@@ -1090,10 +1203,88 @@
 
       <!-- Content Area -->
       <section class="content">
+        <!-- Generator Jobs Panel (new) -->
+        <div id="generatorJobsPanel" class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Generator Jobs</div>
+            <div class="panel-actions">
+              <button id="refreshJobsBtn" class="btn">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+            </div>
+          </div>
+
+          <div id="noJobs" class="mb-3">
+            No active generation jobs. Start the generator or create a new job.
+          </div>
+
+          <div id="generatorJobsList">
+            <!-- Generator jobs will be added here dynamically -->
+          </div>
+        </div>
+
+        <!-- Manual Job Creation Panel (new) -->
+        <div id="manualJobPanel" class="panel" style="display: none;">
+          <div class="panel-header">
+            <div class="panel-title">Create Manual Script Generation Job</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="jobName">Job Name:</label>
+            <input type="text" id="jobName" placeholder="Enter a name for this job">
+          </div>
+
+          <div class="mb-3">
+            <label for="jobKeywords">Keywords/Theme:</label>
+            <textarea id="jobKeywords" placeholder="Enter keywords or theme for script generation"></textarea>
+          </div>
+
+          <div class="settings-grid mb-3">
+            <div class="setting-item">
+              <span class="setting-label">Script Count:</span>
+              <input type="number" id="scriptCount" min="1" max="10" value="3">
+            </div>
+            <div class="setting-item">
+              <span class="setting-label">Category:</span>
+              <select id="scriptCategory">
+                <option value="all">All Categories</option>
+                <option value="windows">Windows</option>
+                <option value="mac">Mac</option>
+                <option value="linux">Linux</option>
+                <option value="network">Network</option>
+                <option value="security">Security</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <span class="setting-label">Generate Bash:</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="generateBashManual" checked>
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+            <div class="setting-item">
+              <span class="setting-label">Generate PowerShell:</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="generatePowershellManual" checked>
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-between">
+            <button id="cancelManualJobBtn" class="btn btn-danger">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button id="startManualJobBtn" class="btn btn-primary">
+              <i class="fas fa-play"></i> Start Generation
+            </button>
+          </div>
+        </div>
+
         <!-- Scripts Generator Panel -->
         <div class="panel">
           <div class="panel-header">
-            <div class="panel-title">Script Generator</div>
+            <div class="panel-title">Generated Scripts</div>
             <div class="panel-actions">
               <button id="refreshBtn" class="btn">
                 <i class="fas fa-sync-alt"></i> Refresh
@@ -1140,7 +1331,7 @@
             <div class="spinner"></div>
           </div>
 
-          <div id="noScripts" class="d-flex align-center justify-between" style="display: none;">
+          <div id="noScripts" class="d-flex align-center justify-between">
             <span>No scripts found. Start the generator to create new scripts.</span>
           </div>
         </div>
@@ -1167,7 +1358,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>Script Generator Pro v1.0.0 | Copyright © 2025 | Matrix Interface</p>
+      <p>Script Generator Pro v2.0.0 | Copyright © 2025 | Matrix Interface</p>
     </footer>
   </div>
 
@@ -1234,6 +1425,10 @@
               <input type="checkbox" id="balanceCategories" checked>
               <span class="toggle-slider"></span>
             </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Max Parallel Jobs</span>
+            <input type="number" id="maxParallelJobs" min="1" max="10" value="3">
           </div>
           <div class="setting-item">
             <span class="setting-label">SEO Keywords API</span>
@@ -1303,6 +1498,48 @@
       <div class="modal-footer">
         <button id="cancelAddCategoryBtn" class="btn">Cancel</button>
         <button id="saveNewCategoryBtn" class="btn btn-primary">Add Category</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keywords Management Modal (new) -->
+  <div id="keywordsModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Manage Keywords</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="newKeyword">Add Keyword:</label>
+          <div class="d-flex">
+            <input type="text" id="newKeyword" placeholder="Enter new keyword" style="flex: 1;">
+            <button id="addKeywordBtn" class="btn btn-primary ml-2">
+              <i class="fas fa-plus"></i> Add
+            </button>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-between align-center mb-2">
+            <h3>Current Keywords</h3>
+            <button id="fetchKeywordsBtn" class="btn btn-primary">
+              <i class="fas fa-sync-alt"></i> Fetch Trending
+            </button>
+          </div>
+          
+          <div id="keywordsList">
+            <!-- Keywords will be added here dynamically -->
+          </div>
+          
+          <div id="noKeywords" style="display: none;">
+            No keywords added yet. Add keywords manually or fetch trending keywords.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="clearKeywordsBtn" class="btn btn-danger">Clear All</button>
+        <button id="saveKeywordsBtn" class="btn btn-primary">Save Changes</button>
       </div>
     </div>
   </div>
@@ -1536,9 +1773,12 @@
     (function() {
       // State management
       const state = {
+        mode: 'auto', // 'auto' or 'manual'
         isRunning: false,
         isPaused: false,
         scripts: [],
+        generatorJobs: [],
+        nextJobId: 1,
         categories: [
           { id: 'windows', name: 'Windows', count: 12, enabled: true },
           { id: 'mac', name: 'Mac', count: 8, enabled: true },
@@ -1562,6 +1802,7 @@
           generateBash: true,
           generatePowershell: true,
           balanceCategories: true,
+          maxParallelJobs: 3,
           seoApiSource: 'google',
           customApiUrl: '',
           customApiKey: '',
@@ -1570,9 +1811,46 @@
         },
         updateTimer: null,
         apiUsage: 0,
-        topKeywords: [],
+        keywords: [
+          { id: 1, text: 'windows 11 clock sync issues', volume: 12500, growth: '+15%' },
+          { id: 2, text: 'fix mac display resolution', volume: 9800, growth: '+8%' },
+          { id: 3, text: 'linux system performance optimization', volume: 7500, growth: '+12%' },
+          { id: 4, text: 'network connectivity troubleshooting', volume: 15000, growth: '+20%' },
+          { id: 5, text: 'security vulnerability scanner', volume: 11200, growth: '+25%' },
+          { id: 6, text: 'windows update error fix', volume: 18000, growth: '+10%' },
+          { id: 7, text: 'mac battery optimization', volume: 8900, growth: '+5%' },
+          { id: 8, text: 'linux disk cleanup', volume: 6200, growth: '+7%' },
+          { id: 9, text: 'fix wifi connection problems', volume: 14500, growth: '+18%' },
+          { id: 10, text: 'password security audit', volume: 10800, growth: '+22%' }
+        ],
         activeScriptId: null
       };
+
+      // DOM Elements - Mode Switch
+      const modeSwitch = document.getElementById('modeSwitch');
+      const modeDescription = document.getElementById('modeDescription');
+      const autoModeControls = document.getElementById('autoModeControls');
+      const manualModeControls = document.getElementById('manualModeControls');
+      const topKeywordsPanel = document.getElementById('topKeywordsPanel');
+
+      // DOM Elements - Manual Job Creation
+      const createJobBtn = document.getElementById('createJobBtn');
+      const manualJobPanel = document.getElementById('manualJobPanel');
+      const jobName = document.getElementById('jobName');
+      const jobKeywords = document.getElementById('jobKeywords');
+      const scriptCount = document.getElementById('scriptCount');
+      const scriptCategory = document.getElementById('scriptCategory');
+      const generateBashManual = document.getElementById('generateBashManual');
+      const generatePowershellManual = document.getElementById('generatePowershellManual');
+      const startManualJobBtn = document.getElementById('startManualJobBtn');
+      const cancelManualJobBtn = document.getElementById('cancelManualJobBtn');
+
+      // DOM Elements - Generator Jobs
+      const generatorJobsPanel = document.getElementById('generatorJobsPanel');
+      const generatorJobsList = document.getElementById('generatorJobsList');
+      const noJobs = document.getElementById('noJobs');
+      const refreshJobsBtn = document.getElementById('refreshJobsBtn');
+      const activeJobsCount = document.getElementById('activeJobsCount');
 
       // DOM Elements - Settings Modal
       const settingsBtn = document.getElementById('settingsBtn');
@@ -1596,7 +1874,6 @@
       const apiStatus = document.getElementById('apiStatus');
       const lastUpdate = document.getElementById('lastUpdate');
       const scriptsCount = document.getElementById('scriptsCount');
-      const queueCount = document.getElementById('queueCount');
       const apiUsage = document.getElementById('apiUsage');
       const apiUsageText = document.getElementById('apiUsageText');
 
@@ -1607,6 +1884,17 @@
       const saveNewCategoryBtn = document.getElementById('saveNewCategoryBtn');
       const cancelAddCategoryBtn = document.getElementById('cancelAddCategoryBtn');
       const categoryPills = document.getElementById('categoryPills');
+
+      // DOM Elements - Keyword Management
+      const keywordsBtn = document.getElementById('keywordsBtn');
+      const keywordsModal = document.getElementById('keywordsModal');
+      const newKeyword = document.getElementById('newKeyword');
+      const addKeywordBtn = document.getElementById('addKeywordBtn');
+      const fetchKeywordsBtn = document.getElementById('fetchKeywordsBtn');
+      const keywordsList = document.getElementById('keywordsList');
+      const noKeywords = document.getElementById('noKeywords');
+      const clearKeywordsBtn = document.getElementById('clearKeywordsBtn');
+      const saveKeywordsBtn = document.getElementById('saveKeywordsBtn');
 
       // DOM Elements - Scripts List
       const scriptsList = document.getElementById('scriptsList');
@@ -1690,6 +1978,7 @@ W32tm /resync /force
 
 Write-Host "Windows 11 clock synchronization has been fixed. The system will now maintain accurate time."`,
           created: Date.now() - 3600000,
+          jobId: 'auto-1',
           seoScore: 92
         },
         {
@@ -1724,6 +2013,7 @@ sudo killall WindowServer
 echo "Display settings have been reset. If the issue persists, please restart your Mac."
 echo "Resolution fix complete!"`,
           created: Date.now() - 7200000,
+          jobId: 'auto-1',
           seoScore: 88
         },
         {
@@ -1771,154 +2061,9 @@ prelink -amR
 
 echo "System optimization complete! You may need to reboot for all changes to take effect."`,
           created: Date.now() - 10800000,
+          jobId: 'auto-2',
           seoScore: 85
-        },
-        {
-          id: 'script-4',
-          title: 'Network Connectivity Troubleshooter',
-          description: 'Diagnoses and fixes common network connectivity issues',
-          type: 'powershell',
-          category: 'network',
-          keywords: ['network', 'connectivity', 'troubleshoot', 'internet', 'dns'],
-          code: `# Network Connectivity Troubleshooter
-# This script diagnoses and fixes common network connectivity issues
-# Created: ${new Date().toLocaleDateString()}
-
-Write-Host "Starting Network Connectivity Troubleshooter..." -ForegroundColor Green
-
-# Get network adapters information
-$adapters = Get-NetAdapter | Where-Object { $_.Status -eq "Up" }
-Write-Host "Found $($adapters.Count) active network adapters" -ForegroundColor Cyan
-
-foreach ($adapter in $adapters) {
-    Write-Host "Checking adapter: $($adapter.Name)" -ForegroundColor Yellow
-    
-    # Reset network adapter
-    Write-Host "Resetting network adapter..."
-    Disable-NetAdapter -Name $adapter.Name -Confirm:$false
-    Start-Sleep -Seconds 5
-    Enable-NetAdapter -Name $adapter.Name -Confirm:$false
-    Start-Sleep -Seconds 5
-    
-    # Flush DNS cache
-    Write-Host "Flushing DNS cache..."
-    ipconfig /flushdns
-    
-    # Reset Winsock catalog
-    Write-Host "Resetting Winsock catalog..."
-    netsh winsock reset
-    
-    # Reset TCP/IP stack
-    Write-Host "Resetting TCP/IP stack..."
-    netsh int ip reset
-    
-    # Renew IP address
-    Write-Host "Renewing IP address..."
-    ipconfig /release
-    ipconfig /renew
-    
-    # Check for connectivity
-    $pingTest = Test-Connection -ComputerName 8.8.8.8 -Count 2 -Quiet
-    if ($pingTest) {
-        Write-Host "Network connectivity restored successfully!" -ForegroundColor Green
-    } else {
-        Write-Host "Network issues persist. Additional troubleshooting required." -ForegroundColor Red
-    }
-}
-
-Write-Host "Network troubleshooting complete. Please restart your computer if issues persist." -ForegroundColor Green`,
-          created: Date.now() - 14400000,
-          seoScore: 90
-        },
-        {
-          id: 'script-5',
-          title: 'Security Vulnerability Scanner',
-          description: 'Scans system for common security vulnerabilities',
-          type: 'bash',
-          category: 'security',
-          keywords: ['security', 'vulnerability', 'scan', 'cybersecurity', 'audit'],
-          code: `#!/bin/bash
-# Security Vulnerability Scanner
-# This script scans your system for common security vulnerabilities
-# Created: ${new Date().toLocaleDateString()}
-
-echo "Starting Security Vulnerability Scanner..."
-echo "--------------------------------------"
-
-# Check for system updates
-echo "Checking for system updates..."
-if command -v apt-get &> /dev/null; then
-    sudo apt-get update -qq
-    updates=$(apt list --upgradable 2>/dev/null | grep -v "Listing..." | wc -l)
-    if [ $updates -gt 0 ]; then
-        echo "[WARNING] $updates system updates available. Please run: sudo apt-get upgrade"
-    else
-        echo "[OK] System is up to date"
-    fi
-elif command -v yum &> /dev/null; then
-    updates=$(sudo yum check-update --quiet | grep -v "^$" | wc -l)
-    if [ $updates -gt 0 ]; then
-        echo "[WARNING] $updates system updates available. Please run: sudo yum update"
-    else
-        echo "[OK] System is up to date"
-    fi
-fi
-
-# Check for open ports
-echo "Checking for open ports..."
-if command -v netstat &> /dev/null; then
-    open_ports=$(netstat -tuln | grep LISTEN | wc -l)
-    echo "[INFO] $open_ports open ports detected"
-    netstat -tuln | grep LISTEN
-fi
-
-# Check for world-writable files
-echo "Checking for world-writable files in sensitive directories..."
-world_writable=$(find /etc /bin /sbin /usr/bin /usr/sbin -type f -perm -o+w 2>/dev/null | wc -l)
-if [ $world_writable -gt 0 ]; then
-    echo "[CRITICAL] $world_writable world-writable files found in system directories!"
-    find /etc /bin /sbin /usr/bin /usr/sbin -type f -perm -o+w 2>/dev/null
-else
-    echo "[OK] No world-writable files found in system directories"
-fi
-
-# Check SSH configuration
-echo "Checking SSH configuration..."
-if [ -f /etc/ssh/sshd_config ]; then
-    root_login=$(grep "PermitRootLogin" /etc/ssh/sshd_config | grep -v "^#" | grep "yes")
-    if [ ! -z "$root_login" ]; then
-        echo "[WARNING] SSH root login is enabled"
-    else
-        echo "[OK] SSH root login is disabled"
-    fi
-    
-    password_auth=$(grep "PasswordAuthentication" /etc/ssh/sshd_config | grep -v "^#" | grep "yes")
-    if [ ! -z "$password_auth" ]; then
-        echo "[WARNING] SSH password authentication is enabled, consider using key-based authentication only"
-    else
-        echo "[OK] SSH password authentication is disabled"
-    fi
-fi
-
-echo "Security vulnerability scan complete"
-echo "Please review the results and address any warnings or critical issues"`,
-          created: Date.now() - 18000000,
-          seoScore: 94
         }
-      ];
-      
-      // Sample top keywords (for demonstration)
-      const sampleKeywords = [
-        { keyword: 'windows 11 clock sync issues', volume: 12500, growth: '+15%' },
-        { keyword: 'fix mac display resolution', volume: 9800, growth: '+8%' },
-        { keyword: 'linux system performance optimization', volume: 7500, growth: '+12%' },
-        { keyword: 'network connectivity troubleshooting', volume: 15000, growth: '+20%' },
-        { keyword: 'security vulnerability scanner', volume: 11200, growth: '+25%' },
-        { keyword: 'windows update error fix', volume: 18000, growth: '+10%' },
-        { keyword: 'mac battery optimization', volume: 8900, growth: '+5%' },
-        { keyword: 'linux disk cleanup', volume: 6200, growth: '+7%' },
-        { keyword: 'fix wifi connection problems', volume: 14500, growth: '+18%' },
-        { keyword: 'password security audit', volume: 10800, growth: '+22%' }
       ];
 
       // Initialize the application
@@ -1932,7 +2077,9 @@ echo "Please review the results and address any warnings or critical issues"`,
         // Update UI
         updateScriptsList();
         updateCategoriesList();
+        updateKeywordsList();
         updateStatusPanel();
+        updateGeneratorJobsList();
         
         // Add event listeners
         addEventListeners();
@@ -1940,8 +2087,8 @@ echo "Please review the results and address any warnings or critical issues"`,
         // Show initial notification
         showNotification('System initialized. Ready to generate scripts.', 'info');
         
-        // Load top keywords
-        updateTopKeywords();
+        // Load keywords
+        updateKeywordsTerminal();
         
         // Auto-start if configured
         if (state.settings.autoStart) {
@@ -1950,6 +2097,255 @@ echo "Please review the results and address any warnings or critical issues"`,
         
         // Log initialization
         addLogEntry('System initialized');
+      }
+
+      // Toggle application mode
+      function toggleMode() {
+        state.mode = modeSwitch.checked ? 'manual' : 'auto';
+        
+        // Update UI based on mode
+        if (state.mode === 'auto') {
+          modeDescription.textContent = 'Auto mode: Scripts are generated automatically based on trending keywords.';
+          autoModeControls.style.display = 'flex';
+          manualModeControls.style.display = 'none';
+          topKeywordsPanel.style.display = 'block';
+        } else {
+          modeDescription.textContent = 'Manual mode: Create and manage individual script generation jobs.';
+          autoModeControls.style.display = 'none';
+          manualModeControls.style.display = 'block';
+          topKeywordsPanel.style.display = 'block';
+        }
+        
+        // If running in auto mode, stop when switching to manual
+        if (state.mode === 'manual' && state.isRunning) {
+          stopGenerator();
+        }
+        
+        // Log mode change
+        addLogEntry(`Mode switched to ${state.mode.toUpperCase()}`);
+      }
+
+      // Open manual job creation panel
+      function showManualJobPanel() {
+        manualJobPanel.style.display = 'block';
+        generatorJobsPanel.style.display = 'none';
+        
+        // Set default job name
+        jobName.value = `Job ${state.nextJobId}`;
+        
+        // Clear other fields
+        jobKeywords.value = '';
+        scriptCount.value = 3;
+        scriptCategory.value = 'all';
+        generateBashManual.checked = true;
+        generatePowershellManual.checked = true;
+      }
+
+      // Hide manual job creation panel
+      function hideManualJobPanel() {
+        manualJobPanel.style.display = 'none';
+        generatorJobsPanel.style.display = 'block';
+      }
+
+      // Create a new manual generator job
+      function createManualJob() {
+        const name = jobName.value.trim() || `Job ${state.nextJobId}`;
+        const keywords = jobKeywords.value.trim();
+        const count = parseInt(scriptCount.value) || 3;
+        const category = scriptCategory.value;
+        const generateBash = generateBashManual.checked;
+        const generatePowershell = generatePowershellManual.checked;
+        
+        // Validate inputs
+        if (!keywords) {
+          showNotification('Please enter keywords or theme for script generation', 'warning');
+          return;
+        }
+        
+        if (!generateBash && !generatePowershell) {
+          showNotification('Please select at least one script type', 'warning');
+          return;
+        }
+        
+        // Create job object
+        const job = {
+          id: `manual-${state.nextJobId++}`,
+          name: name,
+          keywords: keywords,
+          category: category,
+          scriptCount: count,
+          generateBash: generateBash,
+          generatePowershell: generatePowershell,
+          status: 'pending',
+          progress: 0,
+          scriptsGenerated: 0,
+          startTime: Date.now(),
+          estimatedEndTime: Date.now() + (count * 30000), // Rough estimate
+          manualMode: true
+        };
+        
+        // Add job to state
+        state.generatorJobs.push(job);
+        
+        // Update UI
+        updateGeneratorJobsList();
+        hideManualJobPanel();
+        
+        // Start job
+        startJob(job.id);
+        
+        // Log job creation
+        addLogEntry(`Created manual job: ${name}`);
+        showNotification(`Manual job "${name}" created and started`, 'success');
+      }
+
+      // Start a specific job
+      function startJob(jobId) {
+        const job = state.generatorJobs.find(j => j.id === jobId);
+        if (!job) return;
+        
+        // Update job status
+        job.status = 'running';
+        updateGeneratorJobsList();
+        updateStatusPanel();
+        
+        // Log job start
+        addLogEntry(`Started job: ${job.name}`);
+        
+        // Simulate job progress
+        simulateJobProgress(job);
+      }
+
+      // Pause a specific job
+      function pauseJob(jobId) {
+        const job = state.generatorJobs.find(j => j.id === jobId);
+        if (!job) return;
+        
+        // Update job status
+        job.status = job.status === 'running' ? 'paused' : 'running';
+        updateGeneratorJobsList();
+        
+        // Log job pause/resume
+        addLogEntry(`${job.status === 'paused' ? 'Paused' : 'Resumed'} job: ${job.name}`);
+        showNotification(`Job "${job.name}" ${job.status === 'paused' ? 'paused' : 'resumed'}`, job.status === 'paused' ? 'warning' : 'success');
+      }
+
+      // Cancel a specific job
+      function cancelJob(jobId) {
+        const jobIndex = state.generatorJobs.findIndex(j => j.id === jobId);
+        if (jobIndex === -1) return;
+        
+        const job = state.generatorJobs[jobIndex];
+        
+        // Remove job
+        state.generatorJobs.splice(jobIndex, 1);
+        updateGeneratorJobsList();
+        updateStatusPanel();
+        
+        // Log job cancellation
+        addLogEntry(`Cancelled job: ${job.name}`);
+        showNotification(`Job "${job.name}" cancelled`, 'error');
+      }
+
+      // Simulate job progress
+      function simulateJobProgress(job) {
+        // If job is paused or completed, don't continue
+        if (job.status !== 'running' || job.progress >= 100) return;
+        
+        // Update progress
+        const progressIncrement = Math.floor(Math.random() * 5) + 1;
+        job.progress = Math.min(100, job.progress + progressIncrement);
+        
+        // If this increment generates a script
+        if (job.progress % (100 / job.scriptCount) < progressIncrement) {
+          job.scriptsGenerated++;
+          generateScriptForJob(job);
+        }
+        
+        // Update UI
+        updateGeneratorJobsList();
+        
+        // If job is complete
+        if (job.progress >= 100) {
+          job.status = 'completed';
+          addLogEntry(`Job completed: ${job.name}`);
+          showNotification(`Job "${job.name}" completed successfully`, 'success');
+          
+          // After a while, remove the completed job
+          setTimeout(() => {
+            const jobIndex = state.generatorJobs.findIndex(j => j.id === job.id);
+            if (jobIndex !== -1) {
+              state.generatorJobs.splice(jobIndex, 1);
+              updateGeneratorJobsList();
+              updateStatusPanel();
+            }
+          }, 30000);
+        } else {
+          // Continue job progress
+          setTimeout(() => simulateJobProgress(job), Math.floor(Math.random() * 1000) + 500);
+        }
+        
+        updateStatusPanel();
+      }
+
+      // Generate a script for a specific job
+      function generateScriptForJob(job) {
+        // Determine script type
+        let scriptType = 'bash';
+        if (job.generateBash && job.generatePowershell) {
+          scriptType = Math.random() > 0.5 ? 'bash' : 'powershell';
+        } else if (job.generatePowershell) {
+          scriptType = 'powershell';
+        }
+        
+        // Determine category
+        let category = job.category;
+        if (category === 'all') {
+          // Select a random enabled category
+          const enabledCategories = state.categories.filter(cat => cat.enabled);
+          category = enabledCategories[Math.floor(Math.random() * enabledCategories.length)].id;
+        }
+        
+        // Get keywords
+        let keywords = [];
+        if (job.manualMode) {
+          // Manual mode: Use provided keywords
+          keywords = job.keywords.split(/[,;]+/).map(k => k.trim()).filter(k => k);
+        } else {
+          // Auto mode: Use random keywords from the state
+          const randomKeywordIndex = Math.floor(Math.random() * state.keywords.length);
+          keywords = state.keywords[randomKeywordIndex].text.split(/\s+/);
+        }
+        
+        // Create new script
+        const newScript = {
+          id: `script-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          title: `${job.manualMode ? 'Manual' : 'Auto'} ${scriptType === 'bash' ? 'Bash' : 'PowerShell'} Script for "${keywords.join(' ')}"`,
+          description: `${job.manualMode ? 'Manually' : 'Automatically'} generated script for ${category} - ${keywords.join(', ')}`,
+          type: scriptType,
+          category: category,
+          keywords: keywords,
+          code: generateSampleCode(scriptType, keywords.join(' '), category),
+          created: Date.now(),
+          jobId: job.id,
+          seoScore: Math.floor(Math.random() * 20) + 80
+        };
+        
+        // Add to scripts list
+        state.scripts.unshift(newScript);
+        
+        // Increment category count
+        const catIndex = state.categories.findIndex(c => c.id === category);
+        if (catIndex !== -1) {
+          state.categories[catIndex].count++;
+        }
+        
+        // Update UI
+        updateScriptsList();
+        updateCategoriesList();
+        
+        // Log script generation
+        addLogEntry(`Generated script: ${newScript.title}`, 'success');
       }
 
       // Load settings from localStorage
@@ -1969,6 +2365,7 @@ echo "Please review the results and address any warnings or critical issues"`,
             document.getElementById('generateBash').checked = state.settings.generateBash !== false;
             document.getElementById('generatePowershell').checked = state.settings.generatePowershell !== false;
             document.getElementById('balanceCategories').checked = state.settings.balanceCategories !== false;
+            document.getElementById('maxParallelJobs').value = state.settings.maxParallelJobs || 3;
             document.getElementById('seoApiSource').value = state.settings.seoApiSource || 'google';
             document.getElementById('customApiUrl').value = state.settings.customApiUrl || '';
             document.getElementById('customApiKey').value = state.settings.customApiKey || '';
@@ -1999,6 +2396,7 @@ echo "Please review the results and address any warnings or critical issues"`,
         state.settings.generateBash = document.getElementById('generateBash').checked;
         state.settings.generatePowershell = document.getElementById('generatePowershell').checked;
         state.settings.balanceCategories = document.getElementById('balanceCategories').checked;
+        state.settings.maxParallelJobs = parseInt(document.getElementById('maxParallelJobs').value) || 3;
         state.settings.seoApiSource = document.getElementById('seoApiSource').value;
         state.settings.customApiUrl = document.getElementById('customApiUrl').value;
         state.settings.customApiKey = document.getElementById('customApiKey').value;
@@ -2029,6 +2427,7 @@ echo "Please review the results and address any warnings or critical issues"`,
           generateBash: true,
           generatePowershell: true,
           balanceCategories: true,
+          maxParallelJobs: 3,
           seoApiSource: 'google',
           customApiUrl: '',
           customApiKey: '',
@@ -2046,6 +2445,7 @@ echo "Please review the results and address any warnings or critical issues"`,
         document.getElementById('generateBash').checked = true;
         document.getElementById('generatePowershell').checked = true;
         document.getElementById('balanceCategories').checked = true;
+        document.getElementById('maxParallelJobs').value = 3;
         document.getElementById('seoApiSource').value = 'google';
         document.getElementById('customApiUrl').value = '';
         document.getElementById('customApiKey').value = '';
@@ -2065,6 +2465,20 @@ echo "Please review the results and address any warnings or critical issues"`,
 
       // Add all event listeners
       function addEventListeners() {
+        // Mode Switch
+        modeSwitch.addEventListener('change', toggleMode);
+        
+        // Manual Job Creation
+        createJobBtn.addEventListener('click', showManualJobPanel);
+        startManualJobBtn.addEventListener('click', createManualJob);
+        cancelManualJobBtn.addEventListener('click', hideManualJobPanel);
+        
+        // Generator Jobs
+        refreshJobsBtn.addEventListener('click', () => {
+          updateGeneratorJobsList();
+          showNotification('Generator jobs refreshed', 'success');
+        });
+        
         // Settings Modal
         settingsBtn.addEventListener('click', () => {
           settingsModal.classList.add('show');
@@ -2100,6 +2514,21 @@ echo "Please review the results and address any warnings or critical issues"`,
         saveNewCategoryBtn.addEventListener('click', addNewCategory);
         cancelAddCategoryBtn.addEventListener('click', () => {
           addCategoryModal.classList.remove('show');
+        });
+        
+        // Keyword Management
+        keywordsBtn.addEventListener('click', () => {
+          keywordsModal.classList.add('show');
+          updateKeywordsList();
+        });
+        
+        addKeywordBtn.addEventListener('click', addKeyword);
+        fetchKeywordsBtn.addEventListener('click', fetchTrendingKeywords);
+        clearKeywordsBtn.addEventListener('click', clearKeywords);
+        saveKeywordsBtn.addEventListener('click', () => {
+          updateKeywordsTerminal();
+          keywordsModal.classList.remove('show');
+          showNotification('Keywords saved successfully', 'success');
         });
         
         // Category Pills
@@ -2218,11 +2647,34 @@ echo "Please review the results and address any warnings or critical issues"`,
         serviceStatus.textContent = 'Running';
         serviceStatus.className = 'status status-success';
         
+        // Create an auto job if none exists
+        if (!state.generatorJobs.some(job => job.id.startsWith('auto-'))) {
+          const autoJob = {
+            id: `auto-${state.nextJobId++}`,
+            name: 'Auto Generation',
+            keywords: state.keywords.map(k => k.text).join(', '),
+            category: 'all',
+            scriptCount: state.settings.scriptsPerUpdate,
+            generateBash: state.settings.generateBash,
+            generatePowershell: state.settings.generatePowershell,
+            status: 'running',
+            progress: 0,
+            scriptsGenerated: 0,
+            startTime: Date.now(),
+            estimatedEndTime: Date.now() + (state.settings.scriptsPerUpdate * 30000),
+            manualMode: false
+          };
+          
+          state.generatorJobs.push(autoJob);
+          updateGeneratorJobsList();
+          simulateJobProgress(autoJob);
+        }
+        
         // Schedule first run
         runScriptGenerator();
         
         // Log action
-        addLogEntry('Generator started');
+        addLogEntry('Auto generator started');
         showNotification('Script generator started', 'success');
       }
 
@@ -2286,8 +2738,33 @@ echo "Please review the results and address any warnings or critical issues"`,
         
         addLogEntry('Generating new scripts...');
         
-        // In a real application, this would call the API to generate scripts
-        simulateScriptGeneration();
+        // Check if we have active auto jobs
+        const activeAutoJobs = state.generatorJobs.filter(job => 
+          job.id.startsWith('auto-') && job.status === 'running'
+        );
+        
+        // Create a new auto job if we don't have any active ones
+        if (activeAutoJobs.length === 0) {
+          const autoJob = {
+            id: `auto-${state.nextJobId++}`,
+            name: 'Auto Generation',
+            keywords: state.keywords.map(k => k.text).join(', '),
+            category: 'all',
+            scriptCount: state.settings.scriptsPerUpdate,
+            generateBash: state.settings.generateBash,
+            generatePowershell: state.settings.generatePowershell,
+            status: 'running',
+            progress: 0,
+            scriptsGenerated: 0,
+            startTime: Date.now(),
+            estimatedEndTime: Date.now() + (state.settings.scriptsPerUpdate * 30000),
+            manualMode: false
+          };
+          
+          state.generatorJobs.push(autoJob);
+          updateGeneratorJobsList();
+          simulateJobProgress(autoJob);
+        }
         
         // Schedule the next run
         state.updateTimer = setTimeout(runScriptGenerator, state.settings.updateInterval * 60 * 1000);
@@ -2296,88 +2773,776 @@ echo "Please review the results and address any warnings or critical issues"`,
         lastUpdate.textContent = new Date().toLocaleTimeString();
       }
 
-      // Simulate script generation (for demonstration)
-      function simulateScriptGeneration() {
-        loadingScripts.style.display = 'flex';
+      // Add a new keyword
+      function addKeyword() {
+        const text = newKeyword.value.trim();
+        if (!text) {
+          showNotification('Please enter a keyword', 'warning');
+          return;
+        }
         
-        // Get number of scripts to generate
-        const count = state.settings.scriptsPerUpdate;
+        // Create new keyword
+        const keyword = {
+          id: Date.now(),
+          text: text,
+          volume: Math.floor(Math.random() * 10000) + 1000,
+          growth: `+${Math.floor(Math.random() * 20) + 1}%`
+        };
         
-        // Update API usage
-        state.apiUsage = Math.min(100, state.apiUsage + Math.floor(Math.random() * 5) + 1);
-        apiUsage.style.width = `${state.apiUsage}%`;
-        apiUsageText.textContent = `${state.apiUsage}%`;
+        // Add to state
+        state.keywords.push(keyword);
         
-        // Get a random keyword
-        const keyword = sampleKeywords[Math.floor(Math.random() * sampleKeywords.length)];
+        // Update UI
+        updateKeywordsList();
+        
+        // Clear input
+        newKeyword.value = '';
+        
+        addLogEntry(`Added keyword: ${text}`);
+      }
+
+      // Fetch trending keywords (simulated)
+      function fetchTrendingKeywords() {
+        showNotification('Fetching trending keywords...', 'info');
         
         setTimeout(() => {
-          for (let i = 0; i < count; i++) {
-            // Determine script type
-            let scriptType = 'bash';
-            if (state.settings.generateBash && state.settings.generatePowershell) {
-              scriptType = Math.random() > 0.5 ? 'bash' : 'powershell';
-            } else if (state.settings.generatePowershell) {
-              scriptType = 'powershell';
-            }
-            
-            // Determine category
-            let category = state.categories[Math.floor(Math.random() * state.categories.length)].id;
-            if (state.settings.balanceCategories) {
-              // Find category with least scripts
-              const categoryCounts = {};
-              state.categories.forEach(cat => {
-                categoryCounts[cat.id] = state.scripts.filter(s => s.category === cat.id).length;
-              });
-              
-              // Sort categories by script count
-              const sortedCategories = Object.entries(categoryCounts)
-                .sort((a, b) => a[1] - b[1])
-                .map(entry => entry[0]);
-              
-              category = sortedCategories[0] || category;
-            }
-            
-            // Create new script
-            const newScript = {
-              id: `script-${Date.now()}-${i}`,
-              title: `Generated ${scriptType === 'bash' ? 'Bash' : 'PowerShell'} Script for "${keyword.keyword}"`,
-              description: `Automatically generated script based on trending keyword: ${keyword.keyword}`,
-              type: scriptType,
-              category: category,
-              keywords: keyword.keyword.split(' '),
-              code: generateSampleCode(scriptType, keyword.keyword, category),
-              created: Date.now(),
-              seoScore: Math.floor(Math.random() * 20) + 80
-            };
-            
-            // Add to scripts list
-            state.scripts.unshift(newScript);
-            
-            // Increment category count
-            const catIndex = state.categories.findIndex(c => c.id === category);
-            if (catIndex !== -1) {
-              state.categories[catIndex].count++;
-            }
-            
-            // Log script generation
-            addLogEntry(`Generated script: ${newScript.title}`, 'success');
-          }
+          // Simulate API response
+          const trendingKeywords = [
+            { text: 'windows security updates', volume: 22500, growth: '+18%' },
+            { text: 'linux server optimization', volume: 15800, growth: '+22%' },
+            { text: 'mac performance tuning', volume: 12300, growth: '+10%' },
+            { text: 'network firewall configuration', volume: 19700, growth: '+25%' }
+          ];
+          
+          // Add to state
+          trendingKeywords.forEach(kw => {
+            state.keywords.push({
+              id: Date.now() + Math.floor(Math.random() * 1000),
+              text: kw.text,
+              volume: kw.volume,
+              growth: kw.growth
+            });
+          });
           
           // Update UI
+          updateKeywordsList();
+          
+          showNotification('Trending keywords fetched successfully', 'success');
+          addLogEntry('Fetched trending keywords from API');
+        }, 1500);
+      }
+
+      // Clear all keywords
+      function clearKeywords() {
+        if (confirm('Are you sure you want to clear all keywords?')) {
+          state.keywords = [];
+          updateKeywordsList();
+          showNotification('All keywords cleared', 'success');
+          addLogEntry('Cleared all keywords');
+        }
+      }
+
+      // Update keywords list in the modal
+      function updateKeywordsList() {
+        if (state.keywords.length === 0) {
+          keywordsList.innerHTML = '';
+          noKeywords.style.display = 'block';
+          return;
+        }
+        
+        noKeywords.style.display = 'none';
+        
+        let html = '';
+        state.keywords.forEach(keyword => {
+          html += `
+            <div class="keyword-item" data-id="${keyword.id}">
+              <div class="keyword-text">${keyword.text}</div>
+              <div class="keyword-actions">
+                <span class="keyword-badge">${keyword.volume} searches</span>
+                <span class="keyword-badge" style="color: ${keyword.growth.startsWith('+') ? 'var(--matrix-success)' : 'var(--matrix-error)'}">${keyword.growth}</span>
+                <button class="btn btn-danger remove-keyword-btn" data-id="${keyword.id}">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        });
+        
+        keywordsList.innerHTML = html;
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-keyword-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = parseInt(e.currentTarget.getAttribute('data-id'));
+            state.keywords = state.keywords.filter(k => k.id !== id);
+            updateKeywordsList();
+          });
+        });
+      }
+
+      // Update keywords in the terminal
+      function updateKeywordsTerminal() {
+        // Clear the terminal
+        keywordsTerminal.innerHTML = '';
+        
+        // Add each keyword to the terminal
+        state.keywords.forEach((keyword, index) => {
+          const line = document.createElement('div');
+          line.className = 'terminal-line';
+          
+          const rank = document.createElement('span');
+          rank.className = 'terminal-prompt';
+          rank.textContent = `${index + 1}`;
+          
+          const content = document.createElement('span');
+          content.innerHTML = `<strong>${keyword.text}</strong> - ${keyword.volume} searches/mo <span style="color: ${keyword.growth.startsWith('+') ? 'var(--matrix-success)' : 'var(--matrix-error)'};">${keyword.growth}</span>`;
+          
+          line.appendChild(rank);
+          line.appendChild(content);
+          
+          keywordsTerminal.appendChild(line);
+        });
+        
+        // If no keywords
+        if (state.keywords.length === 0) {
+          const line = document.createElement('div');
+          line.className = 'terminal-line';
+          
+          const prompt = document.createElement('span');
+          prompt.className = 'terminal-prompt';
+          prompt.textContent = '';
+          
+          const content = document.createElement('span');
+          content.textContent = 'No active keywords. Add keywords in the keywords manager.';
+          
+          line.appendChild(prompt);
+          line.appendChild(content);
+          
+          keywordsTerminal.appendChild(line);
+        }
+        
+        // Log update
+        addLogEntry('Active keywords updated');
+      }
+
+      // Update generator jobs list
+      function updateGeneratorJobsList() {
+        const activeJobsCount = state.generatorJobs.filter(job => 
+          job.status === 'running' || job.status === 'pending'
+        ).length;
+        
+        // Update counter
+        document.getElementById('activeJobsCount').textContent = activeJobsCount;
+        
+        // Show/hide no jobs message
+        if (state.generatorJobs.length === 0) {
+          generatorJobsList.innerHTML = '';
+          noJobs.style.display = 'block';
+          return;
+        }
+        
+        noJobs.style.display = 'none';
+        
+        // Sort jobs by start time (newest first)
+        const sortedJobs = [...state.generatorJobs].sort((a, b) => b.startTime - a.startTime);
+        
+        // Build HTML
+        let html = '';
+        
+        sortedJobs.forEach(job => {
+          // Format estimated time
+          const estimatedTime = job.status === 'completed' 
+            ? 'Completed' 
+            : `Est. completion: ${new Date(job.estimatedEndTime).toLocaleTimeString()}`;
+            
+          // Determine badge color based on status
+          let statusClass = '';
+          switch (job.status) {
+            case 'running':
+              statusClass = 'status-success';
+              break;
+            case 'paused':
+              statusClass = 'status-warning';
+              break;
+            case 'pending':
+              statusClass = 'status-warning';
+              break;
+            case 'completed':
+              statusClass = 'status-success';
+              break;
+            case 'failed':
+              statusClass = 'status-error';
+              break;
+          }
+          
+          html += `
+            <div class="generator-job" data-id="${job.id}">
+              <div class="generator-job-header">
+                <div class="generator-job-title">${job.name}</div>
+                <div class="generator-job-status">
+                  <span class="status ${statusClass}">${job.status.toUpperCase()}</span>
+                </div>
+              </div>
+              <div class="generator-job-progress">
+                <div class="progress-bar">
+                  <div class="progress-bar-fill" style="width: ${job.progress}%"></div>
+                </div>
+                <div class="d-flex justify-between">
+                  <span>${job.progress}% complete</span>
+                  <span>${job.scriptsGenerated} / ${job.scriptCount} scripts</span>
+                </div>
+              </div>
+              <div class="generator-job-details">
+                <div><strong>Mode:</strong> ${job.manualMode ? 'Manual' : 'Auto'}</div>
+                <div><strong>Keywords:</strong> ${job.keywords.length > 50 ? job.keywords.substring(0, 50) + '...' : job.keywords}</div>
+                <div><strong>Started:</strong> ${new Date(job.startTime).toLocaleString()}</div>
+                <div><strong>Time Estimate:</strong> ${estimatedTime}</div>
+              </div>
+              <div class="generator-job-actions">
+                ${job.status !== 'completed' ? `
+                  <button class="btn toggle-job-btn" data-id="${job.id}" ${job.status === 'pending' ? 'disabled' : ''}>
+                    <i class="fas fa-${job.status === 'running' ? 'pause' : 'play'}"></i> ${job.status === 'running' ? 'Pause' : 'Resume'}
+                  </button>
+                  <button class="btn btn-danger cancel-job-btn" data-id="${job.id}">
+                    <i class="fas fa-times"></i> Cancel
+                  </button>
+                ` : `
+                  <button class="btn remove-job-btn" data-id="${job.id}">
+                    <i class="fas fa-trash"></i> Remove
+                  </button>
+                `}
+              </div>
+            </div>
+          `;
+        });
+        
+        generatorJobsList.innerHTML = html;
+        
+        // Add event listeners to job buttons
+        document.querySelectorAll('.toggle-job-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const jobId = button.getAttribute('data-id');
+            pauseJob(jobId);
+          });
+        });
+        
+        document.querySelectorAll('.cancel-job-btn, .remove-job-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const jobId = button.getAttribute('data-id');
+            cancelJob(jobId);
+          });
+        });
+      }
+
+      // Update scripts list
+      function updateScriptsList() {
+        // Apply filters
+        let filteredScripts = [...state.scripts];
+        
+        // Filter by category
+        if (state.filters.category !== 'all') {
+          filteredScripts = filteredScripts.filter(script => script.category === state.filters.category);
+        }
+        
+        // Filter by type
+        if (state.filters.type !== 'all') {
+          filteredScripts = filteredScripts.filter(script => script.type === state.filters.type);
+        }
+        
+        // Filter by search query
+        if (state.filters.search) {
+          filteredScripts = filteredScripts.filter(script => {
+            const searchTerm = state.filters.search.toLowerCase();
+            return (
+              script.title.toLowerCase().includes(searchTerm) ||
+              script.description.toLowerCase().includes(searchTerm) ||
+              script.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
+            );
+          });
+        }
+        
+        // Sort scripts
+        switch (state.filters.sort) {
+          case 'date-desc':
+            filteredScripts.sort((a, b) => b.created - a.created);
+            break;
+          case 'date-asc':
+            filteredScripts.sort((a, b) => a.created - b.created);
+            break;
+          case 'name-asc':
+            filteredScripts.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+          case 'name-desc':
+            filteredScripts.sort((a, b) => b.title.localeCompare(a.title));
+            break;
+        }
+        
+        // Update search results text
+        searchResults.textContent = `Showing ${filteredScripts.length} of ${state.scripts.length} scripts`;
+        
+        // Show/hide "no scripts" message
+        if (filteredScripts.length === 0) {
+          scriptsList.innerHTML = '';
+          noScripts.style.display = 'flex';
+        } else {
+          noScripts.style.display = 'none';
+          
+          // Build HTML for scripts
+          let html = '';
+          
+          filteredScripts.forEach(script => {
+            const date = new Date(script.created).toLocaleDateString();
+            const time = new Date(script.created).toLocaleTimeString();
+            
+            html += `
+              <div class="script-item" data-id="${script.id}">
+                <div class="script-header">
+                  <div>
+                    <div class="script-title">${script.title}</div>
+                    <div class="script-subtitle">${script.description}</div>
+                  </div>
+                  <div class="script-actions">
+                    <button class="btn view-script-btn">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="script-footer">
+                  <div class="script-meta">
+                    <span class="badge">${script.type === 'bash' ? 'Bash' : 'PowerShell'}</span>
+                    <span class="badge">${script.category}</span>
+                    <span>${date}</span>
+                  </div>
+                  <div>
+                    <span class="badge">SEO: ${script.seoScore}</span>
+                    ${script.jobId ? `<span class="badge">Job: ${script.jobId}</span>` : ''}
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          
+          scriptsList.innerHTML = html;
+          
+          // Add event listeners to view buttons
+          document.querySelectorAll('.view-script-btn').forEach(button => {
+            button.addEventListener('click', () => {
+              const scriptId = button.closest('.script-item').getAttribute('data-id');
+              viewScript(scriptId);
+            });
+          });
+        }
+        
+        // Update scripts count
+        scriptsCount.textContent = state.scripts.length;
+      }
+
+      // Add a new category
+      function addNewCategory() {
+        const name = document.getElementById('newCategoryName').value.trim();
+        const description = document.getElementById('newCategoryDesc').value.trim();
+        const keywords = document.getElementById('newCategoryKeywords').value.trim();
+        
+        if (!name) {
+          showNotification('Please enter a category name', 'warning');
+          return;
+        }
+        
+        const id = name.toLowerCase().replace(/\s+/g, '-');
+        
+        // Check if category already exists
+        if (state.categories.some(c => c.id === id)) {
+          showNotification('Category already exists', 'warning');
+          return;
+        }
+        
+        // Add new category
+        state.categories.push({
+          id: id,
+          name: name,
+          description: description,
+          keywords: keywords.split(',').map(k => k.trim()),
+          count: 0,
+          enabled: true
+        });
+        
+        // Update UI
+        updateCategoriesList();
+        
+        // Add category to pills
+        const pillsContainer = document.getElementById('categoryPills');
+        const newPill = document.createElement('div');
+        newPill.className = 'category-pill';
+        newPill.setAttribute('data-category', id);
+        newPill.textContent = name;
+        newPill.addEventListener('click', () => {
+          document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+          newPill.classList.add('active');
+          state.filters.category = id;
           updateScriptsList();
-          updateCategoriesList();
-          updateStatusPanel();
+        });
+        pillsContainer.appendChild(newPill);
+        
+        // Close modal and reset form
+        addCategoryModal.classList.remove('show');
+        document.getElementById('newCategoryName').value = '';
+        document.getElementById('newCategoryDesc').value = '';
+        document.getElementById('newCategoryKeywords').value = '';
+        
+        // Log and notify
+        addLogEntry(`Added new category: ${name}`);
+        showNotification(`Category "${name}" added successfully`, 'success');
+      }
+
+      // Update categories list
+      function updateCategoriesList() {
+        let html = '';
+        
+        state.categories.forEach(category => {
+          html += `
+            <div class="list-item">
+              <span class="list-item-title">${category.name}</span>
+              <div class="d-flex align-center">
+                <span class="badge">${category.count}</span>
+                <div class="toggle-switch ml-2">
+                  <input type="checkbox" id="category-${category.id}" ${category.enabled ? 'checked' : ''}>
+                  <span class="toggle-slider"></span>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        
+        categoriesList.innerHTML = html;
+        
+        // Add event listeners to category toggles
+        state.categories.forEach(category => {
+          const toggle = document.getElementById(`category-${category.id}`);
+          if (toggle) {
+            toggle.addEventListener('change', () => {
+              const index = state.categories.findIndex(c => c.id === category.id);
+              if (index !== -1) {
+                state.categories[index].enabled = toggle.checked;
+                addLogEntry(`Category "${category.name}" ${toggle.checked ? 'enabled' : 'disabled'}`);
+              }
+            });
+          }
+        });
+      }
+
+      // View script details
+      function viewScript(scriptId) {
+        const script = state.scripts.find(s => s.id === scriptId);
+        if (!script) return;
+        
+        // Save active script ID
+        state.activeScriptId = scriptId;
+        
+        // Update modal content
+        viewScriptTitle.textContent = script.title;
+        viewScriptType.textContent = script.type === 'bash' ? 'Bash' : 'PowerShell';
+        viewScriptCategory.textContent = script.category;
+        viewScriptDate.textContent = new Date(script.created).toLocaleString();
+        
+        // Keywords
+        viewScriptKeywords.innerHTML = '';
+        script.keywords.forEach(keyword => {
+          const span = document.createElement('span');
+          span.className = 'badge';
+          span.textContent = keyword;
+          viewScriptKeywords.appendChild(span);
+        });
+        
+        // Code
+        viewScriptCode.textContent = script.code;
+        
+        // Show modal
+        viewScriptModal.classList.add('show');
+      }
+
+      // Copy script to clipboard
+      function copyScriptToClipboard() {
+        const script = state.scripts.find(s => s.id === state.activeScriptId);
+        if (!script) return;
+        
+        navigator.clipboard.writeText(script.code)
+          .then(() => {
+            showNotification('Script copied to clipboard', 'success');
+          })
+          .catch(err => {
+            console.error('Failed to copy script:', err);
+            showNotification('Failed to copy script', 'error');
+          });
+      }
+
+      // Download script
+      function downloadScript() {
+        const script = state.scripts.find(s => s.id === state.activeScriptId);
+        if (!script) return;
+        
+        const extension = script.type === 'bash' ? '.sh' : '.ps1';
+        const filename = script.title.toLowerCase().replace(/\s+/g, '-') + extension;
+        const blob = new Blob([script.code], { type: 'text/plain' });
+        
+        // Create a download link
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+        
+        addLogEntry(`Script "${script.title}" downloaded as ${filename}`);
+        showNotification(`Script downloaded as ${filename}`, 'success');
+      }
+
+      // Save script edit
+      function saveScriptEdit() {
+        const scriptId = state.activeScriptId;
+        const script = state.scripts.find(s => s.id === scriptId);
+        if (!script) return;
+        
+        // Update script properties
+        script.title = editScriptTitle.value;
+        script.category = editScriptCategory.value;
+        script.keywords = editScriptKeywords.value.split(',').map(k => k.trim()).filter(k => k);
+        script.code = editScriptCode.value;
+        
+        // Update UI
+        updateScriptsList();
+        
+        // Close modal
+        editScriptModal.classList.remove('show');
+        
+        // Log and notify
+        addLogEntry(`Script "${script.title}" updated`);
+        showNotification('Script updated successfully', 'success');
+      }
+
+      // Export scripts
+      function exportScripts() {
+        // In a real application, this would send a request to the server to export scripts
+        const format = document.querySelector('input[name="exportFormat"]:checked').value;
+        const categories = Array.from(document.querySelectorAll('#exportCategories input:checked')).map(input => input.value);
+        const includeBash = document.getElementById('exportBash').checked;
+        const includePowershell = document.getElementById('exportPowershell').checked;
+        const exportPath = document.getElementById('exportPath').value.trim();
+        
+        // Validate inputs
+        if (categories.length === 0) {
+          showNotification('Please select at least one category', 'warning');
+          return;
+        }
+        
+        if (!includeBash && !includePowershell) {
+          showNotification('Please select at least one script type', 'warning');
+          return;
+        }
+        
+        // Simulate export
+        addLogEntry(`Exporting scripts: format=${format}, categories=${categories.join(',')}, types=${includeBash ? 'bash' : ''}${includeBash && includePowershell ? ',' : ''}${includePowershell ? 'powershell' : ''}`);
+        
+        // Show loading notification
+        showNotification('Exporting scripts...', 'info');
+        
+        setTimeout(() => {
+          // Close modal
+          exportModal.classList.remove('show');
           
-          // Hide loading indicator
-          loadingScripts.style.display = 'none';
-          
-          // Show notification
-          showNotification(`Generated ${count} new scripts`, 'success');
+          // Success message
+          showNotification(`Scripts exported successfully to ${exportPath || 'default location'}`, 'success');
+          addLogEntry(`Scripts exported successfully to ${exportPath || 'default location'}`);
         }, 2000);
       }
 
-      // Generate sample code (for demonstration)
+      // Show notification
+      function showNotification(message, type = 'info') {
+        const notificationElem = document.getElementById('notification');
+        const messageElem = notificationElem.querySelector('.notification-message');
+        const iconElem = notificationElem.querySelector('.notification-icon i');
+        
+        // Set message
+        messageElem.textContent = message;
+        
+        // Set type
+        notificationElem.className = 'notification';
+        notificationElem.classList.add(`notification-${type}`);
+        
+        // Set icon
+        iconElem.className = '';
+        switch (type) {
+          case 'success':
+            iconElem.className = 'fas fa-check-circle';
+            break;
+          case 'error':
+            iconElem.className = 'fas fa-exclamation-circle';
+            break;
+          case 'warning':
+            iconElem.className = 'fas fa-exclamation-triangle';
+            break;
+          default:
+            iconElem.className = 'fas fa-info-circle';
+        }
+        
+        // Show notification
+        notificationElem.classList.add('show');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          notificationElem.classList.remove('show');
+        }, 5000);
+      }
+
+      // Add log entry
+      function addLogEntry(message, type = 'info') {
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        
+        const prompt = document.createElement('span');
+        prompt.className = 'terminal-prompt';
+        
+        const time = new Date().toLocaleTimeString();
+        
+        switch (type) {
+          case 'success':
+            prompt.textContent = '+';
+            prompt.style.color = 'var(--matrix-success)';
+            break;
+          case 'error':
+            prompt.textContent = '!';
+            prompt.style.color = 'var(--matrix-error)';
+            break;
+          case 'warning':
+            prompt.textContent = '?';
+            prompt.style.color = 'var(--matrix-warning)';
+            break;
+          default:
+            prompt.textContent = '>';
+        }
+        
+        const content = document.createElement('span');
+        content.innerHTML = `[${time}] ${message}`;
+        
+        if (type === 'error') {
+          content.style.color = 'var(--matrix-error)';
+        } else if (type === 'warning') {
+          content.style.color = 'var(--matrix-warning)';
+        } else if (type === 'success') {
+          content.style.color = 'var(--matrix-success)';
+        }
+        
+        line.appendChild(prompt);
+        line.appendChild(content);
+        
+        logTerminal.appendChild(line);
+        logTerminal.scrollTop = logTerminal.scrollHeight;
+      }
+
+      // Update status panel
+      function updateStatusPanel() {
+        // Update service status
+        if (state.isRunning) {
+          if (state.isPaused) {
+            serviceStatus.textContent = 'Paused';
+            serviceStatus.className = 'status status-warning';
+          } else {
+            serviceStatus.textContent = 'Running';
+            serviceStatus.className = 'status status-success';
+          }
+        } else {
+          serviceStatus.textContent = 'Stopped';
+          serviceStatus.className = 'status status-error';
+        }
+        
+        // Update API status
+        if (state.settings.apiKey) {
+          apiStatus.textContent = 'Connected';
+          apiStatus.className = 'status status-success';
+        } else {
+          apiStatus.textContent = 'No API Key';
+          apiStatus.className = 'status status-error';
+        }
+        
+        // Update scripts count
+        scriptsCount.textContent = state.scripts.length;
+        
+        // Update queue count (active jobs)
+        activeJobsCount.textContent = state.generatorJobs.filter(job => 
+          job.status === 'running' || job.status === 'pending'
+        ).length;
+        
+        // Update API usage
+        apiUsage.style.width = `${state.apiUsage}%`;
+        apiUsageText.textContent = `${state.apiUsage}%`;
+        
+        // Update last update time
+        if (state.scripts.length > 0) {
+          const lastScriptTime = new Date(Math.max(...state.scripts.map(s => s.created))).toLocaleTimeString();
+          lastUpdate.textContent = lastScriptTime;
+        } else {
+          lastUpdate.textContent = 'Never';
+        }
+      }
+
+      // Refresh scripts list
+      function refreshScripts() {
+        // In a real application, this would fetch scripts from the server
+        addLogEntry('Refreshing scripts list...');
+        loadingScripts.style.display = 'flex';
+        
+        setTimeout(() => {
+          updateScriptsList();
+          loadingScripts.style.display = 'none';
+          addLogEntry('Scripts list refreshed');
+          showNotification('Scripts list refreshed', 'success');
+        }, 1000);
+      }
+
+      // Clear the log terminal
+      function clearLog() {
+        logTerminal.innerHTML = '';
+        addLogEntry('Log cleared');
+      }
+
+      // Toggle theme
+      function toggleTheme() {
+        const root = document.documentElement;
+        const currentBg = getComputedStyle(root).getPropertyValue('--matrix-bg').trim();
+        
+        if (currentBg === '#0c0c0c') {
+          // Switch to light mode
+          root.style.setProperty('--matrix-bg', '#f5f5f5');
+          root.style.setProperty('--matrix-text', '#007c21');
+          root.style.setProperty('--matrix-glow', 'rgba(0, 255, 65, 0)');
+          root.style.setProperty('--matrix-dim', '#e0f5e0');
+          root.style.setProperty('--matrix-panel', '#ffffff');
+          root.style.setProperty('--matrix-border', '#cccccc');
+          root.style.setProperty('--matrix-secondary', '#ebfff1');
+          document.getElementById('digitalRain').style.opacity = '0.1';
+          modeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+          addLogEntry('Switched to light theme');
+        } else {
+          // Switch to matrix mode
+          root.style.setProperty('--matrix-bg', '#0c0c0c');
+          root.style.setProperty('--matrix-text', '#00ff41');
+          root.style.setProperty('--matrix-glow', 'rgba(0, 255, 65, 0.3)');
+          root.style.setProperty('--matrix-dim', '#0f3d0f');
+          root.style.setProperty('--matrix-panel', '#0f0f0f');
+          root.style.setProperty('--matrix-border', '#143214');
+          root.style.setProperty('--matrix-secondary', '#072707');
+          document.getElementById('digitalRain').style.opacity = '0.3';
+          modeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          addLogEntry('Switched to dark theme');
+        }
+      }
+
+      // Generate sample code for demonstration
       function generateSampleCode(type, keyword, category) {
         const now = new Date().toLocaleDateString();
         
@@ -2521,541 +3686,9 @@ Write-Host "${keyword} script completed successfully!" -ForegroundColor Green`;
         }
       }
 
-      // Refresh scripts list
-      function refreshScripts() {
-        // In a real application, this would fetch scripts from the server
-        addLogEntry('Refreshing scripts list...');
-        loadingScripts.style.display = 'flex';
-        
-        setTimeout(() => {
-          updateScriptsList();
-          loadingScripts.style.display = 'none';
-          addLogEntry('Scripts list refreshed');
-          showNotification('Scripts list refreshed', 'success');
-        }, 1000);
-      }
-
-      // Clear the log terminal
-      function clearLog() {
-        logTerminal.innerHTML = '';
-        addLogEntry('Log cleared');
-      }
-
-      // Add a new category
-      function addNewCategory() {
-        const name = document.getElementById('newCategoryName').value.trim();
-        const description = document.getElementById('newCategoryDesc').value.trim();
-        const keywords = document.getElementById('newCategoryKeywords').value.trim();
-        
-        if (!name) {
-          showNotification('Please enter a category name', 'warning');
-          return;
-        }
-        
-        const id = name.toLowerCase().replace(/\s+/g, '-');
-        
-        // Check if category already exists
-        if (state.categories.some(c => c.id === id)) {
-          showNotification('Category already exists', 'warning');
-          return;
-        }
-        
-        // Add new category
-        state.categories.push({
-          id: id,
-          name: name,
-          description: description,
-          keywords: keywords.split(',').map(k => k.trim()),
-          count: 0,
-          enabled: true
-        });
-        
-        // Update UI
-        updateCategoriesList();
-        
-        // Add category to pills
-        const pillsContainer = document.getElementById('categoryPills');
-        const newPill = document.createElement('div');
-        newPill.className = 'category-pill';
-        newPill.setAttribute('data-category', id);
-        newPill.textContent = name;
-        newPill.addEventListener('click', () => {
-          document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-          newPill.classList.add('active');
-          state.filters.category = id;
-          updateScriptsList();
-        });
-        pillsContainer.appendChild(newPill);
-        
-        // Close modal and reset form
-        addCategoryModal.classList.remove('show');
-        document.getElementById('newCategoryName').value = '';
-        document.getElementById('newCategoryDesc').value = '';
-        document.getElementById('newCategoryKeywords').value = '';
-        
-        // Log and notify
-        addLogEntry(`Added new category: ${name}`);
-        showNotification(`Category "${name}" added successfully`, 'success');
-      }
-
-      // Export scripts
-      function exportScripts() {
-        // In a real application, this would send a request to the server to export scripts
-        const format = document.querySelector('input[name="exportFormat"]:checked').value;
-        const categories = Array.from(document.querySelectorAll('#exportCategories input:checked')).map(input => input.value);
-        const includeBash = document.getElementById('exportBash').checked;
-        const includePowershell = document.getElementById('exportPowershell').checked;
-        const exportPath = document.getElementById('exportPath').value.trim();
-        
-        // Validate inputs
-        if (categories.length === 0) {
-          showNotification('Please select at least one category', 'warning');
-          return;
-        }
-        
-        if (!includeBash && !includePowershell) {
-          showNotification('Please select at least one script type', 'warning');
-          return;
-        }
-        
-        // Simulate export
-        addLogEntry(`Exporting scripts: format=${format}, categories=${categories.join(',')}, types=${includeBash ? 'bash' : ''}${includeBash && includePowershell ? ',' : ''}${includePowershell ? 'powershell' : ''}`);
-        
-        // Show loading notification
-        showNotification('Exporting scripts...', 'info');
-        
-        setTimeout(() => {
-          // Close modal
-          exportModal.classList.remove('show');
-          
-          // Success message
-          showNotification(`Scripts exported successfully to ${exportPath || 'default location'}`, 'success');
-          addLogEntry(`Scripts exported successfully to ${exportPath || 'default location'}`);
-        }, 2000);
-      }
-
-      // Copy script to clipboard
-      function copyScriptToClipboard() {
-        const script = state.scripts.find(s => s.id === state.activeScriptId);
-        if (!script) return;
-        
-        navigator.clipboard.writeText(script.code)
-          .then(() => {
-            showNotification('Script copied to clipboard', 'success');
-          })
-          .catch(err => {
-            console.error('Failed to copy script:', err);
-            showNotification('Failed to copy script', 'error');
-          });
-      }
-
-      // Download script
-      function downloadScript() {
-        const script = state.scripts.find(s => s.id === state.activeScriptId);
-        if (!script) return;
-        
-        const extension = script.type === 'bash' ? '.sh' : '.ps1';
-        const filename = script.title.toLowerCase().replace(/\s+/g, '-') + extension;
-        const blob = new Blob([script.code], { type: 'text/plain' });
-        
-        // Create a download link
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        
-        // Clean up
-        setTimeout(() => {
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        }, 100);
-        
-        addLogEntry(`Script "${script.title}" downloaded as ${filename}`);
-        showNotification(`Script downloaded as ${filename}`, 'success');
-      }
-
-      // Save script edit
-      function saveScriptEdit() {
-        const scriptId = state.activeScriptId;
-        const script = state.scripts.find(s => s.id === scriptId);
-        if (!script) return;
-        
-        // Update script properties
-        script.title = editScriptTitle.value;
-        script.category = editScriptCategory.value;
-        script.keywords = editScriptKeywords.value.split(',').map(k => k.trim()).filter(k => k);
-        script.code = editScriptCode.value;
-        
-        // Update UI
-        updateScriptsList();
-        
-        // Close modal
-        editScriptModal.classList.remove('show');
-        
-        // Log and notify
-        addLogEntry(`Script "${script.title}" updated`);
-        showNotification('Script updated successfully', 'success');
-      }
-
-      // Update scripts list
-      function updateScriptsList() {
-        // Apply filters
-        let filteredScripts = [...state.scripts];
-        
-        // Filter by category
-        if (state.filters.category !== 'all') {
-          filteredScripts = filteredScripts.filter(script => script.category === state.filters.category);
-        }
-        
-        // Filter by type
-        if (state.filters.type !== 'all') {
-          filteredScripts = filteredScripts.filter(script => script.type === state.filters.type);
-        }
-        
-        // Filter by search query
-        if (state.filters.search) {
-          filteredScripts = filteredScripts.filter(script => {
-            const searchTerm = state.filters.search.toLowerCase();
-            return (
-              script.title.toLowerCase().includes(searchTerm) ||
-              script.description.toLowerCase().includes(searchTerm) ||
-              script.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
-            );
-          });
-        }
-        
-        // Sort scripts
-        switch (state.filters.sort) {
-          case 'date-desc':
-            filteredScripts.sort((a, b) => b.created - a.created);
-            break;
-          case 'date-asc':
-            filteredScripts.sort((a, b) => a.created - b.created);
-            break;
-          case 'name-asc':
-            filteredScripts.sort((a, b) => a.title.localeCompare(b.title));
-            break;
-          case 'name-desc':
-            filteredScripts.sort((a, b) => b.title.localeCompare(a.title));
-            break;
-        }
-        
-        // Update search results text
-        searchResults.textContent = `Showing ${filteredScripts.length} of ${state.scripts.length} scripts`;
-        
-        // Show/hide "no scripts" message
-        if (filteredScripts.length === 0) {
-          scriptsList.innerHTML = '';
-          noScripts.style.display = 'flex';
-        } else {
-          noScripts.style.display = 'none';
-          
-          // Build HTML for scripts
-          let html = '';
-          
-          filteredScripts.forEach(script => {
-            const date = new Date(script.created).toLocaleDateString();
-            const time = new Date(script.created).toLocaleTimeString();
-            
-            html += `
-              <div class="script-item" data-id="${script.id}">
-                <div class="script-header">
-                  <div>
-                    <div class="script-title">${script.title}</div>
-                    <div class="script-subtitle">${script.description}</div>
-                  </div>
-                  <div class="script-actions">
-                    <button class="btn view-script-btn">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="script-footer">
-                  <div class="script-meta">
-                    <span class="badge">${script.type === 'bash' ? 'Bash' : 'PowerShell'}</span>
-                    <span class="badge">${script.category}</span>
-                    <span>${date}</span>
-                  </div>
-                  <div>
-                    <span class="badge">SEO: ${script.seoScore}</span>
-                  </div>
-                </div>
-              </div>
-            `;
-          });
-          
-          scriptsList.innerHTML = html;
-          
-          // Add event listeners to view buttons
-          document.querySelectorAll('.view-script-btn').forEach(button => {
-            button.addEventListener('click', () => {
-              const scriptId = button.closest('.script-item').getAttribute('data-id');
-              viewScript(scriptId);
-            });
-          });
-        }
-        
-        // Update scripts count
-        scriptsCount.textContent = state.scripts.length;
-      }
-
-      // View script details
-      function viewScript(scriptId) {
-        const script = state.scripts.find(s => s.id === scriptId);
-        if (!script) return;
-        
-        // Save active script ID
-        state.activeScriptId = scriptId;
-        
-        // Update modal content
-        viewScriptTitle.textContent = script.title;
-        viewScriptType.textContent = script.type === 'bash' ? 'Bash' : 'PowerShell';
-        viewScriptCategory.textContent = script.category;
-        viewScriptDate.textContent = new Date(script.created).toLocaleString();
-        
-        // Keywords
-        viewScriptKeywords.innerHTML = '';
-        script.keywords.forEach(keyword => {
-          const span = document.createElement('span');
-          span.className = 'badge';
-          span.textContent = keyword;
-          viewScriptKeywords.appendChild(span);
-        });
-        
-        // Code
-        viewScriptCode.textContent = script.code;
-        
-        // Show modal
-        viewScriptModal.classList.add('show');
-      }
-
-      // Update categories list
-      function updateCategoriesList() {
-        let html = '';
-        
-        state.categories.forEach(category => {
-          html += `
-            <div class="list-item">
-              <span class="list-item-title">${category.name}</span>
-              <div class="d-flex align-center">
-                <span class="badge">${category.count}</span>
-                <div class="toggle-switch ml-2">
-                  <input type="checkbox" id="category-${category.id}" ${category.enabled ? 'checked' : ''}>
-                  <span class="toggle-slider"></span>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-        
-        categoriesList.innerHTML = html;
-        
-        // Add event listeners to category toggles
-        state.categories.forEach(category => {
-          const toggle = document.getElementById(`category-${category.id}`);
-          if (toggle) {
-            toggle.addEventListener('change', () => {
-              const index = state.categories.findIndex(c => c.id === category.id);
-              if (index !== -1) {
-                state.categories[index].enabled = toggle.checked;
-                addLogEntry(`Category "${category.name}" ${toggle.checked ? 'enabled' : 'disabled'}`);
-              }
-            });
-          }
-        });
-      }
-
-      // Update status panel
-      function updateStatusPanel() {
-        // Update service status
-        if (state.isRunning) {
-          if (state.isPaused) {
-            serviceStatus.textContent = 'Paused';
-            serviceStatus.className = 'status status-warning';
-          } else {
-            serviceStatus.textContent = 'Running';
-            serviceStatus.className = 'status status-success';
-          }
-        } else {
-          serviceStatus.textContent = 'Stopped';
-          serviceStatus.className = 'status status-error';
-        }
-        
-        // Update API status
-        if (state.settings.apiKey) {
-          apiStatus.textContent = 'Connected';
-          apiStatus.className = 'status status-success';
-        } else {
-          apiStatus.textContent = 'No API Key';
-          apiStatus.className = 'status status-error';
-        }
-        
-        // Update scripts count
-        scriptsCount.textContent = state.scripts.length;
-        
-        // Update queue count (simulated)
-        queueCount.textContent = state.isRunning && !state.isPaused ? Math.floor(Math.random() * 3) : 0;
-        
-        // Update API usage
-        apiUsage.style.width = `${state.apiUsage}%`;
-        apiUsageText.textContent = `${state.apiUsage}%`;
-        
-        // Update last update time
-        if (state.scripts.length > 0) {
-          const lastScriptTime = new Date(Math.max(...state.scripts.map(s => s.created))).toLocaleTimeString();
-          lastUpdate.textContent = lastScriptTime;
-        } else {
-          lastUpdate.textContent = 'Never';
-        }
-      }
-
-      // Update top keywords
-      function updateTopKeywords() {
-        // Clear the terminal
-        keywordsTerminal.innerHTML = '';
-        
-        // Add each keyword to the terminal
-        sampleKeywords.forEach((keyword, index) => {
-          const line = document.createElement('div');
-          line.className = 'terminal-line';
-          
-          const rank = document.createElement('span');
-          rank.className = 'terminal-prompt';
-          rank.textContent = `${index + 1}`;
-          
-          const content = document.createElement('span');
-          content.innerHTML = `<strong>${keyword.keyword}</strong> - ${keyword.volume} searches/mo <span style="color: ${keyword.growth.startsWith('+') ? 'var(--matrix-success)' : 'var(--matrix-error)'};">${keyword.growth}</span>`;
-          
-          line.appendChild(rank);
-          line.appendChild(content);
-          
-          keywordsTerminal.appendChild(line);
-        });
-        
-        // Log update
-        addLogEntry('Top keywords updated');
-      }
-
-      // Show notification
-      function showNotification(message, type = 'info') {
-        const notificationElem = document.getElementById('notification');
-        const messageElem = notificationElem.querySelector('.notification-message');
-        const iconElem = notificationElem.querySelector('.notification-icon i');
-        
-        // Set message
-        messageElem.textContent = message;
-        
-        // Set type
-        notificationElem.className = 'notification';
-        notificationElem.classList.add(`notification-${type}`);
-        
-        // Set icon
-        iconElem.className = '';
-        switch (type) {
-          case 'success':
-            iconElem.className = 'fas fa-check-circle';
-            break;
-          case 'error':
-            iconElem.className = 'fas fa-exclamation-circle';
-            break;
-          case 'warning':
-            iconElem.className = 'fas fa-exclamation-triangle';
-            break;
-          default:
-            iconElem.className = 'fas fa-info-circle';
-        }
-        
-        // Show notification
-        notificationElem.classList.add('show');
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-          notificationElem.classList.remove('show');
-        }, 5000);
-      }
-
-      // Add log entry
-      function addLogEntry(message, type = 'info') {
-        const line = document.createElement('div');
-        line.className = 'terminal-line';
-        
-        const prompt = document.createElement('span');
-        prompt.className = 'terminal-prompt';
-        
-        const time = new Date().toLocaleTimeString();
-        
-        switch (type) {
-          case 'success':
-            prompt.textContent = '+';
-            prompt.style.color = 'var(--matrix-success)';
-            break;
-          case 'error':
-            prompt.textContent = '!';
-            prompt.style.color = 'var(--matrix-error)';
-            break;
-          case 'warning':
-            prompt.textContent = '?';
-            prompt.style.color = 'var(--matrix-warning)';
-            break;
-          default:
-            prompt.textContent = '>';
-        }
-        
-        const content = document.createElement('span');
-        content.innerHTML = `[${time}] ${message}`;
-        
-        if (type === 'error') {
-          content.style.color = 'var(--matrix-error)';
-        } else if (type === 'warning') {
-          content.style.color = 'var(--matrix-warning)';
-        } else if (type === 'success') {
-          content.style.color = 'var(--matrix-success)';
-        }
-        
-        line.appendChild(prompt);
-        line.appendChild(content);
-        
-        logTerminal.appendChild(line);
-        logTerminal.scrollTop = logTerminal.scrollHeight;
-      }
-
-      // Toggle theme
-      function toggleTheme() {
-        const root = document.documentElement;
-        const currentBg = getComputedStyle(root).getPropertyValue('--matrix-bg').trim();
-        
-        if (currentBg === '#0c0c0c') {
-          // Switch to light mode
-          root.style.setProperty('--matrix-bg', '#f5f5f5');
-          root.style.setProperty('--matrix-text', '#007c21');
-          root.style.setProperty('--matrix-glow', 'rgba(0, 255, 65, 0)');
-          root.style.setProperty('--matrix-dim', '#e0f5e0');
-          root.style.setProperty('--matrix-panel', '#ffffff');
-          root.style.setProperty('--matrix-border', '#cccccc');
-          root.style.setProperty('--matrix-secondary', '#ebfff1');
-          document.getElementById('digitalRain').style.opacity = '0.1';
-          modeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-          addLogEntry('Switched to light theme');
-        } else {
-          // Switch to matrix mode
-          root.style.setProperty('--matrix-bg', '#0c0c0c');
-          root.style.setProperty('--matrix-text', '#00ff41');
-          root.style.setProperty('--matrix-glow', 'rgba(0, 255, 65, 0.3)');
-          root.style.setProperty('--matrix-dim', '#0f3d0f');
-          root.style.setProperty('--matrix-panel', '#0f0f0f');
-          root.style.setProperty('--matrix-border', '#143214');
-          root.style.setProperty('--matrix-secondary', '#072707');
-          document.getElementById('digitalRain').style.opacity = '0.3';
-          modeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-          addLogEntry('Switched to dark theme');
-        }
-      }
-
       // Initialize the application
       init();
     })();
   </script>
-</body>
+  </body>
 </html>
