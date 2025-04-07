@@ -1295,14 +1295,14 @@
                 <a href="#components" class="m-btn m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px;">EXPLORE COMPONENTS</a>
             </div>
             
-            <!-- Version badge -->
+            <!-- Update Hero Scroll Indicator HTML -->
             <div style="margin-top: 3rem; opacity: 0.8; font-size: 0.9rem;">
                 <span class="m-badge" style="padding: 0.3rem 0.8rem; font-size: 0.9rem; letter-spacing: 1px;">VERSION 2.0</span>
             </div>
             
             <!-- Scroll indicator -->
             <div style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer;">
-                <a href="#features" style="display: block; text-align: center; text-decoration: none;">
+                <a href="#features" class="scroll-indicator">
                     <span style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">Scroll Down</span>
                     <span style="display: block; transform: rotate(45deg); width: 15px; height: 15px; border-right: 2px solid var(--m-text); border-bottom: 2px solid var(--m-text); margin: 0 auto;"></span>
                 </a>
@@ -5438,5 +5438,766 @@ domReady(function() {
             to { opacity: 0; }
         }
     </style>
+    <!-- Add this in the head section of index.html -->
+<!-- Add this in the head section of index.html -->
+<style>
+    /* ===== NAVBAR-SIDEBAR INTEGRATION FIXES ===== */
+    
+    /* Set proper variables */
+    :root {
+      --navbar-height: 70px;
+      --sidebar-width: 280px;
+      --sidebar-transition-speed: 0.3s;
+      --matrix-glitch-color1: #ff0080;
+      --matrix-glitch-color2: #00ff97;
+    }
+    
+    /* Fix sticky sidebar positioning when scrolling */
+    .docs-sidebar {
+      position: sticky;
+      top: var(--navbar-height);
+      height: calc(100vh - var(--navbar-height));
+      transition: transform var(--sidebar-transition-speed) ease, 
+                  opacity var(--sidebar-transition-speed) ease,
+                  top var(--sidebar-transition-speed) ease;
+      padding-top: 1rem;
+      z-index: 900;
+    }
+    
+    /* Add highlight to active section in sidebar */
+    .docs-sidebar-link.active {
+      color: var(--m-text-bright);
+      background-color: rgba(0, 255, 65, 0.05);
+      padding-left: 0.5rem;
+      position: relative;
+    }
+    
+    .docs-sidebar-link.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background-color: var(--m-text);
+      box-shadow: 0 0 10px var(--m-glow);
+    }
+    
+    /* Fix the matrix nav */
+    .matrix-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--navbar-height);
+      z-index: 1000;
+      transition: height 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    
+    .matrix-nav.scrolled {
+      height: var(--navbar-height);
+      background-color: rgba(0, 10, 2, 0.95);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+    }
+    
+    /* Adjust main content positioning */
+    .docs-content {
+      padding-top: 1rem;
+    }
+    
+    /* Smooth integration between navbar and sidebar */
+    .matrix-nav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        var(--m-text) 20%, 
+        var(--m-text-bright) 50%, 
+        var(--m-text) 80%,
+        transparent 100%
+      );
+      opacity: 0.6;
+      z-index: 2;
+    }
+    
+    /* For mobile view */
+    @media (max-width: 992px) {
+      .docs-sidebar {
+        position: fixed;
+        top: var(--navbar-height);
+        left: -300px;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+      }
+      
+      .docs-sidebar.active {
+        left: 0;
+      }
+    }
+    
+    /* ===== SCROLL DOWN INDICATOR FIXES ===== */
+    
+    /* Improve hero scroll indicator */
+    .hero .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      z-index: 5;
+      animation: pulse-glow 2s infinite;
+    }
+    
+    /* Better scroll arrow animation */
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-15px) translateX(-50%); }
+      60% { transform: translateY(-10px) translateX(-50%); }
+    }
+    
+    /* Pulse glow effect for scroll indicator */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.7; text-shadow: 0 0 5px var(--m-glow); }
+      50% { opacity: 1; text-shadow: 0 0 15px var(--m-glow), 0 0 20px var(--m-glow); }
+    }
+    
+    /* ===== ENHANCED TERMINAL TYPING EFFECT FOR SECTION NAME ===== */
+    
+    /* Center Stage Terminal Display */
+    .matrix-terminal-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      max-width: 500px;
+      min-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      font-family: var(--m-font-main);
+      padding: 0 10px;
+      border-radius: 3px;
+      background-color: rgba(0, 10, 0, 0.7);
+      border: 1px solid var(--m-border);
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    
+    .matrix-nav.scrolled .matrix-terminal-display {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+    
+    /* Terminal prefix */
+    .terminal-prefix {
+      color: var(--m-text-dim);
+      margin-right: 8px;
+      display: inline-block;
+      font-size: 1rem;
+    }
+    
+    /* Terminal text box */
+    .terminal-text-box {
+      position: relative;
+      display: inline-block;
+      color: var(--m-text-bright);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    /* Terminal cursor */
+    .terminal-cursor {
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 1.2em;
+      background-color: var(--m-text);
+      animation: cursor-blink 1s step-end infinite;
+    }
+    
+    /* Matrix glitch effect for the terminal */
+    .terminal-text-box.glitch {
+      animation: terminal-glitch 0.3s ease-in-out;
+    }
+    
+    .terminal-text-box.glitch::before,
+    .terminal-text-box.glitch::after {
+      content: attr(data-content);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+    }
+    
+    .terminal-text-box.glitch::before {
+      color: var(--matrix-glitch-color1);
+      clip: rect(44px, 450px, 56px, 0);
+      left: 3px;
+      text-shadow: -2px 0 var(--matrix-glitch-color1);
+      animation: glitch-anim-1 0.3s linear alternate-reverse;
+    }
+    
+    .terminal-text-box.glitch::after {
+      color: var(--matrix-glitch-color2);
+      clip: rect(44px, 450px, 56px, 0);
+      left: -3px;
+      text-shadow: 2px 0 var(--matrix-glitch-color2);
+      animation: glitch-anim-2 0.3s linear alternate-reverse;
+    }
+    
+    @keyframes glitch-anim-1 {
+      0% { clip: rect(0, 0, 0, 0); }
+      10% { clip: rect(89px, 9999px, 92px, 0); }
+      20% { clip: rect(26px, 9999px, 66px, 0); }
+      30% { clip: rect(8px, 9999px, 11px, 0); }
+      40% { clip: rect(89px, 9999px, 99px, 0); }
+      50% { clip: rect(8px, 9999px, 44px, 0); }
+      60% { clip: rect(37px, 9999px, 37px, 0); }
+      70% { clip: rect(81px, 9999px, 91px, 0); }
+      80% { clip: rect(1px, 9999px, 1px, 0); }
+      90% { clip: rect(69px, 9999px, 77px, 0); }
+      100% { clip: rect(19px, 9999px, 29px, 0); }
+    }
+    
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(0, 0, 0, 0); }
+      10% { clip: rect(40px, 9999px, 47px, 0); }
+      20% { clip: rect(27px, 9999px, 31px, 0); }
+      30% { clip: rect(85px, 9999px, 89px, 0); }
+      40% { clip: rect(92px, 9999px, 98px, 0); }
+      50% { clip: rect(36px, 9999px, 42px, 0); }
+      60% { clip: rect(13px, 9999px, 16px, 0); }
+      70% { clip: rect(69px, 9999px, 72px, 0); }
+      80% { clip: rect(65px, 9999px, 66px, 0); }
+      90% { clip: rect(5px, 9999px, 11px, 0); }
+      100% { clip: rect(49px, 9999px, 58px, 0); }
+    }
+    
+    @keyframes terminal-glitch {
+      0%, 100% { transform: skew(0); }
+      25% { transform: skew(2deg); }
+      75% { transform: skew(-2deg); }
+    }
+    
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    
+    /* Type-on animation for section titles */
+    @keyframes type-on {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    /* Connection line effect */
+    .terminal-connection-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+      opacity: 0.3;
+    }
+    
+    .connection-line {
+      position: absolute;
+      height: 1px;
+      background-color: var(--m-text-dim);
+      transform-origin: left center;
+      z-index: 1;
+    }
+    
+    .connection-line.active {
+      background-color: var(--m-text);
+      box-shadow: 0 0 5px var(--m-glow);
+      animation: connection-pulse 1.5s infinite;
+    }
+    
+    @keyframes connection-pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    
+    /* Status indicator in corner */
+    .matrix-status-indicator {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      background: rgba(0, 20, 0, 0.8);
+      border: 1px solid var(--m-border);
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-family: var(--m-font-main);
+      font-size: 0.8rem;
+      color: var(--m-text);
+      letter-spacing: 1px;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .matrix-status-indicator.visible {
+      opacity: 1; 
+      transform: translateY(0);
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--m-text);
+      margin-right: 8px;
+      box-shadow: 0 0 5px var(--m-glow);
+      animation: status-pulse 1.5s infinite;
+    }
+    
+    .status-text {
+      text-transform: uppercase;
+    }
+    
+    @keyframes status-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+    
+    /* Digital rain particles (appear during section transitions) */
+    .matrix-particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--navbar-height);
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+    
+    .matrix-particle {
+      position: absolute;
+      color: var(--m-text);
+      font-family: monospace;
+      font-size: 12px;
+      animation: fall-fade 2s forwards;
+    }
+    
+    @keyframes fall-fade {
+      0% {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+    }
+    
+    /* Scanline effect for terminal-display */
+    .matrix-terminal-display::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--m-text-bright), transparent);
+      opacity: 0.7;
+      animation: scanline 3s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes scanline {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+    
+    /* Keep the original nav logo visible but separate */
+    .nav-logo {
+      position: relative;
+      z-index: 1002;
+    }
+  </style>
+  
+  <!-- Add this to your page before closing body tag -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // References to elements
+    const matrixNav = document.querySelector('.matrix-nav');
+    const mainSections = document.querySelectorAll('section[id]');
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
+    const navContainer = document.querySelector('.nav-container');
+    const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+    
+    // Create matrix terminal display
+    const terminalDisplay = document.createElement('div');
+    terminalDisplay.className = 'matrix-terminal-display';
+    terminalDisplay.innerHTML = `
+      <span class="terminal-prefix">></span>
+      <div class="terminal-text-box" data-content="MATRIX.CSS">MATRIX.CSS</div>
+      <span class="terminal-cursor"></span>
+    `;
+    
+    // Create connection lines container
+    const connectionLines = document.createElement('div');
+    connectionLines.className = 'terminal-connection-lines';
+    
+    // Create status indicator
+    const statusIndicator = document.createElement('div');
+    statusIndicator.className = 'matrix-status-indicator';
+    statusIndicator.innerHTML = `
+      <span class="status-dot"></span>
+      <span class="status-text">MATRIX.CSS</span>
+    `;
+    
+    // Create particles container
+    const particlesContainer = document.createElement('div');
+    particlesContainer.className = 'matrix-particles-container';
+    
+    // Add all elements to the DOM
+    if (navContainer) {
+      navContainer.appendChild(terminalDisplay);
+      navContainer.appendChild(connectionLines);
+      document.body.appendChild(statusIndicator);
+      document.body.appendChild(particlesContainer);
+      
+      // Add connection lines between navbar and important elements
+      createConnectionLines();
+    }
+    
+    // Terminal typing effect with glitch
+    let isTyping = false;
+    let currentSectionId = '';
+    let typeTimeout;
+    
+    function typeTerminalEffect(text, callback) {
+      if (isTyping) {
+        clearTimeout(typeTimeout);
+      }
+      
+      isTyping = true;
+      
+      const textBox = document.querySelector('.terminal-text-box');
+      if (!textBox) return;
+      
+      // Save original text for data-content (used by glitch effect)
+      textBox.setAttribute('data-content', text);
+      
+      // Clear and prepare for typing
+      textBox.textContent = '';
+      textBox.classList.add('glitch');
+      
+      // Create digital rain effect during transition
+      createMatrixRainParticles();
+      
+      setTimeout(() => {
+        textBox.classList.remove('glitch');
+        
+        // Type characters one by one
+        let i = 0;
+        function typeCharacter() {
+          if (i < text.length) {
+            textBox.textContent += text.charAt(i);
+            i++;
+            
+            // Random delay for realistic typing
+            const randomDelay = Math.floor(Math.random() * 50) + 30;
+            typeTimeout = setTimeout(typeCharacter, randomDelay);
+            
+            // Occasionally add glitch during typing
+            if (Math.random() < 0.1) {
+              textBox.classList.add('glitch');
+              setTimeout(() => {
+                textBox.classList.remove('glitch');
+              }, 100);
+            }
+          } else {
+            isTyping = false;
+            if (callback) callback();
+          }
+        }
+        
+        typeCharacter();
+      }, 300);
+    }
+    
+    // Create matrix rain particles during transitions
+    function createMatrixRainParticles() {
+      const container = document.querySelector('.matrix-particles-container');
+      if (!container) return;
+      
+      // Clear existing particles
+      container.innerHTML = '';
+      
+      // Matrix chars
+      const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+      
+      // Create 50 particles
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'matrix-particle';
+        
+        // Random character
+        particle.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 1.5}s`;
+        
+        container.appendChild(particle);
+      }
+      
+      // Remove particles after animation completes
+      setTimeout(() => {
+        container.innerHTML = '';
+      }, 3500);
+    }
+    
+    // Create connection lines between nav and content
+    function createConnectionLines() {
+      const container = document.querySelector('.terminal-connection-lines');
+      if (!container) return;
+      
+      // Clear existing lines
+      container.innerHTML = '';
+      
+      // Create 8-12 lines
+      const lineCount = 8 + Math.floor(Math.random() * 5);
+      
+      for (let i = 0; i < lineCount; i++) {
+        const line = document.createElement('div');
+        line.className = 'connection-line';
+        
+        // Random positioning
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 70 + 30;
+        const endX = 100 + Math.random() * 50;
+        
+        // Calculate line properties
+        const deltaX = endX - startX;
+        const length = Math.sqrt(deltaX * deltaX + 900);
+        const angle = Math.atan2(30, deltaX) * 180 / Math.PI;
+        
+        // Set styles
+        line.style.left = `${startX}%`;
+        line.style.top = `${startY}%`;
+        line.style.width = `${length}px`;
+        line.style.transform = `rotate(${angle}deg)`;
+        
+        // Randomly activate some lines
+        if (Math.random() > 0.6) {
+          line.classList.add('active');
+        }
+        
+        container.appendChild(line);
+      }
+    }
+    
+    // Update active section while scrolling
+    function updateActiveSection() {
+      // Get current scroll position with offset
+      const scrollPosition = window.scrollY + 100;
+      
+      // Find the current section
+      let activeSection = null;
+      mainSections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          activeSection = {
+            id: sectionId,
+            element: section
+          };
+          
+          // Update sidebar links
+          sidebarLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${sectionId}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+      
+      // Update navbar and status when entering a new section
+      if (activeSection && activeSection.id !== currentSectionId) {
+        currentSectionId = activeSection.id;
+        
+        // Get section title
+        const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
+        let sectionTitleText = sectionHeading.textContent.trim();
+        
+        // Shorten if too long
+        if (sectionTitleText.length > 20) {
+          sectionTitleText = sectionTitleText.substring(0, 18) + '...';
+        }
+        
+        // Format for terminal style
+        const terminalText = sectionTitleText.toUpperCase();
+        
+        // Type with terminal effect
+        typeTerminalEffect(terminalText, function() {
+          // Activate random connection lines after typing
+          const lines = document.querySelectorAll('.connection-line');
+          lines.forEach(line => {
+            line.classList.remove('active');
+          });
+          
+          setTimeout(() => {
+            // Activate some random lines
+            lines.forEach(line => {
+              if (Math.random() > 0.7) {
+                line.classList.add('active');
+              }
+            });
+          }, 300);
+        });
+        
+        // Update status indicator
+        const statusText = document.querySelector('.status-text');
+        if (statusText) {
+          statusText.textContent = terminalText;
+        }
+        statusIndicator.classList.add('visible');
+      }
+      
+      // Reset if back at the top
+      if (scrollPosition < 100) {
+        currentSectionId = '';
+        
+        // Type MATRIX.CSS in terminal
+        typeTerminalEffect('MATRIX.CSS');
+        
+        // Hide status indicator
+        statusIndicator.classList.remove('visible');
+      }
+      
+      // Add scrolled class to navbar
+      if (scrollPosition > 100) {
+        matrixNav.classList.add('scrolled');
+      } else {
+        matrixNav.classList.remove('scrolled');
+      }
+    }
+    
+    // Fix scroll indicator and add animation
+    if (scrollIndicator) {
+      scrollIndicator.className = 'scroll-indicator';
+      scrollIndicator.style.animation = 'bounce 2s infinite';
+    }
+    
+    // Handle sidebar links clicks
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        // Remove active class from all links
+        sidebarLinks.forEach(l => l.classList.remove('active'));
+        
+        // Add active class to clicked link
+        this.classList.add('active');
+        
+        // Get target section
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+          // Get section heading
+          const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
+          const sectionTitleText = sectionHeading.textContent.trim().toUpperCase();
+          
+          // Update terminal with typing effect
+          typeTerminalEffect(sectionTitleText);
+          
+          // Update status indicator
+          const statusText = document.querySelector('.status-text');
+          if (statusText) {
+            statusText.textContent = sectionTitleText;
+          }
+          statusIndicator.classList.add('visible');
+        }
+        
+        // Close mobile sidebar if open
+        const sidebar = document.querySelector('.docs-sidebar');
+        const backdrop = document.querySelector('.sidebar-backdrop');
+        
+        if (sidebar && sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          if (backdrop) backdrop.classList.remove('active');
+        }
+      });
+    });
+    
+    // Randomly trigger glitch effects
+    function randomGlitchEffects() {
+      const textBox = document.querySelector('.terminal-text-box');
+      if (textBox && Math.random() > 0.9) {
+        textBox.classList.add('glitch');
+        setTimeout(() => {
+          textBox.classList.remove('glitch');
+        }, 150);
+      }
+      
+      // Randomly activate connection lines
+      const lines = document.querySelectorAll('.connection-line');
+      if (lines.length > 0 && Math.random() > 0.8) {
+        // Pick a random line
+        const randomLine = lines[Math.floor(Math.random() * lines.length)];
+        randomLine.classList.add('active');
+        
+        setTimeout(() => {
+          if (Math.random() > 0.5) {
+            randomLine.classList.remove('active');
+          }
+        }, 2000);
+      }
+      
+      // Schedule next glitch
+      setTimeout(randomGlitchEffects, 2000 + Math.random() * 3000);
+    }
+    
+    // Listen for scroll events
+    window.addEventListener('scroll', updateActiveSection);
+    
+    // Initialize on page load
+    updateActiveSection();
+    randomGlitchEffects();
+    
+    // Recreate connection lines on resize
+    window.addEventListener('resize', createConnectionLines);
+    
+    // Initial animation
+    setTimeout(() => {
+      typeTerminalEffect('MATRIX.CSS');
+    }, 1000);
+  });
+  </script>
 </body>
 </html>
