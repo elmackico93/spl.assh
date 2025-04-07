@@ -492,14 +492,15 @@
         <!-- Digital Rain Canvas (direct implementation instead of using the CSS classes) -->
         <canvas id="matrixRain" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
         
-        <!-- Hero Content with glow effect -->
+        <!-- Hero Content with improved visibility for subtitle text -->
         <div style="position: relative; z-index: 2; text-align: center; padding: 0 20px; max-width: 1000px;">
             <div style="display: inline-block; position: relative; margin-bottom: 2rem;">
                 <h1 class="hero-title" style="font-size: clamp(3rem, 8vw, 8rem); font-weight: bold; letter-spacing: 6px; text-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); margin-bottom: 0.5rem; animation: pulse 3s infinite; text-transform: uppercase;">MATRIX.CSS</h1>
                 <div style="width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--m-text), transparent); margin: 10px auto 20px; animation: expand 2s ease;"></div>
             </div>
             
-            <p class="hero-subtitle" style="font-size: clamp(1rem, 2vw, 1.5rem); max-width: 800px; margin: 0 auto 3rem; line-height: 1.6; text-shadow: 0 0 10px var(--m-glow);">
+            <!-- Adding a semi-transparent background to make text more readable -->
+            <p class="hero-subtitle" style="font-size: clamp(1rem, 2vw, 1.5rem); max-width: 800px; margin: 0 auto 3rem; line-height: 1.6; text-shadow: 0 0 10px var(--m-glow); background-color: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 5px; border: 1px solid var(--m-border);">
                 Immerse your users in the digital realm with the complete Matrix-inspired design framework. Build stunning cyberpunk interfaces with minimal effort.
             </p>
             
@@ -544,60 +545,221 @@
         }
     </style>
 
-    <!-- Features Section -->
-    <section class="m-container m-py-5" id="features">
-        <h2 class="m-text-center m-mb-4">Why Choose Matrix.css?</h2>
-        
-        <div class="feature-grid">
-            <div class="m-card feature-card">
-                <div class="m-card-body">
-                    <div class="feature-icon">◉</div>
-                    <h3 class="m-card-title">Zero JavaScript</h3>
-                    <p class="m-card-text">Most components work without JavaScript. Just include the CSS file and start building.</p>
-                </div>
+    <!-- Enhanced "Why Choose Matrix.css?" Section with cyberpunk styling -->
+<section class="m-container m-py-5" id="features">
+    <h2 class="m-text-center m-mb-4 m-glow" style="font-size: 2.8rem; letter-spacing: 3px; text-transform: uppercase; position: relative;">
+        Why Choose Matrix.css?
+        <div style="width: 80%; height: 2px; background: linear-gradient(to right, transparent, var(--m-text), transparent); margin: 10px auto;"></div>
+    </h2>
+    
+    <!-- Matrix-themed Feature Grid with improved visibility -->
+    <div class="matrix-feature-grid">
+        <!-- Zero JavaScript -->
+        <div class="matrix-feature-card">
+            <div class="feature-icon">
+                <div class="feature-icon-pulse"></div>
             </div>
-            
-            <div class="m-card feature-card">
-                <div class="m-card-body">
-                    <div class="feature-icon">◉</div>
-                    <h3 class="m-card-title">Matrix Aesthetics</h3>
-                    <p class="m-card-text">Capture the essence of The Matrix with cyberpunk-inspired design elements and animations.</p>
-                </div>
-            </div>
-            
-            <div class="m-card feature-card">
-                <div class="m-card-body">
-                    <div class="feature-icon">◉</div>
-                    <h3 class="m-card-title">Lightweight</h3>
-                    <p class="m-card-text">Optimized code ensures fast loading times without sacrificing visual impact.</p>
-                </div>
-            </div>
-            
-            <div class="m-card feature-card">
-                <div class="m-card-body">
-                    <div class="feature-icon">◉</div>
-                    <h3 class="m-card-title">Responsive</h3>
-                    <p class="m-card-text">Built for modern web with full responsiveness across all device sizes.</p>
-                </div>
-            </div>
-            
-            <div class="m-card feature-card">
-                <div class="m-card-body">
-                    <div class="feature-icon">◉</div>
-                    <h3 class="m-card-title">Special Components</h3>
-                    <p class="m-card-text">Includes unique Matrix-themed components like code rain, terminals, and neural networks.</p>
-                </div>
-            </div>
-            
-            <div class="m-card feature-card">
-                <div class="m-card-body">
-                    <div class="feature-icon">◉</div>
-                    <h3 class="m-card-title">Dark/Light Modes</h3>
-                    <p class="m-card-text">Includes both classic Matrix dark mode and an optional light theme variant.</p>
-                </div>
-            </div>
+            <h3 class="feature-title">Free Your Mind</h3>
+            <p class="feature-text">Most components work without JavaScript dependency. Just include the CSS file and transcend ordinary design limitations.</p>
         </div>
-    </section>
+        
+        <!-- Matrix Aesthetics -->
+        <div class="matrix-feature-card">
+            <div class="feature-icon">
+                <div class="feature-icon-pulse"></div>
+            </div>
+            <h3 class="feature-title">Digital Enlightenment</h3>
+            <p class="feature-text">Capture the essence of The Matrix with cyberpunk-inspired design elements and animations that challenge visual perception.</p>
+        </div>
+        
+        <!-- Lightweight -->
+        <div class="matrix-feature-card">
+            <div class="feature-icon">
+                <div class="feature-icon-pulse"></div>
+            </div>
+            <h3 class="feature-title">Quantum Efficiency</h3>
+            <p class="feature-text">Optimized code ensures fast loading times without sacrificing visual impact. Performance that defies the constraints of reality.</p>
+        </div>
+        
+        <!-- Responsive -->
+        <div class="matrix-feature-card">
+            <div class="feature-icon">
+                <div class="feature-icon-pulse"></div>
+            </div>
+            <h3 class="feature-title">Omnipresent Design</h3>
+            <p class="feature-text">Built for the modern web with full responsiveness across all device dimensions. Your interface exists in all realities simultaneously.</p>
+        </div>
+        
+        <!-- Special Components -->
+        <div class="matrix-feature-card">
+            <div class="feature-icon">
+                <div class="feature-icon-pulse"></div>
+            </div>
+            <h3 class="feature-title">Neural Constructs</h3>
+            <p class="feature-text">Includes unique Matrix-themed components like code rain, terminal interfaces, and neural networks that break the boundaries of conventional UI.</p>
+        </div>
+        
+        <!-- Dark/Light Modes -->
+        <div class="matrix-feature-card">
+            <div class="feature-icon">
+                <div class="feature-icon-pulse"></div>
+            </div>
+            <h3 class="feature-title">Reality Duality</h3>
+            <p class="feature-text">Includes both classic Matrix dark mode and an optional light theme variant. Two realities coexist within one codebase.</p>
+        </div>
+    </div>
+    
+    <!-- Enhanced CTA button -->
+    <div class="m-text-center m-mt-5">
+        <a href="#getting-started" class="m-btn m-btn-primary m-btn-lg" id="matrix-cta-button">
+            INITIATE SEQUENCE
+        </a>
+    </div>
+</section>
+
+<!-- Custom CSS to ensure visibility and enhance Matrix theme -->
+<style>
+    /* Matrix-themed feature grid */
+    .matrix-feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    /* Feature card styling with Matrix theme */
+    .matrix-feature-card {
+        background-color: rgba(0, 20, 0, 0.7);
+        border: 1px solid var(--m-border);
+        border-radius: var(--m-radius);
+        padding: 2rem;
+        position: relative;
+        transition: transform 0.3s, box-shadow 0.3s;
+        overflow: hidden;
+    }
+    
+    /* Card hover effects */
+    .matrix-feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+        border-color: var(--m-text);
+    }
+    
+    /* Feature icon styling */
+    .feature-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--m-text);
+        border-radius: 50%;
+        position: relative;
+    }
+    
+    /* Pulsing dot inside icon */
+    .feature-icon-pulse {
+        width: 12px;
+        height: 12px;
+        background-color: var(--m-text);
+        border-radius: 50%;
+        position: relative;
+        animation: icon-pulse 2s infinite;
+    }
+    
+    @keyframes icon-pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); }
+        70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+    }
+    
+    /* Feature title styling */
+    .feature-title {
+        color: var(--m-text-bright);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    
+    /* Feature text styling */
+    .feature-text {
+        color: var(--m-text);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    /* Digital rain effect overlay for cards */
+    .matrix-feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                    linear-gradient(rgba(0, 255, 65, 0.05), rgba(0, 255, 65, 0.05));
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: -1;
+    }
+    
+    .matrix-feature-card:hover::before {
+        opacity: 1;
+    }
+    
+    /* Enhanced CTA button */
+    #matrix-cta-button {
+        position: relative;
+        overflow: hidden;
+        padding: 0.8rem 2.5rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border-width: 2px;
+        background-color: rgba(0, 255, 65, 0.8);
+        color: var(--m-dark);
+        transition: all 0.3s;
+    }
+    
+    #matrix-cta-button::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: rotate(30deg) translateY(100%);
+        transition: transform 0.5s;
+        pointer-events: none;
+    }
+    
+    #matrix-cta-button:hover {
+        background-color: var(--m-text-bright);
+        box-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow);
+        transform: scale(1.05);
+    }
+    
+    #matrix-cta-button:hover::after {
+        transform: rotate(30deg) translateY(-100%);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .matrix-feature-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .matrix-feature-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
     <!-- Getting Started Section -->
     <section class="m-container m-py-5" id="getting-started">
