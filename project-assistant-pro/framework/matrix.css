@@ -2448,3 +2448,128 @@ blockquote, .m-blockquote {
         width: 100%;
     }
 }
+
+ /* 1. Holographic 3D Panel */
+ .m-holo-card {
+    perspective: 800px;
+  }
+  .m-holo-inner {
+    width: 300px;
+    height: 200px;
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: 0 0 10px var(--m-glow);
+    color: var(--m-text);
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease;
+    /* Decorative grid lines overlay */
+    background-image: 
+      repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(0,255,65,0.1) 4px),
+      repeating-linear-gradient(to right, transparent, transparent 3px, rgba(0,255,65,0.1) 4px);
+  }
+  .m-holo-inner p {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+  }
+  
+  /* 2. FPS Monitor */
+  .m-fps-monitor {
+    display: inline-flex;
+    align-items: center;
+    background: var(--m-panel);
+    color: var(--m-text);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: var(--m-shadow);
+    font-family: var(--m-font-main);
+  }
+  .m-fps-value {
+    font-weight: bold;
+  }
+  .m-fps-bar-container {
+    width: 80px;
+    height: 6px;
+    background: var(--m-border);
+    border-radius: var(--m-radius);
+    margin-left: 0.5rem;
+    overflow: hidden;
+  }
+  .m-fps-bar {
+    height: 100%;
+    width: 0;
+    border-radius: var(--m-radius);
+    background: var(--m-success);
+    transition: width 0.1s ease;
+  }
+  /* FPS status colors */
+  .m-fps-value.m-fps-good { color: var(--m-success); }
+  .m-fps-value.m-fps-okay { color: var(--m-warning); }
+  .m-fps-value.m-fps-bad { color: var(--m-danger); }
+  .m-fps-bar.m-fps-good { background: var(--m-success); }
+  .m-fps-bar.m-fps-okay { background: var(--m-warning); }
+  .m-fps-bar.m-fps-bad { background: var(--m-danger); }
+  
+  /* 3. Biometric Scanner */
+  .m-scanner {
+    display: inline-block;
+    background: var(--m-panel);
+    border: 2px solid var(--m-border);
+    border-radius: var(--m-radius);
+    padding: 1rem;
+    width: 180px;
+    text-align: center;
+    position: relative;
+    font-family: var(--m-font-main);
+    /* Center the scanner section (optional) */
+    margin: 1rem 0;
+  }
+  .m-scanner:focus {
+    outline: 2px dashed var(--m-info);
+    outline-offset: 4px;
+  }
+  .m-scanner-prompt {
+    color: var(--m-text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .m-fingerprint-icon {
+    display: block;
+    width: 60%;
+    height: auto;
+    margin: 0 auto;
+    fill: currentColor;
+    color: var(--m-text-dim);
+  }
+  .m-scanner-line {
+    position: absolute;
+    top: 0;
+    left: 2px;
+    right: 2px;
+    height: 4px;
+    background: var(--m-info);
+    box-shadow: 0 0 8px var(--m-info);
+    display: none;
+  }
+  .m-scanner.scanning .m-scanner-line {
+    display: block;
+    animation: m-scan 2s linear forwards;
+  }
+  @keyframes m-scan {
+    from { top: 0%; }
+    to { top: calc(100% - 4px); }
+  }
+  .m-scanner-result {
+    display: none;
+    margin-top: 0.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+  }
+  .m-scanner-result.granted { color: var(--m-success); }
+  .m-scanner-result.denied { color: var(--m-danger); }

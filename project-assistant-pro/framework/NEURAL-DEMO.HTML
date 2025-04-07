@@ -1,0 +1,1645 @@
+<style>
+        /* Main container */
+        .matrix-neural-visualizer {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Header area */
+        .neural-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--matrix-border);
+            position: relative;
+        }
+        
+        .neural-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--matrix-green-bright);
+            animation: pulseGlow 2s infinite alternate;
+            position: relative;
+        }
+        
+        .neural-title::before {
+            content: "//";
+            color: var(--matrix-green-dim);
+            margin-right: 10px;
+        }
+        
+        .neural-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: right;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--matrix-green-dim);
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--matrix-green);
+        }
+        
+        /* Status indicator */
+        .status-indicator {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--matrix-green);
+            box-shadow: 0 0 8px var(--matrix-glow);
+            animation: pulseDot 1.5s infinite alternate;
+        }
+        
+        /* Control panel */
+        .neural-controls {
+            background-color: rgba(15, 15, 15, 0.7);
+            border: 1px solid var(--matrix-border);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            position: relative;
+            z-index: 5;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .control-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--matrix-green-dim);
+            letter-spacing: 1px;
+        }
+        
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Buttons */
+        .matrix-btn {
+            background-color: var(--matrix-green-dim);
+            color: var(--matrix-green-bright);
+            border: 1px solid var(--matrix-green);
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .matrix-btn:hover {
+            background-color: rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 10px var(--matrix-glow);
+        }
+        
+        .matrix-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .matrix-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(0, 255, 65, 0.1), transparent);
+            transform: rotate(30deg) translateY(50%);
+            transition: transform 0.3s, opacity 0.3s;
+            opacity: 0;
+        }
+        
+        .matrix-btn:hover::after {
+            transform: rotate(30deg) translateY(0);
+            opacity: 1;
+        }
+        
+        .control-btn-group {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .matrix-btn-small {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        /* Sliders */
+        .matrix-slider {
+            -webkit-appearance: none;
+            height: 2px;
+            background: var(--matrix-green-dim);
+            border-radius: 2px;
+            flex: 1;
+            outline: none;
+        }
+        
+        .matrix-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--matrix-green);
+            cursor: pointer;
+            border: 1px solid var(--matrix-green-bright);
+            box-shadow: 0 0 5px var(--matrix-glow);
+            transition: all 0.2s ease;
+        }
+        
+        .matrix-slider::-webkit-slider-thumb:hover {
+            background: var(--matrix-green-bright);
+            box-shadow: 0 0 10px var(--matrix-glow);
+            transform: scale(1.2);
+        }
+        
+        .slider-value {
+            width: 40px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        /* Toggles */
+        .matrix-toggle {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .matrix-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--matrix-panel);
+            border: 1px solid var(--matrix-border);
+            transition: 0.3s;
+            border-radius: 20px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 2px;
+            background-color: var(--matrix-green-dim);
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--matrix-green-dim);
+            border-color: var(--matrix-green);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(19px);
+            background-color: var(--matrix-green);
+            box-shadow: 0 0 5px var(--matrix-glow);
+        }
+        
+        /* Select dropdown */
+        .matrix-select {
+            background-color: var(--matrix-panel);
+            color: var(--matrix-green);
+            border: 1px solid var(--matrix-border);
+            padding: 5px 10px;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            min-width: 120px;
+        }
+        
+        .matrix-select option {
+            background-color: var(--matrix-panel);
+            color: var(--matrix-green);
+        }
+        
+        .matrix-select:focus {
+            border-color: var(--matrix-green);
+            box-shadow: 0 0 5px var(--matrix-glow);
+        }
+        
+        /* Network visualization */
+        .neural-network-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--matrix-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .network-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+        
+        .loader-text {
+            font-size: 18px;
+            color: var(--matrix-green-bright);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .matrix-loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--matrix-green);
+            border-right: 3px solid var(--matrix-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Digital rain canvas will be positioned over the network */
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        
+        /* Neural network SVG container */
+        .neural-network-svg {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Neural network canvas */
+        .neural-network-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Info panel */
+        .neural-info-panel {
+            background-color: rgba(15, 15, 15, 0.7);
+            border: 1px solid var(--matrix-border);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--matrix-border);
+            cursor: pointer;
+        }
+        
+        .info-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: var(--matrix-green);
+        }
+        
+        .info-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .info-content.expanded {
+            max-height: 500px;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .code-snippet {
+            background-color: rgba(0, 20, 0, 0.3);
+            padding: 10px;
+            border-radius: 3px;
+            border-left: 3px solid var(--matrix-green-dim);
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        
+        /* Terminal output */
+        .neural-terminal {
+            background-color: rgba(0, 10, 0, 0.8);
+            border: 1px solid var(--matrix-border);
+            border-radius: 4px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .terminal-line {
+            display: flex;
+            margin-bottom: 2px;
+        }
+        
+        .terminal-prompt {
+            color: var(--matrix-green-bright);
+            margin-right: 10px;
+        }
+        
+        .terminal-command {
+            color: var(--matrix-green);
+        }
+        
+        .terminal-output {
+            color: var(--matrix-green-dim);
+            margin-left: 20px;
+            display: block;
+        }
+        
+        /* Animations */
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 5px var(--matrix-glow); }
+            50% { text-shadow: 0 0 15px var(--matrix-glow), 0 0 20px var(--matrix-glow); }
+        }
+        
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes dataPulse {
+            0% { r: 4; opacity: 1; }
+            100% { r: 12; opacity: 0; }
+        }
+        
+        @keyframes nodeActive {
+            0% { fill: var(--matrix-green); filter: drop-shadow(0 0 5px var(--matrix-glow)); }
+            50% { fill: var(--matrix-green-bright); filter: drop-shadow(0 0 10px var(--matrix-glow)); }
+            100% { fill: var(--matrix-green); filter: drop-shadow(0 0 5px var(--matrix-glow)); }
+        }
+        
+        /* Node value tooltip */
+        .node-tooltip {
+            position: absolute;
+            background-color: var(--matrix-panel);
+            border: 1px solid var(--matrix-border);
+            color: var(--matrix-green);
+            padding: 5px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 100;
+        }
+        
+        /* Matrix glitch effect */
+        .matrix-glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(0, 255, 65, 0.05), transparent);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        /* Scanline effect */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--matrix-green), transparent);
+            opacity: 0.3;
+            z-index: 3;
+            pointer-events: none;
+            animation: scanline 3s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .neural-controls {
+                flex-direction: column;
+            }
+            
+            .control-group {
+                width: 100%;
+            }
+            
+            .neural-stats {
+                display: none;
+            }
+            
+            .neural-network-container {
+                height: 350px;
+            }
+        }
+    </style>
+    <div class="matrix-neural-visualizer">
+        <!-- Header with title and stats -->
+        <div class="neural-header">
+            <h1 class="neural-title">Neural Network Visualizer</h1>
+            <div class="neural-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Nodes</div>
+                    <div class="stat-value" id="nodeCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Connections</div>
+                    <div class="stat-value" id="connectionCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">System Status</div>
+                    <div class="stat-value" id="systemStatus">Initializing</div>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="statusText">ACTIVE</span>
+            </div>
+        </div>
+        
+        <!-- Controls panel -->
+        <div class="neural-controls">
+            <div class="control-group">
+                <div class="control-label">Network Topology</div>
+                <div class="control-row">
+                    <select id="networkPreset" class="matrix-select">
+                        <option value="default">Default (4-6-6-3)</option>
+                        <option value="simple">Simple (3-4-2)</option>
+                        <option value="complex">Complex (6-8-8-5-3)</option>
+                        <option value="deeplearning">Deep Learning (5-8-12-8-5-3)</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                    <button id="applyTopology" class="matrix-btn matrix-btn-small">Apply</button>
+                </div>
+                <div class="control-row" id="customLayersInput" style="display: none;">
+                    <input type="text" id="customLayers" placeholder="4-6-6-3" class="matrix-select" style="flex: 1;">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Connection Density</div>
+                <div class="control-row">
+                    <input type="range" id="densitySlider" class="matrix-slider" min="0.1" max="1" step="0.1" value="0.5">
+                    <div class="slider-value" id="densityValue">0.5</div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Animation Speed</div>
+                <div class="control-row">
+                    <input type="range" id="speedSlider" class="matrix-slider" min="0.1" max="3" step="0.1" value="1">
+                    <div class="slider-value" id="speedValue">1x</div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Controls</div>
+                <div class="control-row">
+                    <div class="control-btn-group">
+                        <button id="playBtn" class="matrix-btn">Play</button>
+                        <button id="resetBtn" class="matrix-btn">Reset</button>
+                        <button id="randomizeBtn" class="matrix-btn">Randomize</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Neural network visualization container -->
+        <div class="neural-network-container">
+            <!-- Loading overlay -->
+            <div id="networkLoading" class="network-loading">
+                <div class="loader-text">Initializing Neural Network</div>
+                <div class="matrix-loader"></div>
+            </div>
+            
+            <!-- Matrix rain effect -->
+            <canvas id="matrixRain" class="matrix-rain"></canvas>
+            
+            <!-- Neural network canvas -->
+            <canvas id="neuralNetworkCanvas" class="neural-network-canvas"></canvas>
+            
+            <!-- Scanline effect -->
+            <div class="scanline"></div>
+            
+            <!-- Glitch overlay -->
+            <div id="matrixGlitch" class="matrix-glitch"></div>
+            
+            <!-- Node value tooltip -->
+            <div id="nodeTooltip" class="node-tooltip"></div>
+        </div>
+        
+        <!-- Display options -->
+        <div class="neural-controls">
+            <div class="control-group">
+                <div class="control-label">Display Options</div>
+                <div class="control-row">
+                    <label class="matrix-toggle">
+                        <input type="checkbox" id="toggleValues" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Node Values</span>
+                </div>
+                <div class="control-row">
+                    <label class="matrix-toggle">
+                        <input type="checkbox" id="toggleDataFlow" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Data Flow</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Visual Effects</div>
+                <div class="control-row">
+                    <label class="matrix-toggle">
+                        <input type="checkbox" id="toggleRain" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Matrix Rain</span>
+                </div>
+                <div class="control-row">
+                    <label class="matrix-toggle">
+                        <input type="checkbox" id="toggleGlitch" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Glitch Effect</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Rain Intensity</div>
+                <div class="control-row">
+                    <input type="range" id="rainSlider" class="matrix-slider" min="0.1" max="1" step="0.1" value="0.2">
+                    <div class="slider-value" id="rainValue">0.2</div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Node Size</div>
+                <div class="control-row">
+                    <input type="range" id="nodeSizeSlider" class="matrix-slider" min="10" max="30" step="1" value="20">
+                    <div class="slider-value" id="nodeSizeValue">20</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information panel -->
+        <div class="neural-info-panel">
+            <div class="info-header" id="infoHeader">
+                <h3 class="info-title">Network Information</h3>
+                <span id="infoToggle">▼</span>
+            </div>
+            <div class="info-content" id="infoContent">
+                <p class="info-text">
+                    This Matrix-inspired Neural Network Visualizer demonstrates a feed-forward neural network with multiple layers.
+                    Each node represents a neuron, and connections show the data flow between neurons. Active nodes are highlighted
+                    with a brighter glow, simulating the activation patterns found in actual neural networks.
+                </p>
+                <p class="info-text">
+                    Neural networks are computing systems inspired by biological neural networks in animal brains.
+                    They can learn and improve over time by processing examples, making them capable of tasks like
+                    pattern recognition, classification, and prediction.
+                </p>
+                <div class="code-snippet">
+<pre>// Neural Network Structure
+{
+  layers: [4, 6, 6, 3],      // Neurons per layer
+  connectionDensity: 0.5,    // Connection density (0-1)
+  activations: [sigmoid],    // Activation functions
+  learningRate: 0.1          // For training (not shown in viz)
+}</pre>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Terminal output -->
+        <div class="neural-terminal" id="terminalOutput">
+            <div class="terminal-line">
+                <span class="terminal-prompt">$</span>
+                <span class="terminal-command">initialize_neural_network --layers=4,6,6,3</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output">Neural network initialized. Topology: [4,6,6,3]</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output">Total nodes: 19, Total connections: 0</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">$</span>
+                <span class="terminal-command">generate_connections --density=0.5</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output">Connections established. Total connections: 54</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">$</span>
+                <span class="terminal-command">start_simulation</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output">Simulation started. System status: ACTIVE</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Neural Network Visualizer Script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuration
+            let config = {
+                layers: [4, 6, 6, 3],              // Default layers
+                connectionDensity: 0.5,            // Connection density
+                animationSpeed: 1,                 // Animation speed
+                showNodeValues: true,              // Show node values
+                dataFlowVisible: true,             // Show data flow
+                rainIntensity: 0.2,                // Matrix rain intensity
+                glitchEffect: true,                // Enable glitch effect
+                nodeSize: 20                       // Node size
+            };
+            
+            // Neural network data
+            let network = {
+                nodes: [],
+                connections: [],
+                activations: [],
+                dataParticles: []
+            };
+            
+            // Animation state
+            let animationState = {
+                isRunning: true,
+                animationId: null,
+                lastTimestamp: 0,
+                glitchTimer: 0
+            };
+            
+            // UI elements
+            const neuralCanvas = document.getElementById('neuralNetworkCanvas');
+            const matrixRainCanvas = document.getElementById('matrixRain');
+            const loadingOverlay = document.getElementById('networkLoading');
+            const matrixGlitch = document.getElementById('matrixGlitch');
+            const nodeTooltip = document.getElementById('nodeTooltip');
+            
+            // Stats elements
+            const nodeCountEl = document.getElementById('nodeCount');
+            const connectionCountEl = document.getElementById('connectionCount');
+            const systemStatusEl = document.getElementById('systemStatus');
+            const statusTextEl = document.getElementById('statusText');
+            
+            // Control elements
+            const networkPresetEl = document.getElementById('networkPreset');
+            const customLayersInputEl = document.getElementById('customLayersInput');
+            const customLayersEl = document.getElementById('customLayers');
+            const applyTopologyBtn = document.getElementById('applyTopology');
+            const densitySliderEl = document.getElementById('densitySlider');
+            const densityValueEl = document.getElementById('densityValue');
+            const speedSliderEl = document.getElementById('speedSlider');
+            const speedValueEl = document.getElementById('speedValue');
+            const playBtn = document.getElementById('playBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const randomizeBtn = document.getElementById('randomizeBtn');
+            
+            // Display options
+            const toggleValuesEl = document.getElementById('toggleValues');
+            const toggleDataFlowEl = document.getElementById('toggleDataFlow');
+            const toggleRainEl = document.getElementById('toggleRain');
+            const toggleGlitchEl = document.getElementById('toggleGlitch');
+            const rainSliderEl = document.getElementById('rainSlider');
+            const rainValueEl = document.getElementById('rainValue');
+            const nodeSizeSliderEl = document.getElementById('nodeSizeSlider');
+            const nodeSizeValueEl = document.getElementById('nodeSizeValue');
+            
+            // Info panel toggle
+            const infoHeaderEl = document.getElementById('infoHeader');
+            const infoContentEl = document.getElementById('infoContent');
+            const infoToggleEl = document.getElementById('infoToggle');
+            
+            // Terminal output
+            const terminalOutputEl = document.getElementById('terminalOutput');
+            
+            // Setup canvas contexts
+            const ctx = neuralCanvas.getContext('2d');
+            const rainCtx = matrixRainCanvas.getContext('2d');
+            
+            // Resize canvases to fit container
+            function resizeCanvases() {
+                const container = document.querySelector('.neural-network-container');
+                const rect = container.getBoundingClientRect();
+                
+                neuralCanvas.width = rect.width;
+                neuralCanvas.height = rect.height;
+                
+                matrixRainCanvas.width = rect.width;
+                matrixRainCanvas.height = rect.height;
+                
+                // Redraw network with new dimensions
+                if (network.nodes.length > 0) {
+                    positionNodesInLayers();
+                }
+            }
+            
+            // Initialize the visualizer
+            function initVisualizer() {
+                // Resize canvases
+                resizeCanvases();
+                
+                // Start Matrix rain
+                initMatrixRain();
+                
+                // Create neural network
+                createNeuralNetwork(config.layers, config.connectionDensity);
+                
+                // Start animation loop
+                animationState.lastTimestamp = performance.now();
+                animationLoop();
+                
+                // Hide loading overlay after a brief delay
+                setTimeout(() => {
+                    loadingOverlay.style.opacity = 0;
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                    }, 500);
+                }, 1500);
+                
+                // Add terminal output
+                addTerminalLine('command', 'system_ready');
+                addTerminalLine('output', 'Matrix Neural Network Visualizer initialized successfully');
+                
+                // Update stats
+                updateStats();
+            }
+            
+            // Create neural network structure
+            function createNeuralNetwork(layers, density) {
+                // Clear existing network
+                network.nodes = [];
+                network.connections = [];
+                network.activations = [];
+                network.dataParticles = [];
+                
+                // Create nodes
+                let nodeId = 0;
+                for (let layer = 0; layer < layers.length; layer++) {
+                    const nodeCount = layers[layer];
+                    
+                    for (let i = 0; i < nodeCount; i++) {
+                        network.nodes.push({
+                            id: nodeId++,
+                            layer: layer,
+                            index: i,
+                            value: Math.random(),
+                            isActive: false,
+                            x: 0,
+                            y: 0,
+                            targetValue: Math.random(),
+                            activationTimer: 0
+                        });
+                    }
+                }
+                
+                // Position nodes
+                positionNodesInLayers();
+                
+                // Create connections based on density
+                createConnections(density);
+                
+                // Initialize activations
+                initializeRandomActivations();
+                
+                // Update terminal
+                addTerminalLine('command', `initialize_neural_network --layers=${layers.join(',')}`);
+                addTerminalLine('output', `Neural network initialized. Topology: [${layers.join(',')}]`);
+                addTerminalLine('output', `Total nodes: ${network.nodes.length}, Total connections: ${network.connections.length}`);
+                
+                // Update stats
+                updateStats();
+            }
+            
+            // Position nodes in their respective layers
+            function positionNodesInLayers() {
+                if (network.nodes.length === 0) return;
+                
+                const width = neuralCanvas.width;
+                const height = neuralCanvas.height;
+                const padding = 0.15; // 15% padding on sides
+                
+                const layerCount = config.layers.length;
+                const layerWidth = width * (1 - 2 * padding);
+                const layerSpacing = layerWidth / (layerCount - 1);
+                
+                // Find max nodes in any layer for vertical spacing
+                const maxNodesInLayer = Math.max(...config.layers);
+                
+                for (const node of network.nodes) {
+                    const layer = node.layer;
+                    const index = node.index;
+                    const nodesInLayer = config.layers[layer];
+                    
+                    // Calculate horizontal position based on layer
+                    node.x = padding * width + layer * layerSpacing;
+                    
+                    // Calculate vertical position within layer
+                    if (nodesInLayer === 1) {
+                        node.y = height / 2;
+                    } else {
+                        const verticalPadding = height * 0.15;
+                        const layerHeight = height - 2 * verticalPadding;
+                        const nodeSpacing = layerHeight / (nodesInLayer - 1);
+                        node.y = verticalPadding + index * nodeSpacing;
+                    }
+                }
+            }
+            
+            // Create connections between nodes
+            function createConnections(density) {
+                network.connections = [];
+                
+                for (let layerIdx = 0; layerIdx < config.layers.length - 1; layerIdx++) {
+                    const currentLayerNodes = network.nodes.filter(node => node.layer === layerIdx);
+                    const nextLayerNodes = network.nodes.filter(node => node.layer === layerIdx + 1);
+                    
+                    for (const sourceNode of currentLayerNodes) {
+                        for (const targetNode of nextLayerNodes) {
+                            // Apply density to determine if connection is created
+                            if (Math.random() < density) {
+                                network.connections.push({
+                                    source: sourceNode.id,
+                                    target: targetNode.id,
+                                    weight: Math.random() * 2 - 1, // -1 to 1
+                                    isActive: false,
+                                    pulsePosition: 0,
+                                    pulseDirection: 1,
+                                    pulseSpeed: 0.2 + Math.random() * 0.5
+                                });
+                            }
+                        }
+                    }
+                }
+                
+                // Update terminal
+                addTerminalLine('command', `generate_connections --density=${density}`);
+                addTerminalLine('output', `Connections established. Total connections: ${network.connections.length}`);
+            }
+            
+            // Initialize random activations
+            function initializeRandomActivations() {
+                // Clear existing activations
+                network.activations = [];
+                
+                // Set random values for input layer
+                const inputNodes = network.nodes.filter(node => node.layer === 0);
+                for (const node of inputNodes) {
+                    node.value = Math.random();
+                    node.targetValue = Math.random();
+                    node.isActive = Math.random() > 0.5;
+                    network.activations.push(node.id);
+                }
+                
+                // Start simulation
+                addTerminalLine('command', 'start_simulation');
+                addTerminalLine('output', 'Simulation started. System status: ACTIVE');
+                
+                // Update system status
+                updateStats();
+            }
+            
+            // Main animation loop
+            function animationLoop(timestamp) {
+                if (!animationState.lastTimestamp) {
+                    animationState.lastTimestamp = timestamp;
+                }
+                
+                const deltaTime = timestamp - animationState.lastTimestamp;
+                animationState.lastTimestamp = timestamp;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
+                
+                if (animationState.isRunning) {
+                    // Update network state
+                    updateNetwork(deltaTime);
+                    
+                    // Update data flow particles
+                    updateDataParticles(deltaTime);
+                    
+                    // Update glitch effect
+                    updateGlitchEffect(deltaTime);
+                }
+                
+                // Draw network
+                drawConnections();
+                drawNodes();
+                drawDataParticles();
+                
+                // Request next frame
+                animationState.animationId = requestAnimationFrame(animationLoop);
+            }
+            
+            // Update network state
+            function updateNetwork(deltaTime) {
+                const dt = deltaTime / 1000; // Convert to seconds
+                
+                // Update node values and activations
+                for (const node of network.nodes) {
+                    // Smoothly interpolate current value toward target value
+                    const alpha = 1.0 - Math.pow(0.1, dt * config.animationSpeed);
+                    node.value = node.value + alpha * (node.targetValue - node.value);
+                    
+                    // Handle node activation
+                    if (node.activationTimer > 0) {
+                        node.activationTimer -= dt;
+                        node.isActive = true;
+                    } else {
+                        node.isActive = false;
+                    }
+                    
+                    // Randomly update target values occasionally
+                    if (Math.random() < 0.01 * dt * config.animationSpeed) {
+                        if (node.layer === 0) {
+                            // Input layer gets random values
+                            node.targetValue = Math.random();
+                            node.activationTimer = 1.0; // Activate for 1 second
+                            
+                            // Propagate activation
+                            propagateActivation(node.id);
+                        }
+                    }
+                }
+                
+                // Update connection activity
+                for (const conn of network.connections) {
+                    // Update pulse position
+                    if (conn.isActive) {
+                        conn.pulsePosition += conn.pulseSpeed * dt * config.animationSpeed;
+                        
+                        // Reset pulse when it reaches the end
+                        if (conn.pulsePosition >= 1) {
+                            conn.pulsePosition = 0;
+                            conn.isActive = false;
+                        }
+                        
+                        // Generate data particle at certain positions
+                        if (config.dataFlowVisible && conn.pulsePosition > 0.2 && conn.pulsePosition < 0.3) {
+                            const sourceNode = network.nodes.find(n => n.id === conn.source);
+                            const targetNode = network.nodes.find(n => n.id === conn.target);
+                            
+                            if (sourceNode && targetNode) {
+                                generateDataParticle(sourceNode, targetNode, conn);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Propagate activation through the network
+            function propagateActivation(nodeId) {
+                const connections = network.connections.filter(conn => conn.source === nodeId);
+                for (const conn of connections) {
+                    conn.isActive = true;
+                    conn.pulsePosition = 0;
+                    
+                    // Schedule activation of target node
+                    setTimeout(() => {
+                        const targetNode = network.nodes.find(n => n.id === conn.target);
+                        if (targetNode) {
+                            targetNode.activationTimer = 1.0;
+                            targetNode.targetValue = Math.random();
+                            
+                            // Continue propagation
+                            propagateActivation(targetNode.id);
+                        }
+                    }, 300 / config.animationSpeed);
+                }
+            }
+            
+            // Generate data particle flowing along a connection
+            function generateDataParticle(sourceNode, targetNode, connection) {
+                if (network.dataParticles.length > 100) return; // Limit max particles
+                
+                network.dataParticles.push({
+                    x: sourceNode.x,
+                    y: sourceNode.y,
+                    targetX: targetNode.x,
+                    targetY: targetNode.y,
+                    progress: 0,
+                    speed: 0.5 + Math.random() * 1.0,
+                    size: 2 + Math.random() * 3,
+                    color: connection.weight > 0 ? 'rgba(0, 255, 65, 0.7)' : 'rgba(255, 50, 50, 0.7)'
+                });
+            }
+            
+            // Update data particles
+            function updateDataParticles(deltaTime) {
+                const dt = deltaTime / 1000; // Convert to seconds
+                
+                for (let i = network.dataParticles.length - 1; i >= 0; i--) {
+                    const particle = network.dataParticles[i];
+                    
+                    // Update particle position
+                    particle.progress += particle.speed * dt * config.animationSpeed;
+                    
+                    // Remove particle if it reached the target
+                    if (particle.progress >= 1) {
+                        network.dataParticles.splice(i, 1);
+                        
+                        // Activate target node
+                        const dx = particle.targetX - particle.x;
+                        const dy = particle.targetY - particle.y;
+                        const targetNode = network.nodes.find(n => 
+                            Math.abs(n.x - particle.targetX) < 10 && 
+                            Math.abs(n.y - particle.targetY) < 10
+                        );
+                        
+                        if (targetNode) {
+                            targetNode.activationTimer = 0.5;
+                        }
+                    }
+                }
+            }
+            
+            // Update glitch effect
+            function updateGlitchEffect(deltaTime) {
+                if (!config.glitchEffect) return;
+                
+                animationState.glitchTimer += deltaTime;
+                
+                // Randomly trigger glitch effect
+                if (Math.random() < 0.005 * config.animationSpeed) {
+                    matrixGlitch.style.opacity = 0.2 + Math.random() * 0.2;
+                    
+                    // Random position
+                    const randomY = Math.random() * 100;
+                    matrixGlitch.style.top = `${randomY}%`;
+                    
+                    // Hide after short time
+                    setTimeout(() => {
+                        matrixGlitch.style.opacity = 0;
+                    }, 100 + Math.random() * 200);
+                }
+            }
+            
+            // Draw network connections
+            function drawConnections() {
+                for (const conn of network.connections) {
+                    const source = network.nodes.find(n => n.id === conn.source);
+                    const target = network.nodes.find(n => n.id === conn.target);
+                    
+                    if (!source || !target) continue;
+                    
+                    // Draw connection line
+                    ctx.beginPath();
+                    
+                    // Determine line width based on weight
+                    const baseWidth = 1;
+                    const maxWidth = 3;
+                    const normWeight = (conn.weight + 1) / 2; // Normalize from -1,1 to 0,1
+                    const lineWidth = baseWidth + normWeight * (maxWidth - baseWidth);
+                    
+                    ctx.lineWidth = lineWidth;
+                    
+                    // Determine color based on weight
+                    let alpha = 0.2;
+                    if (conn.isActive) alpha = 0.7;
+                    
+                    if (conn.weight > 0) {
+                        // Positive weight: green
+                        ctx.strokeStyle = `rgba(0, 255, 65, ${alpha})`;
+                    } else {
+                        // Negative weight: red
+                        ctx.strokeStyle = `rgba(255, 50, 50, ${alpha})`;
+                    }
+                    
+                    // Draw line
+                    ctx.moveTo(source.x, source.y);
+                    ctx.lineTo(target.x, target.y);
+                    ctx.stroke();
+                    
+                    // Draw pulse if active
+                    if (conn.isActive) {
+                        const startX = source.x;
+                        const startY = source.y;
+                        const endX = target.x;
+                        const endY = target.y;
+                        
+                        // Calculate position along line
+                        const pulseX = startX + (endX - startX) * conn.pulsePosition;
+                        const pulseY = startY + (endY - startY) * conn.pulsePosition;
+                        
+                        // Draw pulse
+                        ctx.beginPath();
+                        ctx.arc(pulseX, pulseY, 4, 0, Math.PI * 2);
+                        ctx.fillStyle = conn.weight > 0 ? 
+                            'rgba(0, 255, 97, 0.8)' : 
+                            'rgba(255, 70, 70, 0.8)';
+                        ctx.fill();
+                        
+                        // Draw glow
+                        ctx.beginPath();
+                        ctx.arc(pulseX, pulseY, 8, 0, Math.PI * 2);
+                        const gradient = ctx.createRadialGradient(
+                            pulseX, pulseY, 0,
+                            pulseX, pulseY, 8
+                        );
+                        gradient.addColorStop(0, conn.weight > 0 ? 
+                            'rgba(0, 255, 97, 0.5)' : 
+                            'rgba(255, 70, 70, 0.5)');
+                        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                    }
+                }
+            }
+            
+            // Draw network nodes
+            function drawNodes() {
+                for (const node of network.nodes) {
+                    // Base node size
+                    const nodeSize = config.nodeSize;
+                    
+                    // Draw outer circle (border)
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, nodeSize, 0, Math.PI * 2);
+                    
+                    if (node.isActive) {
+                        // Node is active, use a gradient to create glow
+                        const gradient = ctx.createRadialGradient(
+                            node.x, node.y, 0,
+                            node.x, node.y, nodeSize * 1.5
+                        );
+                        gradient.addColorStop(0, 'rgba(0, 255, 97, 0.9)');
+                        gradient.addColorStop(0.6, 'rgba(0, 255, 97, 0.2)');
+                        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                        
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                    }
+                    
+                    // Draw node circle
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, nodeSize - 2, 0, Math.PI * 2);
+                    
+                    // Color based on value and activity
+                    if (node.isActive) {
+                        ctx.fillStyle = 'rgba(0, 255, 97, 0.8)';
+                        ctx.strokeStyle = 'rgba(0, 255, 150, 1)';
+                    } else {
+                        // Map value (0-1) to fill color
+                        const g = Math.floor(100 + node.value * 155);
+                        ctx.fillStyle = `rgba(0, ${g}, 41, 0.6)`;
+                        ctx.strokeStyle = 'rgba(20, 50, 20, 0.8)';
+                    }
+                    
+                    ctx.lineWidth = 1;
+                    ctx.fill();
+                    ctx.stroke();
+                    
+                    // Draw center dot
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = node.isActive ? 
+                        'rgba(200, 255, 200, 0.9)' : 
+                        'rgba(0, 180, 41, 0.8)';
+                    ctx.fill();
+                    
+                    // Show node value if enabled
+                    if (config.showNodeValues) {
+                        const valueText = node.value.toFixed(2);
+                        ctx.font = '10px monospace';
+                        ctx.fillStyle = 'rgba(0, 255, 65, 0.8)';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(valueText, node.x, node.y + nodeSize + 15);
+                    }
+                }
+            }
+            
+            // Draw data particles
+            function drawDataParticles() {
+                for (const particle of network.dataParticles) {
+                    // Calculate position
+                    const x = particle.x + (particle.targetX - particle.x) * particle.progress;
+                    const y = particle.y + (particle.targetY - particle.y) * particle.progress;
+                    
+                    // Draw particle
+                    ctx.beginPath();
+                    ctx.arc(x, y, particle.size, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+                    
+                    // Draw trail
+                    ctx.beginPath();
+                    const trailLength = 0.1;
+                    const startProgress = Math.max(0, particle.progress - trailLength);
+                    const startX = particle.x + (particle.targetX - particle.x) * startProgress;
+                    const startY = particle.y + (particle.targetY - particle.y) * startProgress;
+                    
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(x, y);
+                    ctx.strokeStyle = particle.color;
+                    ctx.lineWidth = particle.size / 2;
+                    ctx.stroke();
+                }
+            }
+            
+            // Matrix rain effect
+            function initMatrixRain() {
+                const chars = "01010101010101アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789:・.\"=*+-<>¦｜";
+                const fontSize = 14;
+                const columns = Math.floor(matrixRainCanvas.width / fontSize);
+                const drops = [];
+                
+                // Initialize drops
+                for (let i = 0; i < columns; i++) {
+                    drops[i] = Math.floor(Math.random() * -100);
+                }
+                
+                function drawRain() {
+                    if (!toggleRainEl.checked) {
+                        rainCtx.clearRect(0, 0, matrixRainCanvas.width, matrixRainCanvas.height);
+                        return;
+                    }
+                    
+                    // Semi-transparent black to create fade effect
+                    rainCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    rainCtx.fillRect(0, 0, matrixRainCanvas.width, matrixRainCanvas.height);
+                    
+                    rainCtx.fillStyle = '#00ff41';
+                    rainCtx.font = fontSize + 'px monospace';
+                    
+                    // Adjust drop speed based on rain intensity
+                    const intensity = config.rainIntensity;
+                    const dropChance = 0.975 - (intensity * 0.2);
+                    
+                    // Loop through drops
+                    for (let i = 0; i < drops.length; i++) {
+                        // Random character
+                        const text = chars[Math.floor(Math.random() * chars.length)];
+                        
+                        // x coordinate of the drop
+                        const x = i * fontSize;
+                        // y coordinate of the drop
+                        const y = drops[i] * fontSize;
+                        
+                        // Randomly make some characters brighter for the glowing effect
+                        if (Math.random() < 0.1) {
+                            rainCtx.fillStyle = '#00ff97';
+                        } else {
+                            rainCtx.fillStyle = '#00ff41';
+                        }
+                        
+                        // Draw the character
+                        if (y > 0 && y < matrixRainCanvas.height) {
+                            rainCtx.fillText(text, x, y);
+                        }
+                        
+                        // Move drops down
+                        drops[i]++;
+                        
+                        // Randomly reset a drop to top
+                        if (y > matrixRainCanvas.height && Math.random() > dropChance) {
+                            drops[i] = Math.floor(Math.random() * -100);
+                        }
+                    }
+                    
+                    requestAnimationFrame(drawRain);
+                }
+                
+                drawRain();
+            }
+            
+            // Add line to terminal output
+            function addTerminalLine(type, content) {
+                const terminal = document.getElementById('terminalOutput');
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                
+                if (type === 'command') {
+                    const prompt = document.createElement('span');
+                    prompt.className = 'terminal-prompt';
+                    prompt.textContent = '$';
+                    
+                    const command = document.createElement('span');
+                    command.className = 'terminal-command';
+                    command.textContent = content;
+                    
+                    line.appendChild(prompt);
+                    line.appendChild(command);
+                } else if (type === 'output') {
+                    const output = document.createElement('span');
+                    output.className = 'terminal-output';
+                    output.textContent = content;
+                    
+                    line.appendChild(output);
+                }
+                
+                terminal.appendChild(line);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+            
+            // Update statistics
+            function updateStats() {
+                // Update basic counts
+                nodeCountEl.textContent = network.nodes.length;
+                connectionCountEl.textContent = network.connections.length;
+                
+                // Calculate active nodes ratio
+                const activeNodes = network.nodes.filter(n => n.isActive).length;
+                const activeRatio = activeNodes / network.nodes.length;
+                
+                // Update system status based on active ratio
+                let status = 'Optimal';
+                if (activeRatio > 0.5) {
+                    status = 'High Activity';
+                } else if (activeRatio < 0.1) {
+                    status = 'Low Activity';
+                }
+                
+                systemStatusEl.textContent = status;
+                
+                // Update status indicator
+                statusTextEl.textContent = animationState.isRunning ? 'ACTIVE' : 'PAUSED';
+            }
+            
+            // Event listeners for controls
+            
+            // Window resize
+            window.addEventListener('resize', resizeCanvases);
+            
+            // Network topology selection
+            networkPresetEl.addEventListener('change', function() {
+                const preset = this.value;
+                
+                if (preset === 'custom') {
+                    customLayersInputEl.style.display = 'flex';
+                    customLayersEl.value = config.layers.join('-');
+                } else {
+                    customLayersInputEl.style.display = 'none';
+                    
+                    // Set preset layers
+                    switch (preset) {
+                        case 'simple':
+                            config.layers = [3, 4, 2];
+                            break;
+                        case 'complex':
+                            config.layers = [6, 8, 8, 5, 3];
+                            break;
+                        case 'deeplearning':
+                            config.layers = [5, 8, 12, 8, 5, 3];
+                            break;
+                        default: // default
+                            config.layers = [4, 6, 6, 3];
+                    }
+                }
+            });
+            
+            // Apply topology button
+            applyTopologyBtn.addEventListener('click', function() {
+                if (networkPresetEl.value === 'custom') {
+                    const layersStr = customLayersEl.value;
+                    const layersArr = layersStr.split('-').map(n => parseInt(n.trim()));
+                    
+                    // Validate layers
+                    const isValid = layersArr.every(n => !isNaN(n) && n > 0 && n <= 20);
+                    if (isValid) {
+                        config.layers = layersArr;
+                    } else {
+                        addTerminalLine('output', 'Error: Invalid layer configuration. Using default.');
+                        config.layers = [4, 6, 6, 3];
+                    }
+                }
+                
+                // Create new network with selected topology
+                createNeuralNetwork(config.layers, config.connectionDensity);
+            });
+            
+            // Connection density slider
+            densitySliderEl.addEventListener('input', function() {
+                config.connectionDensity = parseFloat(this.value);
+                densityValueEl.textContent = config.connectionDensity.toFixed(1);
+                
+                // Update connections with new density
+                createConnections(config.connectionDensity);
+            });
+            
+            // Animation speed slider
+            speedSliderEl.addEventListener('input', function() {
+                config.animationSpeed = parseFloat(this.value);
+                speedValueEl.textContent = config.animationSpeed.toFixed(1) + 'x';
+            });
+            
+            // Play/Pause button
+            playBtn.addEventListener('click', function() {
+                animationState.isRunning = !animationState.isRunning;
+                this.textContent = animationState.isRunning ? 'Pause' : 'Play';
+                
+                addTerminalLine('command', animationState.isRunning ? 'resume_simulation' : 'pause_simulation');
+                addTerminalLine('output', animationState.isRunning ? 'Simulation resumed' : 'Simulation paused');
+                
+                // Update status
+                statusTextEl.textContent = animationState.isRunning ? 'ACTIVE' : 'PAUSED';
+            });
+            
+            // Reset button
+            resetBtn.addEventListener('click', function() {
+                // Recreate network with current config
+                createNeuralNetwork(config.layers, config.connectionDensity);
+                
+                // Clear data particles
+                network.dataParticles = [];
+                
+                addTerminalLine('command', 'reset_simulation');
+                addTerminalLine('output', 'Neural network reset. Starting with fresh state.');
+            });
+            
+            // Randomize button
+            randomizeBtn.addEventListener('click', function() {
+                // Randomize node values and trigger activations
+                for (const node of network.nodes) {
+                    node.targetValue = Math.random();
+                    if (node.layer === 0) { // Input layer
+                        node.activationTimer = 1.0;
+                        propagateActivation(node.id);
+                    }
+                }
+                
+                addTerminalLine('command', 'randomize_input_values');
+                addTerminalLine('output', 'Input values randomized. Propagating through network.');
+            });
+            
+            // Display options
+            toggleValuesEl.addEventListener('change', function() {
+                config.showNodeValues = this.checked;
+            });
+            
+            toggleDataFlowEl.addEventListener('change', function() {
+                config.dataFlowVisible = this.checked;
+                if (!this.checked) {
+                    network.dataParticles = [];
+                }
+            });
+            
+            toggleRainEl.addEventListener('change', function() {
+                if (this.checked && !config.rainIntensity) {
+                    config.rainIntensity = 0.2;
+                    rainSliderEl.value = 0.2;
+                    rainValueEl.textContent = '0.2';
+                }
+            });
+            
+            toggleGlitchEl.addEventListener('change', function() {
+                config.glitchEffect = this.checked;
+            });
+            
+            // Rain intensity slider
+            rainSliderEl.addEventListener('input', function() {
+                config.rainIntensity = parseFloat(this.value);
+                rainValueEl.textContent = config.rainIntensity.toFixed(1);
+            });
+            
+            // Node size slider
+            nodeSizeSliderEl.addEventListener('input', function() {
+                config.nodeSize = parseInt(this.value);
+                nodeSizeValueEl.textContent = config.nodeSize;
+            });
+            
+            // Info panel toggle
+            infoHeaderEl.addEventListener('click', function() {
+                infoContentEl.classList.toggle('expanded');
+                infoToggleEl.textContent = infoContentEl.classList.contains('expanded') ? '▲' : '▼';
+            });
+            
+            // Node tooltip on hover
+            neuralCanvas.addEventListener('mousemove', function(e) {
+                const rect = neuralCanvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                // Find if mouse is over a node
+                let hoverNode = null;
+                for (const node of network.nodes) {
+                    const dx = mouseX - node.x;
+                    const dy = mouseY - node.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance <= config.nodeSize) {
+                        hoverNode = node;
+                        break;
+                    }
+                }
+                
+                // Update tooltip
+                if (hoverNode) {
+                    const nodeValue = hoverNode.value.toFixed(4);
+                    const nodeLayer = hoverNode.layer;
+                    const nodeIndex = hoverNode.index;
+                    
+                    nodeTooltip.innerHTML = `
+                        Node [${nodeLayer},${nodeIndex}]<br>
+                        Value: ${nodeValue}<br>
+                        ${hoverNode.isActive ? '<span style="color:#00ff97">Active</span>' : 'Inactive'}
+                    `;
+                    
+                    nodeTooltip.style.left = `${mouseX + 10}px`;
+                    nodeTooltip.style.top = `${mouseY + 10}px`;
+                    nodeTooltip.style.opacity = '1';
+                } else {
+                    nodeTooltip.style.opacity = '0';
+                }
+            });
+            
+            neuralCanvas.addEventListener('mouseout', function() {
+                nodeTooltip.style.opacity = '0';
+            });
+            
+            // Initialize visualizer
+            initVisualizer();
+        });
+    </script>
