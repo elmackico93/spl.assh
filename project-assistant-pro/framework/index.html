@@ -1295,7 +1295,7 @@
                 <a href="#components" class="m-btn m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px;">EXPLORE COMPONENTS</a>
             </div>
             
-            <!-- Update Hero Scroll Indicator HTML -->
+            <!-- Version badge -->
             <div style="margin-top: 3rem; opacity: 0.8; font-size: 0.9rem;">
                 <span class="m-badge" style="padding: 0.3rem 0.8rem; font-size: 0.9rem; letter-spacing: 1px;">VERSION 2.0</span>
             </div>
@@ -2644,42 +2644,67 @@ function matrixEffect() {
         </div>
     </section>
 
+
     <!-- Components Section -->
     <section class="m-container m-py-5" id="components">
         <h2 class="docs-section-title">Components</h2>
         
-        <div class="component-showcase" id="buttons">
-            <h3>Buttons</h3>
-            <p>Matrix.css provides stylish buttons with Matrix-inspired effects including hover animations and glowing highlights.</p>
+        <!-- Button Showcase -->
+        <div class="m-container m-py-5" id="button-showcase">
+            <h2 class="docs-section-title">Matrix Button Gallery</h2>
+            <div class="m-row">
+            <div class="m-col-md-6">
+                <h3>Standard Buttons</h3>
+                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="m-btn">Default</button>
+                <button class="m-btn m-btn-primary">Primary</button>
+                <button class="m-btn m-btn-danger">Danger</button>
+                <button class="m-btn m-btn-neon">Neon</button>
+                <button class="m-btn m-btn-holo">Holographic</button>
+                </div>
+                
+                <h3>Button Sizes</h3>
+                <div class="m-mb-4" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <button class="m-btn m-btn-sm">Small</button>
+                <button class="m-btn">Default</button>
+                <button class="m-btn m-btn-lg">Large</button>
+                </div>
+                
+                <h3>Special Buttons</h3>
+                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="m-btn m-btn-glow">Glowing</button>
+                <button class="m-btn m-btn-glitch">Glitch</button>
+                <button class="m-btn m-btn-scan">Scan Effect</button>
+                <button class="m-btn m-btn-terminal">Terminal</button>
+                <button class="m-btn m-btn-cyber">Cyber</button>
+                </div>
+            </div>
             
-            <h4 class="m-mt-4">Button Styles</h4>
-            <div class="component-demo">
-                <button class="m-btn m-mr-2">Default Button</button>
-                <button class="m-btn m-btn-primary m-mr-2">Primary Button</button>
-                <button class="m-btn m-btn-danger m-mr-2">Danger Button</button>
-                <button class="m-btn m-btn-warning m-mr-2">Warning Button</button>
-                <button class="m-btn m-btn-info m-mr-2">Info Button</button>
+            <div class="m-col-md-6">
+                <h3>Button Shapes</h3>
+                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="m-btn m-btn-pill">Pill Button</button>
+                <button class="m-btn m-btn-bordered">Bordered</button>
+                <button class="m-btn m-btn-3d">3D Button</button>
+                <button class="m-btn m-btn-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                </button>
+                </div>
+                
+                <h3>Interactive Examples</h3>
+                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-direction: column;">
+                <button class="m-btn m-btn-data" data-text="PROCESSED"><span>PROCESS DATA</span></button>
+                <div class="m-btn-group">
+                    <button class="m-btn">Left</button>
+                    <button class="m-btn">Center</button>
+                    <button class="m-btn">Right</button>
+                </div>
+                <button class="m-btn m-btn-block m-btn-primary">Full Width Button</button>
+                <button class="m-btn m-btn-loading">Loading State</button>
+                </div>
             </div>
-            <div class="component-code">
-                <button class="copy-button">Copy</button>
-                <pre><code>&lt;button class="m-btn"&gt;Default Button&lt;/button&gt;
-&lt;button class="m-btn m-btn-primary"&gt;Primary Button&lt;/button&gt;
-&lt;button class="m-btn m-btn-danger"&gt;Danger Button&lt;/button&gt;
-&lt;button class="m-btn m-btn-warning"&gt;Warning Button&lt;/button&gt;
-&lt;button class="m-btn m-btn-info"&gt;Info Button&lt;/button&gt;</code></pre>
-            </div>
-            
-            <h4 class="m-mt-4">Button Sizes</h4>
-            <div class="component-demo">
-                <button class="m-btn m-btn-sm m-mr-2">Small Button</button>
-                <button class="m-btn m-mr-2">Default Button</button>
-                <button class="m-btn m-btn-lg m-mr-2">Large Button</button>
-            </div>
-            <div class="component-code">
-                <button class="copy-button">Copy</button>
-                <pre><code>&lt;button class="m-btn m-btn-sm"&gt;Small Button&lt;/button&gt;
-&lt;button class="m-btn"&gt;Default Button&lt;/button&gt;
-&lt;button class="m-btn m-btn-lg"&gt;Large Button&lt;/button&gt;</code></pre>
             </div>
         </div>
         
@@ -2774,31 +2799,1420 @@ function matrixEffect() {
                     </div>
                 </div>
             </div>
+            
             <div class="component-code">
                 <button class="copy-button">Copy</button>
                 <pre><code>&lt;div class="m-terminal"&gt;
-  &lt;div class="m-terminal-header"&gt;
-    &lt;div class="m-terminal-title"&gt;matrix@system:~&lt;/div&gt;
-    &lt;div class="m-terminal-controls"&gt;
-      &lt;div class="m-terminal-btn minimize"&gt;&lt;/div&gt;
-      &lt;div class="m-terminal-btn maximize"&gt;&lt;/div&gt;
-      &lt;div class="m-terminal-btn close"&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class="m-terminal-content"&gt;
-    &lt;div class="m-terminal-line"&gt;
-      &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
-      &lt;span&gt;cd /matrix/system&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;!-- More terminal lines --&gt;
-    &lt;div class="m-terminal-line"&gt;
-      &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
-      &lt;span&gt;run redpill.exe&lt;/span&gt;
-      &lt;span class="m-terminal-cursor"&gt;&lt;/span&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
+          &lt;div class="m-terminal-header"&gt;
+            &lt;div class="m-terminal-title"&gt;matrix@system:~&lt;/div&gt;
+            &lt;div class="m-terminal-controls"&gt;
+              &lt;div class="m-terminal-btn minimize"&gt;&lt;/div&gt;
+              &lt;div class="m-terminal-btn maximize"&gt;&lt;/div&gt;
+              &lt;div class="m-terminal-btn close"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="m-terminal-content"&gt;
+            &lt;div class="m-terminal-line"&gt;
+              &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
+              &lt;span&gt;cd /matrix/system&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;!-- More terminal lines --&gt;
+            &lt;div class="m-terminal-line"&gt;
+              &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
+              &lt;span&gt;run redpill.exe&lt;/span&gt;
+              &lt;span class="m-terminal-cursor"&gt;&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;</code></pre>
             </div>
+            
+            <h4 class="m-mt-5">Advanced Terminal Examples</h4>
+            
+            <!-- Interactive Terminal -->
+            <div class="component-demo">
+                <h5>Interactive Terminal</h5>
+                <p class="m-text-dim m-mb-3">This terminal allows for input and responses. Type help for a list of commands, or try: ls, cd, ping, trace, decrypt.</p>
+                
+                <div id="interactive-terminal" class="m-terminal">
+                    <div class="m-terminal-header">
+                        <div class="m-terminal-title">matrix@root:~ <span id="terminal-path">/system</span></div>
+                        <div class="m-terminal-controls">
+                            <div class="m-terminal-btn minimize"></div>
+                            <div class="m-terminal-btn maximize"></div>
+                            <div class="m-terminal-btn close"></div>
+                        </div>
+                    </div>
+                    <div class="m-terminal-content" id="terminal-content">
+                        <div class="m-terminal-line">
+                            <span class="m-text-bright">Welcome to the Matrix OS v3.7.9</span>
+                        </div>
+                        <div class="m-terminal-line">
+                            <span>Type 'help' for available commands</span>
+                        </div>
+                        <div class="m-terminal-line">
+                            <span class="m-terminal-prompt">$</span>
+                            <span id="input-line">
+                                <span id="input-text"></span>
+                                <span class="m-terminal-cursor"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Type-on Effect Terminal -->
+            <div class="component-demo">
+                <h5>Type-on Effect Terminal</h5>
+                <p class="m-text-dim m-mb-3">Terminal with automatic typing effect.</p>
+                
+                <div id="typewriter-terminal" class="m-terminal">
+                    <div class="m-terminal-header">
+                        <div class="m-terminal-title">system@matrix:~ /security</div>
+                        <div class="m-terminal-controls">
+                            <div class="m-terminal-btn minimize"></div>
+                            <div class="m-terminal-btn maximize"></div>
+                            <div class="m-terminal-btn close"></div>
+                        </div>
+                    </div>
+                    <div class="m-terminal-content">
+                        <div class="m-terminal-line" data-delay="0">
+                            <span class="m-terminal-prompt">$</span>
+                            <span class="typewriter-text">access security-grid</span>
+                        </div>
+                        <div class="m-terminal-line m-text-dim typewriter-wait" data-delay="1500">
+                            <span>Accessing security subsystem...</span>
+                        </div>
+                        <div class="m-terminal-line m-text-dim typewriter-wait" data-delay="1000">
+                            <span>Establishing connection...</span>
+                        </div>
+                        <div class="m-terminal-line m-text-danger typewriter-wait" data-delay="1500">
+                            <span>ACCESS DENIED: Insufficient clearance</span>
+                        </div>
+                        <div class="m-terminal-line typewriter-wait" data-delay="800">
+                            <span class="m-terminal-prompt">$</span>
+                            <span class="typewriter-text">override --security-protocol --auth=neo</span>
+                        </div>
+                        <div class="m-terminal-line m-text-dim typewriter-wait" data-delay="1200">
+                            <span>Authentication verified. Welcome, Neo.</span>
+                        </div>
+                        <div class="m-terminal-line m-text-bright typewriter-wait" data-delay="800">
+                            <span>SECURITY GRID ACCESS GRANTED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hacker Terminal -->
+            <div class="component-demo">
+                <h5>Matrix Hacker Terminal</h5>
+                <p class="m-text-dim m-mb-3">A more elaborate terminal with code rain effect and system readouts.</p>
+                
+                <div class="m-terminal m-terminal-hacker">
+                    <div class="m-terminal-header">
+                        <div class="m-terminal-title">neural@mainframe:~ <span class="blink-text">▌</span></div>
+                        <div class="m-system-status">
+                            <span class="system-indicator active"></span>
+                            <span>SYSTEM ACTIVE</span>
+                        </div>
+                        <div class="m-terminal-controls">
+                            <div class="m-terminal-btn minimize"></div>
+                            <div class="m-terminal-btn maximize"></div>
+                            <div class="m-terminal-btn close"></div>
+                        </div>
+                    </div>
+                    <div class="m-terminal-content">
+                        <div class="code-rain-layer"></div>
+                        
+                        <div class="m-terminal-split">
+                            <div class="m-terminal-main">
+                                <div class="m-terminal-line">
+                                    <span class="m-terminal-prompt">[neural]$</span>
+                                    <span>trace -ip 203.0.113.42 -traceroute</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-text-dim">Tracing route to target [203.0.113.42]...</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-text-dim">Hop 1: 192.168.1.1 (2ms)</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-text-dim">Hop 2: 10.254.0.1 (5ms)</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-text-dim">Hop 3: 172.16.0.1 (14ms)</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-text-dim">Hop 4: 203.0.113.1 (22ms)</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-text-bright">Target located. Scanning for vulnerabilities...</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-terminal-prompt">[neural]$</span>
+                                    <span>scan --deep --port=all</span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="scan-progress"></span>
+                                </div>
+                                <div class="m-terminal-line">
+                                    <span class="m-terminal-prompt">[neural]$</span>
+                                    <span class="m-terminal-cursor"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="m-terminal-sidebar">
+                                <div class="system-readout">
+                                    <div class="readout-title">SYSTEM STATUS</div>
+                                    <div class="readout-item">
+                                        <span class="label">CPU:</span>
+                                        <span class="value">78%</span>
+                                        <div class="meter">
+                                            <div class="meter-fill" style="width: 78%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="readout-item">
+                                        <span class="label">MEM:</span>
+                                        <span class="value">42%</span>
+                                        <div class="meter">
+                                            <div class="meter-fill" style="width: 42%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="readout-item">
+                                        <span class="label">NET:</span>
+                                        <span class="value">89%</span>
+                                        <div class="meter">
+                                            <div class="meter-fill" style="width: 89%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="readout-divider"></div>
+                                    <div class="readout-item">
+                                        <span class="label">ENCRYPTION:</span>
+                                        <span class="value">ACTIVE</span>
+                                    </div>
+                                    <div class="readout-item">
+                                        <span class="label">PROXIES:</span>
+                                        <span class="value">7 ACTIVE</span>
+                                    </div>
+                                    <div class="readout-item">
+                                        <span class="label">UPTIME:</span>
+                                        <span class="value">14:22:07</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                /* Interactive Terminal Styles */
+                #input-line {
+                    display: inline-block;
+                    min-width: 50px;
+                }
+                
+                /* Type-on Effect */
+                .typewriter-text {
+                    display: inline-block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    width: 0;
+                    animation: typing 3.5s steps(40, end) forwards;
+                }
+                
+                .typewriter-wait {
+                    opacity: 0;
+                }
+                
+                @keyframes typing {
+                    from { width: 0 }
+                    to { width: 100% }
+                }
+                
+                /* Hacker Terminal Styles */
+                .m-terminal-hacker {
+                    height: 400px;
+                    overflow: hidden;
+                }
+                
+                .m-terminal-header {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                
+                .m-system-status {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.8rem;
+                    color: var(--m-text-dim);
+                }
+                
+                .system-indicator {
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background-color: var(--m-border);
+                }
+                
+                .system-indicator.active {
+                    background-color: var(--m-text);
+                    box-shadow: 0 0 5px var(--m-glow);
+                    animation: status-pulse 2s infinite;
+                }
+                
+                @keyframes status-pulse {
+                    0%, 100% { opacity: 0.7; }
+                    50% { opacity: 1; }
+                }
+                
+                .code-rain-layer {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1000' viewBox='0 0 200 1000'%3E%3Cstyle%3E.text %7B font: 10px monospace; fill: %2300ff41; %7D%3C/style%3E%3Cg%3E%3Ctext x='10' y='30' class='text'%3E01011001%3C/text%3E%3Ctext x='50' y='60' class='text'%3E10110%3C/text%3E%3Ctext x='90' y='90' class='text'%3E0110111%3C/text%3E%3Ctext x='130' y='120' class='text'%3E1010%3C/text%3E%3Ctext x='30' y='150' class='text'%3E01110%3C/text%3E%3Ctext x='70' y='180' class='text'%3E10011%3C/text%3E%3Ctext x='110' y='210' class='text'%3E01101%3C/text%3E%3Ctext x='20' y='240' class='text'%3E110011%3C/text%3E%3Ctext x='60' y='270' class='text'%3E01010%3C/text%3E%3Ctext x='100' y='300' class='text'%3E110101%3C/text%3E%3C/g%3E%3C/svg%3E");
+                    opacity: 0.05;
+                    animation: code-rain 20s linear infinite;
+                    pointer-events: none;
+                    z-index: 0;
+                }
+                
+                @keyframes code-rain {
+                    0% { background-position: 0 0; }
+                    100% { background-position: 0 1000px; }
+                }
+                
+                .m-terminal-split {
+                    display: flex;
+                    height: calc(100% - 10px);
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .m-terminal-main {
+                    flex: 1;
+                    padding-right: 10px;
+                    overflow-y: auto;
+                }
+                
+                .m-terminal-sidebar {
+                    width: 180px;
+                    border-left: 1px solid var(--m-border);
+                    padding-left: 10px;
+                    font-size: 0.85rem;
+                }
+                
+                .system-readout {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                
+                .readout-title {
+                    font-size: 0.7rem;
+                    color: var(--m-text-dim);
+                    margin-bottom: 0.5rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    border-bottom: 1px solid var(--m-border);
+                    padding-bottom: 5px;
+                }
+                
+                .readout-item {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .readout-item .label {
+                    width: 90px;
+                    color: var(--m-text-dim);
+                    font-size: 0.75rem;
+                }
+                
+                .readout-item .value {
+                    color: var(--m-text);
+                    font-weight: bold;
+                }
+                
+                .meter {
+                    height: 4px;
+                    width: 100%;
+                    background-color: var(--m-border);
+                    border-radius: 2px;
+                    overflow: hidden;
+                    margin-top: 2px;
+                }
+                
+                .meter-fill {
+                    height: 100%;
+                    background-color: var(--m-text);
+                    border-radius: 2px;
+                }
+                
+                .readout-divider {
+                    height: 1px;
+                    background-color: var(--m-border);
+                    margin: 0.5rem 0;
+                }
+                
+                .scan-progress {
+                    display: inline-block;
+                    width: 100%;
+                    height: 1.2em;
+                    background: linear-gradient(to right, var(--m-text) 50%, transparent 50%);
+                    background-size: 20px 100%;
+                    background-repeat: repeat-x;
+                    animation: scan-animate 1s linear infinite;
+                }
+                
+                @keyframes scan-animate {
+                    0% { background-position: 0 0; }
+                    100% { background-position: 20px 0; }
+                }
+                
+                .blink-text {
+                    animation: blink 1s step-end infinite;
+                }
+                
+                @keyframes blink {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0; }
+                }
+            </style>
+            
+            <script>
+                // Interactive Terminal Script
+                document.addEventListener('DOMContentLoaded', function() {
+                    const terminal = document.getElementById('interactive-terminal');
+                    const content = document.getElementById('terminal-content');
+                    const inputText = document.getElementById('input-text');
+                    const terminalPath = document.getElementById('terminal-path');
+                    
+                    if (!terminal || !content || !inputText) return;
+                    
+                    // File system simulation
+                    const fileSystem = {
+                        '/system': {
+                            type: 'dir',
+                            contents: {
+                                'kernel.sys': { type: 'file', content: 'Matrix OS v3.7.9 Kernel' },
+                                'config.dat': { type: 'file', content: 'System Configuration' },
+                                'users': {
+                                    type: 'dir',
+                                    contents: {
+                                        'neo.usr': { type: 'file', content: 'Username: Neo\nAccess Level: Administrator' },
+                                        'trinity.usr': { type: 'file', content: 'Username: Trinity\nAccess Level: Operations' }
+                                    }
+                                },
+                                'network': {
+                                    type: 'dir',
+                                    contents: {
+                                        'connections.log': { type: 'file', content: 'Active connections log' },
+                                        'firewall.cfg': { type: 'file', content: 'Firewall configuration file' }
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    
+                    // Current state
+                    let currentPath = '/system';
+                    let currentDir = fileSystem['/system'];
+                    let commandHistory = [];
+                    let historyIndex = -1;
+                    
+                    // Available commands
+                    const commands = {
+                        'help': function() {
+                            return `Available commands:
+          ls - List directory contents
+          cd [directory] - Change directory
+          cat [file] - View file contents
+          clear - Clear terminal
+          ping [host] - Ping remote host
+          trace [ip] - Trace IP route
+          decrypt [file] - Attempt to decrypt file
+          matrix - Display the Matrix`;
+                        },
+                        'ls': function(args) {
+                            let output = '';
+                            for (const item in currentDir.contents) {
+                                const type = currentDir.contents[item].type;
+                                const color = type === 'dir' ? 'class="m-text-bright"' : '';
+                                output += `<span ${color}>${item}</span>    `;
+                            }
+                            return output;
+                        },
+                        'cd': function(args) {
+                            if (!args[0] || args[0] === '.') {
+                                return '';
+                            }
+                            
+                            if (args[0] === '..') {
+                                if (currentPath === '/system') {
+                                    return 'Cannot go above root directory';
+                                }
+                                const pathParts = currentPath.split('/');
+                                pathParts.pop();
+                                currentPath = pathParts.join('/') || '/system';
+                                currentDir = getDirectory(currentPath);
+                                terminalPath.textContent = currentPath;
+                                return '';
+                            }
+                            
+                            if (currentDir.contents[args[0]] && currentDir.contents[args[0]].type === 'dir') {
+                                currentPath = currentPath === '/system' ? 
+                                    `${currentPath}/${args[0]}` : 
+                                    `${currentPath}/${args[0]}`;
+                                currentDir = currentDir.contents[args[0]];
+                                terminalPath.textContent = currentPath;
+                                return '';
+                            }
+                            
+                            return `Directory not found: ${args[0]}`;
+                        },
+                        'cat': function(args) {
+                            if (!args[0]) {
+                                return 'Usage: cat [filename]';
+                            }
+                            
+                            if (currentDir.contents[args[0]] && currentDir.contents[args[0]].type === 'file') {
+                                return currentDir.contents[args[0]].content;
+                            }
+                            
+                            return `File not found: ${args[0]}`;
+                        },
+                        'clear': function() {
+                            content.innerHTML = '';
+                            addNewLine('', false);
+                            return null; // Special case - no output
+                        },
+                        'ping': function(args) {
+                            if (!args[0]) {
+                                return 'Usage: ping [host]';
+                            }
+                            
+                            return `Pinging ${args[0]}...\nSending 4 packets...\n
+        Reply from ${args[0]}: time=34ms
+        Reply from ${args[0]}: time=28ms
+        Reply from ${args[0]}: time=31ms
+        Reply from ${args[0]}: time=30ms
+        
+        --- ${args[0]} ping statistics ---
+        4 packets transmitted, 4 received, 0% packet loss
+        round-trip min/avg/max = 28/30.75/34 ms`;
+                        },
+                        'trace': function(args) {
+                            if (!args[0]) {
+                                return 'Usage: trace [ip]';
+                            }
+                            
+                            return `Tracing route to ${args[0]}...
+        
+        1  192.168.1.1  3ms
+        2  10.254.0.1  7ms
+        3  172.16.0.1  16ms
+        4  103.86.99.1  28ms
+        5  ${args[0]}  42ms
+        
+        Trace complete.`;
+                        },
+                        'decrypt': function(args) {
+                            if (!args[0]) {
+                                return 'Usage: decrypt [filename]';
+                            }
+                            
+                            if (currentDir.contents[args[0]] && currentDir.contents[args[0]].type === 'file') {
+                                return `Attempting to decrypt ${args[0]}...
+        [■■■■■■□□□□] 60%
+        Decryption algorithm: Quantum Matrix
+        Estimated time remaining: 2m 47s`;
+                            }
+                            
+                            return `File not found: ${args[0]}`;
+                        },
+                        'matrix': function() {
+                            return `Wake up, Neo...
+        The Matrix has you...
+        Follow the white rabbit.
+        
+        Knock, knock, Neo.`;
+                        }
+                    };
+                    
+                    // Helper functions
+                    function getDirectory(path) {
+                        if (path === '/system') return fileSystem['/system'];
+                        
+                        const parts = path.split('/').filter(Boolean);
+                        let current = fileSystem['/system'];
+                        
+                        for (const part of parts) {
+                            if (part === 'system') continue;
+                            if (current.contents[part] && current.contents[part].type === 'dir') {
+                                current = current.contents[part];
+                            } else {
+                                return null;
+                            }
+                        }
+                        
+                        return current;
+                    }
+                    
+                    function addNewLine(text, isCommand = true) {
+                        const line = document.createElement('div');
+                        line.className = 'm-terminal-line';
+                        
+                        if (isCommand) {
+                            const prompt = document.createElement('span');
+                            prompt.className = 'm-terminal-prompt';
+                            prompt.textContent = '$';
+                            
+                            const command = document.createElement('span');
+                            command.textContent = ' ' + text;
+                            
+                            line.appendChild(prompt);
+                            line.appendChild(command);
+                        } else if (text !== null) {
+                            // Handle multiline responses
+                            text.split('\n').forEach((textLine, index) => {
+                                if (index > 0) {
+                                    const newLine = document.createElement('div');
+                                    newLine.className = 'm-terminal-line';
+                                    newLine.innerHTML = `<span>${textLine}</span>`;
+                                    content.appendChild(newLine);
+                                } else {
+                                    line.innerHTML = `<span>${textLine}</span>`;
+                                }
+                            });
+                        } else {
+                            return; // Clear command - no output
+                        }
+                        
+                        content.appendChild(line);
+                    }
+                    
+                    function processCommand(cmd) {
+                        const parts = cmd.trim().split(' ');
+                        const command = parts[0].toLowerCase();
+                        const args = parts.slice(1);
+                        
+                        if (command === '') {
+                            return '';
+                        }
+                        
+                        if (commands[command]) {
+                            return commands[command](args);
+                        }
+                        
+                        return `Command not found: ${command}\nType 'help' for available commands`;
+                    }
+                    
+                    // Add command input line
+                    function addInputLine() {
+                        const line = document.createElement('div');
+                        line.className = 'm-terminal-line';
+                        
+                        const prompt = document.createElement('span');
+                        prompt.className = 'm-terminal-prompt';
+                        prompt.textContent = '$';
+                        
+                        const inputLineSpan = document.createElement('span');
+                        inputLineSpan.id = 'input-line';
+                        
+                        const input = document.createElement('span');
+                        input.id = 'input-text';
+                        input.textContent = '';
+                        
+                        const cursor = document.createElement('span');
+                        cursor.className = 'm-terminal-cursor';
+                        
+                        inputLineSpan.appendChild(input);
+                        inputLineSpan.appendChild(cursor);
+                        
+                        line.appendChild(prompt);
+                        line.appendChild(inputLineSpan);
+                        
+                        content.appendChild(line);
+                        
+                        // Scroll to bottom
+                        content.scrollTop = content.scrollHeight;
+                    }
+                    
+                    // Set up keyboard input handling
+                    document.addEventListener('keydown', function(e) {
+                        if (!document.getElementById('input-text')) return;
+                        
+                        if (e.key === 'Enter') {
+                            const command = inputText.textContent;
+                            
+                            // Add to history if not empty
+                            if (command.trim() !== '') {
+                                commandHistory.unshift(command);
+                                historyIndex = -1;
+                            }
+                            
+                            // Process command
+                            const output = processCommand(command);
+                            
+                            // Remove input line
+                            const currentInputLine = document.getElementById('input-line').parentNode;
+                            currentInputLine.removeChild(document.getElementById('input-line'));
+                            currentInputLine.insertAdjacentHTML('beforeend', command);
+                            
+                            // Add command output
+                            if (output !== null) {
+                                addNewLine(output, false);
+                            }
+                            
+                            // Add new input line
+                            addInputLine();
+                            
+                        } else if (e.key === 'Backspace') {
+                            inputText.textContent = inputText.textContent.slice(0, -1);
+                            
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            if (commandHistory.length > 0) {
+                                historyIndex = Math.min(historyIndex + 1, commandHistory.length - 1);
+                                inputText.textContent = commandHistory[historyIndex];
+                            }
+                            
+                        } else if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            if (historyIndex > 0) {
+                                historyIndex--;
+                                inputText.textContent = commandHistory[historyIndex];
+                            } else if (historyIndex === 0) {
+                                historyIndex = -1;
+                                inputText.textContent = '';
+                            }
+                            
+                        } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                            inputText.textContent += e.key;
+                        } else if (e.key === 'Tab') {
+                           e.preventDefault();
+                           // Simple tab completion
+                           const input = inputText.textContent.trim();
+                           const parts = input.split(' ');
+                           const lastPart = parts[parts.length - 1];
+                           
+                           if (parts.length === 1) {
+                               // Command completion
+                               for (const cmd in commands) {
+                                   if (cmd.startsWith(lastPart)) {
+                                       inputText.textContent = cmd;
+                                       break;
+                                   }
+                               }
+                           } else if (parts[0] === 'cd' || parts[0] === 'cat') {
+                               // File/directory completion
+                               for (const item in currentDir.contents) {
+                                   if (item.startsWith(lastPart)) {
+                                       parts[parts.length - 1] = item;
+                                       inputText.textContent = parts.join(' ');
+                                       break;
+                                   }
+                               }
+                           }
+                       }
+                   });
+                   
+                   // Initialize
+                   terminalPath.textContent = currentPath;
+               });
+               
+               // Type-on Effect Terminal Script
+               document.addEventListener('DOMContentLoaded', function() {
+                   const typewriterTerminal = document.getElementById('typewriter-terminal');
+                   
+                   if (!typewriterTerminal) return;
+                   
+                   // Get all lines that need typing effect
+                   const lines = typewriterTerminal.querySelectorAll('.typewriter-text');
+                   const waitLines = typewriterTerminal.querySelectorAll('.typewriter-wait');
+                   
+                   // Start typing effect with delays
+                   let totalDelay = 0;
+                   
+                   // Animate text lines
+                   lines.forEach(line => {
+                       // Use default delay for typing
+                       totalDelay += 300;
+                       
+                       setTimeout(() => {
+                           line.style.animation = 'typing 3s steps(40, end) forwards';
+                       }, totalDelay);
+                       
+                       totalDelay += 3000; // Wait for typing to complete
+                   });
+                   
+                   // Show waiting lines with their delays
+                   waitLines.forEach(line => {
+                       const delay = parseInt(line.getAttribute('data-delay')) || 1000;
+                       totalDelay += delay;
+                       
+                       setTimeout(() => {
+                           line.style.opacity = '1';
+                       }, totalDelay);
+                   });
+               });
+               
+               // Matrix Hacker Terminal Effects
+               document.addEventListener('DOMContentLoaded', function() {
+                   const hackerTerminal = document.querySelector('.m-terminal-hacker');
+                   
+                   if (!hackerTerminal) return;
+                   
+                   // Update system readouts with random values periodically
+                   function updateSystemReadouts() {
+                       const cpu = Math.floor(Math.random() * 30) + 60; // 60-90%
+                       const mem = Math.floor(Math.random() * 40) + 30; // 30-70%
+                       const net = Math.floor(Math.random() * 20) + 75; // 75-95%
+                       
+                       const cpuMeter = hackerTerminal.querySelector('.readout-item:nth-child(1) .meter-fill');
+                       const cpuValue = hackerTerminal.querySelector('.readout-item:nth-child(1) .value');
+                       const memMeter = hackerTerminal.querySelector('.readout-item:nth-child(2) .meter-fill');
+                       const memValue = hackerTerminal.querySelector('.readout-item:nth-child(2) .value');
+                       const netMeter = hackerTerminal.querySelector('.readout-item:nth-child(3) .meter-fill');
+                       const netValue = hackerTerminal.querySelector('.readout-item:nth-child(3) .value');
+                       
+                       if (cpuMeter && cpuValue) {
+                           cpuMeter.style.width = `${cpu}%`;
+                           cpuValue.textContent = `${cpu}%`;
+                       }
+                       
+                       if (memMeter && memValue) {
+                           memMeter.style.width = `${mem}%`;
+                           memValue.textContent = `${mem}%`;
+                       }
+                       
+                       if (netMeter && netValue) {
+                           netMeter.style.width = `${net}%`;
+                           netValue.textContent = `${net}%`;
+                       }
+                       
+                       // Update uptime
+                       const uptimeValue = hackerTerminal.querySelector('.readout-item:nth-child(6) .value');
+                       if (uptimeValue) {
+                           let [hours, minutes, seconds] = uptimeValue.textContent.split(':').map(Number);
+                           
+                           seconds++;
+                           if (seconds >= 60) {
+                               seconds = 0;
+                               minutes++;
+                           }
+                           
+                           if (minutes >= 60) {
+                               minutes = 0;
+                               hours++;
+                           }
+                           
+                           uptimeValue.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                       }
+                       
+                       // Random glitch effect
+                       if (Math.random() < 0.1) {
+                           const codeRain = hackerTerminal.querySelector('.code-rain-layer');
+                           if (codeRain) {
+                               codeRain.style.opacity = '0.2';
+                               setTimeout(() => {
+                                   codeRain.style.opacity = '0.05';
+                               }, 200);
+                           }
+                       }
+                       
+                       setTimeout(updateSystemReadouts, 1000);
+                   }
+                   
+                   // Start updating readouts
+                   updateSystemReadouts();
+               });
+           </script>
+           
+           <h4 class="m-mt-5">Terminal Integration Examples</h4>
+           
+           <div class="component-demo">
+               <h5>System Status Dashboard with Terminal</h5>
+               <p class="m-text-dim m-mb-3">A complete example of integrating terminal into a dashboard interface.</p>
+               
+               <div class="m-terminal-dashboard">
+                   <div class="dashboard-header">
+                       <div class="dashboard-title">
+                           <span class="status-indicator active"></span>
+                           <span>MATRIX SYSTEM MONITOR</span>
+                       </div>
+                       <div class="dashboard-status">
+                           <span class="status-item"><span class="status-label">UPTIME:</span> 14:42:37</span>
+                           <span class="status-item"><span class="status-label">STATUS:</span> OPERATIONAL</span>
+                           <span class="status-item"><span class="status-label">THREATS:</span> 0</span>
+                       </div>
+                   </div>
+                   
+                   <div class="dashboard-grid">
+                       <div class="dashboard-panel wide">
+                           <div class="panel-header">
+                               <span>SYSTEM TERMINAL</span>
+                               <span class="panel-controls">
+                                   <span class="minimize"></span>
+                                   <span class="maximize"></span>
+                               </span>
+                           </div>
+                           <div class="panel-body">
+                               <div class="m-terminal embedded">
+                                   <div class="m-terminal-content">
+                                       <div class="m-terminal-line">
+                                           <span class="m-terminal-prompt">sys$</span>
+                                           <span>status --systems --verbose</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span class="m-text-dim">Running system diagnostics...</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span class="m-text-bright">All systems operational</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>- Network Subsystem ............................ [<span class="m-text-bright">OK</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>- Security Layer .............................. [<span class="m-text-bright">OK</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>- Quantum Encryption Engine .................... [<span class="m-text-bright">OK</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>- Neural Interface ............................. [<span class="m-text-bright">OK</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>- Memory Management System ..................... [<span class="m-text-bright">OK</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span class="m-terminal-prompt">sys$</span>
+                                           <span>scan --network --intrusion</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span class="m-text-dim">Scanning for intrusion attempts...</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>23:42:17 - Connection attempt from 198.51.100.24 [<span class="m-text-bright">BLOCKED</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span>23:59:01 - Connection attempt from 203.0.113.42 [<span class="m-text-bright">BLOCKED</span>]</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span class="m-text-dim">No successful intrusion detected</span>
+                                       </div>
+                                       <div class="m-terminal-line">
+                                           <span class="m-terminal-prompt">sys$</span>
+                                           <span class="m-terminal-cursor"></span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <div class="dashboard-panel">
+                           <div class="panel-header">
+                               <span>SYSTEM RESOURCES</span>
+                               <span class="panel-controls">
+                                   <span class="minimize"></span>
+                                   <span class="maximize"></span>
+                               </span>
+                           </div>
+                           <div class="panel-body">
+                               <div class="resource-graph">
+                                   <div class="graph-header">
+                                       <span class="graph-title">CPU USAGE</span>
+                                       <span class="graph-value">78%</span>
+                                   </div>
+                                   <div class="graph-visualization">
+                                       <div class="graph-bar">
+                                           <div class="bar-fill" style="height: 78%"></div>
+                                       </div>
+                                       <div class="graph-grid">
+                                           <div class="grid-line"></div>
+                                           <div class="grid-line"></div>
+                                           <div class="grid-line"></div>
+                                           <div class="grid-line"></div>
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="resource-graph">
+                                   <div class="graph-header">
+                                       <span class="graph-title">MEMORY</span>
+                                       <span class="graph-value">45%</span>
+                                   </div>
+                                   <div class="graph-visualization">
+                                       <div class="graph-bar">
+                                           <div class="bar-fill" style="height: 45%"></div>
+                                       </div>
+                                       <div class="graph-grid">
+                                           <div class="grid-line"></div>
+                                           <div class="grid-line"></div>
+                                           <div class="grid-line"></div>
+                                           <div class="grid-line"></div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <div class="dashboard-panel">
+                           <div class="panel-header">
+                               <span>NETWORK TRAFFIC</span>
+                               <span class="panel-controls">
+                                   <span class="minimize"></span>
+                                   <span class="maximize"></span>
+                               </span>
+                           </div>
+                           <div class="panel-body">
+                               <div class="network-stats">
+                                   <div class="stat-group">
+                                       <div class="stat-item">
+                                           <span class="stat-label">INBOUND</span>
+                                           <span class="stat-value">1.32 MB/s</span>
+                                       </div>
+                                       <div class="stat-item">
+                                           <span class="stat-label">OUTBOUND</span>
+                                           <span class="stat-value">0.87 MB/s</span>
+                                       </div>
+                                   </div>
+                                   <div class="stat-group">
+                                       <div class="stat-item">
+                                           <span class="stat-label">ACTIVE CONNECTIONS</span>
+                                           <span class="stat-value">23</span>
+                                       </div>
+                                       <div class="stat-item">
+                                           <span class="stat-label">REJECTED</span>
+                                           <span class="stat-value">142</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="network-visual">
+                                   <div class="packet-line">
+                                       <div class="packet packet-in"></div>
+                                       <div class="packet packet-out"></div>
+                                       <div class="packet packet-in"></div>
+                                   </div>
+                                   <div class="packet-line">
+                                       <div class="packet packet-out"></div>
+                                       <div class="packet packet-in"></div>
+                                   </div>
+                                   <div class="packet-line">
+                                       <div class="packet packet-in"></div>
+                                       <div class="packet packet-out"></div>
+                                       <div class="packet packet-in"></div>
+                                       <div class="packet packet-out"></div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
+           <style>
+               /* Terminal Dashboard Styles */
+               .m-terminal-dashboard {
+                   width: 100%;
+                   height: 500px;
+                   background-color: var(--m-bg);
+                   border: 1px solid var(--m-border);
+                   border-radius: var(--m-radius);
+                   overflow: hidden;
+                   font-family: var(--m-font-main);
+                   display: flex;
+                   flex-direction: column;
+               }
+               
+               .dashboard-header {
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   padding: 0.5rem 1rem;
+                   background-color: rgba(0, 20, 0, 0.5);
+                   border-bottom: 1px solid var(--m-border);
+               }
+               
+               .dashboard-title {
+                   display: flex;
+                   align-items: center;
+                   gap: 0.5rem;
+                   font-size: 1rem;
+                   font-weight: bold;
+                   color: var(--m-text-bright);
+                   letter-spacing: 1px;
+               }
+               
+               .dashboard-status {
+                   display: flex;
+                   gap: 1.5rem;
+                   font-size: 0.85rem;
+               }
+               
+               .status-item {
+                   display: flex;
+                   align-items: center;
+                   gap: 0.5rem;
+               }
+               
+               .status-label {
+                   color: var(--m-text-dim);
+                   font-size: 0.7rem;
+               }
+               
+               .dashboard-grid {
+                   display: grid;
+                   grid-template-columns: repeat(3, 1fr);
+                   grid-template-rows: 1fr;
+                   gap: 1rem;
+                   padding: 1rem;
+                   flex: 1;
+                   overflow: auto;
+               }
+               
+               .dashboard-panel {
+                   background-color: rgba(0, 10, 0, 0.5);
+                   border: 1px solid var(--m-border);
+                   border-radius: var(--m-radius);
+                   overflow: hidden;
+                   display: flex;
+                   flex-direction: column;
+               }
+               
+               .dashboard-panel.wide {
+                   grid-column: span 2;
+               }
+               
+               .panel-header {
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   padding: 0.5rem 1rem;
+                   background-color: rgba(0, 30, 0, 0.5);
+                   border-bottom: 1px solid var(--m-border);
+                   font-size: 0.85rem;
+                   color: var(--m-text);
+                   font-weight: bold;
+               }
+               
+               .panel-controls {
+                   display: flex;
+                   gap: 0.5rem;
+               }
+               
+               .panel-controls .minimize,
+               .panel-controls .maximize {
+                   width: 12px;
+                   height: 12px;
+                   border-radius: 50%;
+                   background-color: var(--m-border);
+                   cursor: pointer;
+                   transition: background-color 0.2s;
+               }
+               
+               .panel-controls .minimize:hover,
+               .panel-controls .maximize:hover {
+                   background-color: var(--m-text);
+               }
+               
+               .panel-body {
+                   flex: 1;
+                   padding: 1rem;
+                   overflow: auto;
+               }
+               
+               /* Embedded Terminal */
+               .m-terminal.embedded {
+                   border: none;
+                   background: transparent;
+                   height: 100%;
+                   overflow: auto;
+               }
+               
+               .m-terminal.embedded .m-terminal-content {
+                   padding: 0;
+               }
+               
+               /* Resource Graph */
+               .resource-graph {
+                   margin-bottom: 1.5rem;
+               }
+               
+               .graph-header {
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   margin-bottom: 0.5rem;
+               }
+               
+               .graph-title {
+                   font-size: 0.75rem;
+                   color: var(--m-text-dim);
+               }
+               
+               .graph-value {
+                   font-size: 0.9rem;
+                   font-weight: bold;
+                   color: var(--m-text);
+               }
+               
+               .graph-visualization {
+                   position: relative;
+                   height: 100px;
+                   border: 1px solid var(--m-border);
+                   background-color: rgba(0, 20, 0, 0.3);
+                   border-radius: var(--m-radius);
+                   overflow: hidden;
+               }
+               
+               .graph-grid {
+                   position: absolute;
+                   top: 0;
+                   left: 0;
+                   right: 0;
+                   bottom: 0;
+                   display: flex;
+                   flex-direction: column;
+                   justify-content: space-between;
+                   pointer-events: none;
+               }
+               
+               .grid-line {
+                   height: 1px;
+                   background-color: rgba(20, 50, 20, 0.5);
+               }
+               
+               .graph-bar {
+                   position: absolute;
+                   bottom: 0;
+                   left: 0;
+                   right: 0;
+                   height: 100%;
+                   display: flex;
+                   flex-direction: column;
+                   justify-content: flex-end;
+               }
+               
+               .bar-fill {
+                   background: linear-gradient(to top, var(--m-text), rgba(0, 255, 65, 0.3));
+                   width: 100%;
+                   transition: height 0.5s;
+               }
+               
+               /* Network Stats */
+               .network-stats {
+                   display: flex;
+                   flex-direction: column;
+                   gap: 1rem;
+                   margin-bottom: 1rem;
+               }
+               
+               .stat-group {
+                   display: flex;
+                   justify-content: space-between;
+               }
+               
+               .stat-item {
+                   display: flex;
+                   flex-direction: column;
+                   gap: 0.25rem;
+               }
+               
+               .stat-label {
+                   font-size: 0.7rem;
+                   color: var(--m-text-dim);
+               }
+               
+               .stat-value {
+                   font-size: 0.9rem;
+                   font-weight: bold;
+               }
+               
+               /* Network Visualization */
+               .network-visual {
+                   height: 120px;
+                   border: 1px solid var(--m-border);
+                   background-color: rgba(0, 20, 0, 0.3);
+                   border-radius: var(--m-radius);
+                   overflow: hidden;
+                   padding: 0.5rem;
+                   display: flex;
+                   flex-direction: column;
+                   justify-content: space-between;
+               }
+               
+               .packet-line {
+                   position: relative;
+                   height: 2px;
+                   background-color: rgba(0, 255, 65, 0.2);
+                   overflow: hidden;
+               }
+               
+               .packet {
+                   position: absolute;
+                   height: 100%;
+                   width: 20px;
+                   animation-duration: 3s;
+                   animation-timing-function: linear;
+                   animation-iteration-count: infinite;
+               }
+               
+               .packet-in {
+                   background-color: var(--m-text);
+                   animation-name: packet-move-right;
+                   animation-delay: calc(var(--packet-index, 0) * 0.5s);
+               }
+               
+               .packet-out {
+                   background-color: var(--m-text-bright);
+                   animation-name: packet-move-left;
+                   animation-delay: calc(var(--packet-index, 0) * 0.7s);
+               }
+               
+               @keyframes packet-move-right {
+                   from { left: -20px; }
+                   to { left: 100%; }
+               }
+               
+               @keyframes packet-move-left {
+                   from { right: -20px; }
+                   to { right: 100%; }
+               }
+               
+               /* Create packet animations */
+               .packet-line:nth-child(1) .packet:nth-child(1) { --packet-index: 1; }
+               .packet-line:nth-child(1) .packet:nth-child(2) { --packet-index: 2; }
+               .packet-line:nth-child(1) .packet:nth-child(3) { --packet-index: 3; }
+               .packet-line:nth-child(2) .packet:nth-child(1) { --packet-index: 2; }
+               .packet-line:nth-child(2) .packet:nth-child(2) { --packet-index: 1; }
+               .packet-line:nth-child(3) .packet:nth-child(1) { --packet-index: 3; }
+               .packet-line:nth-child(3) .packet:nth-child(2) { --packet-index: 1; }
+               .packet-line:nth-child(3) .packet:nth-child(3) { --packet-index: 2; }
+               .packet-line:nth-child(3) .packet:nth-child(4) { --packet-index: 3; }
+               
+               /* Media queries */
+               @media (max-width: 992px) {
+                   .dashboard-grid {
+                       grid-template-columns: 1fr;
+                   }
+                   
+                   .dashboard-panel.wide {
+                       grid-column: span 1;
+                   }
+                   
+                   .dashboard-status {
+                       display: none;
+                   }
+               }
+           </style>
+           
+           <script>
+               // Dashboard Animation Script
+               document.addEventListener('DOMContentLoaded', function() {
+                   const dashboard = document.querySelector('.m-terminal-dashboard');
+                   if (!dashboard) return;
+                   
+                   // Simulate CPU and Memory graphs
+                   const cpuFill = dashboard.querySelector('.resource-graph:nth-child(1) .bar-fill');
+                   const cpuValue = dashboard.querySelector('.resource-graph:nth-child(1) .graph-value');
+                   const memFill = dashboard.querySelector('.resource-graph:nth-child(2) .bar-fill');
+                   const memValue = dashboard.querySelector('.resource-graph:nth-child(2) .graph-value');
+                   
+                   function updateGraphs() {
+                       // Random values with weighted tendency to stay relatively stable
+                       let cpuBase = parseInt(cpuValue.textContent);
+                       let memBase = parseInt(memValue.textContent);
+                       
+                       // Ensure we have valid values to start with
+                       if (isNaN(cpuBase)) cpuBase = 78;
+                       if (isNaN(memBase)) memBase = 45;
+                       
+                       // Calculate new values with small random changes
+                       let newCpu = cpuBase + (Math.random() * 10 - 5);
+                       let newMem = memBase + (Math.random() * 6 - 3);
+                       
+                       // Ensure values stay in range
+                       newCpu = Math.max(30, Math.min(95, newCpu));
+                       newMem = Math.max(25, Math.min(80, newMem));
+                       
+                       // Round and update display
+                       newCpu = Math.round(newCpu);
+                       newMem = Math.round(newMem);
+                       
+                       if (cpuFill && cpuValue) {
+                           cpuFill.style.height = `${newCpu}%`;
+                           cpuValue.textContent = `${newCpu}%`;
+                       }
+                       
+                       if (memFill && memValue) {
+                           memFill.style.height = `${newMem}%`;
+                           memValue.textContent = `${newMem}%`;
+                       }
+                       
+                       // Update network stats
+                       const inboundValue = dashboard.querySelector('.stat-item:nth-child(1) .stat-value');
+                       const outboundValue = dashboard.querySelector('.stat-item:nth-child(2) .stat-value');
+                       
+                       if (inboundValue) {
+                           const current = parseFloat(inboundValue.textContent);
+                           const newValue = Math.max(0.5, Math.min(2.5, current + (Math.random() * 0.4 - 0.2))).toFixed(2);
+                           inboundValue.textContent = `${newValue} MB/s`;
+                       }
+                       
+                       if (outboundValue) {
+                           const current = parseFloat(outboundValue.textContent);
+                           const newValue = Math.max(0.3, Math.min(1.8, current + (Math.random() * 0.3 - 0.15))).toFixed(2);
+                           outboundValue.textContent = `${newValue} MB/s`;
+                       }
+                       
+                       // Update uptime
+                       const uptimeEl = dashboard.querySelector('.status-item:nth-child(1) .status-item');
+                       if (uptimeEl) {
+                           let [hours, minutes, seconds] = uptimeEl.textContent.split(':').map(Number);
+                           
+                           seconds++;
+                           if (seconds >= 60) {
+                               seconds = 0;
+                               minutes++;
+                           }
+                           
+                           if (minutes >= 60) {
+                               minutes = 0;
+                               hours++;
+                           }
+                           
+                           uptimeEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                       }
+                       
+                       setTimeout(updateGraphs, 2000);
+                   }
+                   
+                   // Start updating graphs
+                   updateGraphs();
+                   
+                   // Add animations to packets
+                   const packetLines = dashboard.querySelectorAll('.packet-line');
+                   
+                   packetLines.forEach((line, lineIndex) => {
+                       // Create random packets periodically
+                       let packetCount = lineIndex === 0 ? 3 : lineIndex === 1 ? 2 : 4;
+                       for (let i = 0; i < packetCount; i++) {
+                           const packet = document.createElement('div');
+                           packet.className = i % 2 === 0 ? 'packet packet-in' : 'packet packet-out';
+                           packet.style.setProperty('--packet-index', i);
+                           line.appendChild(packet);
+                       }
+                   });
+               });
+           </script>
         </div>
         
         <div class="component-showcase" id="glitch-text">
@@ -5439,8 +6853,464 @@ domReady(function() {
         }
     </style>
     <!-- Add this in the head section of index.html -->
-<!-- Add this in the head section of index.html -->
 <style>
+    /* ===== NAVBAR-SIDEBAR INTEGRATION FIXES ===== */
+    
+    /* Set proper variables */
+    :root {
+      --navbar-height: 70px;
+      --sidebar-width: 280px;
+      --sidebar-transition-speed: 0.3s;
+    }
+    
+    /* Fix sticky sidebar positioning when scrolling */
+    .docs-sidebar {
+      position: sticky;
+      top: var(--navbar-height);
+      height: calc(100vh - var(--navbar-height));
+      transition: transform var(--sidebar-transition-speed) ease, 
+                  opacity var(--sidebar-transition-speed) ease,
+                  top var(--sidebar-transition-speed) ease;
+      padding-top: 1rem;
+      z-index: 900;
+    }
+    
+    /* Add highlight to active section in sidebar */
+    .docs-sidebar-link.active {
+      color: var(--m-text-bright);
+      background-color: rgba(0, 255, 65, 0.05);
+      padding-left: 0.5rem;
+      position: relative;
+    }
+    
+    .docs-sidebar-link.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background-color: var(--m-text);
+      box-shadow: 0 0 10px var(--m-glow);
+    }
+    
+    /* Fix the matrix nav */
+    .matrix-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--navbar-height);
+      z-index: 1000;
+      transition: height 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    
+    .matrix-nav.scrolled {
+      height: var(--navbar-height);
+      background-color: rgba(0, 10, 2, 0.95);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+    }
+    
+    /* Adjust main content positioning */
+    .docs-content {
+      padding-top: 1rem;
+    }
+    
+    /* Smooth integration between navbar and sidebar */
+    .matrix-nav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        var(--m-text) 20%, 
+        var(--m-text-bright) 50%, 
+        var(--m-text) 80%,
+        transparent 100%
+      );
+      opacity: 0.6;
+      z-index: 2;
+    }
+    
+    /* For mobile view */
+    @media (max-width: 992px) {
+      .docs-sidebar {
+        position: fixed;
+        top: var(--navbar-height);
+        left: -300px;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+      }
+      
+      .docs-sidebar.active {
+        left: 0;
+      }
+    }
+    
+    /* ===== SCROLL DOWN INDICATOR FIXES ===== */
+    
+    /* Improve hero scroll indicator */
+    .hero .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      z-index: 5;
+      animation: pulse-glow 2s infinite;
+    }
+    
+    /* Better scroll arrow animation */
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-15px) translateX(-50%); }
+      60% { transform: translateY(-10px) translateX(-50%); }
+    }
+    
+    /* Pulse glow effect for scroll indicator */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.7; text-shadow: 0 0 5px var(--m-glow); }
+      50% { opacity: 1; text-shadow: 0 0 15px var(--m-glow), 0 0 20px var(--m-glow); }
+    }
+    
+    /* ===== TERMINAL TYPING EFFECT FOR SECTION NAME ===== */
+    
+    /* Container for the title that will change */
+    .nav-title-container {
+      display: inline-block;
+      position: relative;
+      min-width: 150px;
+      padding-right: 12px; /* Space for cursor */
+    }
+    
+    /* Dynamic section title with terminal effect */
+    .nav-section-title {
+      overflow: hidden;
+      white-space: nowrap;
+      color: var(--m-text-bright);
+      position: relative;
+      display: none;
+    }
+    
+    /* Original logo title */
+    .nav-logo-title {
+      transition: opacity 0.3s ease;
+    }
+    
+    /* Terminal cursor effect */
+    .terminal-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background-color: var(--m-text);
+      animation: cursor-blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    /* Type-on animation for section titles */
+    @keyframes type-on {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    /* Blinking cursor animation */
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    
+    /* Terminal glitch effect */
+    .terminal-glitch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(transparent, rgba(0, 255, 65, 0.1), transparent);
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    
+    /* Active section box */
+    .active-section-box {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      padding: 5px 10px;
+      background: rgba(0, 20, 0, 0.8);
+      border: 1px solid var(--m-border);
+      color: var(--m-text);
+      font-size: 0.8rem;
+      border-radius: var(--m-radius);
+      z-index: 1002;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .active-section-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .active-section-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: var(--m-text);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 1.5s infinite;
+    }
+    
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+  
+  <!-- Update the navbar section with this code -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // References to elements
+    const matrixNav = document.querySelector('.matrix-nav');
+    const navLogo = document.querySelector('.nav-logo .logo-text');
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
+    const mainSections = document.querySelectorAll('section[id]');
+    const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+    
+    // Create terminal cursor element and section title container
+    if (navLogo) {
+      // Wrap the logo text in a container
+      const logoParent = navLogo.parentElement;
+      const titleContainer = document.createElement('div');
+      titleContainer.className = 'nav-title-container';
+      
+      // Keep the original logo text
+      const originalText = navLogo.textContent;
+      navLogo.className += ' nav-logo-title';
+      
+      // Create the dynamic section title
+      const sectionTitle = document.createElement('span');
+      sectionTitle.className = 'nav-section-title';
+      sectionTitle.style.display = 'none';
+      
+      // Create terminal cursor
+      const cursor = document.createElement('span');
+      cursor.className = 'terminal-cursor';
+      
+      // Create glitch effect element
+      const glitchEffect = document.createElement('div');
+      glitchEffect.className = 'terminal-glitch';
+      
+      // Insert all elements
+      titleContainer.appendChild(navLogo);
+      titleContainer.appendChild(sectionTitle);
+      titleContainer.appendChild(cursor);
+      titleContainer.appendChild(glitchEffect);
+      logoParent.appendChild(titleContainer);
+      
+      // Create active section box
+      const activeSectionBox = document.createElement('div');
+      activeSectionBox.className = 'active-section-box';
+      activeSectionBox.innerHTML = `
+        <span class="active-section-indicator"></span>
+      `;
+      document.body.appendChild(activeSectionBox);
+      
+      let currentSectionId = '';
+      let isTyping = false;
+      let typeTimeout;
+      
+      // Terminal typing effect function
+        if (isTyping) {
+          clearTimeout(typeTimeout);
+        }
+        
+        isTyping = true;
+        
+        // Hide original logo and show section title
+        navLogo.style.display = 'none';
+        element.style.display = 'inline-block';
+        element.textContent = '';
+        element.style.width = '0';
+        
+        // Trigger glitch effect
+        glitchEffect.style.opacity = '0.3';
+        setTimeout(() => {
+          glitchEffect.style.opacity = '0';
+        }, 150);
+        
+        let i = 0;
+        
+        // Animate typing
+        function typeCharacter() {
+          if (i < text.length) {
+            element.textContent += text.charAt(i);
+            element.style.width = ((i + 1) / text.length * 100) + '%';
+            i++;
+            
+            // Add random delay for realistic typing
+            const randomDelay = Math.floor(Math.random() * 50) + 30;
+            typeTimeout = setTimeout(typeCharacter, randomDelay);
+          } else {
+            isTyping = false;
+            if (callback) callback();
+          }
+        }
+        
+        typeCharacter();
+      }
+      
+      // Update active section while scrolling
+      function updateActiveSection() {
+        const scrollPosition = window.scrollY + 100; // Add offset
+        
+        // Find the current section
+        let activeSection = null;
+        mainSections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionId = section.getAttribute('id');
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            activeSection = {
+              id: sectionId,
+              element: section
+            };
+            
+            // Set active class on sidebar link
+            sidebarLinks.forEach(link => {
+              const href = link.getAttribute('href');
+              if (href === `#${sectionId}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+          }
+        });
+        
+        // Update navbar title if we're on a new section
+        if (activeSection && activeSection.id !== currentSectionId) {
+          currentSectionId = activeSection.id;
+          
+          // Get section title
+          const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
+          let sectionTitleText = sectionHeading.textContent.trim().split(' ')[0]; // Get first word
+          
+          // Format title for terminal style
+          sectionTitleText = `//${sectionTitleText.toUpperCase()}`;
+          
+          // Type the section title with terminal effect
+          
+          // Update the active section box
+          if (activeSectionNameEl) {
+            activeSectionNameEl.textContent = sectionTitleText;
+          }
+          document.querySelector('.active-section-box').classList.add('visible');
+        }
+        
+        // If we're back at the top, restore original logo
+        if (scrollPosition < 100) {
+          if (navLogo.style.display === 'none') {
+            // Type the original text back
+              // After typing, switch back to logo
+              setTimeout(() => {
+                sectionTitle.style.display = 'none';
+                navLogo.style.display = 'inline-block';
+                currentSectionId = '';
+                document.querySelector('.active-section-box').classList.remove('visible');
+              }, 500);
+            });
+          }
+        }
+        
+        // Add scrolled class to navbar past hero section
+        if (scrollPosition > 100) {
+          matrixNav.classList.add('scrolled');
+        } else {
+          matrixNav.classList.remove('scrolled');
+        }
+      }
+      
+      // Fix scroll indicator position
+      if (scrollIndicator) {
+        scrollIndicator.className = 'scroll-indicator';
+        scrollIndicator.style.animation = 'bounce 2s infinite';
+      }
+      
+      // Listen for scroll events
+      window.addEventListener('scroll', updateActiveSection);
+      
+      // Initial call
+      updateActiveSection();
+    }
+    
+    // Enhance navbar buttons active state
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        navLinks.forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+    
+    // Fix sidebar links for deep scroll sections
+    document.querySelectorAll('.docs-sidebar-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        // Remove active class from all links
+        document.querySelectorAll('.docs-sidebar-link').forEach(l => {
+          l.classList.remove('active');
+        });
+        
+        // Add active class to this link
+        this.classList.add('active');
+        
+        // Add cool terminal typing effect to the section in navbar
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+          // Get section title
+          const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
+          const sectionTitleText = `//${sectionHeading.textContent.trim().split(' ')[0].toUpperCase()}`;
+          
+          // Type the section title
+          const sectionTitle = document.querySelector('.nav-section-title');
+          const navLogo = document.querySelector('.nav-logo-title');
+          
+          if (sectionTitle && navLogo) {
+            // Show typing effect in navbar
+          }
+        }
+        
+        // Close mobile sidebar if open
+        const sidebar = document.querySelector('.docs-sidebar');
+        const backdrop = document.querySelector('.sidebar-backdrop');
+        
+        if (sidebar && sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          if (backdrop) backdrop.classList.remove('active');
+        }
+      });
+    });
+  });
+  </script>
+  
+  <style>
     /* ===== NAVBAR-SIDEBAR INTEGRATION FIXES ===== */
     
     /* Set proper variables */
@@ -5855,7 +7725,6 @@ domReady(function() {
     const scrollIndicator = document.querySelector('.hero a[href="#features"]');
     
     // Create matrix terminal display
-    const terminalDisplay = document.createElement('div');
     terminalDisplay.className = 'matrix-terminal-display';
     terminalDisplay.innerHTML = `
       <span class="terminal-prefix">></span>
@@ -5881,7 +7750,6 @@ domReady(function() {
     
     // Add all elements to the DOM
     if (navContainer) {
-      navContainer.appendChild(terminalDisplay);
       navContainer.appendChild(connectionLines);
       document.body.appendChild(statusIndicator);
       document.body.appendChild(particlesContainer);
@@ -5895,7 +7763,6 @@ domReady(function() {
     let currentSectionId = '';
     let typeTimeout;
     
-    function typeTerminalEffect(text, callback) {
       if (isTyping) {
         clearTimeout(typeTimeout);
       }
@@ -6065,7 +7932,6 @@ domReady(function() {
         const terminalText = sectionTitleText.toUpperCase();
         
         // Type with terminal effect
-        typeTerminalEffect(terminalText, function() {
           // Activate random connection lines after typing
           const lines = document.querySelectorAll('.connection-line');
           lines.forEach(line => {
@@ -6095,7 +7961,6 @@ domReady(function() {
         currentSectionId = '';
         
         // Type MATRIX.CSS in terminal
-        typeTerminalEffect('MATRIX.CSS');
         
         // Hide status indicator
         statusIndicator.classList.remove('visible');
@@ -6134,7 +7999,6 @@ domReady(function() {
           const sectionTitleText = sectionHeading.textContent.trim().toUpperCase();
           
           // Update terminal with typing effect
-          typeTerminalEffect(sectionTitleText);
           
           // Update status indicator
           const statusText = document.querySelector('.status-text');
@@ -6195,7 +8059,6 @@ domReady(function() {
     
     // Initial animation
     setTimeout(() => {
-      typeTerminalEffect('MATRIX.CSS');
     }, 1000);
   });
   </script>
