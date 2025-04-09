@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Import Matrix.css -->
+    <link rel="stylesheet" href="matrix.css">
+    <title>Matrix.css | The Ultimate Cyberpunk Framework</title>
+    <style>
+        /* Custom styles for documentation site only */
+        :root {
+            scroll-behavior: smooth;
+            --docs-header-height: 70px;
+            --docs-sidebar-width: 280px;
+        }
+
+        /* Hero section styling */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            overflow: hidden;
+        }
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            animation: m-glow-pulse 3s infinite;
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Feature grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--m-text-bright);
+        }
+
+        /* Documentation layout */
+        .docs-layout {
+            display: flex;
+            min-height: calc(100vh - var(--docs-header-height));
+        }
+        .docs-sidebar {
+            width: var(--docs-sidebar-width);
+            position: sticky;
+            top: var(--docs-header-height);
+            height: calc(100vh - var(--docs-header-height));
+            overflow-y: auto;
+            background-color: var(--m-panel);
+            border-right: 1px solid var(--m-border);
+            padding: 2rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--m-text-dim) var(--m-bg);
+        }
+        .docs-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .docs-sidebar::-webkit-scrollbar-track {
+            background: var(--m-bg);
+        }
+        .docs-sidebar::-webkit-scrollbar-thumb {
+            background: var(--m-text-dim);
+            border-radius: 3px;
+        }
+        .docs-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 100%;
+        }
+
+        /* Component showcase (if any) */
+        .component-showcase {
+            margin-bottom: 3rem;
+        }
+        .component-demo {
+            position: relative;
+            padding: 2rem;
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            margin-bottom: 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .component-code {
+            position: relative;
+            padding: 1rem;
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            overflow-x: auto;
+            background-color: rgba(0, 20, 0, 0.3);
+        }
+        .component-code-tabs {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        .component-code-tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            background-color: var(--m-secondary);
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius) var(--m-radius) 0 0;
+            margin-right: 0.5rem;
+        }
+        .component-code-tab.active {
+            background-color: var(--m-text-dim);
+            color: var(--m-text-bright);
+        }
+
+        /* Color palette display */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+        .color-item {
+            border-radius: var(--m-radius);
+            overflow: hidden;
+            border: 1px solid var(--m-border);
+            transition: transform 0.3s;
+        }
+        .color-item:hover {
+            transform: scale(1.05);
+        }
+        .color-preview {
+            height: 100px;
+        }
+        .color-info {
+            padding: 1rem;
+            background-color: var(--m-panel);
+        }
+        .color-name {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .color-value {
+            font-family: var(--m-font-main);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive Terminal Demo */
+        .terminal-demo {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Neural network demo */
+        .neural-network-demo {
+            height: 400px;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        /* Theme switch */
+        .theme-switch {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--m-panel);
+            border: 1px solid var(--m-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--m-glow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .theme-switch:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--m-glow);
+        }
+
+        /* Navbar enhancements */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--docs-header-height);
+            background-color: rgba(12, 12, 12, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--m-border);
+        }
+        .nav-content {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-family: var(--m-font-alt);
+            color: var(--m-text-bright);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--m-glow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-link {
+            position: relative;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--m-text);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Mobile menu */
+        .mobile-menu-toggle {
+            display: none;
+            width: 30px;
+            height: 30px;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .mobile-menu-toggle span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: var(--m-text);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        /* Copy button */
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: var(--m-secondary);
+            border: 1px solid var(--m-border);
+            color: var(--m-text);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--m-radius);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .copy-button:hover {
+            background-color: var(--m-text-dim);
+            color: var(--m-text-bright);
+        }
+
+        /* Code rain container */
+        .code-rain-container {
+            position: relative;
+            height: 70vh;
+            overflow: hidden;
+        }
+
+        /* Custom search bar */
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--m-border);
+            border-radius: var(--m-radius);
+            color: var(--m-text);
+            font-family: var(--m-font-main);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            border-color: var(--m-text);
+            box-shadow: 0 0 15px var(--m-glow);
+            outline: none;
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--m-text-dim);
+        }
+
+        /* Documentation section */
+        .docs-section {
+            margin-bottom: 4rem;
+        }
+        .docs-section-title {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--m-border);
+        }
+        .docs-section-title::before {
+            content: "//";
+            color: var(--m-text-dim);
+            margin-right: 0.5rem;
+        }
+
+        /* Mobile adaptations */
+        @media (max-width: 992px) {
+            .docs-sidebar {
+                position: fixed;
+                left: -300px;
+                transition: left 0.3s;
+                z-index: 900;
+            }
+            .docs-sidebar.active {
+                left: 0;
+            }
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 899;
+                display: none;
+            }
+            .sidebar-backdrop.active {
+                display: block;
+            }
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .hero-cta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .docs-content {
+                padding: 1rem;
+            }
+            .search-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile sidebar backdrop -->
+    <div class="sidebar-backdrop"></div>
+    
+    <!-- Theme Switch Button -->
+    <div class="theme-switch" id="themeSwitch">
+        <div class="m-badge m-badge-primary">T</div>
+    </div>
+
+    <nav class="matrix-nav">
+        <div class="nav-glitch-line"></div>
+        <div class="nav-container">
+            <!-- Logo Section with Digital Animation -->
+            <div class="nav-logo-container">
+                <a href="#" class="nav-logo">
+                    <span class="logo-bracket">[</span>
+                    <span class="logo-text" data-text="MATRIX.CSS">MATRIX.CSS</span>
+                    <span class="logo-bracket">]</span>
+                    <span class="logo-cursor">_</span>
+                </a>
+                <div class="nav-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM ONLINE</span>
+                </div>
+            </div>
+            
+            <!-- Cyberpunk Menu Toggle for Mobile -->
+            <div class="nav-menu-toggle mobile-menu-toggle" id="matrixMenuToggle">
+                <div class="toggle-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="toggle-label">MENU</div>
+            </div>
+            
+            <!-- Neural Network Links -->
+            <div class="nav-links-container">
+                <div class="nav-decoration">
+                    <span class="decoration-dot"></span>
+                    <span class="decoration-line"></span>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="#getting-started" class="nav-link" data-text="GETTING_STARTED">
+                        <span class="link-number">01</span>
+                        <span class="link-text">GETTING_STARTED</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="#components" class="nav-link" data-text="COMPONENTS">
+                        <span class="link-number">02</span>
+                        <span class="link-text">COMPONENTS</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="#utilities" class="nav-link" data-text="UTILITIES">
+                        <span class="link-number">03</span>
+                        <span class="link-text">UTILITIES</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="#examples" class="nav-link" data-text="EXAMPLES">
+                        <span class="link-number">04</span>
+                        <span class="link-text">EXAMPLES</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="https://github.com/example/matrix-css" target="_blank" class="nav-link" data-text="GITHUB">
+                        <span class="link-number">05</span>
+                        <span class="link-text">GITHUB</span>
+                        <span class="link-highlight"></span>
+                        <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="nav-search">
+                    <div class="search-container">
+                        <div class="search-icon">⌕</div>
+                        <input type="text" class="search-input" placeholder="SEARCH SYSTEM...">
+                        <div class="search-status">READY</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Digital Rain Background Effect -->
+        <canvas id="matrixNavRain" class="nav-bg-canvas"></canvas>
+        <!-- Scanline Effect -->
+        <div class="nav-scanline"></div>
+    </nav>
+    <style>
+      :root {
+        /* Custom Matrix nav variables */
+        --nav-bg: rgba(0, 10, 2, 0.95);
+        --nav-border: #143214;
+        --nav-text: #00ff41;
+        --nav-text-bright: #00ff97;
+        --nav-text-dim: #0a3f0a;
+        --nav-glow: rgba(0, 255, 65, 0.6);
+        --nav-panel: #0f0f0f;
+        --nav-height: 70px;
+        --nav-font: 'Courier New', monospace;
+        --nav-transition: 0.3s;
+      }
+      /* Base Navigation Styles */
+      .matrix-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--nav-height);
+        background-color: var(--nav-bg);
+        border-bottom: 1px solid var(--nav-border);
+        z-index: 9999;
+        font-family: var(--nav-font);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: var(--nav-text);
+        overflow: hidden;
+        transition: all var(--nav-transition);
+      }
+      .matrix-nav:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(to right, transparent 0%, var(--nav-text) 20%, var(--nav-text-bright) 50%, var(--nav-text) 80%, transparent 100%);
+        opacity: 0.6;
+        z-index: 2;
+      }
+      .matrix-nav.scrolled {
+        background-color: var(--nav-bg);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      }
+      .nav-logo-container {
+        position: relative;
+      }
+      .nav-logo .logo-text {
+        display: inline-block;
+      }
+      .nav-links-container {
+        display: flex;
+        align-items: center;
+      }
+      .nav-decoration {
+        display: none;
+      }
+      .nav-links-container.active .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        right: 0;
+        background-color: var(--nav-panel);
+        padding: 1rem;
+        z-index: 999;
+      }
+      .nav-links-container.active .nav-links a {
+        margin: 0.5rem 0;
+      }
+      .nav-bg-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+      .nav-scanline {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 255, 65, 0.03) 2px);
+        pointer-events: none;
+        z-index: 1;
+      }
+    </style>
+
+    <!-- Hero Section with Code Rain -->
+    <section class="hero" id="home">
+        <!-- Digital Rain Canvas -->
+        <canvas id="matrixRain" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+        
+        <!-- Hero Content -->
+        <div style="position: relative; z-index: 2; text-align: center; padding: 0 20px; max-width: 1000px;">
+            <div style="display: inline-block; position: relative; margin-bottom: 2rem;">
+                <h1 class="hero-title" style="font-size: clamp(3rem, 8vw, 8rem); font-weight: bold; letter-spacing: 6px; text-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); margin-bottom: 0.5rem; animation: pulse 3s infinite; text-transform: uppercase;">MATRIX.CSS</h1>
+                <div style="width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--m-text), transparent); margin: 10px auto 20px; animation: expand 2s ease;"></div>
+            </div>
+            
+            <p class="hero-subtitle" style="font-size: clamp(1rem, 2vw, 1.5rem); max-width: 800px; margin: 0 auto 3rem; line-height: 1.6; text-shadow: 0 0 10px var(--m-glow); background-color: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 5px; border: 1px solid var(--m-border);">
+                Immerse your users in the digital realm with the complete Matrix-inspired design framework. Build stunning cyberpunk interfaces with minimal effort.
+            </p>
+            
+            <div class="hero-cta" style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                <a href="#getting-started" class="m-btn m-btn-primary m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px; position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 2;">ENTER THE MATRIX</span>
+                </a>
+                <a href="#components" class="m-btn m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px;">EXPLORE COMPONENTS</a>
+            </div>
+            
+            <div style="margin-top: 3rem; opacity: 0.8; font-size: 0.9rem;">
+                <span class="m-badge" style="padding: 0.3rem 0.8rem; font-size: 0.9rem; letter-spacing: 1px;">VERSION 2.0</span>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer;">
+                <a href="#features" class="scroll-indicator">
+                    <span style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">Scroll Down</span>
+                    <span style="display: block; transform: rotate(45deg); width: 15px; height: 15px; border-right: 2px solid var(--m-text); border-bottom: 2px solid var(--m-text); margin: 0 auto;"></span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <style>
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); }
+            50% { text-shadow: 0 0 30px var(--m-glow), 0 0 60px var(--m-glow), 0 0 80px var(--m-glow); }
+        }
+        @keyframes expand {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-10px) translateX(-50%); }
+            60% { transform: translateY(-5px) translateX(-50%); }
+        }
+    </style>
+    <!-- ULTRA-ENHANCED MATRIX REALITY FEATURE SECTION -->
+    <section class="m-container m-py-5" id="features">
+        <!-- Glitching Title with Digital Code Effect -->
+        <div class="matrix-title-container">
+            <div class="matrix-code-overlay"></div>
+            <h2 class="matrix-title glitch-text" data-text="Why Choose Matrix.css?">Why Choose Matrix.css?</h2>
+            <div class="matrix-title-underline">
+                <div class="matrix-underline-pulse"></div>
+            </div>
+        </div>
+        
+        <!-- Matrix Hexagonal Neural Network Grid -->
+        <div class="neural-grid-container">
+            <!-- Neural Connection Lines (Generated by JS) -->
+            <div class="neural-connections" id="neuralConnections"></div>
+            <!-- Neural Nodes / Feature Cards -->
+            <div class="neural-node" data-position="1">
+                <div class="node-pulse"></div>
+                <div class="matrix-hex-card">
+                    <div class="card-content">
+                        <div class="code-rain-overlay"></div>
+                        <div class="card-symbol">01</div>
+                        <div class="card-header">
+                            <div class="card-indicator active"></div>
+                            <h3 class="card-title">BEND REALITY</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Reshape perception with pure CSS constructs. No JavaScript dependencies - the Matrix exists beyond conventional constraints.</p>
+                        </div>
+                        <div class="card-status">
+                            <div class="status-label">SYSTEM:</div>
+                            <div class="status-value">OPERATIONAL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neural-node" data-position="2">
+                <div class="node-pulse"></div>
+                <div class="matrix-hex-card">
+                    <div class="card-content">
+                        <div class="code-rain-overlay"></div>
+                        <div class="card-symbol">02</div>
+                        <div class="card-header">
+                            <div the="card-indicator active"></div>
+                            <h3 class="card-title">DIGITAL SENTIENCE</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Components that transcend ordinary design. Each element exists with purpose in the Matrix - aesthetics evolved beyond human expectation.</p>
+                        </div>
+                        <div class="card-status">
+                            <div class="status-label">SYSTEM:</div>
+                            <div class="status-value">OPERATIONAL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neural-node" data-position="3">
+                <div class="node-pulse"></div>
+                <div class="matrix-hex-card">
+                    <div class="card-content">
+                        <div class="code-rain-overlay"></div>
+                        <div class="card-symbol">03</div>
+                        <div class="card-header">
+                            <div class="card-indicator active"></div>
+                            <h3 class="card-title">QUANTUM VELOCITY</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Optimization beyond conventional physics. Acceleration and rendering efficiency that defies the constraints of digital space-time.</p>
+                        </div>
+                        <div class="card-status">
+                            <div class="status-label">SYSTEM:</div>
+                            <div class="status-value">OPTIMAL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neural-node" data-position="4">
+                <div class="node-pulse"></div>
+                <div class="matrix-hex-card">
+                    <div class="card-content">
+                        <div class="code-rain-overlay"></div>
+                        <div class="card-symbol">04</div>
+                        <div class="card-header">
+                            <div class="card-indicator active"></div>
+                            <h3 class="card-title">OMNIPRESENT EXISTENCE</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Responsive beyond dimensions. Your interface materializes perfectly across all possible devices, existing in every reality simultaneously.</p>
+                        </div>
+                        <div class="card-status">
+                            <div class="status-label">SYSTEM:</div>
+                            <div class="status-value">CALIBRATED</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neural-node" data-position="5">
+                <div class="node-pulse"></div>
+                <div class="matrix-hex-card">
+                    <div class="card-content">
+                        <div class="code-rain-overlay"></div>
+                        <div class="card-symbol">05</div>
+                        <div class="card-header">
+                            <div class="card-indicator active"></div>
+                            <h3 class="card-title">SENTIENT COMPONENTS</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Neural networks, terminals, and data rain visualizers that evolve beyond conventional UI. Components that question the nature of their reality.</p>
+                        </div>
+                        <div class="card-status">
+                            <div class="status-label">SYSTEM:</div>
+                            <div class="status-value">ACTIVE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neural-node" data-position="6">
+                <div class="node-pulse"></div>
+                <div class="matrix-hex-card">
+                    <div class="card-content">
+                        <div class="code-rain-overlay"></div>
+                        <div class="card-symbol">06</div>
+                        <div class="card-header">
+                            <div class="card-indicator active"></div>
+                            <h3 class="card-title">DUALITY PARADIGM</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Blue pill or red pill? Choose between dark Matrix reality or illuminated variant. Two worlds coexist within one codebase - the choice is yours.</p>
+                        </div>
+                        <div class="card-status">
+                            <div class="status-label">SYSTEM:</div>
+                            <div class="status-value">BALANCED</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Sections (Sidebar + Content) -->
+    <section class="m-container m-py-5">
+        <div class="docs-layout">
+            <aside class="docs-sidebar">
+                <div style="padding: 0 1.5rem;">
+                    <div class="search-container m-mb-4">
+                        <span class="search-icon">⌕</span>
+                        <input type="text" class="search-input" placeholder="Search documentation...">
+                    </div>
+                </div>
+                <div style="padding: 0 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Getting Started</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#introduction" class="m-text docs-sidebar-link">Introduction</a></li>
+                        <li class="m-mb-2"><a href="#installation" class="m-text docs-sidebar-link">Installation</a></li>
+                        <li class="m-mb-2"><a href="#colors" class="m-text docs-sidebar-link">Colors</a></li>
+                        <li class="m-mb-2"><a href="#typography" class="m-text docs-sidebar-link">Typography</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Layout</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#containers" class="m-text docs-sidebar-link">Containers</a></li>
+                        <li class="m-mb-2"><a href="#grid-system" class="m-text docs-sidebar-link">Grid System</a></li>
+                        <li class="m-mb-2"><a href="#spacing" class="m-text docs-sidebar-link">Spacing</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Components</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#buttons" class="m-text docs-sidebar-link">Buttons</a></li>
+                        <li class="m-mb-2"><a href="#alerts" class="m-text docs-sidebar-link">Alerts</a></li>
+                        <li class="m-mb-2"><a href="#cards" class="m-text docs-sidebar-link">Cards</a></li>
+                        <li class="m-mb-2"><a href="#badges" class="m-text docs-sidebar-link">Badges</a></li>
+                        <li class="m-mb-2"><a href="#progress-bars" class="m-text docs-sidebar-link">Progress Bars</a></li>
+                        <li class="m-mb-2"><a href="#spinners" class="m-text docs-sidebar-link">Spinners</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Advanced Components</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#neural-network" class="m-text docs-sidebar-link">Neural Network</a></li>
+                        <li class="m-mb-2"><a href="#terminal" class="m-text docs-sidebar-link">Terminal</a></li>
+                        <li class="m-mb-2"><a href="#glitch-text" class="m-text docs-sidebar-link">Glitch Text</a></li>
+                        <li class="m-mb-2"><a href="#identity-card" class="m-text docs-sidebar-link">Identity Card</a></li>
+                        <li class="m-mb-2"><a href="#code-rain" class="m-text docs-sidebar-link">Code Rain</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Utilities</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#effects" class="m-text docs-sidebar-link">Visual Effects</a></li>
+                        <li class="m-mb-2"><a href="#animations" class="m-text docs-sidebar-link">Animations</a></li>
+                        <li class="m-mb-2"><a href="#transforms" class="m-text docs-sidebar-link">Transforms</a></li>
+                        <li class="m-mb-2"><a href="#responsive" class="m-text docs-sidebar-link">Responsive Design</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <div class="docs-content">
+                <h2 id="getting-started" class="docs-section-title">Getting Started</h2>
+                <section class="docs-section" id="introduction">
+                    <h3>Introduction</h3>
+                    <p><strong class="m-glow">Matrix.css</strong> is a comprehensive CSS framework inspired by The Matrix aesthetic. It provides a dark theme with neon green accents, a complete component library, and utility classes for building futuristic, cyberpunk-inspired interfaces.</p>
+                    <p>The framework includes everything from basic UI components to advanced Matrix-themed effects, making it perfect for cybersecurity dashboards, sci-fi themed websites, or any project that wants to capture that distinctive Matrix feel.</p>
+                    <div class="m-alert m-alert-info">
+                        <strong>Note:</strong> Matrix.css is designed as a standalone CSS framework, with no JavaScript required for most components. However, some interactive components may benefit from JavaScript for full functionality.
+                    </div>
+                </section>
+                <section class="docs-section" id="installation">
+                    <h3>Installation</h3>
+                    <p>You can quickly include Matrix.css in your project using one of the following methods:</p>
+                    <h4>Direct Download</h4>
+                    <div class="component-code m-mb-4">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>&lt;link rel="stylesheet" href="path/to/matrix.css"&gt;</code></pre>
+                    </div>
+                    <h4>CDN</h4>
+                    <div class="component-code m-mb-4">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>&lt;link rel="stylesheet" href="https://cdn.example.com/matrix-css/1.0/matrix.css"&gt;</code></pre>
+                    </div>
+                    <h4>NPM</h4>
+                    <div class="component-code m-mb-4">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>npm install matrix-css</code></pre>
+                    </div>
+                    <p>Then import it in your JavaScript:</p>
+                    <div class="component-code">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>import 'matrix-css/dist/matrix.css';</code></pre>
+                    </div>
+                </section>
+                <section class="docs-section" id="colors">
+                    <h3>Colors</h3>
+                    <p>Matrix.css uses a carefully crafted color palette that captures the essence of The Matrix. The core colors are dark backgrounds with neon green accents, but the framework also includes additional colors for different states and components.</p>
+                    <h4 class="m-mt-4">Core Colors</h4>
+                    <div class="color-grid">
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-bg);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Background</h5>
+                                <div class="color-value">--m-bg: #0c0c0c</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-text);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Text</h5>
+                                <div class="color-value">--m-text: #00ff41</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-text-dim);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Text Dim</h5>
+                                <div class="color-value">--m-text-dim: #0a3f0a</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-text-bright);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Text Bright</h5>
+                                <div class="color-value">--m-text-bright: #00ff97</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-panel);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Panel</h5>
+                                <div class="color-value">--m-panel: #0f0f0f</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-border);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Border</h5>
+                                <div class="color-value">--m-border: #143214</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="m-mt-4">Functional Colors</h4>
+                    <div class="color-grid">
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-primary);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Primary</h5>
+                                <div class="color-value">--m-primary: #00ff41</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-info);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Info</h5>
+                                <div class="color-value">--m-info: #39a0ed</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-warning);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Warning</h5>
+                                <div class="color-value">--m-warning: #ffe100</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-danger);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Danger</h5>
+                                <div class="color-value">--m-danger: #ff2222</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-light);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Light</h5>
+                                <div class="color-value">--m-light: #1d1d1d</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: var(--m-dark);"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Dark</h5>
+                                <div class="color-value">--m-dark: #030303</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="docs-section" id="typography">
+                    <h3>Typography</h3>
+                    <p>Matrix.css uses monospace fonts to further enhance the tech and terminal feel of the framework. The default font stack consists of 'Courier New' and other monospace fallbacks.</p>
+                    <h4>Headings</h4>
+                    <h1>h1. Matrix.css heading</h1>
+                    <h2>h2. Matrix.css heading</h2>
+                    <h3>h3. Matrix.css heading</h3>
+                    <h4>h4. Matrix.css heading</h4>
+                    <h5>h5. Matrix.css heading</h5>
+                    <h6>h6. Matrix.css heading</h6>
+                    <h4 class="m-mt-4">Text Content</h4>
+                    <p>This is a standard paragraph with the default styling of Matrix.css. The framework provides a clean, readable text style with a carefully chosen line height and spacing.</p>
+                    <p><strong>Bold text</strong> and <em>italicized text</em> are styled to maintain readability while fitting into the overall aesthetic.</p>
+                    <h4 class="m-mt-4">Links</h4>
+                    <p><a href="#">This is a standard link</a> that has hover effects including an underline animation and a subtle glow effect.</p>
+                    <h4 class="m-mt-4">Code</h4>
+                    <p>Inline <code>code blocks</code> are styled to stand out within text content.</p>
+                    <div class="component-code">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>// This is a code block
+function matrixEffect() {
+  console.log("Matrix effect activated");
+}</code></pre>
+                    </div>
+                    <h4 class="m-mt-4">Text Effects</h4>
+                    <p><span class="m-glow">This text has a glowing effect</span> that pulses subtly, adding to the Matrix aesthetic.</p>
+                </section>
+
+                <h2 id="layout" class="docs-section-title">Layout</h2>
+                <section class="docs-section" id="containers">
+                    <h3>Containers</h3>
+                    <p>Use container elements to center and pad your content. The Matrix.css container adapts to screen size for responsive design.</p>
+                </section>
+                <section class="docs-section" id="grid-system">
+                    <h3>Grid System</h3>
+                    <p>The grid system is a flexbox-based layout that lets you define columns which automatically wrap on smaller screens.</p>
+                </section>
+                <section class="docs-section" id="spacing">
+                    <h3>Spacing</h3>
+                    <p>Utility classes for margin and padding (e.g., <code>.m-2</code>, <code>.p-3</code>) help space elements consistently in a cyberpunk style.</p>
+                </section>
+
+                <h2 id="components" class="docs-section-title">Components</h2>
+                <!-- Buttons Section (with gallery) -->
+                <section class="docs-section" id="buttons">
+                    <h3>Buttons</h3>
+                    <p>Buttons come with a neon glow hover effect and multiple preset styles (default, primary, danger, neon).</p>
+                </section>
+                <div class="m-container m-py-5" id="button-showcase">
+                    <h2 class="docs-section-title">Matrix Button Gallery</h2>
+                    <div class="m-row">
+                        <div class="m-col-md-6">
+                            <h3>Standard Buttons</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="m-btn">Default</button>
+                                <button class="m-btn m-btn-primary">Primary</button>
+                                <button class="m-btn m-btn-danger">Danger</button>
+                                <button class="m-btn m-btn-neon">Neon</button>
+                            </div>
+                            <h3>Outlined Buttons</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="m-btn m-btn-outlined">Default Outlined</button>
+                                <button class="m-btn m-btn-primary m-btn-outlined">Primary Outlined</button>
+                                <button class="m-btn m-btn-danger m-btn-outlined">Danger Outlined</button>
+                                <button class="m-btn m-btn-neon m-btn-outlined">Neon Outlined</button>
+                            </div>
+                        </div>
+                        <div class="m-col-md-6">
+                            <h3>Large Buttons</h3>
+                            <div class="m-mb-4">
+                                <button class="m-btn m-btn-lg m-mb-2">Large Default</button>
+                                <button class="m-btn m-btn-primary m-btn-lg m-mb-2">Large Primary</button>
+                                <button class="m-btn m-btn-danger m-btn-lg m-mb-2">Large Danger</button>
+                                <button class="m-btn m-btn-neon m-btn-lg">Large Neon</button>
+                            </div>
+                            <h3>Block Buttons</h3>
+                            <div>
+                                <button class="m-btn m-btn-block m-mb-2">Block Default</button>
+                                <button class="m-btn m-btn-primary m-btn-block m-mb-2">Block Primary</button>
+                                <button class="m-btn m-btn-danger m-btn-block m-mb-2">Block Danger</button>
+                                <button class="m-btn m-btn-neon m-btn-block">Block Neon</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class="docs-section" id="alerts">
+                    <h3>Alerts</h3>
+                    <p>Alerts display important messages with contrasting colors (e.g., red for errors, yellow for warnings) and can include flicker or blink effects for emphasis.</p>
+                </section>
+                <section class="docs-section" id="cards">
+                    <h3>Cards</h3>
+                    <p>Cards have a holographic look with semi-transparent backgrounds and a glowing border for a futuristic aesthetic, often containing a header, body, and optional footer.</p>
+                </section>
+                <section class="docs-section" id="badges">
+                    <h3>Badges</h3>
+                    <p>Badges are small count or label elements, styled as bright pill shapes to draw attention (for example, notification counts or status labels).</p>
+                </section>
+                <section class="docs-section" id="progress-bars">
+                    <h3>Progress Bars</h3>
+                    <p>Progress bars animate to show completion progress in a retro terminal style, usually with a neon green progress fill and a dark background track.</p>
+                </section>
+                <section class="docs-section" id="spinners">
+                    <h3>Spinners</h3>
+                    <p>Spinners provide a loading indicator inspired by classic command-line cursors or rotating ASCII glyphs, indicating that a process is ongoing.</p>
+                </section>
+
+                <h2 id="advanced-components" class="docs-section-title">Advanced Components</h2>
+                <section class="docs-section" id="neural-network">
+                    <h3>Neural Network</h3>
+                    <p>Visualizes a neural network with a grid of nodes and animated connections, fitting the theme's tech aesthetic.</p>
+                </section>
+                <section class="docs-section" id="terminal">
+                    <h3>Terminal</h3>
+                    <p>The Terminal component emulates a terminal window, including a blinking cursor and typewriter effect for text output.</p>
+                </section>
+                <section class="docs-section" id="glitch-text">
+                    <h3>Glitch Text</h3>
+                    <p>Glitch Text uses CSS animations to intermittently distort and scramble text, mimicking a hacked or glitchy display.</p>
+                </section>
+                <section class="docs-section" id="identity-card">
+                    <h3>Identity Card</h3>
+                    <p>An Identity Card shows a user profile in a futuristic ID format, complete with flicker and scanline effects.</p>
+                </section>
+                <section class="docs-section" id="code-rain">
+                    <h3>Code Rain</h3>
+                    <p>The Code Rain component produces the signature falling code animation from <em>The Matrix</em>, often used as a full-screen background effect.</p>
+                </section>
+
+                <h2 id="utilities" class="docs-section-title">Utilities</h2>
+                <section class="docs-section" id="effects">
+                    <h3>Visual Effects</h3>
+                    <p>Includes CSS utilities for adding visual effects like flicker, glitch, and glow to elements, enhancing the cyberpunk ambiance without extra scripts.</p>
+                </section>
+                <section class="docs-section" id="animations">
+                    <h3>Animations</h3>
+                    <p>Provides pre-defined CSS keyframe animations (e.g., pulse, fade, bounce) to easily animate elements in a futuristic style.</p>
+                </section>
+                <section class="docs-section" id="transforms">
+                    <h3>Transforms</h3>
+                    <p>Offers utility classes to apply CSS transforms (rotate, scale, skew) with Matrix-themed transitions, allowing dynamic element manipulation.</p>
+                </section>
+                <section class="docs-section" id="responsive">
+                    <h3>Responsive Design</h3>
+                    <p>Matrix.css is built to be fully responsive, with grid and utility classes that adapt layouts to different screen sizes for an optimal experience on all devices.</p>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section class="m-container m-py-5" id="examples">
+        <h2 class="docs-section-title">Example Projects</h2>
+        <div class="m-row">
+            <div class="m-col-md-6 m-col-lg-4">
+                <div class="m-card m-mb-4">
+                    <div class="m-card-header">Dashboard Example</div>
+                    <div class="m-card-body">
+                        <h5 class="m-card-title">Security Dashboard</h5>
+                        <p class="m-card-text">A cybersecurity monitoring dashboard built with Matrix.css, featuring real-time status indicators and alert components.</p>
+                        <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="m-col-md-6 m-col-lg-4">
+                <div class="m-card m-mb-4">
+                    <div class="m-card-header">Landing Page Example</div>
+                    <div class="m-card-body">
+                        <h5 class="m-card-title">Tech Product Launch</h5>
+                        <p class="m-card-text">A Matrix-themed product launch page with animated components and sleek UI elements to showcase tech innovations.</p>
+                        <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="m-col-md-6 m-col-lg-4">
+                <div class="m-card m-mb-4">
+                    <div class="m-card-header">Portfolio Example</div>
+                    <div class="m-card-body">
+                        <h5 class="m-card-title">Developer Portfolio</h5>
+                        <p class="m-card-text">A tech-focused personal portfolio website built with Matrix.css, featuring project showcases and skills visualization.</p>
+                        <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="m-container m-py-5" style="border-top: 1px solid var(--m-border);">
+        <div class="m-row">
+            <div class="m-col-md-6 m-offset-md-3 m-text-center">
+                <h3 class="m-mb-3">Stay Updated</h3>
+                <p class="m-mb-4">Subscribe to our newsletter for updates, new features, and Matrix.css tips.</p>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="email" placeholder="Your email address" style="flex: 1; padding: 0.75rem; background-color: rgba(0, 0, 0, 0.3); border: 1px solid var(--m-border); border-radius: var(--m-radius); color: var(--m-text); font-family: var(--m-font-main);">
+                    <button class="m-btn m-btn-primary">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background-color: var(--m-panel); border-top: 1px solid var(--m-border); padding: 3rem 0;">
+        <div class="m-container">
+            <div class="m-text-center">
+                <p style="margin: 0;">&copy; 2025 Matrix.css. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Mobile main menu toggle (nav links)
+        const menuToggle = document.getElementById('matrixMenuToggle');
+        const linksContainer = document.querySelector('.nav-links-container');
+        if (menuToggle && linksContainer) {
+          menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            linksContainer.classList.toggle('active');
+            // Prevent body scrolling when menu is open
+            if (linksContainer.classList.contains('active')) {
+              document.body.style.overflow = 'hidden';
+            } else {
+              document.body.style.overflow = '';
+            }
+          });
+        }
+
+        // Theme switch toggle
+        const themeSwitch = document.getElementById('themeSwitch');
+        if (themeSwitch) {
+            themeSwitch.addEventListener('click', function() {
+                const currentTheme = document.body.dataset.theme || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.body.dataset.theme = newTheme;
+                localStorage.setItem('matrixTheme', newTheme);
+                // Update button inner content
+                this.innerHTML = newTheme === 'light' 
+                    ? '<div class="m-badge m-badge-primary">D</div>' 
+                    : '<div class="m-badge m-badge-primary">L</div>';
+                // Add animation effect for smooth transition
+                document.body.classList.add('theme-transition');
+                setTimeout(() => {
+                    document.body.classList.remove('theme-transition');
+                }, 1000);
+            });
+        }
+
+        // Sidebar (docs nav) mobile toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.querySelector('.docs-sidebar');
+        const backdrop = document.querySelector('.sidebar-backdrop');
+        if (mobileMenuToggle && sidebar && backdrop) {
+            // ensure clickable
+            mobileMenuToggle.style.cursor = 'pointer';
+            mobileMenuToggle.style.zIndex = '1001';
+            const toggleSidebar = function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                sidebar.classList.toggle('active');
+                backdrop.classList.toggle('active');
+                // Animate hamburger to X
+                const spans = mobileMenuToggle.querySelectorAll('span');
+                if (spans.length === 3) {
+                    if (sidebar.classList.contains('active')) {
+                        spans[0].style.transform = 'translateY(10px) rotate(45deg)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'translateY(-10px) rotate(-45deg)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                }
+            };
+            mobileMenuToggle.addEventListener('click', toggleSidebar);
+            mobileMenuToggle.onclick = toggleSidebar;
+            // Close sidebar when clicking backdrop
+            backdrop.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                backdrop.classList.remove('active');
+                const spans = mobileMenuToggle.querySelectorAll('span');
+                if (spans.length === 3) {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+            // Also close on Esc key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                    backdrop.classList.remove('active');
+                    const spans = mobileMenuToggle.querySelectorAll('span');
+                    if (spans.length === 3) {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                }
+            });
+        }
+
+        // References for scroll-based nav highlighting
+        const matrixNav = document.querySelector('.matrix-nav');
+        const navLogo = document.querySelector('.nav-logo .logo-text');
+        const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
+        const mainSections = document.querySelectorAll('section[id]');
+        const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+
+        // Create dynamic nav title elements
+        if (navLogo) {
+            const logoParent = navLogo.parentElement;
+            const titleContainer = document.createElement('div');
+            titleContainer.className = 'nav-title-container';
+            navLogo.className += ' nav-logo-title';
+            const sectionTitle = document.createElement('span');
+            sectionTitle.className = 'nav-section-title';
+            sectionTitle.style.display = 'none';
+            const cursor = document.createElement('span');
+            cursor.className = 'terminal-cursor';
+            const glitchEffect = document.createElement('div');
+            glitchEffect.className = 'terminal-glitch';
+            titleContainer.appendChild(navLogo);
+            titleContainer.appendChild(sectionTitle);
+            titleContainer.appendChild(cursor);
+            titleContainer.appendChild(glitchEffect);
+            logoParent.appendChild(titleContainer);
+            // Active section display box
+            const activeSectionBox = document.createElement('div');
+            activeSectionBox.className = 'active-section-box';
+            activeSectionBox.innerHTML = `<span class="active-section-indicator"></span>`;
+            document.body.appendChild(activeSectionBox);
+            let currentSectionId = '';
+            let isTyping = false;
+            let typeTimeout;
+            // Terminal typing effect
+            function typeSectionTitle(text, element, callback) {
+                if (isTyping) {
+                    clearTimeout(typeTimeout);
+                }
+                isTyping = true;
+                navLogo.style.display = 'none';
+                element.style.display = 'inline-block';
+                element.textContent = '';
+                element.style.width = '0';
+                glitchEffect.style.opacity = '0.3';
+                setTimeout(() => { glitchEffect.style.opacity = '0'; }, 150);
+                let i = 0;
+                function typeCharacter() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        element.style.width = ((i + 1) / text.length * 100) + '%';
+                        i++;
+                        const randomDelay = Math.floor(Math.random() * 50) + 30;
+                        typeTimeout = setTimeout(typeCharacter, randomDelay);
+                    } else {
+                        isTyping = false;
+                        if (callback) callback();
+                    }
+                }
+                typeCharacter();
+            }
+
+            // Update active section on scroll
+            function updateActiveSection() {
+                const scrollPosition = window.scrollY + 100;
+                let activeSection = null;
+                mainSections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        activeSection = { id: sectionId, element: section };
+                        // Highlight current sidebar link
+                        sidebarLinks.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href === `#${sectionId}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+                if (activeSection && activeSection.id !== currentSectionId) {
+                    currentSectionId = activeSection.id;
+                    // Determine main section for top nav
+                    let mainId = activeSection.id;
+                    if (['introduction','installation','colors','typography','containers','grid-system','spacing'].includes(mainId)) {
+                        mainId = 'getting-started';
+                    } else if (['buttons','alerts','cards','badges','progress-bars','spinners','neural-network','terminal','glitch-text','identity-card','code-rain'].includes(mainId)) {
+                        mainId = 'components';
+                    } else if (['effects','animations','transforms','responsive'].includes(mainId)) {
+                        mainId = 'utilities';
+                    }
+                    // Remove previous active state on nav links
+                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                    // Highlight corresponding top nav link
+                    const activeNavLink = document.querySelector(`.nav-link[href="#${mainId}"]`);
+                    if (activeNavLink) activeNavLink.classList.add('active');
+                    // Prepare section title text
+                    const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
+                    let sectionTitleText = sectionHeading.textContent.trim().split(' ')[0];
+                    sectionTitleText = `//${sectionTitleText.toUpperCase()}`;
+                    // Update active section box text
+                    const activeBoxEl = document.querySelector('.active-section-box');
+                    if (activeBoxEl) {
+                        activeBoxEl.textContent = sectionTitleText;
+                        activeBoxEl.classList.add('visible');
+                    }
+                    // Type section title in nav
+                    typeSectionTitle(sectionTitleText, sectionTitle, () => {
+                        // callback if needed
+                    });
+                }
+                if (scrollPosition < 100) {
+                    if (navLogo.style.display === 'none') {
+                        // restore original logo when scrolled to top
+                        sectionTitle.style.display = 'none';
+                        navLogo.style.display = 'inline-block';
+                        currentSectionId = '';
+                        const activeBoxEl = document.querySelector('.active-section-box');
+                        if (activeBoxEl) activeBoxEl.classList.remove('visible');
+                    }
+                    // Remove highlight from nav links at top
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                }
+                // Add scrolled class to navbar past hero
+                if (scrollPosition > 100) {
+                    matrixNav.classList.add('scrolled');
+                } else {
+                    matrixNav.classList.remove('scrolled');
+                }
+            }
+
+            if (scrollIndicator) {
+                scrollIndicator.className = 'scroll-indicator';
+                scrollIndicator.style.animation = 'bounce 2s infinite';
+            }
+
+            window.addEventListener('scroll', updateActiveSection);
+            updateActiveSection();
+
+            // Enhance nav link active state on click (for manual click navigation)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Ensure clicking a sidebar link on mobile closes sidebar
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
+                        const sectionTitleText = `//${sectionHeading.textContent.trim().split(' ')[0].toUpperCase()}`;
+                        const sectionTitleEl = document.querySelector('.nav-section-title');
+                        const navLogoEl = document.querySelector('.nav-logo-title');
+                        if (sectionTitleEl && navLogoEl) {
+                            typeSectionTitle(sectionTitleText, sectionTitle, () => {
+                                // After typing, show section title and hide logo
+                            });
+                        }
+                    }
+                    if (sidebar && sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                        if (backdrop) backdrop.classList.remove('active');
+                    }
+                });
+            });
+        }
+      });
+    </script>
+</body>
+</html>
