@@ -4,8 +4,25 @@
  * Advanced animations and visual effects with a complete component library
  * Dark theme with neon green accents as default, with light theme option
  */
- 
-/* ========== CSS Variables & Configuration ========== */
+
+/* ========== TABLE OF CONTENTS ========== 
+ * 1. CSS Variables & Configuration
+ * 2. Theme Variations
+ * 3. CSS Reset & Base Styles
+ * 4. Typography
+ * 5. Grid System
+ * 6. Spacing Utilities
+ * 7. Text Utilities
+ * 8. Display Utilities
+ * 9. Flex Utilities
+ * 10. Border & Divider Utilities
+ * 11. Components
+ * 12. Special Effects & Enhancements
+ * 13. Documentation Layout
+ * 14. Enhanced Matrix Buttons
+ */
+
+/* ========== 1. CSS Variables & Configuration ========== */
 :root {
     /* Core colors */
     --m-black: #000000;
@@ -63,7 +80,7 @@
     --m-scroll-behavior: smooth;
 }
 
-/* Light Theme Support */
+/* ========== 2. Theme Variations ========== */
 [data-theme="light"] {
     --m-bg: #f0f0f0;
     --m-text: #006400;
@@ -86,7 +103,7 @@
     --m-dark: #030303;
 }
 
-/* CSS Reset & Base Styles */
+/* ========== 3. CSS Reset & Base Styles ========== */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -108,7 +125,7 @@ body {
     position: relative;
 }
 
-/* Typography */
+/* ========== 4. Typography ========== */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--m-font-alt);
     font-weight: 700;
@@ -154,7 +171,6 @@ a:hover::after, .m-link:hover::after {
     transform-origin: bottom left;
 }
 
-/* Glowing text */
 .m-glow {
     text-shadow: 0 0 10px var(--m-glow);
     animation: m-glow-pulse 2s infinite;
@@ -164,7 +180,6 @@ a:hover::after, .m-link:hover::after {
     50% { text-shadow: 0 0 20px var(--m-glow), 0 0 30px var(--m-glow); }
 }
 
-/* Code */
 .m-code {
     font-family: monospace;
     background-color: rgba(0, 20, 0, 0.3);
@@ -180,7 +195,6 @@ pre.m-code {
     border: 1px solid var(--m-border);
 }
 
-/* Blockquote */
 blockquote, .m-blockquote {
     border-left: 4px solid var(--m-text);
     padding-left: var(--m-space-md);
