@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix.css - Improved Badge Components</title>
+    <style>
+    /* Base variables - a small subset of Matrix.css variables */
+    :root {
+        --m-bg: #0c0c0c;
+        --m-text: #00ff41;
+        --m-text-dim: #0a3f0a;
+        --m-text-bright: #00ff97;
+        --m-glow: rgba(0, 255, 65, 0.6);
+        --m-panel: #0f0f0f;
+        --m-border: #143214;
+        
+        --m-primary: #00ff41;
+        --m-secondary: #072707;
+        --m-info: #39a0ed;
+        --m-warning: #ffe100;
+        --m-danger: #ff2222;
+        
+        --m-font-main: 'Courier New', monospace;
+        --m-font-alt: 'Lucida Console', Monaco, monospace;
+        --m-font-size: 16px;
+        --m-line-height: 1.6;
+        
+        --m-space-xs: 0.25rem;
+        --m-space-sm: 0.5rem;
+        --m-space-md: 1rem;
+        --m-space-lg: 1.5rem;
+        --m-space-xl: 2.5rem;
+        
+        --m-time-fast: 0.2s;
+        --m-radius: 3px;
+        
+        --m-container-width: 1200px;
+    }
+    
+    /* Basic reset */
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        background-color: var(--m-bg);
+        color: var(--m-text);
+        font-family: var(--m-font-main);
+        line-height: var(--m-line-height);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--m-font-alt);
+        font-weight: 700;
+        margin-bottom: var(--m-space-md);
+        line-height: 1.2;
+        color: var(--m-text-bright);
+    }
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.75rem; }
+    h4 { font-size: 1.5rem; }
+    h5 { font-size: 1.25rem; }
+    h6 { font-size: 1rem; }
+    
+    p {
+        margin-bottom: var(--m-space-md);
+    }
+    
+    /* Container system */
+    .m-container {
+        width: 100%;
+        max-width: var(--m-container-width);
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    /* Component system */
+    .m-component-box {
+        margin-bottom: 3rem;
+        border: 1px solid var(--m-border);
+        border-radius: var(--m-radius);
+        overflow: hidden;
+    }
+    
+    .m-component-header {
+        background-color: var(--m-panel);
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--m-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .m-component-title {
+        font-size: 1.2rem;
+        margin-bottom: 0;
+    }
+    
+    .m-component-preview {
+        padding: 2rem;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid var(--m-border);
+    }
+    
+    .m-component-description {
+        padding: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Code styles */
+    .m-code {
+        font-family: monospace;
+        background-color: rgba(0, 20, 0, 0.3);
+        padding: var(--m-space-md);
+        border: 1px solid var(--m-border);
+        border-radius: 0;
+        overflow-x: auto;
+        line-height: 1.4;
+        margin: 0;
+        position: relative;
+    }
+    
+    .m-copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: var(--m-text);
+        border: 1px solid var(--m-border);
+        border-radius: var(--m-radius);
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
+    
+    /* Enhanced Badge Styles */
+    .m-badge {
+        display: inline-block;
+        padding: 0.25em 0.5em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--m-text);
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: var(--m-radius);
+        background-color: var(--m-secondary);
+        box-shadow: 0 0 3px rgba(0, 255, 65, 0.1);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        border: 1px solid transparent;
+        margin-left: 0.5rem;
+    }
+    
+    .m-badge-primary {
+        color: var(--m-bg);
+        background-color: var(--m-primary);
+        border-color: rgba(0, 255, 65, 0.3);
+    }
+    
+    .m-badge-info {
+        background-color: var(--m-info);
+        border-color: rgba(57, 160, 237, 0.3);
+    }
+    
+    .m-badge-warning {
+        color: var(--m-bg);
+        background-color: var(--m-warning);
+        border-color: rgba(255, 225, 0, 0.3);
+    }
+    
+    .m-badge-danger {
+        background-color: var(--m-danger);
+        border-color: rgba(255, 34, 34, 0.3);
+    }
+    </style>
+</head>
+<body>
+    <div class="m-container">
+        <h1>Matrix.css - Improved Badge Components</h1>
+        <p>The following examples demonstrate the improved badge components with the structured container system.</p>
+        
+        <div class="m-component-box">
+            <div class="m-component-header">
+                <h5 class="m-component-title">Badge Examples</h5>
+            </div>
+            <div class="m-component-preview">
+                <h3>Example heading <span class="m-badge">New</span></h3>
+                <h4>Example heading <span class="m-badge m-badge-primary">Primary</span></h4>
+                <h5>Example heading <span class="m-badge m-badge-info">Info</span></h5>
+                <h6>Example heading <span class="m-badge m-badge-warning">Warning</span></h6>
+                <p>Example text <span class="m-badge m-badge-danger">Danger</span></p>
+            </div>
+            <div class="m-component-description">
+                <p>Use the <code>m-badge</code> class to create badges. Add contextual classes for different colors.</p>
+            </div>
+            <pre class="m-code"><span class="m-copy-btn">Copy</span>&lt;h3&gt;Example heading &lt;span class="m-badge"&gt;New&lt;/span&gt;&lt;/h3&gt;
+&lt;h4&gt;Example heading &lt;span class="m-badge m-badge-primary"&gt;Primary&lt;/span&gt;&lt;/h4&gt;
+&lt;h5&gt;Example heading &lt;span class="m-badge m-badge-info"&gt;Info&lt;/span&gt;&lt;/h5&gt;
+&lt;h6&gt;Example heading &lt;span class="m-badge m-badge-warning"&gt;Warning&lt;/span&gt;&lt;/h6&gt;
+&lt;p&gt;Example text &lt;span class="m-badge m-badge-danger"&gt;Danger&lt;/span&gt;&lt;/p&gt;</pre>
+        </div>
+        
+        <div class="m-component-box">
+            <div class="m-component-header">
+                <h5 class="m-component-title">Badge Positioning</h5>
+            </div>
+            <div class="m-component-preview">
+                <div style="margin-bottom: 1rem;">
+                    <button style="background-color: var(--m-panel); color: var(--m-text); border: 1px solid var(--m-border); padding: 0.5rem 1rem; position: relative;">
+                        Notifications
+                        <span class="m-badge m-badge-danger" style="position: absolute; top: -8px; right: -8px;">5</span>
+                    </button>
+                </div>
+                
+                <div>
+                    <a href="#" style="color: var(--m-text-bright); text-decoration: none; margin-right: 1.5rem;">
+                        Home
+                    </a>
+                    <a href="#" style="color: var(--m-text-bright); text-decoration: none; position: relative; margin-right: 1.5rem;">
+                        Messages
+                        <span class="m-badge m-badge-primary" style="position: absolute; top: -8px; right: -20px;">3</span>
+                    </a>
+                    <a href="#" style="color: var(--m-text-bright); text-decoration: none;">
+                        Profile
+                    </a>
+                </div>
+            </div>
+            <div class="m-component-description">
+                <p>Badges can be positioned absolutely to create notification indicators on buttons, navigation items, and more.</p>
+            </div>
+            <pre class="m-code"><span class="m-copy-btn">Copy</span>&lt;button style="position: relative;"&gt;
+    Notifications
+    &lt;span class="m-badge m-badge-danger" style="position: absolute; top: -8px; right: -8px;"&gt;5&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;a href="#" style="position: relative;"&gt;
+    Messages
+    &lt;span class="m-badge m-badge-primary" style="position: absolute; top: -8px; right: -20px;"&gt;3&lt;/span&gt;
+&lt;/a&gt;</pre>
+        </div>
+        
+        <div class="m-component-box">
+            <div class="m-component-header">
+                <h5 class="m-component-title">Badge Variations</h5>
+            </div>
+            <div class="m-component-preview">
+                <div style="margin-bottom: 1rem;">
+                    <span class="m-badge" style="border-radius: 50px;">Rounded</span>
+                    <span class="m-badge m-badge-primary" style="border-radius: 50px;">Rounded Primary</span>
+                    <span class="m-badge m-badge-info" style="border-radius: 50px;">Rounded Info</span>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <span class="m-badge" style="padding: 0.4em 0.7em;">Larger</span>
+                    <span class="m-badge m-badge-primary" style="padding: 0.4em 0.7em;">Larger Primary</span>
+                    <span class="m-badge m-badge-warning" style="padding: 0.4em 0.7em;">Larger Warning</span>
+                </div>
+                
+                <div>
+                    <span class="m-badge" style="border-radius: 0;">Square</span>
+                    <span class="m-badge m-badge-danger" style="border-radius: 0;">Square Danger</span>
+                </div>
+            </div>
+            <div class="m-component-description">
+                <p>Badges can be customized with different shapes, sizes, and styles to fit your design needs.</p>
+            </div>
+            <pre class="m-code"><span class="m-copy-btn">Copy</span>&lt;!-- Rounded badges --&gt;
+&lt;span class="m-badge" style="border-radius: 50px;"&gt;Rounded&lt;/span&gt;
+&lt;span class="m-badge m-badge-primary" style="border-radius: 50px;"&gt;Rounded Primary&lt;/span&gt;
+
+&lt;!-- Larger badges --&gt;
+&lt;span class="m-badge" style="padding: 0.4em 0.7em;"&gt;Larger&lt;/span&gt;
+&lt;span class="m-badge m-badge-primary" style="padding: 0.4em 0.7em;"&gt;Larger Primary&lt;/span&gt;
+
+&lt;!-- Square badges --&gt;
+&lt;span class="m-badge" style="border-radius: 0;"&gt;Square&lt;/span&gt;
+&lt;span class="m-badge m-badge-danger" style="border-radius: 0;"&gt;Square Danger&lt;/span&gt;</pre>
+        </div>
+    </div>
+    
+    <script>
+        // Add functionality to copy buttons
+        document.querySelectorAll('.m-copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.m-code');
+                const codeToCopy = codeBlock.textContent.replace('Copy', '').trim();
+                
+                navigator.clipboard.writeText(codeToCopy).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = 'Copied!';
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

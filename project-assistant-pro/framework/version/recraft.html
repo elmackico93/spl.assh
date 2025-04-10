@@ -1,0 +1,4431 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Import Matrix.css -->
+      <link rel="stylesheet" href="../matrix.css">
+      <title>Matrix.css | The Ultimate Cyberpunk Framework</title>
+      <style>
+         /* ==========================================================================
+         Base Variables & Settings
+         ========================================================================== */
+         :root {
+         scroll-behavior: smooth;
+         --docs-header-height: 70px;
+         --docs-sidebar-width: 280px;
+         }
+         /* ==========================================================================
+         Layout Components
+         ========================================================================== */
+         /* Main Documentation Layout */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - var(--docs-header-height));
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         /* Sidebar */
+         .docs-sidebar {
+         width: var(--docs-sidebar-width);
+         position: sticky;
+         top: var(--docs-header-height);
+         height: calc(100vh - var(--docs-header-height));
+         overflow-y: auto;
+         background-color: var(--m-panel);
+         border-right: 1px solid var(--m-border);
+         padding: 2rem 0;
+         flex-shrink: 0;
+         z-index: 900;
+         scrollbar-width: thin;
+         scrollbar-color: var(--m-text-dim) var(--m-bg);
+         }
+         .docs-sidebar::-webkit-scrollbar {
+         width: 6px;
+         }
+         .docs-sidebar::-webkit-scrollbar-track {
+         background: var(--m-bg);
+         }
+         .docs-sidebar::-webkit-scrollbar-thumb {
+         background: var(--m-text-dim);
+         border-radius: 3px;
+         }
+         /* ==========================================================================
+         Hero Section
+         ========================================================================== */
+         .hero {
+         position: relative;
+         height: 100vh;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         text-align: center;
+         padding: 0 1rem;
+         overflow: hidden;
+         }
+         .hero-background {
+         position: absolute;
+         inset: 0;
+         z-index: -1;
+         }
+         .hero-title {
+         font-size: 4rem;
+         margin-bottom: 1rem;
+         letter-spacing: 4px;
+         animation: m-glow-pulse 3s infinite;
+         }
+         .hero-subtitle {
+         font-size: 1.5rem;
+         margin-bottom: 2rem;
+         max-width: 600px;
+         }
+         .hero-cta {
+         display: flex;
+         gap: 1rem;
+         margin-top: 2rem;
+         }
+         /* ==========================================================================
+         Navigation
+         ========================================================================== */
+         .main-nav {
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         height: var(--docs-header-height);
+         background-color: rgba(12, 12, 12, 0.8);
+         backdrop-filter: blur(10px);
+         z-index: 1000;
+         border-bottom: 1px solid var(--m-border);
+         }
+         .nav-content {
+         height: 100%;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         }
+         .nav-logo {
+         font-size: 1.5rem;
+         font-family: var(--m-font-alt);
+         color: var(--m-text-bright);
+         text-transform: uppercase;
+         letter-spacing: 2px;
+         text-shadow: 0 0 10px var(--m-glow);
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+         }
+         .nav-links {
+         display: flex;
+         gap: 2rem;
+         }
+         .nav-link {
+         position: relative;
+         font-size: 0.9rem;
+         text-transform: uppercase;
+         letter-spacing: 1px;
+         padding: 0.5rem 0;
+         transition: color 0.3s;
+         }
+         .nav-link::after {
+         content: "";
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         width: 0;
+         height: 2px;
+         background-color: var(--m-text);
+         transition: width 0.3s;
+         }
+         .nav-link:hover::after,
+         .nav-link.active::after {
+         width: 100%;
+         }
+         /* Mobile menu toggle */
+         .mobile-menu-toggle {
+         display: none;
+         width: 30px;
+         height: 30px;
+         flex-direction: column;
+         justify-content: space-between;
+         cursor: pointer;
+         }
+         .mobile-menu-toggle span {
+         display: block;
+         height: 2px;
+         width: 100%;
+         background-color: var(--m-text);
+         transition: transform 0.3s, opacity 0.3s;
+         }
+         /* ==========================================================================
+         Feature Grid
+         ========================================================================== */
+         .feature-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+         gap: 2rem;
+         }
+         .feature-card {
+         height: 100%;
+         transition: transform 0.3s, box-shadow 0.3s;
+         }
+         .feature-card:hover {
+         transform: translateY(-10px);
+         box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+         }
+         .feature-icon {
+         font-size: 2rem;
+         margin-bottom: 1rem;
+         color: var(--m-text-bright);
+         }
+         /* ==========================================================================
+         Component Showcase
+         ========================================================================== */
+         .component-showcase {
+         margin-bottom: 3rem;
+         }
+         .component-demo {
+         position: relative;
+         padding: 2rem;
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius);
+         margin-bottom: 1rem;
+         background-color: rgba(0, 0, 0, 0.2);
+         }
+         .component-code {
+         position: relative;
+         padding: 1rem;
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius);
+         overflow-x: auto;
+         background-color: rgba(0, 20, 0, 0.3);
+         }
+         .component-code-tabs {
+         display: flex;
+         margin-bottom: 0.5rem;
+         }
+         .component-code-tab {
+         padding: 0.5rem 1rem;
+         cursor: pointer;
+         background-color: var(--m-secondary);
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius) var(--m-radius) 0 0;
+         margin-right: 0.5rem;
+         }
+         .component-code-tab.active {
+         background-color: var(--m-text-dim);
+         color: var(--m-text-bright);
+         }
+         /* Copy button */
+         .copy-button {
+         position: absolute;
+         top: 0.5rem;
+         right: 0.5rem;
+         background-color: var(--m-secondary);
+         border: 1px solid var(--m-border);
+         color: var(--m-text);
+         padding: 0.25rem 0.5rem;
+         border-radius: var(--m-radius);
+         font-size: 0.8rem;
+         cursor: pointer;
+         transition: background-color 0.3s;
+         }
+         .copy-button:hover {
+         background-color: var(--m-text-dim);
+         color: var(--m-text-bright);
+         }
+         /* ==========================================================================
+         Color Palette Display
+         ========================================================================== */
+         .color-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+         gap: 1.5rem;
+         }
+         .color-item {
+         border-radius: var(--m-radius);
+         overflow: hidden;
+         border: 1px solid var(--m-border);
+         transition: transform 0.3s;
+         }
+         .color-item:hover {
+         transform: scale(1.05);
+         }
+         .color-preview {
+         height: 100px;
+         }
+         .color-info {
+         padding: 1rem;
+         background-color: var(--m-panel);
+         }
+         .color-name {
+         margin: 0 0 0.5rem 0;
+         font-size: 1rem;
+         letter-spacing: 1px;
+         text-transform: uppercase;
+         }
+         .color-value {
+         font-family: var(--m-font-main);
+         font-size: 0.9rem;
+         opacity: 0.7;
+         }
+         /* ==========================================================================
+         Documentation Sections
+         ========================================================================== */
+         .docs-section {
+         margin-bottom: 4rem;
+         }
+         .docs-section-title {
+         position: relative;
+         margin-bottom: 2rem;
+         padding-bottom: 0.5rem;
+         border-bottom: 2px solid var(--m-border);
+         }
+         .docs-section-title::before {
+         content: "//";
+         color: var(--m-text-dim);
+         margin-right: 0.5rem;
+         }
+         /* ==========================================================================
+         Utilities & Components
+         ========================================================================== */
+         /* Theme switch */
+         .theme-switch {
+         position: fixed;
+         bottom: 2rem;
+         right: 2rem;
+         z-index: 100;
+         width: 50px;
+         height: 50px;
+         border-radius: 50%;
+         background-color: var(--m-panel);
+         border: 1px solid var(--m-border);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         cursor: pointer;
+         box-shadow: 0 0 20px var(--m-glow);
+         transition: transform 0.3s, box-shadow 0.3s;
+         }
+         .theme-switch:hover {
+         transform: scale(1.1);
+         box-shadow: 0 0 30px var(--m-glow);
+         }
+         /* Code rain container */
+         .code-rain-container {
+         position: relative;
+         height: 70vh;
+         overflow: hidden;
+         }
+         /* Search bar */
+         .search-container {
+         position: relative;
+         width: 300px;
+         }
+         .search-input {
+         width: 100%;
+         padding: 0.75rem 1rem 0.75rem 2.5rem;
+         background-color: rgba(0, 0, 0, 0.3);
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius);
+         color: var(--m-text);
+         font-family: var(--m-font-main);
+         font-size: 0.9rem;
+         transition: all 0.3s;
+         }
+         .search-input:focus {
+         border-color: var(--m-text);
+         box-shadow: 0 0 15px var(--m-glow);
+         outline: none;
+         }
+         .search-icon {
+         position: absolute;
+         left: 0.75rem;
+         top: 50%;
+         transform: translateY(-50%);
+         color: var(--m-text-dim);
+         }
+         /* Terminal demo */
+         .terminal-demo {
+         max-width: 600px;
+         margin: 0 auto;
+         }
+         /* Neural network demo */
+         .neural-network-demo {
+         height: 400px;
+         margin: 2rem auto;
+         max-width: 800px;
+         }
+         /* Sidebar backdrop for mobile */
+         .sidebar-backdrop {
+         position: fixed;
+         inset: 0;
+         background-color: rgba(0, 0, 0, 0.5);
+         z-index: 899;
+         display: none;
+         }
+         .sidebar-backdrop.active {
+         display: block;
+         }
+         /* ==========================================================================
+         Media Queries
+         ========================================================================== */
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         .mobile-menu-toggle {
+         display: flex;
+         }
+         .nav-links {
+         display: none;
+         }
+         .hero-title {
+         font-size: 2.5rem;
+         }
+         .hero-subtitle {
+         font-size: 1.2rem;
+         }
+         }
+         @media (max-width: 576px) {
+         .hero-cta {
+         flex-direction: column;
+         gap: 1rem;
+         }
+         .docs-content {
+         padding: 1rem;
+         }
+         .search-container {
+         width: 100%;
+         }
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Mobile sidebar backdrop -->
+      <div class="sidebar-backdrop"></div>
+      <!-- Theme Switch Button -->
+      <div class="theme-switch" id="themeSwitch">
+         <div class="m-badge m-badge-primary">T</div>
+      </div>
+      <nav class="matrix-nav">
+         <div class="nav-glitch-line"></div>
+         <div class="nav-container">
+            <!-- Logo Section with Digital Animation -->
+            <div class="nav-logo-container">
+               <a href="#" class="nav-logo">
+               <span class="logo-bracket">[</span>
+               <span class="logo-text" data-text="MATRIX.CSS">MATRIX.CSS</span>
+               <span class="logo-bracket">]</span>
+               <span class="logo-cursor">_</span>
+               </a>
+               <div class="nav-status">
+                  <span class="status-dot"></span>
+                  <span class="status-text">SYSTEM ONLINE</span>
+               </div>
+            </div>
+            <!-- Cyberpunk Menu Toggle for Mobile -->
+            <div class="nav-menu-toggle" id="matrixMenuToggle">
+               <div class="toggle-icon">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+               </div>
+               <div class="toggle-label">MENU</div>
+            </div>
+            <!-- Neural Network Links -->
+            <div class="nav-links-container">
+               <div class="nav-decoration">
+                  <span class="decoration-dot"></span>
+                  <span class="decoration-line"></span>
+               </div>
+               <div class="nav-links">
+                  <a href="#getting-started" class="nav-link" data-text="GETTING_STARTED">
+                  <span class="link-number">01</span>
+                  <span class="link-text">GETTING_STARTED</span>
+                  <span class="link-highlight"></span>
+                  </a>
+                  <a href="#components" class="nav-link" data-text="COMPONENTS">
+                  <span class="link-number">02</span>
+                  <span class="link-text">COMPONENTS</span>
+                  <span class="link-highlight"></span>
+                  </a>
+                  <a href="#utilities" class="nav-link" data-text="UTILITIES">
+                  <span class="link-number">03</span>
+                  <span class="link-text">UTILITIES</span>
+                  <span class="link-highlight"></span>
+                  </a>
+                  <a href="#examples" class="nav-link" data-text="EXAMPLES">
+                  <span class="link-number">04</span>
+                  <span class="link-text">EXAMPLES</span>
+                  <span class="link-highlight"></span>
+                  </a>
+                  <a href="https://github.com/example/matrix-css" target="_blank" class="nav-link" data-text="GITHUB">
+                     <span class="link-number">05</span>
+                     <span class="link-text">GITHUB</span>
+                     <span class="link-highlight"></span>
+                     <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                     </svg>
+                  </a>
+               </div>
+               <div class="nav-search">
+                  <div class="search-container">
+                     <div class="search-icon">⌕</div>
+                     <input type="text" class="search-input" placeholder="SEARCH SYSTEM...">
+                     <div class="search-status">READY</div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Digital Rain Background Effect -->
+         <canvas id="matrixNavRain" class="nav-bg-canvas"></canvas>
+         <!-- Scanline Effect -->
+         <div class="nav-scanline"></div>
+      </nav>
+      <style>
+         /* ========================================
+         VARIABLES
+         ======================================== */
+         :root {
+         /* Matrix Theme Colors */
+         --nav-bg: rgba(0, 10, 2, 0.95);
+         --nav-border: #143214;
+         --nav-text: #00ff41; /* Matrix green */
+         --nav-text-bright: #00ff97;
+         --nav-text-dim: #0a3f0a;
+         --nav-glow: rgba(0, 255, 65, 0.6);
+         --nav-panel: #0f0f0f;
+         /* Layout & Dimensions */
+         --nav-height: 70px;
+         /* Typography */
+         --nav-font: 'Courier New', monospace;
+         /* Animation */
+         --nav-transition: 0.3s;
+         /* Documentation & Newsletter Variables (extracted from inline usage) */
+         --m-text: var(--nav-text);
+         --m-text-bright: var(--nav-text-bright);
+         --m-text-dim: var(--nav-text-dim);
+         --m-border: var(--nav-border);
+         --m-glow: var(--nav-glow);
+         --m-radius: 3px;
+         --m-font-main: var(--nav-font);
+         }
+         /* ========================================
+         NAVIGATION - BASE STYLES
+         ======================================== */
+         .matrix-nav {
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         height: var(--nav-height);
+         background-color: var(--nav-bg);
+         border-bottom: 1px solid var(--nav-border);
+         z-index: 9999;
+         font-family: var(--nav-font);
+         backdrop-filter: blur(10px);
+         -webkit-backdrop-filter: blur(10px);
+         color: var(--nav-text);
+         overflow: hidden;
+         transition: all var(--nav-transition);
+         }
+         .matrix-nav:after {
+         content: "";
+         position: absolute;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         height: 1px;
+         background: linear-gradient(to right, 
+         transparent, 
+         var(--nav-text), 
+         var(--nav-text-bright), 
+         var(--nav-text),
+         transparent
+         );
+         opacity: 0.6;
+         z-index: 2;
+         }
+         .nav-container {
+         max-width: 1400px;
+         margin: 0 auto;
+         padding: 0 20px;
+         height: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         position: relative;
+         z-index: 3;
+         }
+         /* ========================================
+         NAVIGATION - LOGO STYLES
+         ======================================== */
+         .nav-logo-container {
+         display: flex;
+         flex-direction: column;
+         gap: 4px;
+         position: relative;
+         }
+         .nav-logo {
+         font-size: 1.5rem;
+         font-weight: 700;
+         text-decoration: none;
+         color: var(--nav-text-bright);
+         letter-spacing: 2px;
+         display: flex;
+         align-items: center;
+         position: relative;
+         text-shadow: 0 0 10px var(--nav-glow);
+         }
+         .logo-bracket {
+         opacity: 0.7;
+         font-size: 1.6rem;
+         position: relative;
+         top: -2px;
+         }
+         .logo-text {
+         position: relative;
+         overflow: hidden;
+         }
+         .logo-text:before {
+         content: attr(data-text);
+         position: absolute;
+         left: -2px;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         background: var(--nav-bg);
+         color: var(--nav-text-bright);
+         clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+         transform: translateX(2px);
+         animation: logo-glitch-1 4s infinite linear alternate-reverse;
+         }
+         .logo-text:after {
+         content: attr(data-text);
+         position: absolute;
+         left: 2px;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         background: var(--nav-bg);
+         color: var(--nav-text-bright);
+         clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+         transform: translateX(-2px);
+         animation: logo-glitch-2 3s infinite linear alternate-reverse;
+         }
+         .logo-cursor {
+         animation: cursor-blink 1s infinite step-end;
+         margin-left: 5px;
+         color: var(--nav-text);
+         }
+         /* ========================================
+         NAVIGATION - STATUS INDICATOR
+         ======================================== */
+         .nav-status {
+         display: flex;
+         align-items: center;
+         font-size: 0.7rem;
+         font-weight: 500;
+         letter-spacing: 0.8px;
+         gap: 6px;
+         padding: 2px 6px;
+         border-radius: 3px;
+         background-color: rgba(0, 255, 65, 0.05);
+         color: var(--m-text-bright);
+         text-shadow: 0 0 2px rgba(0, 255, 65, 0.4);
+         }
+         .status-dot {
+         width: 6px;
+         height: 6px;
+         background-color: var(--m-text-bright);
+         border-radius: 50%;
+         opacity: 0.9;
+         }
+         /* ========================================
+         NAVIGATION - LINKS SECTION
+         ======================================== */
+         .nav-links-container {
+         display: flex;
+         align-items: center;
+         height: 100%;
+         gap: 30px;
+         }
+         .nav-decoration {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         height: 70%;
+         }
+         .decoration-dot {
+         width: 6px;
+         height: 6px;
+         background-color: var(--nav-text);
+         border-radius: 50%;
+         margin-bottom: 5px;
+         }
+         .decoration-line {
+         width: 1px;
+         flex-grow: 1;
+         background: linear-gradient(to bottom, var(--nav-text), transparent);
+         }
+         .nav-links {
+         display: flex;
+         gap: 15px;
+         height: 100%;
+         align-items: center;
+         }
+         .nav-link {
+         display: flex;
+         align-items: center;
+         color: var(--nav-text);
+         text-decoration: none;
+         font-size: 0.85rem;
+         letter-spacing: 1px;
+         position: relative;
+         height: 100%;
+         padding: 0 5px;
+         overflow: hidden;
+         transition: color var(--nav-transition);
+         }
+         .link-number {
+         font-size: 0.65rem;
+         color: var(--nav-text-dim);
+         margin-right: 6px;
+         transition: color var(--nav-transition);
+         }
+         .link-text {
+         position: relative;
+         z-index: 2;
+         }
+         .link-highlight {
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         width: 100%;
+         height: 2px;
+         background-color: var(--nav-text);
+         transform: scaleX(0);
+         transform-origin: left;
+         transition: transform var(--nav-transition);
+         opacity: 0.7;
+         }
+         .nav-link:hover,
+         .nav-link.active {
+         color: var(--nav-text-bright);
+         text-shadow: 0 0 8px var(--nav-glow);
+         }
+         .nav-link:hover .link-number,
+         .nav-link.active .link-number {
+         color: var(--nav-text);
+         }
+         .nav-link:hover .link-highlight,
+         .nav-link.active .link-highlight {
+         transform: scaleX(1);
+         }
+         .nav-link:hover:before {
+         opacity: 0.1;
+         }
+         .github-icon {
+         margin-left: 5px;
+         stroke: var(--nav-text);
+         transition: all var(--nav-transition);
+         }
+         .nav-link:hover .github-icon {
+         stroke: var(--nav-text-bright);
+         filter: drop-shadow(0 0 2px var(--nav-glow));
+         }
+         /* ========================================
+         NAVIGATION - MOBILE MENU TOGGLE
+         ======================================== */
+         .nav-menu-toggle {
+         display: none;
+         cursor: pointer;
+         border: 1px solid var(--nav-border);
+         padding: 5px 10px;
+         border-radius: 4px;
+         background-color: rgba(0, 50, 0, 0.3);
+         flex-direction: column;
+         align-items: center;
+         gap: 5px;
+         position: relative;
+         z-index: 1001;
+         transition: all var(--nav-transition);
+         }
+         .toggle-icon {
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         width: 24px;
+         height: 16px;
+         }
+         .toggle-icon span {
+         width: 100%;
+         height: 2px;
+         background-color: var(--nav-text);
+         transition: all var(--nav-transition);
+         }
+         .toggle-label {
+         font-size: 0.6rem;
+         color: var(--nav-text-dim);
+         letter-spacing: 1px;
+         }
+         .nav-menu-toggle:hover {
+         background-color: rgba(0, 100, 0, 0.2);
+         box-shadow: 0 0 10px var(--nav-glow);
+         }
+         .nav-menu-toggle:hover span {
+         background-color: var(--nav-text-bright);
+         }
+         .nav-menu-toggle:hover .toggle-label {
+         color: var(--nav-text);
+         }
+         /* Active state for toggle */
+         .nav-menu-toggle.active span:nth-child(1) {
+         transform: translateY(7px) rotate(45deg);
+         }
+         .nav-menu-toggle.active span:nth-child(2) {
+         opacity: 0;
+         }
+         .nav-menu-toggle.active span:nth-child(3) {
+         transform: translateY(-7px) rotate(-45deg);
+         }
+         /* ========================================
+         NAVIGATION - SEARCH COMPONENT
+         ======================================== */
+         .nav-search {
+         margin-left: 15px;
+         }
+         .search-container {
+         display: flex;
+         align-items: center;
+         position: relative;
+         width: 200px;
+         height: 30px;
+         border: 1px solid var(--nav-border);
+         border-radius: 3px;
+         padding: 0 10px;
+         background-color: rgba(0, 20, 0, 0.4);
+         overflow: hidden;
+         }
+         .search-icon {
+         font-size: 1rem;
+         color: var(--nav-text-dim);
+         margin-right: 8px;
+         }
+         .search-input {
+         width: 100%;
+         background: transparent;
+         border: none;
+         outline: none;
+         color: var(--nav-text);
+         font-family: var(--nav-font);
+         font-size: 0.8rem;
+         padding: 0;
+         caret-color: var(--nav-text);
+         }
+         .search-input::placeholder {
+         color: var(--nav-text-dim);
+         opacity: 0.7;
+         }
+         .search-status {
+         position: absolute;
+         right: 10px;
+         font-size: 0.65rem;
+         color: var(--nav-text-dim);
+         opacity: 0;
+         transition: opacity var(--nav-transition);
+         }
+         .search-container:focus-within {
+         border-color: var(--nav-text);
+         box-shadow: 0 0 10px var(--nav-glow);
+         }
+         .search-container:focus-within .search-icon {
+         color: var(--nav-text);
+         }
+         .search-container:focus-within .search-status {
+         opacity: 1;
+         }
+         /* ========================================
+         NAVIGATION - VISUAL EFFECTS
+         ======================================== */
+         /* Scan Line */
+         .nav-scanline {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 2px;
+         background: linear-gradient(to right, transparent, var(--nav-text-bright), transparent);
+         opacity: 0.7;
+         z-index: 2;
+         animation: scanline 3s linear infinite;
+         pointer-events: none;
+         }
+         .nav-glitch-line {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: transparent;
+         z-index: 4;
+         pointer-events: none;
+         overflow: hidden;
+         }
+         .nav-glitch-line::before {
+         content: "";
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 50%;
+         height: 100%;
+         background: linear-gradient(to right, transparent, rgba(0, 255, 97, 0.1), transparent);
+         transform: skewX(-20deg);
+         animation: glitch-line 5s infinite linear;
+         }
+         /* Matrix Rain Background */
+         .nav-bg-canvas {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: 1;
+         opacity: 0.07;
+         pointer-events: none;
+         }
+         /* ========================================
+         DOCUMENTATION LAYOUT
+         ======================================== */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - var(--nav-height));
+         }
+         .docs-sidebar {
+         width: 280px;
+         position: sticky;
+         top: var(--nav-height);
+         height: calc(100vh - var(--nav-height));
+         overflow-y: auto;
+         flex-shrink: 0;
+         z-index: 900;
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         /* ========================================
+         NEWSLETTER SECTION
+         ======================================== */
+         .newsletter-section {
+         padding: 5rem 1rem;
+         border-top: 1px solid var(--m-border);
+         background-color: rgba(0, 10, 0, 0.7);
+         text-align: center;
+         }
+         .newsletter-content {
+         max-width: 600px;
+         margin: 0 auto;
+         }
+         .newsletter-title {
+         font-size: 1.6rem;
+         letter-spacing: 2px;
+         color: var(--m-text-bright);
+         text-shadow: 0 0 10px var(--m-glow);
+         margin-bottom: 1rem;
+         }
+         .newsletter-text {
+         color: var(--m-text);
+         font-size: 1rem;
+         line-height: 1.6;
+         margin-bottom: 2rem;
+         }
+         .newsletter-form {
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         gap: 1rem;
+         }
+         .newsletter-input {
+         padding: 0.75rem 1rem;
+         background-color: rgba(0, 0, 0, 0.4);
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius);
+         color: var(--m-text);
+         font-family: var(--m-font-main);
+         width: 260px;
+         font-size: 0.9rem;
+         }
+         .newsletter-input::placeholder {
+         color: var(--m-text-dim);
+         font-style: italic;
+         }
+         .newsletter-btn {
+         padding: 0.75rem 1.5rem;
+         background-color: rgba(0, 50, 0, 0.6);
+         color: var(--m-text-bright);
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius);
+         text-transform: uppercase;
+         font-family: var(--m-font-main);
+         letter-spacing: 1px;
+         font-size: 0.85rem;
+         cursor: pointer;
+         transition: all 0.3s;
+         }
+         .newsletter-btn:hover {
+         background-color: rgba(0, 255, 65, 0.1);
+         box-shadow: 0 0 10px var(--m-glow);
+         }
+         /* ========================================
+         ANIMATIONS
+         ======================================== */
+         @keyframes cursor-blink {
+         0%, 49% { opacity: 1; }
+         50%, 100% { opacity: 0; }
+         }
+         @keyframes status-pulse {
+         0%, 100% { opacity: 0.7; box-shadow: 0 0 0px var(--nav-glow); }
+         50% { opacity: 1; box-shadow: 0 0 5px var(--nav-glow); }
+         }
+         @keyframes scanline {
+         0% { top: 0; }
+         100% { top: 100%; }
+         }
+         @keyframes glitch-line {
+         0% { left: -100%; }
+         100% { left: 200%; }
+         }
+         @keyframes logo-glitch-1 {
+         0%, 10%, 30%, 32%, 45%, 100% { transform: translateX(0); }
+         12%, 28% { transform: translateX(-2px); }
+         31% { transform: translateX(2px); }
+         }
+         @keyframes logo-glitch-2 {
+         0%, 12%, 30%, 33%, 45%, 100% { transform: translateX(0); }
+         15%, 25% { transform: translateX(2px); }
+         32% { transform: translateX(-2px); }
+         }
+         @keyframes glowPulse {
+         0%, 100% { box-shadow: 0 0 6px rgba(0, 255, 65, 0.4); }
+         50% { box-shadow: 0 0 12px rgba(0, 255, 65, 0.9); }
+         }
+         @keyframes statusPulse {
+         0%, 100% { opacity: 0.6; transform: scale(1); }
+         50% { opacity: 1; transform: scale(1.3); }
+         }
+         /* ========================================
+         RESPONSIVE STYLES
+         ======================================== */
+         @media (max-width: 992px) {
+         .nav-links-container {
+         position: fixed;
+         top: var(--nav-height);
+         left: 0;
+         right: 0;
+         height: 0;
+         background-color: var(--nav-bg);
+         overflow: hidden;
+         transition: height var(--nav-transition);
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 15px;
+         padding: 0 20px;
+         border-bottom: 1px solid var(--nav-border);
+         z-index: 999;
+         }
+         .nav-links-container.active {
+         height: calc(100vh - var(--nav-height));
+         overflow-y: auto;
+         }
+         .nav-links {
+         flex-direction: column;
+         align-items: flex-start;
+         width: 100%;
+         padding: 20px 0;
+         gap: 20px;
+         }
+         .nav-link {
+         width: 100%;
+         padding: 12px 0;
+         border-bottom: 1px solid var(--nav-border);
+         }
+         .nav-decoration {
+         display: none;
+         }
+         .nav-menu-toggle {
+         display: flex;
+         }
+         .nav-search {
+         width: 100%;
+         margin: 0 0 20px 0;
+         }
+         .search-container {
+         width: 100%;
+         height: 40px;
+         }
+         .matrix-nav.scrolled {
+         height: 60px;
+         }
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+         @media (max-width: 576px) {
+         .nav-logo {
+         font-size: 1.2rem;
+         }
+         .nav-container {
+         padding: 0 10px;
+         }
+         }
+      </style>
+      <style>
+         /* Theme transition */
+         .theme-transition {
+         transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+         }
+         /* Make mobile toggle more visible and clickable */
+         .mobile-menu-toggle {
+         width: 30px;
+         height: 24px;
+         position: relative;
+         z-index: 1001;
+         cursor: pointer;
+         padding: 10px;
+         margin: -10px;
+         display: none;
+         }
+         .mobile-menu-toggle span {
+         display: block;
+         width: 100%;
+         height: 2px;
+         background-color: var(--m-text);
+         margin: 5px 0;
+         transition: transform 0.3s, opacity 0.3s;
+         }
+         @media (max-width: 992px) {
+         .mobile-menu-toggle {
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         }
+         }
+         /* Fixed sidebar styles */
+         .sidebar-backdrop {
+         z-index: 899;
+         }
+         .docs-sidebar {
+         z-index: 900;
+         transition: left 0.3s ease;
+         }
+         /* Target highlight effect */
+         .highlight-target {
+         position: relative;
+         }
+         .highlight-target::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background-color: var(--m-text);
+         opacity: 0.1;
+         animation: fadeOut 2s forwards;
+         pointer-events: none;
+         z-index: -1;
+         }
+         @keyframes fadeOut {
+         from { opacity: 0.1; }
+         to { opacity: 0; }
+         }
+         /* Fixed sidebar positioning */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - 70px);
+         }
+         .docs-sidebar {
+         width: 280px;
+         position: sticky;
+         top: 70px;
+         height: calc(100vh - 70px);
+         overflow-y: auto;
+         flex-shrink: 0;
+         z-index: 900;
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+         /* ===== NAVBAR-SIDEBAR INTEGRATION FIXES ===== */
+         /* Set proper variables */
+         :root {
+         --navbar-height: 70px;
+         --sidebar-width: 280px;
+         --sidebar-transition-speed: 0.3s;
+         }
+         /* Fix sticky sidebar positioning when scrolling */
+         .docs-sidebar {
+         position: sticky;
+         top: var(--navbar-height);
+         height: calc(100vh - var(--navbar-height));
+         transition: transform var(--sidebar-transition-speed) ease, 
+         opacity var(--sidebar-transition-speed) ease,
+         top var(--sidebar-transition-speed) ease;
+         padding-top: 1rem;
+         z-index: 900;
+         }
+         /* Add highlight to active section in sidebar */
+         .docs-sidebar-link.active {
+         color: var(--m-text-bright);
+         background-color: rgba(0, 255, 65, 0.05);
+         padding-left: 0.5rem;
+         position: relative;
+         }
+         .docs-sidebar-link.active::before {
+         content: "";
+         position: absolute;
+         left: 0;
+         top: 0;
+         width: 3px;
+         height: 100%;
+         background-color: var(--m-text);
+         box-shadow: 0 0 10px var(--m-glow);
+         }
+         /* Fix the matrix nav */
+         .matrix-nav {
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         height: var(--navbar-height);
+         z-index: 1000;
+         transition: height 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+         }
+         .matrix-nav.scrolled {
+         height: var(--navbar-height);
+         background-color: rgba(0, 10, 2, 0.95);
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+         backdrop-filter: blur(10px);
+         }
+         /* Adjust main content positioning */
+         .docs-content {
+         padding-top: 1rem;
+         }
+         /* Smooth integration between navbar and sidebar */
+         .matrix-nav::after {
+         content: "";
+         position: absolute;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         height: 1px;
+         background: linear-gradient(to right, 
+         transparent 0%, 
+         var(--m-text) 20%, 
+         var(--m-text-bright) 50%, 
+         var(--m-text) 80%,
+         transparent 100%
+         );
+         opacity: 0.6;
+         z-index: 2;
+         }
+         /* For mobile view */
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         top: var(--navbar-height);
+         left: -300px;
+         box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+         /* ===== SCROLL DOWN INDICATOR FIXES ===== */
+         /* Improve hero scroll indicator */
+         .hero .scroll-indicator {
+         position: absolute;
+         bottom: 2rem;
+         left: 50%;
+         transform: translateX(-50%);
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         cursor: pointer;
+         z-index: 5;
+         animation: pulse-glow 2s infinite;
+         }
+         /* Better scroll arrow animation */
+         @keyframes bounce {
+         0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+         40% { transform: translateY(-15px) translateX(-50%); }
+         60% { transform: translateY(-10px) translateX(-50%); }
+         }
+         /* Pulse glow effect for scroll indicator */
+         @keyframes pulse-glow {
+         0%, 100% { opacity: 0.7; text-shadow: 0 0 5px var(--m-glow); }
+         50% { opacity: 1; text-shadow: 0 0 15px var(--m-glow), 0 0 20px var(--m-glow); }
+         }
+         /* ===== TERMINAL TYPING EFFECT FOR SECTION NAME ===== */
+         /* Container for the title that will change */
+         .nav-title-container {
+         display: inline-block;
+         position: relative;
+         min-width: 150px;
+         padding-right: 12px; /* Space for cursor */
+         }
+         /* Dynamic section title with terminal effect */
+         .nav-section-title {
+         overflow: hidden;
+         white-space: nowrap;
+         color: var(--m-text-bright);
+         position: relative;
+         display: none;
+         }
+         /* Original logo title */
+         .nav-logo-title {
+         transition: opacity 0.3s ease;
+         }
+         /* Terminal cursor effect */
+         .terminal-cursor {
+         display: inline-block;
+         width: 10px;
+         height: 1.2em;
+         background-color: var(--m-text);
+         animation: cursor-blink 1s step-end infinite;
+         vertical-align: text-bottom;
+         position: absolute;
+         right: 0;
+         top: 50%;
+         transform: translateY(-50%);
+         }
+         /* Type-on animation for section titles */
+         @keyframes type-on {
+         from { width: 0; }
+         to { width: 100%; }
+         }
+         /* Blinking cursor animation */
+         @keyframes cursor-blink {
+         0%, 100% { opacity: 0; }
+         50% { opacity: 1; }
+         }
+         /* Terminal glitch effect */
+         .terminal-glitch {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(transparent, rgba(0, 255, 65, 0.1), transparent);
+         opacity: 0;
+         z-index: 2;
+         pointer-events: none;
+         }
+         /* Active section box */
+         .active-section-box {
+         position: fixed;
+         top: 10px;
+         right: 20px;
+         padding: 5px 10px;
+         background: rgba(0, 20, 0, 0.8);
+         border: 1px solid var(--m-border);
+         color: var(--m-text);
+         font-size: 0.8rem;
+         border-radius: var(--m-radius);
+         z-index: 1002;
+         display: flex;
+         align-items: center;
+         opacity: 0;
+         transform: translateY(-20px);
+         transition: opacity 0.3s ease, transform 0.3s ease;
+         }
+         .active-section-box.visible {
+         opacity: 1;
+         transform: translateY(0);
+         }
+         .active-section-indicator {
+         display: inline-block;
+         width: 8px;
+         height: 8px;
+         background-color: var(--m-text);
+         border-radius: 50%;
+         margin-right: 8px;
+         animation: pulse 1.5s infinite;
+         }
+         /* Fixed sidebar positioning */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - 70px);
+         }
+         .docs-sidebar {
+         width: 280px;
+         position: sticky;
+         top: 70px;
+         height: calc(100vh - 70px);
+         overflow-y: auto;
+         flex-shrink: 0;
+         z-index: 900;
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+      </style>
+      <script>
+         document.addEventListener('DOMContentLoaded', function() {
+           // Mobile Menu Toggle
+           const menuToggle = document.getElementById('matrixMenuToggle');
+           const linksContainer = document.querySelector('.nav-links-container');
+           
+           if (menuToggle && linksContainer) {
+             menuToggle.addEventListener('click', function() {
+               this.classList.toggle('active');
+               linksContainer.classList.toggle('active');
+               
+               // Prevent body scrolling when menu is open
+               if (linksContainer.classList.contains('active')) {
+                 document.body.style.overflow = 'hidden';
+               } else {
+                 document.body.style.overflow = '';
+               }
+             });
+           }
+           
+           // Matrix Rain Background Effect
+           const canvas = document.getElementById('matrixNavRain');
+           if (canvas) {
+             const ctx = canvas.getContext('2d');
+             
+             // Canvas dimensions match container
+             function resizeCanvas() {
+               canvas.width = canvas.parentElement.offsetWidth;
+               canvas.height = canvas.parentElement.offsetHeight;
+             }
+             
+             resizeCanvas();
+             window.addEventListener('resize', resizeCanvas);
+             
+             // Matrix rain characters
+             const matrixChars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+             
+             // Rain setup
+             const fontSize = 12;
+             const columns = Math.floor(canvas.width / fontSize);
+             const drops = [];
+             
+             // Initialize drops
+             for (let i = 0; i < columns; i++) {
+               drops[i] = Math.floor(Math.random() * -20);
+             }
+             
+             // Draw matrix rain
+             function draw() {
+               // Semi-transparent fade effect
+               ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+               ctx.fillRect(0, 0, canvas.width, canvas.height);
+               
+               // Green text
+               ctx.fillStyle = '#00ff41';
+               ctx.font = fontSize + 'px monospace';
+               
+               // Draw each droplet
+               for (let i = 0; i < drops.length; i++) {
+                 // Random character
+                 const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                 
+                 // Drawing position
+                 const x = i * fontSize;
+                 const y = drops[i] * fontSize;
+                 
+                 // Random brightness
+                 if (Math.random() < 0.1) {
+                   ctx.fillStyle = '#00ff97';
+                 } else {
+                   ctx.fillStyle = '#00ff41';
+                 }
+                 
+                 // Draw the character
+                 ctx.fillText(char, x, y);
+                 
+                 // Move drop
+                 drops[i]++;
+                 
+                 // Reset to top with randomness
+                 if (y > canvas.height && Math.random() > 0.98) {
+                   drops[i] = Math.floor(Math.random() * -20);
+                 }
+               }
+               
+               // Loop animation
+               requestAnimationFrame(draw);
+             }
+             
+             // Start drawing
+             draw();
+           }
+           
+           // Scroll Effect
+           const nav = document.querySelector('.matrix-nav');
+           let lastScrollTop = 0;
+           
+           window.addEventListener('scroll', function() {
+             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+             
+             // Add scrolled class when page is scrolled down
+             if (scrollTop > 50) {
+               nav.classList.add('scrolled');
+             } else {
+               nav.classList.remove('scrolled');
+             }
+             
+             lastScrollTop = scrollTop;
+           });
+           
+           // Active Link Highlighting
+           const navLinks = document.querySelectorAll('.nav-link');
+           
+           // Function to set active link based on scroll position
+           function setActiveLink() {
+             const scrollPosition = window.scrollY + 100;
+             
+             // Find all section elements with IDs
+             const sections = document.querySelectorAll('section[id]');
+             
+             sections.forEach(section => {
+               const sectionTop = section.offsetTop;
+               const sectionHeight = section.offsetHeight;
+               const sectionId = section.getAttribute('id');
+               
+               // Check if current scroll position is within this section
+               if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                 // Remove active class from all links
+                 navLinks.forEach(link => {
+                   link.classList.remove('active');
+                 });
+                 
+                 // Add active class to corresponding link
+                 document.querySelector(`.nav-link[href="#${sectionId}"]`)?.classList.add('active');
+               }
+             });
+           }
+           
+           // Call on scroll
+           window.addEventListener('scroll', setActiveLink);
+           
+           // Initial call
+           setActiveLink();
+           
+           // Search Functionality
+           const searchInput = document.querySelector('.search-input');
+           const searchStatus = document.querySelector('.search-status');
+           
+           if (searchInput && searchStatus) {
+             searchInput.addEventListener('focus', function() {
+               searchStatus.textContent = 'READY';
+             });
+             
+             searchInput.addEventListener('input', function() {
+               if (this.value.length > 0) {
+                 searchStatus.textContent = 'SEARCHING';
+               } else {
+                 searchStatus.textContent = 'READY';
+               }
+             });
+             
+             searchInput.addEventListener('blur', function() {
+               setTimeout(() => {
+                 searchStatus.textContent = 'IDLE';
+               }, 200);
+             });
+           }
+           
+           // Random Glitch Effect
+           function triggerRandomGlitch() {
+             const glitchLine = document.querySelector('.nav-glitch-line');
+             
+             if (Math.random() > 0.7) {
+               const glitchDuration = Math.random() * 200 + 50;
+               const logoText = document.querySelector('.logo-text');
+               
+               logoText.style.textShadow = '0 0 20px var(--nav-glow)';
+               
+               setTimeout(() => {
+                 logoText.style.textShadow = '';
+               }, glitchDuration);
+             }
+             
+             // Schedule next glitch
+             setTimeout(triggerRandomGlitch, Math.random() * 5000 + 2000);
+           }
+           
+           // Start random glitches
+           triggerRandomGlitch();
+         });
+      </script>
+      <!-- Hero Section with Code Rain -->
+      <section class="hero" id="home">
+         <!-- Digital Rain Canvas (direct implementation instead of using the CSS classes) -->
+         <canvas id="matrixRain" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+         <!-- Hero Content with improved visibility for subtitle text -->
+         <div style="position: relative; z-index: 2; text-align: center; padding: 0 20px; max-width: 1000px;">
+            <div style="display: inline-block; position: relative; margin-bottom: 2rem;">
+               <h1 class="hero-title" style="font-size: clamp(3rem, 8vw, 8rem); font-weight: bold; letter-spacing: 6px; text-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); margin-bottom: 0.5rem; animation: pulse 3s infinite; text-transform: uppercase;">MATRIX.CSS</h1>
+               <div style="width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--m-text), transparent); margin: 10px auto 20px; animation: expand 2s ease;"></div>
+            </div>
+            <!-- Adding a semi-transparent background to make text more readable -->
+            <p class="hero-subtitle" style="font-size: clamp(1rem, 2vw, 1.5rem); max-width: 800px; margin: 0 auto 3rem; line-height: 1.6; text-shadow: 0 0 10px var(--m-glow); background-color: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 5px; border: 1px solid var(--m-border);">
+               Immerse your users in the digital realm with the complete Matrix-inspired design framework. Build stunning cyberpunk interfaces with minimal effort.
+            </p>
+            <div class="hero-cta" style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+               <a href="#getting-started" class="m-btn m-btn-primary m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px; position: relative; overflow: hidden;">
+               <span style="position: relative; z-index: 2;">ENTER THE MATRIX</span>
+               </a>
+               <a href="#components" class="m-btn m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px;">EXPLORE COMPONENTS</a>
+            </div>
+            <!-- Version badge -->
+            <div style="margin-top: 3rem; opacity: 0.8; font-size: 0.9rem;">
+               <span class="m-badge" style="padding: 0.3rem 0.8rem; font-size: 0.9rem; letter-spacing: 1px;">VERSION 2.0</span>
+            </div>
+            <!-- Scroll indicator -->
+            <div style="position: absolute; bottom: -8rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer;">
+               <a href="#features" class="scroll-indicator">
+               <span style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">Scroll Down</span>
+               <span style="display: block; transform: rotate(45deg); width: 15px; height: 15px; border-right: 2px solid var(--m-text); border-bottom: 2px solid var(--m-text); margin: 0 auto;"></span>
+               </a>
+            </div>
+         </div>
+      </section>
+      <!-- Custom animations for hero section -->
+      <style>
+         @keyframes pulse {
+         0%, 100% { text-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); }
+         50% { text-shadow: 0 0 30px var(--m-glow), 0 0 60px var(--m-glow), 0 0 80px var(--m-glow); }
+         }
+         @keyframes expand {
+         from { width: 0; }
+         to { width: 100%; }
+         }
+         @keyframes bounce {
+         0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+         40% { transform: translateY(-10px) translateX(-50%); }
+         60% { transform: translateY(-5px) translateX(-50%); }
+         }
+         /* Fixed sidebar positioning */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - 70px);
+         }
+         .docs-sidebar {
+         width: 280px;
+         position: sticky;
+         top: 70px;
+         height: calc(100vh - 70px);
+         overflow-y: auto;
+         flex-shrink: 0;
+         z-index: 900;
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+      </style>
+      <!-- ULTRA-ENHANCED MATRIX REALITY FEATURE SECTION -->
+      <section class="m-container m-py-5" id="features">
+         <!-- Glitching Title with Digital Code Effect -->
+         <div class="matrix-title-container">
+            <div class="matrix-code-overlay"></div>
+            <h2 class="matrix-title glitch-text" data-text="Why Choose Matrix.css?">Why Choose Matrix.css?</h2>
+            <div class="matrix-title-underline">
+               <div class="matrix-underline-pulse"></div>
+            </div>
+         </div>
+         <!-- Matrix Hexagonal Neural Network Grid -->
+         <div class="neural-grid-container">
+            <!-- Neural Connection Lines (Generated by JS) -->
+            <div class="neural-connections" id="neuralConnections"></div>
+            <!-- Neural Nodes / Feature Cards -->
+            <div class="neural-node" data-position="1">
+               <div class="node-pulse"></div>
+               <div class="matrix-hex-card">
+                  <div class="card-content">
+                     <div class="code-rain-overlay"></div>
+                     <div class="card-symbol">01</div>
+                     <div class="card-header">
+                        <div class="card-indicator active"></div>
+                        <h3 class="card-title">BEND REALITY</h3>
+                     </div>
+                     <div class="card-body">
+                        <p>Reshape perception with pure CSS constructs. No JavaScript dependencies - the Matrix exists beyond conventional constraints.</p>
+                     </div>
+                     <div class="card-status">
+                        <div class="status-label">SYSTEM:</div>
+                        <div class="status-value">OPERATIONAL</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="neural-node" data-position="2">
+               <div class="node-pulse"></div>
+               <div class="matrix-hex-card">
+                  <div class="card-content">
+                     <div class="code-rain-overlay"></div>
+                     <div class="card-symbol">02</div>
+                     <div class="card-header">
+                        <div class="card-indicator active"></div>
+                        <h3 class="card-title">DIGITAL SENTIENCE</h3>
+                     </div>
+                     <div class="card-body">
+                        <p>Components that transcend ordinary design. Each element exists with purpose in the Matrix - aesthetics evolved beyond human expectation.</p>
+                     </div>
+                     <div class="card-status">
+                        <div class="status-label">SYSTEM:</div>
+                        <div class="status-value">OPERATIONAL</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="neural-node" data-position="3">
+               <div class="node-pulse"></div>
+               <div class="matrix-hex-card">
+                  <div class="card-content">
+                     <div class="code-rain-overlay"></div>
+                     <div class="card-symbol">03</div>
+                     <div class="card-header">
+                        <div class="card-indicator active"></div>
+                        <h3 class="card-title">QUANTUM VELOCITY</h3>
+                     </div>
+                     <div class="card-body">
+                        <p>Optimization beyond conventional physics. Acceleration and rendering efficiency that defies the constraints of digital space-time.</p>
+                     </div>
+                     <div class="card-status">
+                        <div class="status-label">SYSTEM:</div>
+                        <div class="status-value">OPTIMAL</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="neural-node" data-position="4">
+               <div class="node-pulse"></div>
+               <div class="matrix-hex-card">
+                  <div class="card-content">
+                     <div class="code-rain-overlay"></div>
+                     <div class="card-symbol">04</div>
+                     <div class="card-header">
+                        <div class="card-indicator active"></div>
+                        <h3 class="card-title">OMNIPRESENT EXISTENCE</h3>
+                     </div>
+                     <div class="card-body">
+                        <p>Responsive beyond dimensions. Your interface materializes perfectly across all possible devices, existing in every reality simultaneously.</p>
+                     </div>
+                     <div class="card-status">
+                        <div class="status-label">SYSTEM:</div>
+                        <div class="status-value">CALIBRATED</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="neural-node" data-position="5">
+               <div class="node-pulse"></div>
+               <div class="matrix-hex-card">
+                  <div class="card-content">
+                     <div class="code-rain-overlay"></div>
+                     <div class="card-symbol">05</div>
+                     <div class="card-header">
+                        <div class="card-indicator active"></div>
+                        <h3 class="card-title">SENTIENT COMPONENTS</h3>
+                     </div>
+                     <div class="card-body">
+                        <p>Neural networks, terminals, and data rain visualizers that evolve beyond conventional UI. Components that question the nature of their reality.</p>
+                     </div>
+                     <div class="card-status">
+                        <div class="status-label">SYSTEM:</div>
+                        <div class="status-value">ACTIVE</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="neural-node" data-position="6">
+               <div class="node-pulse"></div>
+               <div class="matrix-hex-card">
+                  <div class="card-content">
+                     <div class="code-rain-overlay"></div>
+                     <div class="card-symbol">06</div>
+                     <div class="card-header">
+                        <div class="card-indicator active"></div>
+                        <h3 class="card-title">DUALITY PARADIGM</h3>
+                     </div>
+                     <div class="card-body">
+                        <p>Blue pill or red pill? Choose between dark Matrix reality or illuminated variant. Two worlds coexist within one codebase - the choice is yours.</p>
+                     </div>
+                     <div class="card-status">
+                        <div class="status-label">SYSTEM:</div>
+                        <div class="status-value">BALANCED</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Enhanced Terminal Section with Proper Delayed Scroll -->
+         <style>
+            /* Terminal Container */
+            .terminal-container {
+            max-width: 600px;
+            margin: 4rem auto 2rem;
+            background-color: rgba(0, 10, 0, 0.95);
+            border: 1px solid #143214;
+            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 255, 65, 0.6);
+            overflow: hidden;
+            position: relative;
+            font-family: 'Courier New', monospace;
+            }
+            /* Terminal Header */
+            .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: rgba(0, 20, 0, 0.7);
+            border-bottom: 1px solid #143214;
+            }
+            .terminal-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #00ff41;
+            letter-spacing: 1px;
+            }
+            .terminal-controls {
+            display: flex;
+            gap: 6px;
+            }
+            .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            }
+            .terminal-btn:nth-child(1) {
+            background-color: #FF5F56;
+            }
+            .terminal-btn:nth-child(2) {
+            background-color: #FFBD2E;
+            }
+            .terminal-btn:nth-child(3) {
+            background-color: #27C93F;
+            }
+            /* Terminal Content */
+            .terminal-content {
+            padding: 16px;
+            min-height: 200px;
+            }
+            .terminal-line {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            }
+            .terminal-prompt {
+            color: #00ff97;
+            margin-right: 8px;
+            user-select: none;
+            }
+            .terminal-command {
+            color: #00ff41;
+            }
+            .terminal-output {
+            color: #0a3f0a;
+            width: 100%;
+            padding-left: 24px;
+            margin-top: 4px;
+            }
+            /* Processing Line - initially hidden */
+            .processing-line {
+            display: none;
+            color: #00ff97; 
+            margin-bottom: 8px;
+            width: 100%;
+            padding-left: 24px;
+            }
+            /* Centered Button Area */
+            .terminal-action-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            }
+            .terminal-command-line {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 16px;
+            }
+            /* Enhanced Button with Interactive Cues */
+            .terminal-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #072707;
+            color: #00ff41;
+            border: 1px solid #143214;
+            border-radius: 3px;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            }
+            .terminal-button:hover {
+            background-color: #0a3f0a;
+            color: #00ff97;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+            border-color: #00ff41;
+            }
+            .terminal-button:active {
+            transform: scale(0.98);
+            }
+            /* Directional indicators */
+            .button-arrow {
+            opacity: 0;
+            transition: all 0.3s;
+            }
+            .button-arrow-left {
+            margin-right: 0;
+            }
+            .button-arrow-right {
+            margin-left: 0;
+            }
+            .terminal-button:hover .button-arrow {
+            opacity: 1;
+            }
+            .terminal-button:hover .button-arrow-left {
+            margin-right: 8px;
+            }
+            .terminal-button:hover .button-arrow-right {
+            margin-left: 8px;
+            }
+            /* Button hint */
+            .button-hint {
+            font-size: 0.75rem;
+            color: #0a3f0a;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            }
+            .terminal-action-area:hover .button-hint {
+            opacity: 1;
+            }
+            /* Blinking cursor */
+            .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #00ff41;
+            margin-left: 8px;
+            animation: cursor-blink 1s step-end infinite;
+            }
+            @keyframes cursor-blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+            }
+            /* Typewriter effect for the processing line */
+            @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+            }
+            .typewriter-effect {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typewriter 1s steps(40, end);
+            animation-fill-mode: forwards;
+            }
+            /* Scanline effect */
+            .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00ff41, transparent);
+            opacity: 0.5;
+            animation: scan 10s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            }
+            @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+            }
+            /* Fixed sidebar positioning */
+            .docs-layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+            }
+            .docs-sidebar {
+            width: 280px;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 900;
+            }
+            .docs-content {
+            flex: 1;
+            min-width: 0;
+            padding: 2rem;
+            }
+            @media (max-width: 992px) {
+            .docs-sidebar {
+            position: fixed;
+            left: -280px;
+            transition: left 0.3s ease;
+            }
+            .docs-sidebar.active {
+            left: 0;
+            }
+            }
+         </style>
+      </section>
+      <!-- Ultra-Matrix Reality Enhanced Styles -->
+      <style>
+         /* ===== Matrix Code Rain Animation ===== */
+         @keyframes matrix-rain {
+         0% { 
+         background-position: 0% 0%;
+         opacity: 0.6;
+         }
+         50% { opacity: 0.8; }
+         100% { 
+         background-position: 0% 100%;
+         opacity: 0.6;
+         }
+         }
+         /* ===== Glitch Text Effect ===== */
+         .glitch-text {
+         position: relative;
+         animation: glitch 3s infinite;
+         }
+         .glitch-text::before,
+         .glitch-text::after {
+         content: attr(data-text);
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: var(--m-bg);
+         clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+         z-index: -1;
+         }
+         .glitch-text::before {
+         left: 2px;
+         text-shadow: -1px 0 var(--m-danger);
+         animation: glitch-1 2s infinite linear alternate-reverse;
+         }
+         .glitch-text::after {
+         left: -2px;
+         text-shadow: 1px 0 var(--m-info);
+         animation: glitch-2 3s infinite linear alternate-reverse;
+         clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+         }
+         @keyframes glitch-1 {
+         0%, 14%, 50%, 54%, 100% { transform: translate(0, 0) skew(0deg); }
+         15% { transform: translate(-2px, 2px) skew(2deg); }
+         49% { transform: translate(2px, -2px) skew(-2deg); }
+         51% { transform: translate(-2px, 2px) skew(2deg); }
+         52% { transform: translate(2px, -2px) skew(-2deg); }
+         }
+         @keyframes glitch-2 {
+         0%, 14%, 50%, 54%, 100% { transform: translate(0, 0) skew(0deg); }
+         15% { transform: translate(2px, -2px) skew(-2deg); }
+         49% { transform: translate(-2px, 2px) skew(2deg); }
+         51% { transform: translate(2px, -2px) skew(-2deg); }
+         52% { transform: translate(-2px, 2px) skew(2deg); }
+         }
+         @keyframes glitch {
+         0%, 14%, 50%, 54%, 100% { opacity: 1; }
+         15%, 49% { opacity: 0.9; }
+         51%, 52% { opacity: 0.8; }
+         }
+         /* ===== Title Section ===== */
+         .matrix-title-container {
+         position: relative;
+         text-align: center;
+         padding: 2rem 0;
+         overflow: hidden;
+         }
+         .matrix-code-overlay {
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1000' viewBox='0 0 200 1000'%3E%3Cstyle%3E.text %7B font: 20px monospace; fill: %2300ff41; %7D%3C/style%3E%3Cg%3E%3Ctext x='10' y='30' class='text'%3E01011001%3C/text%3E%3Ctext x='50' y='60' class='text'%3E10110%3C/text%3E%3Ctext x='90' y='90' class='text'%3E0110111%3C/text%3E%3Ctext x='130' y='120' class='text'%3E1010%3C/text%3E%3Ctext x='30' y='150' class='text'%3E01110%3C/text%3E%3Ctext x='70' y='180' class='text'%3E10011%3C/text%3E%3Ctext x='110' y='210' class='text'%3E01101%3C/text%3E%3Ctext x='20' y='240' class='text'%3E110011%3C/text%3E%3Ctext x='60' y='270' class='text'%3E01010%3C/text%3E%3Ctext x='100' y='300' class='text'%3E110101%3C/text%3E%3C/g%3E%3C/svg%3E");
+         opacity: 0.15;
+         animation: matrix-rain 20s linear infinite;
+         pointer-events: none;
+         z-index: -1;
+         }
+         .matrix-title {
+         font-size: 3.5rem;
+         font-weight: bold;
+         color: var(--m-text-bright);
+         letter-spacing: 3px;
+         text-transform: uppercase;
+         margin-bottom: 1rem;
+         text-shadow: 0 0 15px var(--m-glow);
+         display: inline-block;
+         }
+         .matrix-title-underline {
+         position: relative;
+         width: 60%;
+         height: 2px;
+         background-color: rgba(0, 255, 65, 0.3);
+         margin: 0 auto;
+         overflow: hidden;
+         }
+         .matrix-underline-pulse {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(to right, transparent, var(--m-text-bright), transparent);
+         animation: underline-pulse 3s ease-in-out infinite;
+         }
+         @keyframes underline-pulse {
+         0%, 100% { transform: translateX(-100%); }
+         50% { transform: translateX(100%); }
+         }
+         /* ===== Neural Network Grid ===== */
+         .neural-grid-container {
+         position: relative;
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         grid-template-rows: repeat(2, 1fr);
+         gap: 3rem;
+         margin: 5rem 0;
+         padding: 2rem;
+         }
+         .neural-connections {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: 0;
+         pointer-events: none;
+         }
+         .neural-connection {
+         position: absolute;
+         height: 2px;
+         background-color: var(--m-text-dim);
+         transform-origin: 0 0;
+         z-index: 0;
+         }
+         .neural-connection.active {
+         background-color: var(--m-text);
+         box-shadow: 0 0 8px var(--m-glow);
+         animation: connection-pulse 4s infinite;
+         }
+         @keyframes connection-pulse {
+         0%, 100% { opacity: 0.3; }
+         50% { opacity: 1; }
+         }
+         .neural-node {
+         position: relative;
+         z-index: 1;
+         }
+         .node-pulse {
+         position: absolute;
+         width: 20px;
+         height: 20px;
+         border-radius: 50%;
+         background-color: var(--m-bg);
+         border: 2px solid var(--m-text);
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         z-index: 10;
+         box-shadow: 0 0 10px var(--m-glow);
+         animation: node-pulse 4s infinite;
+         }
+         @keyframes node-pulse {
+         0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px var(--m-glow); }
+         50% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); }
+         }
+         /* ===== Hexagonal Cards ===== */
+         .matrix-hex-card {
+         position: relative;
+         margin: 0 auto;
+         width: 100%;
+         height: 100%;
+         min-height: 300px;
+         perspective: 1000px;
+         transform-style: preserve-3d;
+         transition: transform 0.5s;
+         }
+         .matrix-hex-card:hover {
+         transform: translateY(-10px);
+         }
+         .card-content {
+         position: relative;
+         width: 100%;
+         height: 100%;
+         padding: 2rem;
+         background-color: rgba(0, 10, 0, 0.7);
+         border: 2px solid var(--m-border);
+         border-radius: var(--m-radius);
+         backdrop-filter: blur(5px);
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+         transition: all 0.3s;
+         overflow: hidden;
+         }
+         .matrix-hex-card:hover .card-content {
+         border-color: var(--m-text);
+         box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+         }
+         .code-rain-overlay {
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1000' viewBox='0 0 200 1000'%3E%3Cstyle%3E.text %7B font: 10px monospace; fill: %2300ff41; %7D%3C/style%3E%3Cg%3E%3Ctext x='10' y='30' class='text'%3E01011001%3C/text%3E%3Ctext x='50' y='60' class='text'%3E10110%3C/text%3E%3Ctext x='90' y='90' class='text'%3E0110111%3C/text%3E%3Ctext x='130' y='120' class='text'%3E1010%3C/text%3E%3Ctext x='30' y='150' class='text'%3E01110%3C/text%3E%3Ctext x='70' y='180' class='text'%3E10011%3C/text%3E%3Ctext x='110' y='210' class='text'%3E01101%3C/text%3E%3Ctext x='20' y='240' class='text'%3E110011%3C/text%3E%3Ctext x='60' y='270' class='text'%3E01010%3C/text%3E%3Ctext x='100' y='300' class='text'%3E110101%3C/text%3E%3C/g%3E%3C/svg%3E");
+         opacity: 0.1;
+         animation: matrix-rain 20s linear infinite;
+         pointer-events: none;
+         z-index: -1;
+         }
+         .matrix-hex-card:hover .code-rain-overlay {
+         opacity: 0.2;
+         animation-duration: 10s;
+         }
+         .card-symbol {
+         position: absolute;
+         top: 1rem;
+         right: 1rem;
+         font-size: 1.2rem;
+         font-family: var(--m-font-main);
+         color: var(--m-text-dim);
+         opacity: 0.7;
+         }
+         .card-header {
+         display: flex;
+         align-items: center;
+         gap: 0.75rem;
+         margin-bottom: 1.5rem;
+         }
+         .card-indicator {
+         width: 12px;
+         height: 12px;
+         background-color: var(--m-text-dim);
+         border-radius: 50%;
+         }
+         .card-indicator.active {
+         background-color: var(--m-text);
+         box-shadow: 0 0 10px var(--m-glow);
+         animation: indicator-pulse 2s infinite;
+         }
+         @keyframes indicator-pulse {
+         0%, 100% { transform: scale(1); }
+         50% { transform: scale(1.3); }
+         }
+         .card-title {
+         font-size: 1.3rem;
+         font-weight: bold;
+         color: var(--m-text-bright);
+         letter-spacing: 1px;
+         margin: 0;
+         }
+         .card-body {
+         margin-bottom: 1.5rem;
+         }
+         .card-body p {
+         color: var(--m-text);
+         line-height: 1.6;
+         font-size: 0.95rem;
+         margin: 0;
+         }
+         .card-status {
+         display: flex;
+         font-size: 0.8rem;
+         align-items: center;
+         gap: 0.5rem;
+         color: var(--m-text-dim);
+         font-family: var(--m-font-main);
+         letter-spacing: 1px;
+         position: absolute;
+         bottom: 1rem;
+         left: 2rem;
+         }
+         .status-value {
+         color: var(--m-text);
+         }
+         /* ===== Terminal CTA ===== */
+         .terminal-cta-container {
+         max-width: 600px;
+         margin: 4rem auto 2rem;
+         background-color: rgba(0, 10, 0, 0.9);
+         border: 1px solid var(--m-border);
+         border-radius: var(--m-radius);
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+         overflow: hidden;
+         }
+         .terminal-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 0.5rem 1rem;
+         background-color: rgba(0, 0, 0, 0.3);
+         border-bottom: 1px solid var(--m-border);
+         }
+         .terminal-title {
+         font-size: 0.9rem;
+         font-weight: bold;
+         color: var(--m-text);
+         letter-spacing: 1px;
+         }
+         .terminal-controls {
+         display: flex;
+         gap: 0.5rem;
+         }
+         .terminal-btn {
+         width: 12px;
+         height: 12px;
+         border-radius: 50%;
+         background-color: var(--m-text-dim);
+         }
+         .terminal-content {
+         padding: 1rem;
+         min-height: 180px;
+         }
+         .terminal-line {
+         margin-bottom: 0.5rem;
+         display: flex;
+         align-items: center;
+         flex-wrap: wrap;
+         }
+         .terminal-prompt {
+         color: var(--m-text-bright);
+         margin-right: 0.5rem;
+         }
+         .terminal-command {
+         color: var(--m-text);
+         }
+         .terminal-output {
+         color: var(--m-text-dim);
+         width: 100%;
+         padding-left: 1.5rem;
+         margin-top: 0.25rem;
+         }
+         ..terminal-cta-button {
+         display: inline-block;
+         padding: 0.5rem 1rem;
+         margin-left: 0.5rem;
+         background-color: var(--m-secondary);
+         color: var(--m-text);
+         border: 1px solid var(--m-text);
+         border-radius: var(--m-radius);
+         text-decoration: none;
+         font-weight: bold;
+         letter-spacing: 2px;
+         transition: all 0.3s;
+         position: relative;
+         overflow: hidden;
+         }
+         .terminal-cta-button:hover {
+         background-color: var(--m-text-dim);
+         color: var(--m-text-bright);
+         box-shadow: 0 0 15px var(--m-glow);
+         }
+         .terminal-cta-button::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.3), transparent);
+         transition: left 0.3s;
+         }
+         .terminal-cta-button:hover::before {
+         left: 100%;
+         transition: left 0.7s;
+         }
+         .terminal-cursor {
+         display: inline-block;
+         width: 0.6em;
+         height: 1.2em;
+         background-color: var(--m-text);
+         margin-left: 0.5rem;
+         vertical-align: middle;
+         animation: cursor-blink 1s step-end infinite;
+         }
+         @keyframes cursor-blink {
+         0%, 100% { opacity: 0; }
+         50% { opacity: 1; }
+         }
+         /* ===== Responsive Adaptations ===== */
+         @media (max-width: 992px) {
+         .neural-grid-container {
+         grid-template-columns: repeat(2, 1fr);
+         grid-template-rows: repeat(3, 1fr);
+         gap: 2rem;
+         }
+         .matrix-title {
+         font-size: 2.8rem;
+         }
+         }
+         @media (max-width: 768px) {
+         .neural-grid-container {
+         grid-template-columns: 1fr;
+         grid-template-rows: repeat(6, auto);
+         gap: 3rem;
+         }
+         .matrix-title {
+         font-size: 2.2rem;
+         }
+         .card-content {
+         padding: 1.5rem;
+         }
+         .terminal-cta-container {
+         max-width: 100%;
+         }
+         }
+         @media (max-width: 576px) {
+         .matrix-title {
+         font-size: 1.8rem;
+         }
+         .card-title {
+         font-size: 1.1rem;
+         }
+         .terminal-content {
+         padding: 0.75rem;
+         }
+         .terminal-cta-button {
+         margin-top: 0.5rem;
+         margin-left: 1.5rem;
+         display: block;
+         }
+         }
+         /* Fixed sidebar positioning */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - 70px);
+         }
+         .docs-sidebar {
+         width: 280px;
+         position: sticky;
+         top: 70px;
+         height: calc(100vh - 70px);
+         overflow-y: auto;
+         flex-shrink: 0;
+         z-index: 900;
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+      </style>
+      <!-- JavaScript for Neural Network Connections -->
+      <script>
+         // Generate neural network connections when the page loads
+         document.addEventListener('DOMContentLoaded', function() {
+             const connectionsContainer = document.getElementById('neuralConnections');
+             const nodes = document.querySelectorAll('.neural-node');
+             
+             if (!connectionsContainer || nodes.length === 0) return;
+             
+             // Clear existing connections
+             connectionsContainer.innerHTML = '';
+             
+             // Get node positions
+             const nodePositions = [];
+             nodes.forEach(node => {
+                 const rect = node.getBoundingClientRect();
+                 const containerRect = connectionsContainer.getBoundingClientRect();
+                 
+                 nodePositions.push({
+                     x: rect.left + rect.width / 2 - containerRect.left,
+                     y: rect.top + rect.height / 2 - containerRect.top
+                 });
+             });
+             
+             // Create connections between nodes
+             for (let i = 0; i < nodePositions.length; i++) {
+                 // Connect to 2-3 random other nodes
+                 const connectionsCount = Math.floor(Math.random() * 2) + 2;
+                 
+                 for (let j = 0; j < connectionsCount; j++) {
+                     // Select a random target node
+                     let targetIndex;
+                     do {
+                         targetIndex = Math.floor(Math.random() * nodePositions.length);
+                     } while (targetIndex === i);
+                     
+                     // Calculate connection properties
+                     const startPos = nodePositions[i];
+                     const endPos = nodePositions[targetIndex];
+                     
+                     const dx = endPos.x - startPos.x;
+                     const dy = endPos.y - startPos.y;
+                     const distance = Math.sqrt(dx * dx + dy * dy);
+                     const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                     
+                     // Create connection element
+                     const connection = document.createElement('div');
+                     connection.className = 'neural-connection';
+                     if (Math.random() > 0.5) {
+                         connection.classList.add('active');
+                     }
+                     
+                     connection.style.width = `${distance}px`;
+                     connection.style.left = `${startPos.x}px`;
+                     connection.style.top = `${startPos.y}px`;
+                     connection.style.transform = `rotate(${angle}deg)`;
+                     
+                     // Add connection to container
+                     connectionsContainer.appendChild(connection);
+                 }
+             }
+             
+             // Animate connections over time
+             setInterval(() => {
+                 const connections = document.querySelectorAll('.neural-connection');
+                 const randomConnection = connections[Math.floor(Math.random() * connections.length)];
+                 
+                 if (randomConnection) {
+                     randomConnection.classList.toggle('active');
+                 }
+             }, 1000);
+         });
+         
+         // Re-generate connections on window resize
+         let resizeTimeout;
+         window.addEventListener('resize', function() {
+             clearTimeout(resizeTimeout);
+             resizeTimeout = setTimeout(() => {
+                 const event = new Event('DOMContentLoaded');
+                 document.dispatchEvent(event);
+             }, 250);
+         });
+      </script>
+      <!-- Getting Started Section -->
+      <section class="m-container m-py-5" id="getting-started">
+         <div class="docs-layout">
+            <!-- Sidebar -->
+            <aside class="docs-sidebar">
+               <div style="padding: 0 1.5rem;">
+                  <div class="search-container m-mb-4">
+                     <span class="search-icon">⌕</span>
+                     <input type="text" class="search-input" placeholder="Search documentation...">
+                  </div>
+               </div>
+               <div style="padding: 0 1.5rem;">
+                  <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Getting Started</h6>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#introduction" class="m-text docs-sidebar-link">Introduction</a></li>
+                     <li class="m-mb-2"><a href="#installation" class="m-text docs-sidebar-link">Installation</a></li>
+                     <li class="m-mb-2"><a href="#colors" class="m-text docs-sidebar-link">Colors</a></li>
+                     <li class="m-mb-2"><a href="#typography" class="m-text docs-sidebar-link">Typography</a></li>
+                  </ul>
+               </div>
+               <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                  <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Layout</h6>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#containers" class="m-text docs-sidebar-link">Containers</a></li>
+                     <li class="m-mb-2"><a href="#grid" class="m-text docs-sidebar-link">Grid System</a></li>
+                     <li class="m-mb-2"><a href="#spacing" class="m-text docs-sidebar-link">Spacing</a></li>
+                  </ul>
+               </div>
+               <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                  <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Components</h6>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#buttons" class="m-text docs-sidebar-link">Buttons</a></li>
+                     <li class="m-mb-2"><a href="#alerts" class="m-text docs-sidebar-link active">Alerts</a></li>
+                     <li class="m-mb-2"><a href="#cards" class="m-text docs-sidebar-link">Cards</a></li>
+                     <li class="m-mb-2"><a href="#badges" class="m-text docs-sidebar-link">Badges</a></li>
+                     <li class="m-mb-2"><a href="#progress" class="m-text docs-sidebar-link">Progress Bars</a></li>
+                     <li class="m-mb-2"><a href="#spinners" class="m-text docs-sidebar-link">Spinners</a></li>
+                  </ul>
+               </div>
+               <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                  <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Advanced Components</h6>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#neural-network" class="m-text docs-sidebar-link">Neural Network</a></li>
+                     <li class="m-mb-2"><a href="#terminal" class="m-text docs-sidebar-link">Terminal</a></li>
+                     <li class="m-mb-2"><a href="#glitch-text" class="m-text docs-sidebar-link">Glitch Text</a></li>
+                     <li class="m-mb-2"><a href="#identity-card" class="m-text docs-sidebar-link">Identity Card</a></li>
+                     <li class="m-mb-2"><a href="#code-rain" class="m-text docs-sidebar-link">Code Rain</a></li>
+                  </ul>
+               </div>
+               <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                  <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Utilities</h6>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#effects" class="m-text docs-sidebar-link">Visual Effects</a></li>
+                     <li class="m-mb-2"><a href="#animations" class="m-text docs-sidebar-link">Animations</a></li>
+                     <li class="m-mb-2"><a href="#transforms" class="m-text docs-sidebar-link">Transforms</a></li>
+                     <li class="m-mb-2"><a href="#responsive" class="m-text docs-sidebar-link">Responsive Design</a></li>
+                  </ul>
+               </div>
+            </aside>
+            <!-- Documentation Content -->
+            <div class="docs-content">
+               <!-- Introduction Section -->
+               <section class="docs-section" id="introduction">
+                  <h3>Introduction</h3>
+                  <p><strong class="m-glow">Matrix.css</strong> is a comprehensive CSS framework inspired by The Matrix aesthetic. It provides a dark theme with neon green accents, a complete component library, and utility classes for building futuristic, cyberpunk-inspired interfaces.</p>
+                  <p>The framework includes everything from basic UI components to advanced Matrix-themed effects, making it perfect for cybersecurity dashboards, sci-fi themed websites, or any project that wants to capture that distinctive Matrix feel.</p>
+                  <div class="m-alert m-alert-info">
+                     <strong>Note:</strong> Matrix.css is designed as a standalone CSS framework — no JavaScript required for most components. However, some interactive components may benefit from JavaScript for full functionality.
+                  </div>
+               </section>
+               <!-- Installation Section -->
+               <section class="docs-section" id="installation">
+                  <h3>Installation</h3>
+                  <p>You can quickly include Matrix.css in your project using one of the following methods:</p>
+                  <h4>Direct Download</h4>
+                  <div class="component-code">
+                     <button class="copy-button">Copy</button>
+                     <pre><code>&lt;link rel="stylesheet" href="path/to/matrix.css"&gt;</code></pre>
+                  </div>
+                  <h4>CDN</h4>
+                  <div class="component-code">
+                     <button class="copy-button">Copy</button>
+                     <pre><code>&lt;link rel="stylesheet" href="https://cdn.example.com/matrix-css/1.0/matrix.css"&gt;</code></pre>
+                  </div>
+                  <h4>NPM</h4>
+                  <div class="component-code">
+                     <button class="copy-button">Copy</button>
+                     <pre><code>npm install matrix-css</code></pre>
+                  </div>
+                  <p>Then import it in your project:</p>
+                  <div class="component-code">
+                     <button class="copy-button">Copy</button>
+                     <pre><code>import 'matrix-css/dist/matrix.css';</code></pre>
+                  </div>
+               </section>
+               <!-- Colors Section -->
+               <section class="docs-section" id="colors">
+                  <h3>Colors</h3>
+                  <p>Matrix.css uses a carefully crafted color palette that captures the essence of the Matrix. The core colors are dark backgrounds with neon green accents, but the framework also includes additional colors for different states and components.</p>
+                  <h4 class="m-mt-4">Core Colors</h4>
+                  <div class="color-grid">
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-bg);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">Background</h5>
+                           <div class="color-value">--m-bg: #0c0c0c</div>
+                        </div>
+                     </div>
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-text);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">Text</h5>
+                           <div class="color-value">--m-text: #00ff41</div>
+                        </div>
+                     </div>
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-text-dim);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">Text Dim</h5>
+                           <div class="color-value">--m-text-dim: #0a3f0a</div>
+                        </div>
+                     </div>
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-text-bright);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">Text Bright</h5>
+                           <div class="color-value">--m-text-bright: #00ff97</div>
+                        </div>
+                     </div>
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-panel);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">Panel</h5>
+                           <div class="color-value">--m-panel: #0f0f0f</div>
+                        </div>
+                     </div>
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-border);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">Border</h5>
+                           <div class="color-value">--m-border: #143214</div>
+                        </div>
+                     </div>
+                     <div class="color-item">
+                        <div class="color-preview" style="background-color: var(--m-text-white);"></div>
+                        <div class="color-info">
+                           <h5 class="color-name">White Text</h5>
+                           <div class="color-value">--m-text-white: #ffffff</div>
+                        </div>
+                     </div>
+                  </div>
+               </section>
+               <!-- Typography Section -->
+               <section class="docs-section" id="typography">
+                  <h3>Typography</h3>
+                  <p>Matrix.css uses two primary fonts: a monospace font for the code-like aesthetic and a secondary retro-styled font for accents. By default, the framework uses <code>Courier New</code> (monospace) as the main font and <code>VT323</code> as the alternate retro font.</p>
+                  <p>Font sizes are set on a consistent scale to establish clear hierarchy, and line heights are optimized for legibility in text-dense layouts.</p>
+                  <h4 class="m-mt-4">Base Font</h4>
+                  <p>The base font (monospace) ensures all text has a uniform, terminal-like appearance. You can override the <code>--m-font-main</code> CSS variable to use a different font if desired.</p>
+                  <h4 class="m-mt-4">Alternate Font</h4>
+                  <p>The alternate font, used for special elements like the logo or titles, is a stylized retro typeface. The default <code>VT323</code> gives an authentic old-school computer look and feel.</p>
+               </section>
+               <!-- Containers Section -->
+               <section class="docs-section" id="containers">
+                  <h3>Containers</h3>
+                  <p>Containers are used to limit the width of content and center it. By default, <code>.m-container</code> has a max-width of <code>1200px</code> and horizontal padding. Wrap your page content in a container for consistent spacing on large screens.</p>
+                  <div class="component-code">
+                     <button class="copy-button">Copy</button>
+                     <pre><code>&lt;div class="m-container"&gt; ... &lt;/div&gt;</code></pre>
+                  </div>
+               </section>
+               <!-- Grid System Section -->
+               <section class="docs-section" id="grid">
+                  <h3>Grid System</h3>
+                  <p>Matrix.css includes a flexbox-based 12-column grid. Use <code>.m-row</code> for rows and <code>.m-col-*</code> classes for columns (e.g., <code>.m-col-6</code> for half-width).</p>
+                  <!-- Grid system examples could be included here -->
+               </section>
+               <!-- Spacing Section -->
+               <section class="docs-section" id="spacing">
+                  <h3>Spacing</h3>
+                  <p>The framework provides utility classes for spacing (margin and padding). For example, <code>.m-mb-4</code> applies a medium bottom margin, and <code>.m-py-5</code> applies large vertical padding.</p>
+               </section>
+               <!-- Buttons Section -->
+               <section class="docs-section" id="buttons">
+                  <h3>Buttons</h3>
+                  <p>Matrix.css offers various button styles and sizes. All buttons use the base <code>.m-btn</code> class, with modifiers like <code>.m-btn-primary</code>, <code>.m-btn-lg</code>, etc., for different appearances.</p>
+                  <!-- Button examples (standard, sizes, special effects) could be listed here -->
+               </section>
+               <!-- Alerts Section -->
+               <section class="docs-section" id="alerts">
+                  <h3>Alerts</h3>
+                  <p>Use alert classes such as <code>.m-alert</code> with modifiers like <code>.m-alert-info</code>, <code>.m-alert-danger</code>, etc., to create notification banners.</p>
+                  <div class="m-alert m-alert-success">This is a success alert.</div>
+               </section>
+               <!-- Cards Section -->
+               <section class="docs-section" id="cards">
+                  <h3>Cards</h3>
+                  <p>Cards are flexible content containers. Use <code>.m-card</code> for the card, with <code>.m-card-body</code>, <code>.m-card-title</code>, and <code>.m-card-text</code> for content within.</p>
+                  <div class="m-card m-mb-4">
+                     <div class="m-card-body">
+                        <h5 class="m-card-title">Card Title</h5>
+                        <p class="m-card-text">This is an example card using default styling.</p>
+                     </div>
+                  </div>
+               </section>
+               <!-- Badges Section -->
+               <section class="docs-section" id="badges">
+                  <h3>Badges</h3>
+                  <p>Badges are small inline elements that display counts or status labels. Use the base <code>.m-badge</code> class with modifiers like <code>.m-badge-primary</code> for different colors.</p>
+                  <p>Example badge: <span class="m-badge m-badge-primary">NEW</span></p>
+               </section>
+               <!-- Progress Bars Section -->
+               <section class="docs-section" id="progress">
+                  <h3>Progress Bars</h3>
+                  <p>Create progress bars with <code>.m-progress</code> (container) and <code>.m-progress-bar</code> (inner bar). Adjust the inner <code>width</code> style for the progress percentage.</p>
+                  <div class="m-progress m-mb-2">
+                     <div class="m-progress-bar" style="width: 50%;"></div>
+                  </div>
+                  <div class="m-progress m-mb-2">
+                     <div class="m-progress-bar" style="width: 75%;"></div>
+                  </div>
+               </section>
+               <!-- Spinners Section -->
+               <section class="docs-section" id="spinners">
+                  <h3>Spinners</h3>
+                  <p>Spinners indicate loading states. Use <code>.m-spinner</code> for a default spinner and <code>.m-spinner-sm</code> for a smaller version.</p>
+                  <div>
+                     <div class="m-spinner m-mr-3"></div>
+                     <div class="m-spinner-sm"></div>
+                  </div>
+               </section>
+               <!-- Neural Network Section -->
+               <section class="docs-section" id="neural-network">
+                  <h3>Neural Network</h3>
+                  <p>The Neural Network component visualizes a network of nodes and connections, evoking the feel of a digital neural net.</p>
+                  <div class="neural-network-container" data-nodes="20"></div>
+               </section>
+               <!-- Terminal Section -->
+               <section class="docs-section" id="terminal">
+                  <h3>Terminal</h3>
+                  <p>The Terminal component provides a stylized command-line interface window.</p>
+                  <div class="terminal m-mb-4">
+                     <div class="terminal-header">
+                        <span class="terminal-title">user@matrix:~</span>
+                     </div>
+                     <div class="terminal-body">
+                        <p>Welcome to Matrix.css Terminal.</p>
+                     </div>
+                  </div>
+               </section>
+               <!-- Glitch Text Section -->
+               <section class="docs-section" id="glitch-text">
+                  <h3>Glitch Text</h3>
+                  <p>Add the <code>m-glitch</code> class to text to give it a glitchy, digital distortion effect. Use the <code>data-text</code> attribute on the element to hold the uncorrupted text.</p>
+                  <h1 class="m-glitch" data-text="GLITCH">GLITCH</h1>
+               </section>
+               <!-- Identity Card Section -->
+               <section class="docs-section" id="identity-card">
+                  <h3>Identity Card</h3>
+                  <p>The Identity Card is a profile card with a Matrix theme, complete with code rain background and glitch effects.</p>
+                  <div class="matrix-id-card m-mb-4">
+                     <!-- Identity card content -->
+                  </div>
+               </section>
+               <!-- Code Rain Section -->
+               <section class="docs-section" id="code-rain">
+                  <h3>Code Rain</h3>
+                  <p>The iconic Matrix "code rain" effect can be applied by adding the <code>m-code-rain</code> class to any container. This will animate a cascading rain of green symbols within that element.</p>
+                  <div class="m-code-rain" style="height: 200px;"></div>
+               </section>
+               <!-- Visual Effects Section -->
+               <section class="docs-section" id="effects">
+                  <h3>Visual Effects</h3>
+                  <p>Matrix.css provides special effect classes like <code>m-glow</code> (neon glow), <code>m-scanline</code> (moving scanline overlay), and <code>m-holo</code> (holographic shimmer) to enhance the cyberpunk vibe.</p>
+               </section>
+               <!-- Animations Section -->
+               <section class="docs-section" id="animations">
+                  <h3>Animations</h3>
+                  <p>A variety of CSS animations are available via classes (e.g., <code>m-fade-in</code>, <code>m-bounce</code>, <code>m-pulse</code>) to bring components to life.</p>
+               </section>
+               <!-- Transforms Section -->
+               <section class="docs-section" id="transforms">
+                  <h3>Transforms</h3>
+                  <p>Utility classes for CSS transforms (like <code>m-rotate-45</code>, <code>m-scale-110</code>) allow you to easily rotate, scale, and translate elements without writing custom CSS.</p>
+               </section>
+               <!-- Responsive Design Section -->
+               <section class="docs-section" id="responsive">
+                  <h3>Responsive Design</h3>
+                  <p>Matrix.css is mobile-first and includes classes to hide or show content at certain breakpoints (e.g., <code>m-hide-sm</code>, <code>m-show-lg</code>). The framework’s use of relative units ensures it adapts seamlessly to different screen sizes.</p>
+               </section>
+            </div>
+         </div>
+      </section>
+      <script>
+         (function() {
+             // Utility functions
+             function $(selector) {
+                 return document.querySelector(selector);
+             }
+         
+             function $$(selector) {
+                 return document.querySelectorAll(selector);
+             }
+         
+             // Wait for DOM to be fully loaded
+             function domReady(fn) {
+                 if (document.readyState !== 'loading') {
+                     fn();
+                 } else {
+                     document.addEventListener('DOMContentLoaded', fn);
+                 }
+             }
+         
+             // Holographic Panel Interaction
+             function initHoloPanel() {
+                 var holoPanel = $('.holo-panel .holo-inner');
+                 if (!holoPanel) return;
+         
+                 holoPanel.addEventListener('mousemove', function(e) {
+                     var rect = holoPanel.getBoundingClientRect();
+                     var centerX = rect.left + rect.width / 2;
+                     var centerY = rect.top + rect.height / 2;
+                     
+                     var mouseX = e.clientX - centerX;
+                     var mouseY = e.clientY - centerY;
+                     
+                     var rotateX = Math.max(Math.min(-mouseY / 20, 15), -15);
+                     var rotateY = Math.max(Math.min(mouseX / 20, 15), -15);
+                     
+                     holoPanel.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+                 });
+         
+                 holoPanel.addEventListener('mouseleave', function() {
+                     holoPanel.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                 });
+             }
+         
+             // Performance Monitor
+             function initPerformanceMonitor() {
+                 var fpsValue = $('.performance-display .fps-value');
+                 var fpsBar = $('.performance-bar');
+                 
+                 if (!fpsValue || !fpsBar) return;
+         
+                 var lastTime = performance.now();
+                 var frames = 0;
+                 
+                 function updateFPS(currentTime) {
+                     frames++;
+                     
+                     if (currentTime - lastTime >= 1000) {
+                         var fps = Math.round((frames * 1000) / (currentTime - lastTime));
+                         
+                         fpsValue.textContent = fps.toFixed(2);
+                         fpsBar.style.width = (Math.min(fps, 144) / 144 * 100) + '%';
+                         
+                         frames = 0;
+                         lastTime = currentTime;
+                     }
+                     
+                     requestAnimationFrame(updateFPS);
+                 }
+                 
+                 requestAnimationFrame(updateFPS);
+             }
+         
+          
+         
+             // Network Console
+             function initNetworkConsole() {
+                 var networkTrigger = $('#network-trigger');
+                 var networkLog = $('#network-log');
+                 
+                 if (!networkTrigger || !networkLog) return;
+         
+                 var networkMessages = [
+                     "QUANTUM NETWORK INITIALIZATION...",
+                     "ESTABLISHING ENTANGLEMENT PROTOCOLS",
+                     "SCANNING QUANTUM SUBSTRATE",
+                     "CONNECTING TO REMOTE QUANTUM NODES",
+                     "VERIFYING QUANTUM ENCRYPTION",
+                     "QUANTUM HANDSHAKE IN PROGRESS",
+                     "NETWORK LATENCY: 0.000000001 ms",
+                     "QUANTUM CHANNEL STABILIZED",
+                     "QUANTUM INTEGRITY: 99.9997%",
+                     "TRANSMISSION COMPLETE"
+                 ];
+                 
+                 networkTrigger.addEventListener('click', function() {
+                     networkLog.textContent = '';
+                     networkTrigger.disabled = true;
+                     networkTrigger.textContent = 'TRANSMITTING...';
+                     
+                     var messageIndex = 0;
+                     var transmissionInterval = setInterval(function() {
+                         if (messageIndex < networkMessages.length) {
+                             networkLog.textContent += networkMessages[messageIndex] + '\n';
+                             networkLog.scrollTop = networkLog.scrollHeight;
+                             messageIndex++;
+                         } else {
+                             clearInterval(transmissionInterval);
+                             networkTrigger.disabled = false;
+                             networkTrigger.textContent = 'QUANTUM PING';
+                         }
+                     }, 500);
+                 });
+             }
+         
+         // System Indicators
+         function initSystemIndicators() {
+             var indicators = $$('.system-indicator');
+             indicators.forEach(function(indicator, index) {
+                 setTimeout(function() {
+                     indicator.classList.add('active');
+                 }, index * 300);
+             });
+         }
+         
+         // Initialize all systems
+         domReady(function() {
+             initHoloPanel();
+             initPerformanceMonitor();
+             initNetworkConsole(); // Corrected method name
+             initSystemIndicators();
+         });
+         })();
+      </script>  
+      <!-- Example Projects Section -->
+      <section class="m-container m-py-5" id="examples">
+         <h2 class="docs-section-title">Example Projects</h2>
+         <div class="m-row">
+            <div class="m-col-md-6 m-col-lg-4">
+               <div class="m-card m-mb-4">
+                  <div class="m-card-header">
+                     Dashboard Example
+                  </div>
+                  <div class="m-card-body">
+                     <h5 class="m-card-title">Security Dashboard</h5>
+                     <p class="m-card-text">A cybersecurity monitoring dashboard built with Matrix.css, featuring real-time status indicators and alert components.</p>
+                     <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                  </div>
+               </div>
+            </div>
+            <div class="m-col-md-6 m-col-lg-4">
+               <div class="m-card m-mb-4">
+                  <div class="m-card-header">
+                     Landing Page Example
+                  </div>
+                  <div class="m-card-body">
+                     <h5 class="m-card-title">Tech Product Launch</h5>
+                     <p class="m-card-text">A Matrix-themed product launch page with animated components and sleek UI elements to showcase tech innovations.</p>
+                     <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                  </div>
+               </div>
+            </div>
+            <div class="m-col-md-6 m-col-lg-4">
+               <div class="m-card m-mb-4">
+                  <div class="m-card-header">
+                     Portfolio Example
+                  </div>
+                  <div class="m-card-body">
+                     <h5 class="m-card-title">Developer Portfolio</h5>
+                     <p class="m-card-text">A tech-focused personal portfolio website built with Matrix.css, featuring project showcases and skills visualization.</p>
+                     <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="newsletter-section">
+         <div class="newsletter-content">
+            <h3 class="newsletter-title">Stay Updated</h3>
+            <p class="newsletter-text">
+               Subscribe to our newsletter for updates, new features, and Matrix.css tips.
+            </p>
+            <form class="newsletter-form">
+               <input type="email" placeholder="your@email.com" class="newsletter-input" required>
+               <button type="submit" class="newsletter-btn">SUBSCRIBE</button>
+            </form>
+         </div>
+      </section>
+      <!-- Footer -->
+      <footer style="background-color: var(--m-panel); border-top: 1px solid var(--m-border); padding: 3rem 0;">
+         <div class="m-container">
+            <div class="m-row">
+               <div class="m-col-md-4 m-mb-4">
+                  <h3 class="m-mb-3">Matrix.css</h3>
+                  <p>A comprehensive CSS framework inspired by The Matrix aesthetic. Create stunning cyberpunk interfaces with minimal effort.</p>
+               </div>
+               <div class="m-col-md-2 m-col-sm-6 m-mb-4">
+                  <h5 class="m-mb-3">Learn</h5>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#getting-started" class="m-text">Getting Started</a></li>
+                     <li class="m-mb-2"><a href="#components" class="m-text">Components</a></li>
+                     <li class="m-mb-2"><a href="#utilities" class="m-text">Utilities</a></li>
+                     <li class="m-mb-2"><a href="#examples" class="m-text">Examples</a></li>
+                  </ul>
+               </div>
+               <div class="m-col-md-2 m-col-sm-6 m-mb-4">
+                  <h5 class="m-mb-3">Community</h5>
+                  <ul style="list-style: none; padding: 0;">
+                     <li class="m-mb-2"><a href="#" class="m-text">GitHub</a></li>
+                     <li class="m-mb-2"><a href="#" class="m-text">Discord</a></li>
+                     <li class="m-mb-2"><a href="#" class="m-text">Twitter</a></li>
+                     <li class="m-mb-2"><a href="#" class="m-text">Stack Overflow</a></li>
+                  </ul>
+               </div>
+               <div class="m-col-md-4">
+                  <h5 class="m-mb-3">About</h5>
+                  <p>Matrix.css is an open-source project created by a team of developers passionate about The Matrix and great user interfaces.</p>
+                  <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                     <a href="#" class="m-text">GitHub</a>
+                     <a href="#" class="m-text">Twitter</a>
+                     <a href="#" class="m-text">Medium</a>
+                  </div>
+               </div>
+            </div>
+            <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--m-border); text-align: center;">
+               <p class="m-text-dim">© 2025 Matrix.css. Released under the MIT License.</p>
+            </div>
+         </div>
+      </footer>
+      <!-- JavaScript for interactivity -->
+      <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             // Matrix Rain Animation Implementation
+             const canvas = document.getElementById('matrixRain');
+             if (canvas) {
+                 const ctx = canvas.getContext('2d');
+                 
+                 // Make canvas full-screen
+                 canvas.width = window.innerWidth;
+                 canvas.height = window.innerHeight;
+                 
+                 // Characters to be used in the rain (including katakana for the Matrix feel)
+                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,./<>?~あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん';
+                 
+                 // Set font and color
+                 const fontSize = 16;
+                 ctx.font = fontSize + 'px monospace';
+                 
+                 // Calculate columns
+                 const columns = Math.ceil(canvas.width / fontSize);
+                 
+                 // Array to track the y-coordinate of each column
+                 const drops = [];
+                 
+                 // Initialize all columns to start at random positions
+                 for (let i = 0; i < columns; i++) {
+                     drops[i] = Math.floor(Math.random() * -canvas.height);
+                 }
+                 
+                 // Drawing function
+                 function draw() {
+                     // Add semi-transparent black rectangle on top of previous frame
+                     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                     ctx.fillRect(0, 0, canvas.width, canvas.height);
+                     
+                     // Set text color to matrix green
+                     ctx.fillStyle = '#00ff41';
+                     
+                     // Loop through each column
+                     for (let i = 0; i < drops.length; i++) {
+                         // Get random character
+                         const char = chars[Math.floor(Math.random() * chars.length)];
+                         
+                         // Occasionally add a brighter character (glowing effect)
+                         if (Math.random() < 0.05) {
+                             ctx.fillStyle = '#00ff97'; // Brighter green
+                             ctx.shadowColor = 'rgba(0, 255, 65, 0.8)';
+                             ctx.shadowBlur = 10;
+                         } else {
+                             ctx.fillStyle = '#00ff41'; // Regular matrix green
+                             ctx.shadowBlur = 0;
+                         }
+                         
+                         // Draw character
+                         ctx.fillText(char, i * fontSize, drops[i]);
+                         
+                         // Move drop down
+                         drops[i] += fontSize;
+                         
+                         // Reset drop to top with randomization when it reaches bottom
+                         if (drops[i] > canvas.height && Math.random() > 0.975) {
+                             drops[i] = Math.floor(Math.random() * -100);
+                         }
+                     }
+                     
+                     // Call animation recursively
+                     requestAnimationFrame(draw);
+                 }
+                 
+                 // Handle window resize
+                 window.addEventListener('resize', function() {
+                     canvas.width = window.innerWidth;
+                     canvas.height = window.innerHeight;
+                     
+                     // Recalculate columns
+                     const newColumns = Math.ceil(canvas.width / fontSize);
+                     
+                     // Adjust drops array
+                     if (newColumns > columns) {
+                         // Add new columns
+                         for (let i = drops.length; i < newColumns; i++) {
+                             drops[i] = Math.floor(Math.random() * -canvas.height);
+                         }
+                     }
+                     
+                     // Reset font size
+                     ctx.font = fontSize + 'px monospace';
+                 });
+                 
+                 // Start animation
+                 draw();
+             }
+             
+             // Theme switcher with enhanced functionality
+             const themeSwitch = document.getElementById('themeSwitch');
+             if (themeSwitch) {
+                 // Check if user has a saved preference
+                 const savedTheme = localStorage.getItem('matrixTheme');
+                 if (savedTheme) {
+                     document.body.setAttribute('data-theme', savedTheme);
+                     
+                     // Update button text
+                     themeSwitch.innerHTML = savedTheme === 'light' 
+                         ? '<div class="m-badge m-badge-primary">D</div>' 
+                         : '<div class="m-badge m-badge-primary">L</div>';
+                 }
+                 
+                 // Add click event
+                 themeSwitch.addEventListener('click', function() {
+                     const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+                     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                     
+                     // Update theme
+                     document.body.setAttribute('data-theme', newTheme);
+                     
+                     // Save preference
+                     localStorage.setItem('matrixTheme', newTheme);
+                     
+                     // Update button text
+                     this.innerHTML = newTheme === 'light' 
+                         ? '<div class="m-badge m-badge-primary">D</div>' 
+                         : '<div class="m-badge m-badge-primary">L</div>';
+                     
+                     // Add animation effect
+                     document.body.classList.add('theme-transition');
+                     setTimeout(() => {
+                         document.body.classList.remove('theme-transition');
+                     }, 1000);
+                 });
+             }
+             
+             // Fixed Mobile menu toggle with proper event handling
+             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+             const sidebar = document.querySelector('.docs-sidebar');
+             const backdrop = document.querySelector('.sidebar-backdrop');
+             
+             if (mobileMenuToggle && sidebar && backdrop) {
+                 // Make sure we've got visible click targets
+                 mobileMenuToggle.style.cursor = 'pointer';
+                 mobileMenuToggle.style.zIndex = '1001';
+                 
+                 // Create an explicit handler function
+                 const toggleSidebar = function(event) {
+                     event.preventDefault();
+                     event.stopPropagation();
+                     
+                     // Toggle classes
+                     sidebar.classList.toggle('active');
+                     backdrop.classList.toggle('active');
+                     
+                     // Toggle menu icon (visual feedback)
+                     const spans = mobileMenuToggle.querySelectorAll('span');
+                     if (spans.length === 3) {
+                         if (sidebar.classList.contains('active')) {
+                             // X shape for close
+                             spans[0].style.transform = 'translateY(10px) rotate(45deg)';
+                             spans[1].style.opacity = '0';
+                             spans[2].style.transform = 'translateY(-10px) rotate(-45deg)';
+                         } else {
+                             // Reset to hamburger
+                             spans[0].style.transform = 'none';
+                             spans[1].style.opacity = '1';
+                             spans[2].style.transform = 'none';
+                         }
+                     }
+                 };
+                 
+                 // Attach event using multiple methods to ensure it works
+                 mobileMenuToggle.addEventListener('click', toggleSidebar);
+                 mobileMenuToggle.onclick = toggleSidebar;
+                 
+                 // Make sure backdrop closes sidebar
+                 backdrop.addEventListener('click', function() {
+                     sidebar.classList.remove('active');
+                     backdrop.classList.remove('active');
+                     
+                     // Reset hamburger icon
+                     const spans = mobileMenuToggle.querySelectorAll('span');
+                     if (spans.length === 3) {
+                         spans[0].style.transform = 'none';
+                         spans[1].style.opacity = '1';
+                         spans[2].style.transform = 'none';
+                     }
+                 });
+                 
+                 // Also close on escape key
+                 document.addEventListener('keydown', function(e) {
+                     if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                         sidebar.classList.remove('active');
+                         backdrop.classList.remove('active');
+                         
+                         // Reset hamburger icon
+                         const spans = mobileMenuToggle.querySelectorAll('span');
+                         if (spans.length === 3) {
+                             spans[0].style.transform = 'none';
+                             spans[1].style.opacity = '1';
+                             spans[2].style.transform = 'none';
+                         }
+                     }
+                 });
+             }
+             
+             // Enhanced copy buttons for code snippets
+             const copyButtons = document.querySelectorAll('.copy-button');
+             copyButtons.forEach(button => {
+                 // Ensure button is visible and styled properly
+                 button.style.cursor = 'pointer';
+                 button.style.zIndex = '10';
+                 
+                 button.addEventListener('click', function() {
+                     const codeBlock = this.nextElementSibling.querySelector('code');
+                     if (!codeBlock) return;
+                     
+                     const textToCopy = codeBlock.textContent;
+                     
+                     // Use modern clipboard API with fallback
+                     try {
+                         navigator.clipboard.writeText(textToCopy).then(() => {
+                             // Change button text temporarily with visual feedback
+                             const originalText = this.textContent;
+                             const originalBg = this.style.backgroundColor;
+                             
+                             this.textContent = 'Copied!';
+                             this.style.backgroundColor = 'var(--m-success)';
+                             this.style.color = 'var(--m-bg)';
+                             
+                             setTimeout(() => {
+                                 this.textContent = originalText;
+                                 this.style.backgroundColor = originalBg;
+                                 this.style.color = '';
+                             }, 2000);
+                         });
+                     } catch (err) {
+                         // Fallback for older browsers
+                         const textarea = document.createElement('textarea');
+                         textarea.value = textToCopy;
+                         textarea.style.position = 'fixed';
+                         document.body.appendChild(textarea);
+                         textarea.select();
+                         
+                         try {
+                             document.execCommand('copy');
+                             
+                             // Visual feedback
+                             const originalText = this.textContent;
+                             this.textContent = 'Copied!';
+                             setTimeout(() => {
+                                 this.textContent = originalText;
+                             }, 2000);
+                         } catch (e) {
+                             console.error('Failed to copy text: ', e);
+                             this.textContent = 'Failed!';
+                             setTimeout(() => {
+                                 this.textContent = 'Copy';
+                             }, 2000);
+                         }
+                         
+                         document.body.removeChild(textarea);
+                     }
+                 });
+             });
+             
+             // Smooth scrolling for anchor links with enhanced behavior
+             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                 anchor.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     
+                     const targetId = this.getAttribute('href');
+                     if (targetId === '#') return;
+                     
+                     const targetElement = document.querySelector(targetId);
+                     if (targetElement) {
+                         // Close mobile menu if open
+                         if (sidebar && sidebar.classList.contains('active')) {
+                             sidebar.classList.remove('active');
+                             backdrop.classList.remove('active');
+                             
+                             // Reset hamburger icon
+                             const spans = mobileMenuToggle.querySelectorAll('span');
+                             if (spans.length === 3) {
+                                 spans[0].style.transform = 'none';
+                                 spans[1].style.opacity = '1';
+                                 spans[2].style.transform = 'none';
+                             }
+                         }
+                         
+                         // Calculate header height for offset
+                         const headerHeight = document.querySelector('.main-nav')?.offsetHeight || 0;
+                         
+                         // Smooth scroll with offset
+                         const yOffset = -headerHeight - 20; // Extra padding
+                         const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                         
+                         window.scrollTo({
+                             top: y,
+                             behavior: 'smooth'
+                         });
+                         
+                         // Update URL without jump
+                         history.pushState(null, null, targetId);
+                         
+                         // Add highlight effect to target
+                         targetElement.classList.add('highlight-target');
+                         setTimeout(() => {
+                             targetElement.classList.remove('highlight-target');
+                         }, 2000);
+                     }
+                 });
+             });
+             
+             // Initialize scroll indicator functionality
+             const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+             if (scrollIndicator) {
+                 scrollIndicator.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     const targetSection = document.getElementById('features');
+                     if (targetSection) {
+                         targetSection.scrollIntoView({ behavior: 'smooth' });
+                     }
+                 });
+             }
+             
+             // Add active class to nav links based on scroll position
+             function updateActiveNavLinks() {
+                 const sections = document.querySelectorAll('section[id]');
+                 const navLinks = document.querySelectorAll('.nav-link');
+                 
+                 // Get current scroll position
+                 const scrollPosition = window.scrollY + 100; // Adding offset
+                 
+                 // Find the current section
+                 sections.forEach(section => {
+                     const sectionTop = section.offsetTop;
+                     const sectionHeight = section.offsetHeight;
+                     const sectionId = section.getAttribute('id');
+                     
+                     if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                         // Remove active class from all links
+                         navLinks.forEach(link => link.classList.remove('active'));
+                         
+                         // Add active class to corresponding link
+                         const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+                         if (correspondingLink) {
+                             correspondingLink.classList.add('active');
+                         }
+                     }
+                 });
+             }
+             
+             // Listen for scroll events
+             window.addEventListener('scroll', updateActiveNavLinks);
+             
+             // Initial call to set active link on page load
+             updateActiveNavLinks();
+         });
+      </script>
+      <!-- Update the navbar section with this code -->
+      <script>
+         document.addEventListener('DOMContentLoaded', function() {
+           // References to elements
+           const matrixNav = document.querySelector('.matrix-nav');
+           const navLogo = document.querySelector('.nav-logo .logo-text');
+           const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
+           const mainSections = document.querySelectorAll('section[id]');
+           const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+           
+           // Create terminal cursor element and section title container
+           if (navLogo) {
+             // Wrap the logo text in a container
+             const logoParent = navLogo.parentElement;
+             const titleContainer = document.createElement('div');
+             titleContainer.className = 'nav-title-container';
+             
+             // Keep the original logo text
+             const originalText = navLogo.textContent;
+             navLogo.className += ' nav-logo-title';
+             
+             // Create the dynamic section title
+             const sectionTitle = document.createElement('span');
+             sectionTitle.className = 'nav-section-title';
+             sectionTitle.style.display = 'none';
+             
+             // Create terminal cursor
+             const cursor = document.createElement('span');
+             cursor.className = 'terminal-cursor';
+             
+             // Create glitch effect element
+             const glitchEffect = document.createElement('div');
+             glitchEffect.className = 'terminal-glitch';
+             
+             // Insert all elements
+             titleContainer.appendChild(navLogo);
+             titleContainer.appendChild(sectionTitle);
+             titleContainer.appendChild(cursor);
+             titleContainer.appendChild(glitchEffect);
+             logoParent.appendChild(titleContainer);
+             
+             // Create active section box
+             const activeSectionBox = document.createElement('div');
+             activeSectionBox.className = 'active-section-box';
+             activeSectionBox.innerHTML = `
+               <span class="active-section-indicator"></span>
+             `;
+             document.body.appendChild(activeSectionBox);
+             
+             let currentSectionId = '';
+             let isTyping = false;
+             let typeTimeout;
+             
+             // Terminal typing effect function
+               if (isTyping) {
+                 clearTimeout(typeTimeout);
+               }
+               
+               isTyping = true;
+               
+               // Hide original logo and show section title
+               navLogo.style.display = 'none';
+               element.style.display = 'inline-block';
+               element.textContent = '';
+               element.style.width = '0';
+               
+               // Trigger glitch effect
+               glitchEffect.style.opacity = '0.3';
+               setTimeout(() => {
+                 glitchEffect.style.opacity = '0';
+               }, 150);
+               
+               let i = 0;
+               
+               // Animate typing
+               function typeCharacter() {
+                 if (i < text.length) {
+                   element.textContent += text.charAt(i);
+                   element.style.width = ((i + 1) / text.length * 100) + '%';
+                   i++;
+                   
+                   // Add random delay for realistic typing
+                   const randomDelay = Math.floor(Math.random() * 50) + 30;
+                   typeTimeout = setTimeout(typeCharacter, randomDelay);
+                 } else {
+                   isTyping = false;
+                   if (callback) callback();
+                 }
+               }
+               
+               typeCharacter();
+             }
+             
+             // Update active section while scrolling
+             function updateActiveSection() {
+               const scrollPosition = window.scrollY + 100; // Add offset
+               
+               // Find the current section
+               let activeSection = null;
+               mainSections.forEach(section => {
+                 const sectionTop = section.offsetTop;
+                 const sectionHeight = section.offsetHeight;
+                 const sectionId = section.getAttribute('id');
+                 
+                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                   activeSection = {
+                     id: sectionId,
+                     element: section
+                   };
+                   
+                   // Set active class on sidebar link
+                   sidebarLinks.forEach(link => {
+                     const href = link.getAttribute('href');
+                     if (href === `#${sectionId}`) {
+                       link.classList.add('active');
+                     } else {
+                       link.classList.remove('active');
+                     }
+                   });
+                 }
+               });
+               
+               // Update navbar title if we're on a new section
+               if (activeSection && activeSection.id !== currentSectionId) {
+                 currentSectionId = activeSection.id;
+                 
+                 // Get section title
+                 const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
+                 let sectionTitleText = sectionHeading.textContent.trim().split(' ')[0]; // Get first word
+                 
+                 // Format title for terminal style
+                 sectionTitleText = `//${sectionTitleText.toUpperCase()}`;
+                 
+                 // Type the section title with terminal effect
+                 
+                 // Update the active section box
+                 if (activeSectionNameEl) {
+                   activeSectionNameEl.textContent = sectionTitleText;
+                 }
+                 document.querySelector('.active-section-box').classList.add('visible');
+               }
+               
+               // If we're back at the top, restore original logo
+               if (scrollPosition < 100) {
+                 if (navLogo.style.display === 'none') {
+                   // Type the original text back
+                     // After typing, switch back to logo
+                     setTimeout(() => {
+                       sectionTitle.style.display = 'none';
+                       navLogo.style.display = 'inline-block';
+                       currentSectionId = '';
+                       document.querySelector('.active-section-box').classList.remove('visible');
+                     }, 500);
+                   });
+                 }
+               }
+               
+               // Add scrolled class to navbar past hero section
+               if (scrollPosition > 100) {
+                 matrixNav.classList.add('scrolled');
+               } else {
+                 matrixNav.classList.remove('scrolled');
+               }
+             }
+             
+             // Fix scroll indicator position
+             if (scrollIndicator) {
+               scrollIndicator.className = 'scroll-indicator';
+               scrollIndicator.style.animation = 'bounce 2s infinite';
+             }
+             
+             // Listen for scroll events
+             window.addEventListener('scroll', updateActiveSection);
+             
+             // Initial call
+             updateActiveSection();
+           }
+           
+           // Enhance navbar buttons active state
+           const navLinks = document.querySelectorAll('.nav-link');
+           navLinks.forEach(link => {
+             link.addEventListener('click', function() {
+               navLinks.forEach(l => l.classList.remove('active'));
+               this.classList.add('active');
+             });
+           });
+           
+           // Fix sidebar links for deep scroll sections
+           document.querySelectorAll('.docs-sidebar-link').forEach(link => {
+             link.addEventListener('click', function(e) {
+               // Remove active class from all links
+               document.querySelectorAll('.docs-sidebar-link').forEach(l => {
+                 l.classList.remove('active');
+               });
+               
+               // Add active class to this link
+               this.classList.add('active');
+               
+               // Add cool terminal typing effect to the section in navbar
+               const targetId = this.getAttribute('href').substring(1);
+               const targetSection = document.getElementById(targetId);
+               
+               if (targetSection) {
+                 // Get section title
+                 const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
+                 const sectionTitleText = `//${sectionHeading.textContent.trim().split(' ')[0].toUpperCase()}`;
+                 
+                 // Type the section title
+                 const sectionTitle = document.querySelector('.nav-section-title');
+                 const navLogo = document.querySelector('.nav-logo-title');
+                 
+                 if (sectionTitle && navLogo) {
+                   // Show typing effect in navbar
+                 }
+               }
+               
+               // Close mobile sidebar if open
+               const sidebar = document.querySelector('.docs-sidebar');
+               const backdrop = document.querySelector('.sidebar-backdrop');
+               
+               if (sidebar && sidebar.classList.contains('active')) {
+                 sidebar.classList.remove('active');
+                 if (backdrop) backdrop.classList.remove('active');
+               }
+             });
+           });
+         });
+      </script>
+      <style>
+         /* ===== NAVBAR-SIDEBAR INTEGRATION FIXES ===== */
+         /* Set proper variables */
+         :root {
+         --navbar-height: 70px;
+         --sidebar-width: 280px;
+         --sidebar-transition-speed: 0.3s;
+         --matrix-glitch-color1: #ff0080;
+         --matrix-glitch-color2: #00ff97;
+         }
+         /* Fix sticky sidebar positioning when scrolling */
+         .docs-sidebar {
+         position: sticky;
+         top: var(--navbar-height);
+         height: calc(100vh - var(--navbar-height));
+         transition: transform var(--sidebar-transition-speed) ease, 
+         opacity var(--sidebar-transition-speed) ease,
+         top var(--sidebar-transition-speed) ease;
+         padding-top: 1rem;
+         z-index: 900;
+         }
+         /* Add highlight to active section in sidebar */
+         .docs-sidebar-link.active {
+         color: var(--m-text-bright);
+         background-color: rgba(0, 255, 65, 0.05);
+         padding-left: 0.5rem;
+         position: relative;
+         }
+         .docs-sidebar-link.active::before {
+         content: "";
+         position: absolute;
+         left: 0;
+         top: 0;
+         width: 3px;
+         height: 100%;
+         background-color: var(--m-text);
+         box-shadow: 0 0 10px var(--m-glow);
+         }
+         /* Fix the matrix nav */
+         .matrix-nav {
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         height: var(--navbar-height);
+         z-index: 1000;
+         transition: height 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+         }
+         .matrix-nav.scrolled {
+         height: var(--navbar-height);
+         background-color: rgba(0, 10, 2, 0.95);
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+         backdrop-filter: blur(10px);
+         }
+         /* Adjust main content positioning */
+         .docs-content {
+         padding-top: 1rem;
+         }
+         /* Smooth integration between navbar and sidebar */
+         .matrix-nav::after {
+         content: "";
+         position: absolute;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         height: 1px;
+         background: linear-gradient(to right, 
+         transparent 0%, 
+         var(--m-text) 20%, 
+         var(--m-text-bright) 50%, 
+         var(--m-text) 80%,
+         transparent 100%
+         );
+         opacity: 0.6;
+         z-index: 2;
+         }
+         /* For mobile view */
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         top: var(--navbar-height);
+         left: -300px;
+         box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+         /* ===== SCROLL DOWN INDICATOR FIXES ===== */
+         /* Improve hero scroll indicator */
+         .hero .scroll-indicator {
+         position: absolute;
+         bottom: 2rem;
+         left: 50%;
+         transform: translateX(-50%);
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         cursor: pointer;
+         z-index: 5;
+         animation: pulse-glow 2s infinite;
+         }
+         /* Better scroll arrow animation */
+         @keyframes bounce {
+         0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+         40% { transform: translateY(-15px) translateX(-50%); }
+         60% { transform: translateY(-10px) translateX(-50%); }
+         }
+         /* Pulse glow effect for scroll indicator */
+         @keyframes pulse-glow {
+         0%, 100% { opacity: 0.7; text-shadow: 0 0 5px var(--m-glow); }
+         50% { opacity: 1; text-shadow: 0 0 15px var(--m-glow), 0 0 20px var(--m-glow); }
+         }
+         /* ===== ENHANCED TERMINAL TYPING EFFECT FOR SECTION NAME ===== */
+         /* Center Stage Terminal Display */
+         .matrix-terminal-display {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         z-index: 1000;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         height: 40px;
+         max-width: 500px;
+         min-width: 300px;
+         white-space: nowrap;
+         overflow: hidden;
+         font-family: var(--m-font-main);
+         padding: 0 10px;
+         border-radius: 3px;
+         background-color: rgba(0, 10, 0, 0.7);
+         border: 1px solid var(--m-border);
+         opacity: 0;
+         transition: opacity 0.5s ease, transform 0.5s ease;
+         pointer-events: none;
+         }
+         .matrix-nav.scrolled .matrix-terminal-display {
+         opacity: 1;
+         transform: translate(-50%, -50%);
+         }
+         /* Terminal prefix */
+         .terminal-prefix {
+         color: var(--m-text-dim);
+         margin-right: 8px;
+         display: inline-block;
+         font-size: 1rem;
+         }
+         /* Terminal text box */
+         .terminal-text-box {
+         position: relative;
+         display: inline-block;
+         color: var(--m-text-bright);
+         font-size: 1.1rem;
+         text-transform: uppercase;
+         letter-spacing: 2px;
+         }
+         /* Terminal cursor */
+         .terminal-cursor {
+         position: absolute;
+         right: -12px;
+         top: 50%;
+         transform: translateY(-50%);
+         width: 10px;
+         height: 1.2em;
+         background-color: var(--m-text);
+         animation: cursor-blink 1s step-end infinite;
+         }
+         /* Matrix glitch effect for the terminal */
+         .terminal-text-box.glitch {
+         animation: terminal-glitch 0.3s ease-in-out;
+         }
+         .terminal-text-box.glitch::before,
+         .terminal-text-box.glitch::after {
+         content: attr(data-content);
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         opacity: 0.8;
+         }
+         .terminal-text-box.glitch::before {
+         color: var(--matrix-glitch-color1);
+         clip: rect(44px, 450px, 56px, 0);
+         left: 3px;
+         text-shadow: -2px 0 var(--matrix-glitch-color1);
+         animation: glitch-anim-1 0.3s linear alternate-reverse;
+         }
+         .terminal-text-box.glitch::after {
+         color: var(--matrix-glitch-color2);
+         clip: rect(44px, 450px, 56px, 0);
+         left: -3px;
+         text-shadow: 2px 0 var(--matrix-glitch-color2);
+         animation: glitch-anim-2 0.3s linear alternate-reverse;
+         }
+         @keyframes glitch-anim-1 {
+         0% { clip: rect(0, 0, 0, 0); }
+         10% { clip: rect(89px, 9999px, 92px, 0); }
+         20% { clip: rect(26px, 9999px, 66px, 0); }
+         30% { clip: rect(8px, 9999px, 11px, 0); }
+         40% { clip: rect(89px, 9999px, 99px, 0); }
+         50% { clip: rect(8px, 9999px, 44px, 0); }
+         60% { clip: rect(37px, 9999px, 37px, 0); }
+         70% { clip: rect(81px, 9999px, 91px, 0); }
+         80% { clip: rect(1px, 9999px, 1px, 0); }
+         90% { clip: rect(69px, 9999px, 77px, 0); }
+         100% { clip: rect(19px, 9999px, 29px, 0); }
+         }
+         @keyframes glitch-anim-2 {
+         0% { clip: rect(0, 0, 0, 0); }
+         10% { clip: rect(40px, 9999px, 47px, 0); }
+         20% { clip: rect(27px, 9999px, 31px, 0); }
+         30% { clip: rect(85px, 9999px, 89px, 0); }
+         40% { clip: rect(92px, 9999px, 98px, 0); }
+         50% { clip: rect(36px, 9999px, 42px, 0); }
+         60% { clip: rect(13px, 9999px, 16px, 0); }
+         70% { clip: rect(69px, 9999px, 72px, 0); }
+         80% { clip: rect(65px, 9999px, 66px, 0); }
+         90% { clip: rect(5px, 9999px, 11px, 0); }
+         100% { clip: rect(49px, 9999px, 58px, 0); }
+         }
+         @keyframes terminal-glitch {
+         0%, 100% { transform: skew(0); }
+         25% { transform: skew(2deg); }
+         75% { transform: skew(-2deg); }
+         }
+         @keyframes cursor-blink {
+         0%, 100% { opacity: 0; }
+         50% { opacity: 1; }
+         }
+         /* Type-on animation for section titles */
+         @keyframes type-on {
+         from { width: 0; }
+         to { width: 100%; }
+         }
+         /* Connection line effect */
+         .terminal-connection-lines {
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         pointer-events: none;
+         overflow: hidden;
+         z-index: 1;
+         opacity: 0.3;
+         }
+         .connection-line {
+         position: absolute;
+         height: 1px;
+         background-color: var(--m-text-dim);
+         transform-origin: left center;
+         z-index: 1;
+         }
+         .connection-line.active {
+         background-color: var(--m-text);
+         box-shadow: 0 0 5px var(--m-glow);
+         animation: connection-pulse 1.5s infinite;
+         }
+         @keyframes connection-pulse {
+         0%, 100% { opacity: 0.3; }
+         50% { opacity: 1; }
+         }
+         /* Status indicator in corner */
+         .matrix-status-indicator {
+         position: fixed;
+         top: 10px;
+         right: 20px;
+         background: rgba(0, 20, 0, 0.8);
+         border: 1px solid var(--m-border);
+         padding: 5px 10px;
+         border-radius: 3px;
+         font-family: var(--m-font-main);
+         font-size: 0.8rem;
+         color: var(--m-text);
+         letter-spacing: 1px;
+         z-index: 1001;
+         display: flex;
+         align-items: center;
+         opacity: 0;
+         transform: translateY(-20px);
+         transition: opacity 0.3s ease, transform 0.3s ease;
+         }
+         .matrix-status-indicator.visible {
+         opacity: 1; 
+         transform: translateY(0);
+         }
+         .status-dot {
+         width: 8px;
+         height: 8px;
+         border-radius: 50%;
+         background-color: var(--m-text);
+         margin-right: 8px;
+         box-shadow: 0 0 5px var(--m-glow);
+         animation: status-pulse 1.5s infinite;
+         }
+         .status-text {
+         text-transform: uppercase;
+         }
+         @keyframes status-pulse {
+         0%, 100% { transform: scale(1); opacity: 0.7; }
+         50% { transform: scale(1.2); opacity: 1; }
+         }
+         /* Digital rain particles (appear during section transitions) */
+         .matrix-particles-container {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: var(--navbar-height);
+         pointer-events: none;
+         z-index: 999;
+         overflow: hidden;
+         }
+         .matrix-particle {
+         position: absolute;
+         color: var(--m-text);
+         font-family: monospace;
+         font-size: 12px;
+         animation: fall-fade 2s forwards;
+         }
+         @keyframes fall-fade {
+         0% {
+         transform: translateY(-20px);
+         opacity: 0;
+         }
+         20% {
+         opacity: 1;
+         }
+         100% {
+         transform: translateY(100px);
+         opacity: 0;
+         }
+         }
+         /* Scanline effect for terminal-display */
+         .matrix-terminal-display::after {
+         content: "";
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 2px;
+         background: linear-gradient(to right, transparent, var(--m-text-bright), transparent);
+         opacity: 0.7;
+         animation: scanline 3s linear infinite;
+         pointer-events: none;
+         }
+         @keyframes scanline {
+         0% { top: 0; }
+         100% { top: 100%; }
+         }
+         /* Keep the original nav logo visible but separate */
+         .nav-logo {
+         position: relative;
+         z-index: 1002;
+         }
+         /* Fixed sidebar positioning */
+         .docs-layout {
+         display: flex;
+         min-height: calc(100vh - 70px);
+         }
+         .docs-sidebar {
+         width: 280px;
+         position: sticky;
+         top: 70px;
+         height: calc(100vh - 70px);
+         overflow-y: auto;
+         flex-shrink: 0;
+         z-index: 900;
+         }
+         .docs-content {
+         flex: 1;
+         min-width: 0;
+         padding: 2rem;
+         }
+         @media (max-width: 992px) {
+         .docs-sidebar {
+         position: fixed;
+         left: -280px;
+         transition: left 0.3s ease;
+         }
+         .docs-sidebar.active {
+         left: 0;
+         }
+         }
+      </style>
+      <!-- Add this to your page before closing body tag -->
+      <script>
+         document.addEventListener('DOMContentLoaded', function() {
+         // References to elements
+         const matrixNav = document.querySelector('.matrix-nav');
+         const mainSections = document.querySelectorAll('section[id]');
+         const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
+         const navContainer = document.querySelector('.nav-container');
+         const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+         
+         // Create matrix terminal display
+         const terminalDisplay = document.createElement('div');
+         terminalDisplay.className = 'matrix-terminal-display';
+         terminalDisplay.innerHTML = `
+           <span class="terminal-prefix">></span>
+           <div class="terminal-text-box" data-content="MATRIX.CSS">MATRIX.CSS</div>
+           <span class="terminal-cursor"></span>
+         `;
+         
+         // Create connection lines container
+         const connectionLines = document.createElement('div');
+         connectionLines.className = 'terminal-connection-lines';
+         
+         // Create status indicator
+         const statusIndicator = document.createElement('div');
+         statusIndicator.style="display: none;";
+         statusIndicator.className = 'matrix-status-indicator';
+         statusIndicator.innerHTML = `
+           <span class="status-dot"></span>
+           <span class="status-text">MATRIX.CSS</span>
+         `;
+         
+         // Create particles container
+         const particlesContainer = document.createElement('div');
+         particlesContainer.className = 'matrix-particles-container';
+         
+         // Add all elements to the DOM
+         if (navContainer) {
+           navContainer.appendChild(connectionLines);
+           document.body.appendChild(statusIndicator);
+           document.body.appendChild(particlesContainer);
+           
+           // Add connection lines between navbar and important elements
+           createConnectionLines();
+         }
+         
+         // Terminal typing effect with glitch
+         let isTyping = false;
+         let currentSectionId = '';
+         let typeTimeout;
+         
+         function typeTerminalText(text, callback) {
+           if (isTyping) {
+             clearTimeout(typeTimeout);
+           }
+           
+           isTyping = true;
+           
+           const textBox = document.querySelector('.terminal-text-box');
+           if (!textBox) return;
+           
+           // Save original text for data-content (used by glitch effect)
+           textBox.setAttribute('data-content', text);
+           
+           // Clear and prepare for typing
+           textBox.textContent = '';
+           textBox.classList.add('glitch');
+           
+           // Create digital rain effect during transition
+           createMatrixRainParticles();
+           
+           setTimeout(() => {
+             textBox.classList.remove('glitch');
+             
+             // Type characters one by one
+             let i = 0;
+             function typeCharacter() {
+               if (i < text.length) {
+                 textBox.textContent += text.charAt(i);
+                 i++;
+                 
+                 // Random delay for realistic typing
+                 const randomDelay = Math.floor(Math.random() * 50) + 30;
+                 typeTimeout = setTimeout(typeCharacter, randomDelay);
+                 
+                 // Occasionally add glitch during typing
+                 if (Math.random() < 0.1) {
+                   textBox.classList.add('glitch');
+                   setTimeout(() => {
+                     textBox.classList.remove('glitch');
+                   }, 100);
+                 }
+               } else {
+                 isTyping = false;
+                 if (callback) callback();
+               }
+             }
+             
+             typeCharacter();
+           }, 300);
+         }
+         
+         // Create matrix rain particles during transitions
+         function createMatrixRainParticles() {
+           const container = document.querySelector('.matrix-particles-container');
+           if (!container) return;
+           
+           // Clear existing particles
+           container.innerHTML = '';
+           
+           // Matrix chars
+           const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+           
+           // Create 50 particles
+           for (let i = 0; i < 50; i++) {
+             const particle = document.createElement('div');
+             particle.className = 'matrix-particle';
+             
+             // Random character
+             particle.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+             
+             // Random position
+             particle.style.left = `${Math.random() * 100}%`;
+             particle.style.animationDelay = `${Math.random() * 1.5}s`;
+             
+             container.appendChild(particle);
+           }
+           
+           // Remove particles after animation completes
+           setTimeout(() => {
+             container.innerHTML = '';
+           }, 3500);
+         }
+         
+         // Create connection lines between nav and content
+         function createConnectionLines() {
+           const container = document.querySelector('.terminal-connection-lines');
+           if (!container) return;
+           
+           // Clear existing lines
+           container.innerHTML = '';
+           
+           // Create 8-12 lines
+           const lineCount = 8 + Math.floor(Math.random() * 5);
+           
+           for (let i = 0; i < lineCount; i++) {
+             const line = document.createElement('div');
+             line.className = 'connection-line';
+             
+             // Random positioning
+             const startX = Math.random() * 100;
+             const startY = Math.random() * 70 + 30;
+             const endX = 100 + Math.random() * 50;
+             
+             // Calculate line properties
+             const deltaX = endX - startX;
+             const length = Math.sqrt(deltaX * deltaX + 900);
+             const angle = Math.atan2(30, deltaX) * 180 / Math.PI;
+             
+             // Set styles
+             line.style.left = `${startX}%`;
+             line.style.top = `${startY}%`;
+             line.style.width = `${length}px`;
+             line.style.transform = `rotate(${angle}deg)`;
+             
+             // Randomly activate some lines
+             if (Math.random() > 0.6) {
+               line.classList.add('active');
+             }
+             
+             container.appendChild(line);
+           }
+         }
+         
+         // Update active section while scrolling
+         function updateActiveSection() {
+           // Get current scroll position with offset
+           const scrollPosition = window.scrollY + 100;
+           
+           // Find the current section
+           let activeSection = null;
+           mainSections.forEach(section => {
+             const sectionTop = section.offsetTop;
+             const sectionHeight = section.offsetHeight;
+             const sectionId = section.getAttribute('id');
+             
+             if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+               activeSection = {
+                 id: sectionId,
+                 element: section
+               };
+               
+               // Update sidebar links
+               sidebarLinks.forEach(link => {
+                 const href = link.getAttribute('href');
+                 if (href === `#${sectionId}`) {
+                   link.classList.add('active');
+                 } else {
+                   link.classList.remove('active');
+                 }
+               });
+             }
+           });
+           
+           // Update navbar and status when entering a new section
+           if (activeSection && activeSection.id !== currentSectionId) {
+             currentSectionId = activeSection.id;
+             
+             // Get section title
+             const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
+             let sectionTitleText = sectionHeading.textContent.trim();
+             
+             // Shorten if too long
+             if (sectionTitleText.length > 20) {
+               sectionTitleText = sectionTitleText.substring(0, 18) + '...';
+             }
+             
+             // Format for terminal style
+             const terminalText = sectionTitleText.toUpperCase();
+             
+             // Type with terminal effect
+             typeTerminalText(terminalText, () => {
+               // Activate random connection lines after typing
+               const lines = document.querySelectorAll('.connection-line');
+               lines.forEach(line => {
+                 line.classList.remove('active');
+               });
+               
+               setTimeout(() => {
+                 // Activate some random lines
+                 lines.forEach(line => {
+                   if (Math.random() > 0.7) {
+                     line.classList.add('active');
+                   }
+                 });
+               }, 300);
+             });
+             
+             // Update status indicator
+             const statusText = document.querySelector('.status-text');
+             if (statusText) {
+               statusText.textContent = terminalText;
+             }
+             statusIndicator.classList.add('visible');
+           }
+           
+           // Reset if back at the top
+           if (scrollPosition < 100) {
+             currentSectionId = '';
+             
+             // Type MATRIX.CSS in terminal
+             typeTerminalText('MATRIX.CSS');
+             
+             // Hide status indicator
+             statusIndicator.classList.remove('visible');
+           }
+           
+           // Add scrolled class to navbar
+           if (scrollPosition > 100) {
+             matrixNav.classList.add('scrolled');
+           } else {
+             matrixNav.classList.remove('scrolled');
+           }
+         }
+         
+         // Fix scroll indicator and add animation
+         if (scrollIndicator) {
+           scrollIndicator.className = 'scroll-indicator';
+           scrollIndicator.style.animation = 'bounce 2s infinite';
+         }
+         
+         // Handle sidebar links clicks
+         sidebarLinks.forEach(link => {
+           link.addEventListener('click', function() {
+             // Remove active class from all links
+             sidebarLinks.forEach(l => l.classList.remove('active'));
+             
+             // Add active class to clicked link
+             this.classList.add('active');
+             
+             // Get target section
+             const targetId = this.getAttribute('href').substring(1);
+             const targetSection = document.getElementById(targetId);
+             
+             if (targetSection) {
+               // Get section heading
+               const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
+               const sectionTitleText = sectionHeading.textContent.trim().toUpperCase();
+               
+               // Update terminal with typing effect
+               typeTerminalText(sectionTitleText);
+               
+               // Update status indicator
+               const statusText = document.querySelector('.status-text');
+               if (statusText) {
+                 statusText.textContent = sectionTitleText;
+               }
+               statusIndicator.classList.add('visible');
+             }
+             
+             // Close mobile sidebar if open
+             const sidebar = document.querySelector('.docs-sidebar');
+             const backdrop = document.querySelector('.sidebar-backdrop');
+             
+             if (sidebar && sidebar.classList.contains('active')) {
+               sidebar.classList.remove('active');
+               if (backdrop) backdrop.classList.remove('active');
+             }
+           });
+         });
+         
+         // Randomly trigger glitch effects
+         function randomGlitchEffects() {
+           const textBox = document.querySelector('.terminal-text-box');
+           if (textBox && Math.random() > 0.9) {
+             textBox.classList.add('glitch');
+             setTimeout(() => {
+               textBox.classList.remove('glitch');
+             }, 150);
+           }
+           
+           // Randomly activate connection lines
+           const lines = document.querySelectorAll('.connection-line');
+           if (lines.length > 0 && Math.random() > 0.8) {
+             // Pick a random line
+             const randomLine = lines[Math.floor(Math.random() * lines.length)];
+             randomLine.classList.add('active');
+             
+             setTimeout(() => {
+               if (Math.random() > 0.5) {
+                 randomLine.classList.remove('active');
+               }
+             }, 2000);
+           }
+           
+           // Schedule next glitch
+           setTimeout(randomGlitchEffects, 2000 + Math.random() * 3000);
+         }
+         
+         // Listen for scroll events
+         window.addEventListener('scroll', updateActiveSection);
+         
+         // Initialize on page load
+         updateActiveSection();
+         randomGlitchEffects();
+         
+         // Recreate connection lines on resize
+         window.addEventListener('resize', createConnectionLines);
+         
+         // Initial animation
+         setTimeout(() => {
+           typeTerminalText('MATRIX.CSS');
+         }, 1000);
+         });
+         
+      </script>
+   </body>
+</html>
