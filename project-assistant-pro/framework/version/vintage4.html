@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=Courier+New&display=swap">
+    <link rel="stylesheet" href="../matrix.css">
+    <title>Matrix.css | The Ultimate Cyberpunk Framework</title>
+    <style>
+        :root {
+            scroll-behavior: smooth;
+            --docs-header-height: 70px;
+            --docs-sidebar-width: 280px;
+        }
+        /* Hero section styling */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            overflow: hidden;
+        }
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            animation: m-glow-pulse 3s infinite;
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        /* Feature grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--m-text-bright);
+        }
+        :root {
+            --m-font-alt: 'VT323', monospace;
+        }
+        /* Smooth theme transition */
+        .theme-transition {
+            transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+        }
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            width: 30px;
+            height: 24px;
+            position: relative;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 10px;
+            margin: -10px;
+            display: none;
+        }
+        .mobile-menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--m-text);
+            margin: 5px 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        @media (max-width: 992px) {
+            .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        }
+        /* Sidebar backdrop */
+        .sidebar-backdrop {
+            z-index: 899;
+        }
+        /* Documentation layout and sidebar */
+        .docs-layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        .docs-sidebar {
+            width: 280px;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            flex-shrink: 0;
+            background-color: var(--m-panel);
+            border-right: 1px solid var(--m-border);
+            padding: 2rem 0;
+            transition: left 0.3s ease;
+            z-index: 900;
+        }
+        .docs-content {
+            flex: 1;
+            min-width: 0;
+            padding: 2rem;
+        }
+        @media (max-width: 992px) {
+            .docs-sidebar {
+                position: fixed;
+                top: 70px;
+                left: -280px;
+            }
+            .docs-sidebar.active {
+                left: 0;
+            }
+        }
+        /* Anchor highlight effect */
+        .highlight-target {
+            position: relative;
+        }
+        .highlight-target::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--m-text);
+            opacity: 0.1;
+            animation: fadeOut 2s forwards;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes fadeOut {
+            from { opacity: 0.1; }
+            to { opacity: 0; }
+        }
+        /* Fixed top navigation bar */
+        .matrix-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            z-index: 1000;
+            transition: height 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+        .matrix-nav.scrolled {
+            background-color: rgba(0, 10, 2, 0.95);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .matrix-nav::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background: linear-gradient(to right,
+                transparent 0%,
+                var(--m-text) 20%,
+                var(--m-text-bright) 50%,
+                var(--m-text) 80%,
+                transparent 100%);
+            opacity: 0.6;
+            z-index: 2;
+        }
+        /* Matrix Code Rain animation and Glitch text effect */
+        @keyframes matrix-rain {
+            0% { background-position: 0% 0%; opacity: 0.6; }
+            50% { opacity: 0.8; }
+            100% { background-position: 0% 100%; opacity: 0.6; }
+        }
+        .glitch-text {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--m-bg);
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            z-index: -1;
+        }
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--m-danger);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: 1px 0 var(--m-info);
+            animation: glitch-2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+        @keyframes glitch-1 {
+            0%, 14%, 50%, 54%, 100% { transform: translate(0, 0) skew(0deg); }
+            15% { transform: translate(-2px, 2px) skew(2deg); }
+            49% { transform: translate(2px, -2px) skew(-2deg); }
+            51% { transform: translate(-2px, 2px) skew(2deg); }
+            52% { transform: translate(2px, -2px) skew(-2deg); }
+        }
+        @keyframes glitch-2 {
+            0%, 14%, 50%, 54%, 100% { transform: translate(0, 0) skew(0deg); }
+            15% { transform: translate(2px, -2px) skew(-2deg); }
+            49% { transform: translate(-2px, 2px) skew(2deg); }
+            51% { transform: translate(2px, -2px) skew(-2deg); }
+            52% { transform: translate(-2px, 2px) skew(2deg); }
+        }
+        /* Interactive systems section styles */
+        .matrix-interactive-systems {
+            background-color: var(--matrix-bg, #0c0c0c);
+            color: var(--matrix-green, #00ff41);
+            padding: 2rem;
+        }
+        .matrix-interactive-systems .system-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .matrix-interactive-systems .system-header h2 {
+            color: var(--matrix-text-bright, #00ff97);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .interactive-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .system-card {
+            background-color: rgba(0, 20, 0, 0.5);
+            border: 1px solid var(--matrix-border, #143214);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
+        }
+        .system-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--matrix-border, #143214);
+        }
+        .system-card .card-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--matrix-text-bright, #00ff97);
+        }
+        .system-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--matrix-border, #143214);
+            transition: all 0.3s ease;
+        }
+        .system-indicator.active {
+            background-color: var(--matrix-green, #00ff41);
+            box-shadow: 0 0 10px var(--matrix-green, #00ff41);
+        }
+        .system-card .card-content {
+            padding: 1rem;
+        }
+        /* Holographic Panel */
+        .holo-display {
+            height: 200px;
+            perspective: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .holo-inner {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid var(--matrix-border, #143214);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease-out;
+        }
+        .holo-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--matrix-green, #00ff41);
+            font-family: monospace;
+        }
+        /* Performance Monitor */
+        .performance-display {
+            text-align: center;
+        }
+        .fps-value {
+            font-size: 2rem;
+            color: var(--matrix-text-bright, #00ff97);
+        }
+        .performance-bar-container {
+            height: 10px;
+            background: rgba(0, 30, 0, 0.3);
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+        .performance-bar {
+            height: 100%;
+            background: var(--matrix-green, #00ff41);
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        /* Biometric Scanner */
+        .scanner-display {
+            text-align: center;
+            position: relative;
+        }
+        .scanner-icon {
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+            color: var(--matrix-text-bright, #00ff97);
+            opacity: 0.6;
+        }
+        .scanner-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--matrix-green, #00ff41);
+            opacity: 0;
+        }
+        .scanner-result {
+            margin-top: 1rem;
+            font-weight: bold;
+            min-height: 30px;
+        }
+        .scanner-result.granted { color: var(--matrix-green, #00ff41); }
+        .scanner-result.denied { color: #ff2222; }
+        /* Network Console */
+        .network-log {
+            height: 200px;
+            background: rgba(0, 20, 0, 0.5);
+            border: 1px solid var(--matrix-border, #143214);
+            color: var(--matrix-green, #00ff41);
+            font-family: monospace;
+            padding: 0.5rem;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .network-button {
+            width: 100%;
+            background: var(--matrix-border, #143214);
+            color: var(--matrix-green, #00ff41);
+            border: 1px solid var(--matrix-green, #00ff41);
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .interactive-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-backdrop"></div>
+    <div class="theme-switch" id="themeSwitch"><div class="m-badge m-badge-primary">T</div></div>
+    <nav class="matrix-nav">
+        <div class="nav-glitch-line"></div>
+        <div class="nav-container">
+            <!-- Logo Section with Digital Animation -->
+            <div class="nav-logo-container">
+                <a href="#" class="nav-logo">
+                    <span class="logo-bracket">[</span>
+                    <span class="logo-text" data-text="MATRIX.CSS">MATRIX.CSS</span>
+                    <span class="logo-bracket">]</span>
+                    <span class="logo-cursor">_</span>
+                </a>
+                <div class="nav-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM ONLINE</span>
+                </div>
+            </div>
+            <!-- Cyberpunk Menu Toggle for Mobile -->
+            <div class="nav-menu-toggle" id="mobileMenuToggle">
+                <div class="toggle-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="toggle-label">MENU</div>
+            </div>
+            <!-- Neural Network Links -->
+            <div class="nav-links-container">
+                <div class="nav-decoration">
+                    <span class="decoration-dot"></span>
+                    <span class="decoration-line"></span>
+                </div>
+                <div class="nav-links">
+                    <a href="#getting-started" class="nav-link" data-text="GETTING_STARTED">
+                        <span class="link-number">01</span>
+                        <span class="link-text">GETTING_STARTED</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="#components" class="nav-link" data-text="COMPONENTS">
+                        <span class="link-number">02</span>
+                        <span class="link-text">COMPONENTS</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="#utilities" class="nav-link" data-text="UTILITIES">
+                        <span class="link-number">03</span>
+                        <span class="link-text">UTILITIES</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="#examples" class="nav-link" data-text="EXAMPLES">
+                        <span class="link-number">04</span>
+                        <span class="link-text">EXAMPLES</span>
+                        <span class="link-highlight"></span>
+                    </a>
+                    <a href="https://github.com/example/matrix-css" target="_blank" class="nav-link" data-text="GITHUB">
+                        <span class="link-number">05</span>
+                        <span class="link-text">GITHUB</span>
+                        <span class="link-highlight"></span>
+                        <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1s-1.14-.37-3.73 1.42a12.94 12.94 0 0 0-6.18 0C7.41.63 6.27 1 6.27 1A5.07 5.07 0 0 0 6.18 4.77a5.44 5.44 0 0 0-1.5 3.74c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 0 0-.94 2.61V22"></path>
+                        </svg>
+                    </a>
+                </div>
+                <div class="nav-search">
+                    <div class="search-container">
+                        <div class="search-icon">⌕</div>
+                        <input type="text" class="search-input" placeholder="SEARCH SYSTEM...">
+                        <div class="search-status">READY</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-scanline"></div>
+    </nav>
+    <section class="hero" id="home">
+        <!-- Digital Rain Canvas -->
+        <canvas id="matrixRain" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+        <!-- Hero Content -->
+        <div style="position: relative; z-index: 2; text-align: center; padding: 0 20px; max-width: 1000px;">
+            <div style="display: inline-block; position: relative; margin-bottom: 2rem;">
+                <h1 class="hero-title" style="font-size: clamp(3rem, 8vw, 8rem); font-weight: bold; letter-spacing: 6px; text-shadow: 0 0 20px var(--m-glow), 0 0 40px var(--m-glow); margin-bottom: 0.5rem; animation: pulse 3s infinite; text-transform: uppercase;">MATRIX.CSS</h1>
+                <div style="width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--m-text), transparent); margin: 10px auto 20px; animation: expand 2s ease;"></div>
+            </div>
+            <p class="hero-subtitle" style="font-size: clamp(1rem, 2vw, 1.5rem); max-width: 800px; margin: 0 auto 3rem; line-height: 1.6; text-shadow: 0 0 10px var(--m-glow); background-color: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 5px; border: 1px solid var(--m-border);">
+                Matrix.css is a comprehensive CSS framework inspired by The Matrix aesthetic. It provides a dark theme with neon green accents, a complete component library, and utility classes for building futuristic, cyberpunk-inspired interfaces.
+                The framework includes everything from basic UI elements to advanced Matrix-themed effects, making it perfect for cybersecurity dashboards, sci-fi websites, or any project that wants to capture that distinctive Matrix feel.
+            </p>
+            <div class="hero-cta" style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                <a href="#getting-started" class="m-btn m-btn-primary m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px; position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 2;">ENTER THE MATRIX</span>
+                </a>
+                <a href="#components" class="m-btn m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px;">EXPLORE COMPONENTS</a>
+            </div>
+            <div style="margin-top: 3rem; opacity: 0.8; font-size: 0.9rem;">
+                <span class="m-badge" style="padding: 0.3rem 0.8rem; font-size: 0.9rem; letter-spacing: 1px;">VERSION 2.0</span>
+            </div>
+        </div>
+    </section>
+    <section class="m-container m-py-5" id="features">
+        <!-- Glitching Title with Digital Code Effect -->
+        <div class="matrix-code-overlay"></div>
+        <h2 class="matrix-title glitch-text" data-text="Why Choose Matrix.css?">Why Choose Matrix.css?</h2>
+        <div class="matrix-title-underline">
+            <div class="matrix-underline-pulse"></div>
+        </div>
+        <!-- Terminal Panel Showcase -->
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">☰</div>
+                <h3>Seamless Integration</h3>
+                <p>Effortlessly integrate cyberpunk aesthetics into any project with minimal changes to your existing codebase.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Extensive Components</h3>
+                <p>Comes with a wide range of UI components and special effects that evoke the iconic Matrix look and feel.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Lightweight</h3>
+                <p>Optimized and efficient, Matrix.css ensures your site remains fast and responsive, even with all the visual flair.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Customizable</h3>
+                <p>Fine-tune the appearance with CSS variables and fallback themes, making the design truly yours without losing the Matrix vibe.</p>
+            </div>
+        </div>
+        <!-- Holographic Terminal Interface -->
+        <div class="terminal-panel" style="max-width: 600px; margin: 4rem auto 0; background: rgba(0, 10, 0, 0.8); border: 1px solid #143214; border-radius: 3px; box-shadow: 0 0 20px rgba(0,0,0,0.5), 0 0 10px rgba(0,255,65,0.6);">
+            <div class="terminal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0,20,0,0.7); border-bottom: 1px solid #143214;">
+                <div class="terminal-title" style="font-size: 0.9rem; font-weight: bold; color: #00ff41; letter-spacing: 1px;">matrix@system:~</div>
+                <div class="terminal-controls" style="display: flex; gap: 6px;">
+                    <div class="terminal-btn" style="width: 12px; height: 12px; border-radius: 50%; background: #FF5F56;"></div>
+                    <div class="terminal-btn" style="width: 12px; height: 12px; border-radius: 50%; background: #FFBD2E;"></div>
+                    <div class="terminal-btn" style="width: 12px; height: 12px; border-radius: 50%; background: #27C93F;"></div>
+                </div>
+            </div>
+            <div class="terminal-content" style="padding: 16px; min-height: 180px;">
+                <div class="terminal-line" style="display: flex; align-items: flex-start; flex-wrap: wrap; margin-bottom: 8px;">
+                    <span class="terminal-prompt" style="color: #00ff97; margin-right: 8px; user-select: none;">$</span>
+                    <span class="terminal-command" style="color: #00ff41;">matrix --load --run</span>
+                </div>
+                <div class="terminal-line" style="margin-bottom: 8px;">
+                    <span class="terminal-output" style="color: #0a3f0a;">Loading Matrix modules...</span>
+                </div>
+                <div class="terminal-line" style="margin-bottom: 8px;">
+                    <span class="terminal-output" style="color: #0a3f0a;">System check: <strong style="color: #00ff41;">OK</strong></span>
+                </div>
+                <div class="terminal-line" style="margin-bottom: 8px;">
+                    <span class="terminal-output" style="color: #0a3f0a;">Ready for input.</span>
+                </div>
+                <div class="terminal-action-area" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                    <a href="#getting-started" class="m-btn m-btn-primary m-btn-lg" style="padding: 0.5rem 2rem; font-weight: bold; letter-spacing: 1px; display: inline-flex; align-items: center; text-decoration: none;">
+                        <span class="button-arrow button-arrow-left" style="margin-right: 8px;">&gt;</span>
+                        ENTER
+                        <span class="button-arrow button-arrow-right" style="margin-left: 8px;">&lt;</span>
+                        <span class="terminal-cursor" style="display: inline-block; width: 10px; height: 1em; background: #00ff41; animation: cursor-blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 4px;"></span>
+                    </a>
+                    <div class="button-hint" style="margin-top: 0.5rem; opacity: 0.8; font-size: 0.85rem; color: #00ff97;">[Click to enter the Matrix]</div>
+                </div>
+            </div>
+            <div class="scanline" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(transparent 0px, transparent 3px, rgba(0,255,65,0.03) 3px, rgba(0,255,65,0.03) 4px); pointer-events: none;"></div>
+        </div>
+    </section>
+    <script>
+        // Generate neural network connections when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('neuralConnections');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.offsetWidth;
+            const height = canvas.offsetHeight;
+            // Draw random neural connection lines
+            for (let i = 0; i < 20; i++) {
+                ctx.strokeStyle = 'rgba(0,255,65,0.3)';
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * width, Math.random() * height);
+                ctx.lineTo(Math.random() * width, Math.random() * height);
+                ctx.stroke();
+            }
+        });
+    </script>
+    <section class="m-container m-py-5" id="getting-started">
+        <h2 class="docs-section-title">Getting Started</h2>
+        <div class="docs-layout">
+            <aside class="docs-sidebar">
+                <div style="padding: 0 1.5rem;">
+                    <div class="search-container m-mb-4">
+                        <span class="search-icon">⌕</span>
+                        <input type="text" class="search-input" placeholder="Search documentation...">
+                    </div>
+                </div>
+                <div style="padding: 0 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Getting Started</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#introduction" class="m-text">Introduction</a></li>
+                        <li class="m-mb-2"><a href="#installation" class="m-text">Installation</a></li>
+                        <li class="m-mb-2"><a href="#colors" class="m-text">Colors</a></li>
+                        <li class="m-mb-2"><a href="#typography" class="m-text">Typography</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Layout</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#containers" class="m-text">Containers</a></li>
+                        <li class="m-mb-2"><a href="#grid" class="m-text">Grid System</a></li>
+                        <li class="m-mb-2"><a href="#spacing" class="m-text">Spacing</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Components</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#buttons" class="m-text">Buttons</a></li>
+                        <li class="m-mb-2"><a href="#alerts" class="m-text">Alerts</a></li>
+                        <li class="m-mb-2"><a href="#cards" class="m-text">Cards</a></li>
+                        <li class="m-mb-2"><a href="#badges" class="m-text">Badges</a></li>
+                        <li class="m-mb-2"><a href="#progress" class="m-text">Progress Bars</a></li>
+                        <li class="m-mb-2"><a href="#spinners" class="m-text">Spinners</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Advanced Components</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#neural-network" class="m-text">Neural Network</a></li>
+                        <li class="m-mb-2"><a href="#terminal" class="m-text">Terminal</a></li>
+                        <li class="m-mb-2"><a href="#glitch-text" class="m-text">Glitch Text</a></li>
+                        <li class="m-mb-2"><a href="#identity-card" class="m-text">Identity Card</a></li>
+                        <li class="m-mb-2"><a href="#code-rain" class="m-text">Code Rain</a></li>
+                    </ul>
+                </div>
+                <div style="padding: 0 1.5rem; margin-top: 1.5rem;">
+                    <h6 class="m-text-uppercase m-text-dim m-mb-2 m-pb-1" style="border-bottom: 1px solid var(--m-border);">Utilities</h6>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#effects" class="m-text">Visual Effects</a></li>
+                        <li class="m-mb-2"><a href="#animations" class="m-text">Animations</a></li>
+                        <li class="m-mb-2"><a href="#transforms" class="m-text">Transforms</a></li>
+                        <li class="m-mb-2"><a href="#responsive" class="m-text">Responsive Design</a></li>
+                    </ul>
+                </div>
+            </aside>
+            <div class="docs-content">
+                <section class="docs-section" id="introduction">
+                    <h3>Introduction</h3>
+                    <p><strong class="m-glow">Matrix.css</strong> is a comprehensive CSS framework inspired by The Matrix aesthetic. It provides a dark theme with neon green accents, complete component library, and utility classes for building futuristic, cyberpunk-inspired interfaces.</p>
+                    <p>The framework includes everything from basic UI components to advanced Matrix-themed effects, making it perfect for cybersecurity dashboards, sci-fi themed websites, or any project that wants to capture that distinctive Matrix feel.</p>
+                    <div class="m-alert m-alert-info">
+                        <strong>Note:</strong> Matrix.css is designed as a standalone CSS framework, no JavaScript required for most components. However, some interactive components may benefit from JavaScript for full functionality.
+                    </div>
+                </section>
+                <section class="docs-section" id="installation">
+                    <h3>Installation</h3>
+                    <p>You can quickly include Matrix.css in your project using one of the following methods:</p>
+                    <h4>Direct Download</h4>
+                    <div class="component-code m-mb-4">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>&lt;link rel="stylesheet" href="matrix.css"&gt;</code></pre>
+                    </div>
+                    <h4>CDN</h4>
+                    <div class="component-code m-mb-4">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>&lt;link rel="stylesheet" href="https://cdn.example.com/matrix.css"&gt;</code></pre>
+                    </div>
+                    <h4>Package Manager</h4>
+                    <div class="component-code m-mb-4">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>npm install matrix.css</code></pre>
+                    </div>
+                </section>
+                <section class="docs-section" id="colors">
+                    <h3>Colors</h3>
+                    <p>Matrix.css uses a carefully crafted color palette that captures the essence of The Matrix. The core colors are dark backgrounds with bright green text and accents.</p>
+                    <div class="color-grid m-mb-4">
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: #0c0c0c;"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Background</h5>
+                                <div class="color-value">--m-bg: #0c0c0c</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: #00ff41;"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Primary</h5>
+                                <div class="color-value">--m-primary: #00ff41</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: #00ff97;"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Bright Text</h5>
+                                <div class="color-value">--m-text-bright: #00ff97</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: #143214;"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Border</h5>
+                                <div class="color-value">--m-border: #143214</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: #0a3f0a;"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">Dim Text</h5>
+                                <div class="color-value">--m-text-dim: #0a3f0a</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-preview" style="background-color: #ffffff;"></div>
+                            <div class="color-info">
+                                <h5 class="color-name">White Text</h5>
+                                <div class="color-value">--m-text-white: #ffffff</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="docs-section" id="typography">
+                    <h3>Typography</h3>
+                    <p>Matrix.css uses monospace fonts to further enhance the tech and terminal feel of the framework.</p>
+                    <h4>Headings</h4>
+                    <h1>h1. Matrix.css heading</h1>
+                    <h2>h2. Matrix.css heading</h2>
+                    <h3>h3. Matrix.css heading</h3>
+                    <h4>h4. Matrix.css heading</h4>
+                    <h5>h5. Matrix.css heading</h5>
+                    <h6>h6. Matrix.css heading</h6>
+                    <h4 class="m-mt-4">Text Content</h4>
+                    <p>This is a standard paragraph with the default styling of Matrix.css. The framework provides a clean, readable text style with carefully chosen line height and spacing.</p>
+                    <p><strong>Bold text</strong> and <em>italicized text</em> are styled to maintain readability while fitting into the overall aesthetic.</p>
+                    <h4 class="m-mt-4">Links</h4>
+                    <p><a href="#">This is a standard link</a> that has hover effects including an underline animation and a subtle glow effect.</p>
+                    <h4 class="m-mt-4">Code</h4>
+                    <p>Inline <code>code blocks</code> are styled to stand out within text content.</p>
+                    <div class="component-code">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>// This is a code block
+function matrixEffect() {
+  console.log("Matrix effect activated");
+}</code></pre>
+                    </div>
+                    <h4 class="m-mt-4">Text Effects</h4>
+                    <p><span class="m-glow">This text has a glowing effect</span> that pulses subtly, adding to the Matrix aesthetic.</p>
+                </section>
+                <h2 id="components" class="docs-section-title">Components</h2>
+                <div class="m-container m-py-5" id="button-showcase">
+                    <h2 class="docs-section-title">Matrix Button Gallery</h2>
+                    <div class="m-row">
+                        <div class="m-col-md-6">
+                            <h3>Standard Buttons</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="m-btn">Default</button>
+                                <button class="m-btn m-btn-primary">Primary</button>
+                                <button class="m-btn m-btn-secondary">Secondary</button>
+                                <button class="m-btn m-btn-success">Success</button>
+                                <button class="m-btn m-btn-warning">Warning</button>
+                                <button class="m-btn m-btn-danger">Danger</button>
+                            </div>
+                            <h3>Button Sizes</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                                <button class="m-btn m-btn-sm">Small</button>
+                                <button class="m-btn">Default</button>
+                                <button class="m-btn m-btn-lg">Large</button>
+                            </div>
+                            <h3>Special Buttons</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="m-btn m-btn-glow">Glowing</button>
+                                <button class="m-btn m-btn-glitch">Glitch</button>
+                                <button class="m-btn m-btn-scan">Scan Effect</button>
+                                <button class="m-btn m-btn-terminal">Terminal</button>
+                                <button class="m-btn m-btn-cyber">Cyber</button>
+                            </div>
+                        </div>
+                        <div class="m-col-md-6">
+                            <h3>Button Shapes</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="m-btn m-btn-pill">Pill Button</button>
+                                <button class="m-btn m-btn-bordered">Bordered</button>
+                                <button class="m-btn m-btn-3d">3D Button</button>
+                                <button class="m-btn m-btn-icon">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <h3>Interactive Examples</h3>
+                            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-direction: column;">
+                                <button class="m-btn m-btn-data" data-text="PROCESSED"><span>PROCESS DATA</span></button>
+                                <div class="m-btn-group">
+                                    <button class="m-btn">Left</button>
+                                    <button class="m-btn">Center</button>
+                                    <button class="m-btn">Right</button>
+                                </div>
+                                <button class="m-btn m-btn-block m-btn-primary">Full Width Button</button>
+                                <button class="m-btn m-btn-loading">Loading State</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="component-showcase" id="alerts">
+                    <h3>Alerts</h3>
+                    <p>Alerts provide contextual feedback messages for typical user actions with a Matrix-inspired style.</p>
+                    <div class="component-demo">
+                        <div class="m-alert m-alert-primary m-mb-3">
+                            <strong>Primary Alert:</strong> This is a primary alert — check it out!
+                        </div>
+                        <div class="m-alert m-alert-info m-mb-3">
+                            <strong>Info Alert:</strong> This is an info alert — check it out!
+                        </div>
+                        <div class="m-alert m-alert-warning m-mb-3">
+                            <strong>Warning Alert:</strong> This is a warning alert — check it out!
+                        </div>
+                        <div class="m-alert m-alert-danger">
+                            <strong>Danger Alert:</strong> This is a danger alert — check it out!
+                        </div>
+                    </div>
+                    <div class="component-code">
+                        <button class="copy-button">Copy</button>
+                        <pre><code>&lt;div class="m-alert m-alert-primary"&gt;...&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+                <div class="component-showcase" id="cards">
+                    <h3>Cards</h3>
+                    <p>Cards are flexible content containers with options for headers, footers, and content.</p>
+                    <div class="m-card m-mb-4">
+                        <div class="m-card-header">Card Header</div>
+                        <div class="m-card-body">
+                            <h5 class="m-card-title">Card title</h5>
+                            <p class="m-card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="m-btn m-btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="component-showcase" id="spinners">
+                    <h3>Spinners</h3>
+                    <p>Spinners indicate ongoing processing in the background. Matrix.css offers a variety of spinners with a cyberpunk twist.</p>
+                    <div class="m-spinner m-spinner-border m-mb-3"></div>
+                    <div class="m-spinner m-spinner-grow m-mb-3"></div>
+                    <div class="m-spinner m-spinner-border m-spinner-sm"></div>
+                </div>
+                <h2 id="utilities" class="docs-section-title">Utilities</h2>
+            </div>
+        </div>
+    </section>
+    <div class="matrix-neural-visualizer">
+        <!-- Header with title and stats -->
+        <div class="neural-header">
+            <h1 class="neural-title">Neural Network Visualizer</h1>
+            <div class="neural-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Nodes</div>
+                    <div class="stat-value">128</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Layers</div>
+                    <div class="stat-value">4</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value">Online</div>
+                </div>
+            </div>
+        </div>
+        <!-- Neural network visualization container -->
+        <div class="neural-network-container">
+            <!-- Loading overlay -->
+            <div id="networkLoading" class="network-loading">
+                <div class="loader-text">Initializing Neural Network</div>
+                <div class="matrix-loader"></div>
+            </div>
+            <!-- Neural network canvas -->
+            <canvas id="neuralConnections" width="100%" height="100%"></canvas>
+            <!-- Info text -->
+            <div class="info-text m-mt-4" style="color: var(--m-text-dim); font-size: 0.9rem;">
+                This Matrix-inspired Neural Network Visualizer demonstrates a feed-forward neural network with multiple layers.
+                Each node represents a neuron, and connections show the data flow between neurons. Active nodes are highlighted in real-time, illustrating data propagation through the network. This is a simulation for visual purposes and not tied to actual neural network computations but provides an abstract representation of the complexity found in actual neural networks.
+                <br><br>
+                Neural networks are computing systems inspired by biological neural networks in animal brains.
+                They can learn and improve over time by processing examples, making them capable of tasks like pattern recognition, classification, and prediction.
+            </div>
+        </div>
+    </div>
+    <section class="matrix-interactive-systems" id="matrix-interactive-systems">
+        <div class="system-header">
+            <h2>MATRIX INTERACTIVE SYSTEMS</h2>
+            <p>Explore quantum digital interfaces</p>
+        </div>
+        <div class="interactive-grid">
+            <!-- Holographic Quantum Panel -->
+            <div class="system-card holo-panel">
+                <div class="card-header">
+                    <h3>Holographic Quantum Panel</h3>
+                    <div class="system-indicator"></div>
+                </div>
+                <div class="card-content">
+                    <div class="holo-display">
+                        <div class="holo-inner">
+                            <div class="holo-data">
+                                <span>QUANTUM ENTANGLEMENT</span>
+                                <span>MATRIX PROTOCOL: ACTIVE</span>
+                                <span>SYSTEM SYNC: 99.997%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quantum Performance Monitor -->
+            <div class="system-card performance-monitor">
+                <div class="card-header">
+                    <h3>Quantum Performance</h3>
+                    <div class="system-indicator"></div>
+                </div>
+                <div class="card-content">
+                    <div class="performance-display">
+                        <div class="fps-value">0.00</div>
+                        <div class="fps-label">QUANTUM FRAMES</div>
+                        <div class="performance-bar-container">
+                            <div class="performance-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quantum Biometric Scanner -->
+            <div class="system-card biometric-scanner">
+                <div class="card-header">
+                    <h3>Quantum Biometrics</h3>
+                    <div class="system-indicator"></div>
+                </div>
+                <div class="card-content">
+                    <div class="scanner-display">
+                        <div class="scanner-prompt">INITIATE QUANTUM SCAN</div>
+                        <div class="scanner-icon">
+                            <svg viewBox="0 0 100 100">
+                                <path d="M50 10 Q80 40, 50 70 T50 10" stroke="currentColor" fill="none" stroke-width="4"></path>
+                                <circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" stroke-width="2" stroke-dasharray="5,5"></circle>
+                            </svg>
+                        </div>
+                        <div class="scanner-line"></div>
+                        <div class="scanner-result"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quantum Network Console -->
+            <div class="system-card network-console">
+                <div class="card-header">
+                    <h3>Quantum Network</h3>
+                    <div class="system-indicator"></div>
+                </div>
+                <div class="card-content">
+                    <div class="console-display">
+                        <pre id="network-log" class="network-log"></pre>
+                        <button id="network-trigger" class="network-button">QUANTUM PING</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        (function() {
+            function $(selector) { return document.querySelector(selector); }
+            function $$(selector) { return document.querySelectorAll(selector); }
+            function domReady(fn) {
+                if (document.readyState !== 'loading') { fn(); }
+                else { document.addEventListener('DOMContentLoaded', fn); }
+            }
+            // Holographic Panel Interaction
+            function initHoloPanel() {
+                var holoPanel = $('.holo-panel .holo-inner');
+                if (!holoPanel) return;
+                holoPanel.addEventListener('mousemove', function(e) {
+                    var rect = holoPanel.getBoundingClientRect();
+                    var centerX = rect.left + rect.width / 2;
+                    var centerY = rect.top + rect.height / 2;
+                    var mouseX = e.clientX - centerX;
+                    var mouseY = e.clientY - centerY;
+                    var rotateX = Math.max(Math.min(-mouseY / 20, 15), -15);
+                    var rotateY = Math.max(Math.min(mouseX / 20, 15), -15);
+                    holoPanel.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+                });
+                holoPanel.addEventListener('mouseleave', function() {
+                    holoPanel.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                });
+            }
+            // Performance Monitor
+            function initPerformanceMonitor() {
+                var fpsValue = $('.performance-display .fps-value');
+                var fpsBar = $('.performance-bar');
+                if (!fpsValue || !fpsBar) return;
+                var lastTime = performance.now();
+                var frames = 0;
+                function updateFPS(currentTime) {
+                    frames++;
+                    if (currentTime - lastTime >= 1000) {
+                        var fps = Math.round((frames * 1000) / (currentTime - lastTime));
+                        fpsValue.textContent = fps.toFixed(2);
+                        fpsBar.style.width = (Math.min(fps, 144) / 144 * 100) + '%';
+                        frames = 0;
+                        lastTime = currentTime;
+                    }
+                    requestAnimationFrame(updateFPS);
+                }
+                requestAnimationFrame(updateFPS);
+            }
+            // Biometric Scanner
+            function initBiometricScanner() {
+                var scanner = $('.biometric-scanner');
+                var scannerPrompt = scanner.querySelector('.scanner-prompt');
+                var scannerResult = scanner.querySelector('.scanner-result');
+                var scannerLine = scanner.querySelector('.scanner-line');
+                var scannerIcon = scanner.querySelector('.scanner-icon');
+                scanner.addEventListener('click', function() {
+                    if (scanner.classList.contains('scanning')) return;
+                    scanner.classList.add('scanning');
+                    scannerPrompt.style.display = 'none';
+                    scannerResult.textContent = '';
+                    scannerLine.style.opacity = '1';
+                    scannerLine.style.animation = 'scanner-line 2.5s linear';
+                    scannerIcon.style.transform = 'scale(1.2) rotate(360deg)';
+                    setTimeout(function() {
+                        scannerLine.style.opacity = '0';
+                        scannerLine.style.animation = 'none';
+                        var probability = Math.random();
+                        var result = probability < 0.7 ? { text: '✓ ACCESS GRANTED', class: 'granted' } : { text: '✗ ACCESS DENIED', class: 'denied' };
+                        scannerResult.textContent = result.text;
+                        scannerResult.className = 'scanner-result ' + result.class;
+                        scannerIcon.style.transform = 'scale(1) rotate(0deg)';
+                        scanner.classList.remove('scanning');
+                    }, 2500);
+                });
+            }
+            // Network Console
+            function initNetworkConsole() {
+                var networkTrigger = $('#network-trigger');
+                var networkLog = $('#network-log');
+                if (!networkTrigger || !networkLog) return;
+                var networkMessages = [
+                    "QUANTUM NETWORK INITIALIZATION...",
+                    "ESTABLISHING ENTANGLEMENT PROTOCOLS",
+                    "SCANNING QUANTUM SUBSTRATE",
+                    "CONNECTING TO REMOTE QUANTUM NODES",
+                    "VERIFYING QUANTUM ENCRYPTION",
+                    "QUANTUM HANDSHAKE IN PROGRESS",
+                    "NETWORK LATENCY: 0.000000001 ms",
+                    "QUANTUM CHANNEL STABILIZED",
+                    "QUANTUM INTEGRITY: 99.9997%",
+                    "TRANSMISSION COMPLETE"
+                ];
+                networkTrigger.addEventListener('click', function() {
+                    networkLog.textContent = '';
+                    networkTrigger.disabled = true;
+                    networkTrigger.textContent = 'TRANSMITTING...';
+                    var messageIndex = 0;
+                    var transmissionInterval = setInterval(function() {
+                        if (messageIndex < networkMessages.length) {
+                            networkLog.textContent += networkMessages[messageIndex] + '\n';
+                            networkLog.scrollTop = networkLog.scrollHeight;
+                            messageIndex++;
+                        } else {
+                            clearInterval(transmissionInterval);
+                            networkTrigger.disabled = false;
+                            networkTrigger.textContent = 'QUANTUM PING';
+                        }
+                    }, 500);
+                });
+            }
+            // System Indicators
+            function initSystemIndicators() {
+                var indicators = $$('.system-indicator');
+                indicators.forEach(function(indicator, index) {
+                    setTimeout(function() {
+                        indicator.classList.add('active');
+                    }, index * 300);
+                });
+            }
+            // Initialize all systems
+            domReady(function() {
+                initHoloPanel();
+                initPerformanceMonitor();
+                initBiometricScanner();
+                initNetworkConsole();
+                initSystemIndicators();
+            });
+        })();
+    </script>
+    <section class="m-container m-py-5" id="examples">
+        <h2 class="docs-section-title">Example Projects</h2>
+        <div class="m-row">
+            <div class="m-col-md-6 m-col-lg-4">
+                <div class="m-card m-mb-4">
+                    <div class="m-card-header">
+                        Dashboard Example
+                    </div>
+                    <div class="m-card-body">
+                        <h5 class="m-card-title">Security Dashboard</h5>
+                        <p class="m-card-text">A cybersecurity monitoring dashboard built with Matrix.css, featuring real-time status indicators and alert components.</p>
+                        <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="m-col-md-6 m-col-lg-4">
+                <div class="m-card m-mb-4">
+                    <div class="m-card-header">
+                        Landing Page Example
+                    </div>
+                    <div class="m-card-body">
+                        <h5 class="m-card-title">Tech Product Launch</h5>
+                        <p class="m-card-text">A Matrix-themed product launch page with animated components and sleek UI elements to showcase tech innovations.</p>
+                        <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="m-col-md-6 m-col-lg-4">
+                <div class="m-card m-mb-4">
+                    <div class="m-card-header">
+                        Portfolio Example
+                    </div>
+                    <div class="m-card-body">
+                        <h5 class="m-card-title">Developer Portfolio</h5>
+                        <p class="m-card-text">A tech-focused personal portfolio website built with Matrix.css, featuring project showcases and skills visualization.</p>
+                        <a href="#" class="m-btn m-btn-primary">View Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="m-container m-py-5" style="border-top: 1px solid var(--m-border);">
+        <div class="m-row">
+            <div class="m-col-md-6 m-offset-md-3 m-text-center">
+                <h3 class="m-mb-3">Stay Updated</h3>
+                <p class="m-mb-4">Subscribe to our newsletter for updates, new features, and Matrix.css tips.</p>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="email" placeholder="Your email address" style="flex: 1; padding: 0.75rem; background-color: rgba(0, 0, 0, 0.3); border: 1px solid var(--m-border); border-radius: var(--m-radius); color: var(--m-text); font-family: var(--m-font-main);">
+                    <button class="m-btn m-btn-primary">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer style="background-color: var(--m-panel); border-top: 1px solid var(--m-border); padding: 3rem 0;">
+        <div class="m-container">
+            <div class="m-row">
+                <div class="m-col-md-4 m-mb-4">
+                    <h3 class="m-mb-3">Matrix.css</h3>
+                    <p>A comprehensive CSS framework inspired by The Matrix aesthetic. Create stunning cyberpunk interfaces with minimal effort.</p>
+                </div>
+                <div class="m-col-md-2 m-col-sm-6 m-mb-4">
+                    <h5 class="m-mb-3">Learn</h5>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#getting-started" class="m-text">Getting Started</a></li>
+                        <li class="m-mb-2"><a href="#components" class="m-text">Components</a></li>
+                        <li class="m-mb-2"><a href="#utilities" class="m-text">Utilities</a></li>
+                        <li class="m-mb-2"><a href="#examples" class="m-text">Examples</a></li>
+                    </ul>
+                </div>
+                <div class="m-col-md-2 m-col-sm-6 m-mb-4">
+                    <h5 class="m-mb-3">Community</h5>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="m-mb-2"><a href="#" class="m-text">GitHub</a></li>
+                        <li class="m-mb-2"><a href="#" class="m-text">Discord</a></li>
+                        <li class="m-mb-2"><a href="#" class="m-text">Twitter</a></li>
+                        <li class="m-mb-2"><a href="#" class="m-text">Stack Overflow</a></li>
+                    </ul>
+                </div>
+                <div class="m-col-md-4">
+                    <h5 class="m-mb-3">About</h5>
+                    <p>Matrix.css is an open-source project created by a team of developers passionate about The Matrix and great user interfaces.</p>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <a href="#" class="m-text">GitHub</a>
+                        <a href="#" class="m-text">Twitter</a>
+                        <a href="#" class="m-text">Medium</a>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--m-border); text-align: center;">
+                <p class="m-text-dim">© 2025 Matrix.css. Released under the MIT License.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Matrix Rain Animation Implementation
+            const canvas = document.getElementById('matrixRain');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,./<>?~あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん';
+                const fontSize = 16;
+                ctx.font = fontSize + 'px monospace';
+                const columns = Math.ceil(canvas.width / fontSize);
+                const drops = [];
+                for (let i = 0; i < columns; i++) {
+                    drops[i] = Math.floor(Math.random() * -canvas.height);
+                }
+                function draw() {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#00ff41';
+                    for (let i = 0; i < drops.length; i++) {
+                        const char = chars[Math.floor(Math.random() * chars.length)];
+                        if (Math.random() < 0.05) {
+                            ctx.fillStyle = '#00ff97';
+                            ctx.shadowColor = 'rgba(0, 255, 65, 0.8)';
+                            ctx.shadowBlur = 10;
+                        } else {
+                            ctx.fillStyle = '#00ff41';
+                            ctx.shadowBlur = 0;
+                        }
+                        ctx.fillText(char, i * fontSize, drops[i]);
+                        drops[i] += fontSize;
+                        if (drops[i] > canvas.height && Math.random() > 0.975) {
+                            drops[i] = Math.floor(Math.random() * -100);
+                        }
+                    }
+                    requestAnimationFrame(draw);
+                }
+                window.addEventListener('resize', function() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    const newColumns = Math.ceil(canvas.width / fontSize);
+                    if (newColumns > columns) {
+                        for (let i = drops.length; i < newColumns; i++) {
+                            drops[i] = Math.floor(Math.random() * -canvas.height);
+                        }
+                    }
+                    ctx.font = fontSize + 'px monospace';
+                });
+                draw();
+            }
+            const themeSwitch = document.getElementById('themeSwitch');
+            if (themeSwitch) {
+                const savedTheme = localStorage.getItem('matrixTheme');
+                if (savedTheme) {
+                    document.body.setAttribute('data-theme', savedTheme);
+                    themeSwitch.innerHTML = savedTheme === 'light' ? '<div class="m-badge m-badge-primary">D</div>' : '<div class="m-badge m-badge-primary">L</div>';
+                }
+                themeSwitch.addEventListener('click', function() {
+                    const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    document.body.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('matrixTheme', newTheme);
+                    this.innerHTML = newTheme === 'light' ? '<div class="m-badge m-badge-primary">D</div>' : '<div class="m-badge m-badge-primary">L</div>';
+                    document.body.classList.add('theme-transition');
+                    setTimeout(() => { document.body.classList.remove('theme-transition'); }, 1000);
+                });
+            }
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.querySelector('.docs-sidebar');
+            const backdrop = document.querySelector('.sidebar-backdrop');
+            if (mobileMenuToggle && sidebar && backdrop) {
+                mobileMenuToggle.style.cursor = 'pointer';
+                mobileMenuToggle.style.zIndex = '1001';
+                const toggleSidebar = function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    sidebar.classList.toggle('active');
+                    backdrop.classList.toggle('active');
+                    const spans = mobileMenuToggle.querySelectorAll('span');
+                    if (spans.length === 3) {
+                        if (sidebar.classList.contains('active')) {
+                            spans[0].style.transform = 'translateY(10px) rotate(45deg)';
+                            spans[1].style.opacity = '0';
+                            spans[2].style.transform = 'translateY(-10px) rotate(-45deg)';
+                        } else {
+                            spans[0].style.transform = 'none';
+                            spans[1].style.opacity = '1';
+                            spans[2].style.transform = 'none';
+                        }
+                    }
+                };
+                mobileMenuToggle.addEventListener('click', toggleSidebar);
+                mobileMenuToggle.onclick = toggleSidebar;
+                backdrop.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    backdrop.classList.remove('active');
+                    const spans = mobileMenuToggle.querySelectorAll('span');
+                    if (spans.length === 3) {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                        backdrop.classList.remove('active');
+                        const spans = mobileMenuToggle.querySelectorAll('span');
+                        if (spans.length === 3) {
+                            spans[0].style.transform = 'none';
+                            spans[1].style.opacity = '1';
+                            spans[2].style.transform = 'none';
+                        }
+                    }
+                });
+            }
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        if (sidebar && sidebar.classList.contains('active')) {
+                            sidebar.classList.remove('active');
+                            backdrop.classList.remove('active');
+                            const spans = mobileMenuToggle.querySelectorAll('span');
+                            if (spans.length === 3) {
+                                spans[0].style.transform = 'none';
+                                spans[1].style.opacity = '1';
+                                spans[2].style.transform = 'none';
+                            }
+                        }
+                        const headerHeight = document.querySelector('.main-nav')?.offsetHeight || 0;
+                        const yOffset = -headerHeight - 20;
+                        const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                        history.pushState(null, null, targetId);
+                        targetElement.classList.add('highlight-target');
+                        setTimeout(() => { targetElement.classList.remove('highlight-target'); }, 2000);
+                    }
+                });
+            });
+            const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+            if (scrollIndicator) {
+                scrollIndicator.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSection = document.getElementById('features');
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+            function updateActiveNavLinks() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.nav-link');
+                const scrollPosition = window.scrollY + 100;
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+                        if (correspondingLink) {
+                            correspondingLink.classList.add('active');
+                        }
+                    }
+                });
+            }
+            window.addEventListener('scroll', updateActiveNavLinks);
+            // Toggle .scrolled class on nav based on scroll
+            const matrixNav = document.querySelector('.matrix-nav');
+            window.addEventListener('scroll', function() {
+                if (matrixNav) {
+                    if (window.scrollY > 50) {
+                        matrixNav.classList.add('scrolled');
+                    } else {
+                        matrixNav.classList.remove('scrolled');
+                    }
+                }
+            });
+            window.addEventListener('scroll', updateActiveNavLinks);
+            updateActiveNavLinks();
+        });
+    </script>
+</body>
+</html>

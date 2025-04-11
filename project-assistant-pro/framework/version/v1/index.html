@@ -7,173 +7,6 @@
     <link rel="stylesheet" href="matrix.css">
     <title>Matrix.css | The Ultimate Cyberpunk Framework</title>
     <style>
-        /* ### Subtitle Animation Styles ### */
-.subtitle-animation {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto 3rem;               /* Center horizontally and add spacing below */
-  font-family: var(--m-font-main, monospace);
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  line-height: 1.6;
-  text-align: center;
-  color: var(--m-text);             /* Neon green text (Matrix theme primary) */
-  text-shadow: 0 0 5px var(--m-glow), 0 0 10px var(--m-glow);  /* soft neon glow */
-}
-.subtitle-animation .line {
-  position: relative;               /* Anchor for glitch pseudo-elements */
-  display: block;
-  text-align: center;              /* Center text within each line */
-  }
-
-/* Blinking cursor styling */
-.subtitle-animation .cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background: var(--m-text);       /* Same color as text (neon cursor) */
-  vertical-align: bottom;
-  animation: blink 0.8s steps(2, start) infinite;
-}
-@keyframes blink {
-  0%, 50%   { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
-}
-
-/* Glitch effect: pseudo-element copies for ghost text */
-.subtitle-animation .line::before,
-.subtitle-animation .line::after {
-  content: attr(data-text);        /* Copy the line's text content */
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;                      /* Hidden until glitch triggers */
-  color: transparent;              /* Ghost text itself invisible, only shadow visible */
-  text-shadow: 2px 0 #f0f, -2px 0 #0ff;  /* magenta and cyan offset shadows */
-  /* (Magenta/Cyan ghost colors add a cyberpunk vibe) */
-}
-
-/* Glitch animation keyframes for ghost layers */
-@keyframes glitchBefore {
-  0% { opacity: 1; transform: translate(0, 0); }
-  20% { transform: translate(-2px, -2px); }
-  21% { opacity: 0; }
-  22% { opacity: 1; }
-  100% { transform: translate(0, 0); }
-}
-@keyframes glitchAfter {
-  0% { opacity: 1; transform: translate(0, 0); }
-  10% { transform: translate(2px, 2px); }
-  11% { opacity: 0; }
-  12% { opacity: 1; }
-  100% { transform: translate(0, 0); }
-}
-
-/* Apply glitch animation when .glitch-active class is added */
-.subtitle-animation .line.glitch-active::before {
-  opacity: 1;
-  animation: glitchBefore 0.3s linear;
-}
-.subtitle-animation .line.glitch-active::after {
-  opacity: 1;
-  animation: glitchAfter 0.3s linear;
-}
-
-/* (Optional) Container shake for a full-environment glitch */
-.subtitle-animation.glitch-container {
-  animation: containerGlitch 0.3s linear;
-}
-@keyframes containerGlitch {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3px, -3px); }
-  40% { transform: translate(3px, 3px); }
-  60% { transform: translate(-2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-  100% { transform: translate(0, 0); }
-}
-
-    </style>
-    <script>
-        // ### Subtitle Typewriter and Glitch Script ###
-window.addEventListener('DOMContentLoaded', function() {
-  // Configuration: lines of subtitle text to type
-  const lines = [
-  "Power Your Digital Vision with Matrix.css",
-  "The Ultimate Production Framework."
-  ];
-  const typingSpeed = 50;         // Base typing delay (ms) per character
-  const jitter = 50;              // Random variance in typing speed (ms)
-  const glitchDuration = 300;     // Duration of glitch effect (ms) for each line
-
-  // Get the subtitle container
-  const container = document.getElementById('subtitle-animation');
-
-  // Create line elements and cursor element
-  const cursor = document.createElement('span');
-  cursor.className = 'cursor';
-  lines.forEach(() => {
-    const lineElem = document.createElement('span');
-    lineElem.className = 'line';
-    container.appendChild(lineElem);
-    container.appendChild(document.createElement('br'));  // line break between lines
-  });
-  // Remove the last extra <br>
-  container.removeChild(container.lastChild);
-
-  // Start with cursor in the first line
-  const lineElements = container.querySelectorAll('.line');
-  lineElements[0].appendChild(cursor);
-
-  // Helper function to type one line and return a Promise for sequencing
-  function typeLine(text, lineElem) {
-    return new Promise(resolve => {
-      let i = 0;
-      function typeChar() {
-        if (i < text.length) {
-          // Type next character
-          const ch = text[i++];
-          // Insert character just before the cursor
-          const charNode = document.createTextNode(ch);
-          lineElem.insertBefore(charNode, cursor);
-
-          // Randomized delay for next char for a more natural, glitchy cadence
-          const delay = typingSpeed + Math.random() * jitter;
-          setTimeout(typeChar, delay);
-        } else {
-          // Line finished typing
-          lineElem.setAttribute('data-text', text);              // Set data-text for glitch
-          lineElem.classList.add('glitch-active');               // Trigger glitch effect on this line
-          setTimeout(() => {
-            lineElem.classList.remove('glitch-active');          // End glitch after duration
-            resolve();  // resolve after glitch completes
-          }, glitchDuration);
-        }
-      }
-      typeChar();
-    });
-  }
-
-  // Type each line in sequence
-  (async function() {
-    for (let idx = 0; idx < lines.length; idx++) {
-      const text = lines[idx];
-      const lineElem = lineElements[idx];
-      // Type the line and wait for it to finish (including glitch)
-      await typeLine(text, lineElem);
-
-      // Move cursor to next line if exists
-      if (idx < lineElements.length - 1) {
-        lineElements[idx + 1].appendChild(cursor);
-      }
-    }
-    // (Optional) Final container glitch once all lines are done
-    container.classList.add('glitch-container');
-    setTimeout(() => container.classList.remove('glitch-container'), glitchDuration);
-  })();
-});
-
-    </script>
-    <style>
         /* Custom styles for documentation site only */
         :root {
             scroll-behavior: smooth;
@@ -618,6 +451,39 @@ window.addEventListener('DOMContentLoaded', function() {
                 width: 100%;
             }
         }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
     </style>
 </head>
 <body>
@@ -1244,6 +1110,39 @@ window.addEventListener('DOMContentLoaded', function() {
           padding: 0 10px;
         }
       }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
       </style>
       
       <script>
@@ -1450,15 +1349,10 @@ window.addEventListener('DOMContentLoaded', function() {
                 <div style="width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--m-text), transparent); margin: 10px auto 20px; animation: expand 2s ease;"></div>
             </div>
             
-            <!-- Adding a semi-transparent background to make text more readable
+            <!-- Adding a semi-transparent background to make text more readable -->
             <p class="hero-subtitle" style="font-size: clamp(1rem, 2vw, 1.5rem); max-width: 800px; margin: 0 auto 3rem; line-height: 1.6; text-shadow: 0 0 10px var(--m-glow); background-color: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 5px; border: 1px solid var(--m-border);">
                 Immerse your users in the digital realm with the complete Matrix-inspired design framework. Build stunning cyberpunk interfaces with minimal effort.
-            </p>-->
-
-            <p id="subtitle-animation" class="hero-subtitle subtitle-animation">
-            <!-- The animated text will be injected here by the script -->
             </p>
-
             
             <div class="hero-cta" style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
                 <a href="#getting-started" class="m-btn m-btn-primary m-btn-lg" style="padding: 0.8rem 2rem; min-width: 180px; font-weight: bold; letter-spacing: 1px; position: relative; overflow: hidden;">
@@ -1473,7 +1367,7 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
             
             <!-- Scroll indicator -->
-            <div style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer;">
+            <div style="position: absolute; bottom: -8rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer;">
                 <a href="#features" class="scroll-indicator">
                     <span style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px;">Scroll Down</span>
                     <span style="display: block; transform: rotate(45deg); width: 15px; height: 15px; border-right: 2px solid var(--m-text); border-bottom: 2px solid var(--m-text); margin: 0 auto;"></span>
@@ -1499,6 +1393,39 @@ window.addEventListener('DOMContentLoaded', function() {
             40% { transform: translateY(-10px) translateX(-50%); }
             60% { transform: translateY(-5px) translateX(-50%); }
         }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
     </style>
 <!-- ULTRA-ENHANCED MATRIX REALITY FEATURE SECTION -->
 <section class="m-container m-py-5" id="features">
@@ -1869,6 +1796,39 @@ window.addEventListener('DOMContentLoaded', function() {
       0% { top: 0; }
       100% { top: 100%; }
     }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
   </style>
   
   <!-- Terminal Container -->
@@ -2468,6 +2428,39 @@ window.addEventListener('DOMContentLoaded', function() {
             display: block;
         }
     }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
 </style>
 
 <!-- JavaScript for Neural Network Connections -->
@@ -2822,63 +2815,63 @@ function matrixEffect() {
         <h2 class="docs-section-title">Components</h2>
         
         <!-- Button Showcase -->
-        <div class="m-container m-py-5" id="button-showcase">
-            <h2 class="docs-section-title">Matrix Button Gallery</h2>
-            <div class="m-row">
-            <div class="m-col-md-6">
-                <h3>Standard Buttons</h3>
-                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <button class="m-btn">Default</button>
-                <button class="m-btn m-btn-primary">Primary</button>
-                <button class="m-btn m-btn-danger">Danger</button>
-                <button class="m-btn m-btn-neon">Neon</button>
-                <button class="m-btn m-btn-holo">Holographic</button>
-                </div>
-                
-                <h3>Button Sizes</h3>
-                <div class="m-mb-4" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                <button class="m-btn m-btn-sm">Small</button>
-                <button class="m-btn">Default</button>
-                <button class="m-btn m-btn-lg">Large</button>
-                </div>
-                
-                <h3>Special Buttons</h3>
-                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <button class="m-btn m-btn-glow">Glowing</button>
-                <button class="m-btn m-btn-glitch">Glitch</button>
-                <button class="m-btn m-btn-scan">Scan Effect</button>
-                <button class="m-btn m-btn-terminal">Terminal</button>
-                <button class="m-btn m-btn-cyber">Cyber</button>
-                </div>
+    <div class="m-container m-py-5" id="button-showcase">
+        <h2 class="docs-section-title">Matrix Button Gallery</h2>
+        <div class="m-row">
+        <div class="m-col-md-6">
+            <h3>Standard Buttons</h3>
+            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="m-btn">Default</button>
+            <button class="m-btn m-btn-primary">Primary</button>
+            <button class="m-btn m-btn-danger">Danger</button>
+            <button class="m-btn m-btn-neon">Neon</button>
+            <button class="m-btn m-btn-holo">Holographic</button>
             </div>
             
-            <div class="m-col-md-6">
-                <h3>Button Shapes</h3>
-                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <button class="m-btn m-btn-pill">Pill Button</button>
-                <button class="m-btn m-btn-bordered">Bordered</button>
-                <button class="m-btn m-btn-3d">3D Button</button>
-                <button class="m-btn m-btn-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                    </svg>
-                </button>
-                </div>
-                
-                <h3>Interactive Examples</h3>
-                <div class="m-mb-4" style="display: flex; gap: 1rem; flex-direction: column;">
-                <button class="m-btn m-btn-data" data-text="PROCESSED"><span>PROCESS DATA</span></button>
-                <div class="m-btn-group">
-                    <button class="m-btn">Left</button>
-                    <button class="m-btn">Center</button>
-                    <button class="m-btn">Right</button>
-                </div>
-                <button class="m-btn m-btn-block m-btn-primary">Full Width Button</button>
-                <button class="m-btn m-btn-loading">Loading State</button>
-                </div>
+            <h3>Button Sizes</h3>
+            <div class="m-mb-4" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <button class="m-btn m-btn-sm">Small</button>
+            <button class="m-btn">Default</button>
+            <button class="m-btn m-btn-lg">Large</button>
             </div>
+            
+            <h3>Special Buttons</h3>
+            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="m-btn m-btn-glow">Glowing</button>
+            <button class="m-btn m-btn-glitch">Glitch</button>
+            <button class="m-btn m-btn-scan">Scan Effect</button>
+            <button class="m-btn m-btn-terminal">Terminal</button>
+            <button class="m-btn m-btn-cyber">Cyber</button>
             </div>
         </div>
+        
+        <div class="m-col-md-6">
+            <h3>Button Shapes</h3>
+            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="m-btn m-btn-pill">Pill Button</button>
+            <button class="m-btn m-btn-bordered">Bordered</button>
+            <button class="m-btn m-btn-3d">3D Button</button>
+            <button class="m-btn m-btn-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+            </button>
+            </div>
+            
+            <h3>Interactive Examples</h3>
+            <div class="m-mb-4" style="display: flex; gap: 1rem; flex-direction: column;">
+            <button class="m-btn m-btn-data" data-text="PROCESSED"><span>PROCESS DATA</span></button>
+            <div class="m-btn-group">
+                <button class="m-btn">Left</button>
+                <button class="m-btn">Center</button>
+                <button class="m-btn">Right</button>
+            </div>
+            <button class="m-btn m-btn-block m-btn-primary">Full Width Button</button>
+            <button class="m-btn m-btn-loading">Loading State</button>
+            </div>
+        </div>
+        </div>
+    </div>
         
         <div class="component-showcase" id="alerts">
             <h3>Alerts</h3>
@@ -2971,1420 +2964,31 @@ function matrixEffect() {
                     </div>
                 </div>
             </div>
-            
             <div class="component-code">
                 <button class="copy-button">Copy</button>
                 <pre><code>&lt;div class="m-terminal"&gt;
-          &lt;div class="m-terminal-header"&gt;
-            &lt;div class="m-terminal-title"&gt;matrix@system:~&lt;/div&gt;
-            &lt;div class="m-terminal-controls"&gt;
-              &lt;div class="m-terminal-btn minimize"&gt;&lt;/div&gt;
-              &lt;div class="m-terminal-btn maximize"&gt;&lt;/div&gt;
-              &lt;div class="m-terminal-btn close"&gt;&lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div class="m-terminal-content"&gt;
-            &lt;div class="m-terminal-line"&gt;
-              &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
-              &lt;span&gt;cd /matrix/system&lt;/span&gt;
-            &lt;/div&gt;
-            &lt;!-- More terminal lines --&gt;
-            &lt;div class="m-terminal-line"&gt;
-              &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
-              &lt;span&gt;run redpill.exe&lt;/span&gt;
-              &lt;span class="m-terminal-cursor"&gt;&lt;/span&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;</code></pre>
+  &lt;div class="m-terminal-header"&gt;
+    &lt;div class="m-terminal-title"&gt;matrix@system:~&lt;/div&gt;
+    &lt;div class="m-terminal-controls"&gt;
+      &lt;div class="m-terminal-btn minimize"&gt;&lt;/div&gt;
+      &lt;div class="m-terminal-btn maximize"&gt;&lt;/div&gt;
+      &lt;div class="m-terminal-btn close"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="m-terminal-content"&gt;
+    &lt;div class="m-terminal-line"&gt;
+      &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
+      &lt;span&gt;cd /matrix/system&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;!-- More terminal lines --&gt;
+    &lt;div class="m-terminal-line"&gt;
+      &lt;span class="m-terminal-prompt"&gt;$&lt;/span&gt;
+      &lt;span&gt;run redpill.exe&lt;/span&gt;
+      &lt;span class="m-terminal-cursor"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
             </div>
-            
-            <h4 class="m-mt-5">Advanced Terminal Examples</h4>
-            
-            <!-- Interactive Terminal -->
-            <div class="component-demo">
-                <h5>Interactive Terminal</h5>
-                <p class="m-text-dim m-mb-3">This terminal allows for input and responses. Type help for a list of commands, or try: ls, cd, ping, trace, decrypt.</p>
-                
-                <div id="interactive-terminal" class="m-terminal">
-                    <div class="m-terminal-header">
-                        <div class="m-terminal-title">matrix@root:~ <span id="terminal-path">/system</span></div>
-                        <div class="m-terminal-controls">
-                            <div class="m-terminal-btn minimize"></div>
-                            <div class="m-terminal-btn maximize"></div>
-                            <div class="m-terminal-btn close"></div>
-                        </div>
-                    </div>
-                    <div class="m-terminal-content" id="terminal-content">
-                        <div class="m-terminal-line">
-                            <span class="m-text-bright">Welcome to the Matrix OS v3.7.9</span>
-                        </div>
-                        <div class="m-terminal-line">
-                            <span>Type 'help' for available commands</span>
-                        </div>
-                        <div class="m-terminal-line">
-                            <span class="m-terminal-prompt">$</span>
-                            <span id="input-line">
-                                <span id="input-text"></span>
-                                <span class="m-terminal-cursor"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Type-on Effect Terminal -->
-            <div class="component-demo">
-                <h5>Type-on Effect Terminal</h5>
-                <p class="m-text-dim m-mb-3">Terminal with automatic typing effect.</p>
-                
-                <div id="typewriter-terminal" class="m-terminal">
-                    <div class="m-terminal-header">
-                        <div class="m-terminal-title">system@matrix:~ /security</div>
-                        <div class="m-terminal-controls">
-                            <div class="m-terminal-btn minimize"></div>
-                            <div class="m-terminal-btn maximize"></div>
-                            <div class="m-terminal-btn close"></div>
-                        </div>
-                    </div>
-                    <div class="m-terminal-content">
-                        <div class="m-terminal-line" data-delay="0">
-                            <span class="m-terminal-prompt">$</span>
-                            <span class="typewriter-text">access security-grid</span>
-                        </div>
-                        <div class="m-terminal-line m-text-dim typewriter-wait" data-delay="1500">
-                            <span>Accessing security subsystem...</span>
-                        </div>
-                        <div class="m-terminal-line m-text-dim typewriter-wait" data-delay="1000">
-                            <span>Establishing connection...</span>
-                        </div>
-                        <div class="m-terminal-line m-text-danger typewriter-wait" data-delay="1500">
-                            <span>ACCESS DENIED: Insufficient clearance</span>
-                        </div>
-                        <div class="m-terminal-line typewriter-wait" data-delay="800">
-                            <span class="m-terminal-prompt">$</span>
-                            <span class="typewriter-text">override --security-protocol --auth=neo</span>
-                        </div>
-                        <div class="m-terminal-line m-text-dim typewriter-wait" data-delay="1200">
-                            <span>Authentication verified. Welcome, Neo.</span>
-                        </div>
-                        <div class="m-terminal-line m-text-bright typewriter-wait" data-delay="800">
-                            <span>SECURITY GRID ACCESS GRANTED</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Hacker Terminal -->
-            <div class="component-demo">
-                <h5>Matrix Hacker Terminal</h5>
-                <p class="m-text-dim m-mb-3">A more elaborate terminal with code rain effect and system readouts.</p>
-                
-                <div class="m-terminal m-terminal-hacker">
-                    <div class="m-terminal-header">
-                        <div class="m-terminal-title">neural@mainframe:~ <span class="blink-text">▌</span></div>
-                        <div class="m-system-status">
-                            <span class="system-indicator active"></span>
-                            <span>SYSTEM ACTIVE</span>
-                        </div>
-                        <div class="m-terminal-controls">
-                            <div class="m-terminal-btn minimize"></div>
-                            <div class="m-terminal-btn maximize"></div>
-                            <div class="m-terminal-btn close"></div>
-                        </div>
-                    </div>
-                    <div class="m-terminal-content">
-                        <div class="code-rain-layer"></div>
-                        
-                        <div class="m-terminal-split">
-                            <div class="m-terminal-main">
-                                <div class="m-terminal-line">
-                                    <span class="m-terminal-prompt">[neural]$</span>
-                                    <span>trace -ip 203.0.113.42 -traceroute</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-text-dim">Tracing route to target [203.0.113.42]...</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-text-dim">Hop 1: 192.168.1.1 (2ms)</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-text-dim">Hop 2: 10.254.0.1 (5ms)</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-text-dim">Hop 3: 172.16.0.1 (14ms)</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-text-dim">Hop 4: 203.0.113.1 (22ms)</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-text-bright">Target located. Scanning for vulnerabilities...</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-terminal-prompt">[neural]$</span>
-                                    <span>scan --deep --port=all</span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="scan-progress"></span>
-                                </div>
-                                <div class="m-terminal-line">
-                                    <span class="m-terminal-prompt">[neural]$</span>
-                                    <span class="m-terminal-cursor"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="m-terminal-sidebar">
-                                <div class="system-readout">
-                                    <div class="readout-title">SYSTEM STATUS</div>
-                                    <div class="readout-item">
-                                        <span class="label">CPU:</span>
-                                        <span class="value">78%</span>
-                                        <div class="meter">
-                                            <div class="meter-fill" style="width: 78%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="readout-item">
-                                        <span class="label">MEM:</span>
-                                        <span class="value">42%</span>
-                                        <div class="meter">
-                                            <div class="meter-fill" style="width: 42%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="readout-item">
-                                        <span class="label">NET:</span>
-                                        <span class="value">89%</span>
-                                        <div class="meter">
-                                            <div class="meter-fill" style="width: 89%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="readout-divider"></div>
-                                    <div class="readout-item">
-                                        <span class="label">ENCRYPTION:</span>
-                                        <span class="value">ACTIVE</span>
-                                    </div>
-                                    <div class="readout-item">
-                                        <span class="label">PROXIES:</span>
-                                        <span class="value">7 ACTIVE</span>
-                                    </div>
-                                    <div class="readout-item">
-                                        <span class="label">UPTIME:</span>
-                                        <span class="value">14:22:07</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <style>
-                /* Interactive Terminal Styles */
-                #input-line {
-                    display: inline-block;
-                    min-width: 50px;
-                }
-                
-                /* Type-on Effect */
-                .typewriter-text {
-                    display: inline-block;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    width: 0;
-                    animation: typing 3.5s steps(40, end) forwards;
-                }
-                
-                .typewriter-wait {
-                    opacity: 0;
-                }
-                
-                @keyframes typing {
-                    from { width: 0 }
-                    to { width: 100% }
-                }
-                
-                /* Hacker Terminal Styles */
-                .m-terminal-hacker {
-                    height: 400px;
-                    overflow: hidden;
-                }
-                
-                .m-terminal-header {
-                    display: flex;
-                    justify-content: space-between;
-                }
-                
-                .m-system-status {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    font-size: 0.8rem;
-                    color: var(--m-text-dim);
-                }
-                
-                .system-indicator {
-                    display: inline-block;
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    background-color: var(--m-border);
-                }
-                
-                .system-indicator.active {
-                    background-color: var(--m-text);
-                    box-shadow: 0 0 5px var(--m-glow);
-                    animation: status-pulse 2s infinite;
-                }
-                
-                @keyframes status-pulse {
-                    0%, 100% { opacity: 0.7; }
-                    50% { opacity: 1; }
-                }
-                
-                .code-rain-layer {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1000' viewBox='0 0 200 1000'%3E%3Cstyle%3E.text %7B font: 10px monospace; fill: %2300ff41; %7D%3C/style%3E%3Cg%3E%3Ctext x='10' y='30' class='text'%3E01011001%3C/text%3E%3Ctext x='50' y='60' class='text'%3E10110%3C/text%3E%3Ctext x='90' y='90' class='text'%3E0110111%3C/text%3E%3Ctext x='130' y='120' class='text'%3E1010%3C/text%3E%3Ctext x='30' y='150' class='text'%3E01110%3C/text%3E%3Ctext x='70' y='180' class='text'%3E10011%3C/text%3E%3Ctext x='110' y='210' class='text'%3E01101%3C/text%3E%3Ctext x='20' y='240' class='text'%3E110011%3C/text%3E%3Ctext x='60' y='270' class='text'%3E01010%3C/text%3E%3Ctext x='100' y='300' class='text'%3E110101%3C/text%3E%3C/g%3E%3C/svg%3E");
-                    opacity: 0.05;
-                    animation: code-rain 20s linear infinite;
-                    pointer-events: none;
-                    z-index: 0;
-                }
-                
-                @keyframes code-rain {
-                    0% { background-position: 0 0; }
-                    100% { background-position: 0 1000px; }
-                }
-                
-                .m-terminal-split {
-                    display: flex;
-                    height: calc(100% - 10px);
-                    position: relative;
-                    z-index: 1;
-                }
-                
-                .m-terminal-main {
-                    flex: 1;
-                    padding-right: 10px;
-                    overflow-y: auto;
-                }
-                
-                .m-terminal-sidebar {
-                    width: 180px;
-                    border-left: 1px solid var(--m-border);
-                    padding-left: 10px;
-                    font-size: 0.85rem;
-                }
-                
-                .system-readout {
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                
-                .readout-title {
-                    font-size: 0.7rem;
-                    color: var(--m-text-dim);
-                    margin-bottom: 0.5rem;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    border-bottom: 1px solid var(--m-border);
-                    padding-bottom: 5px;
-                }
-                
-                .readout-item {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 0.5rem;
-                    align-items: center;
-                    margin-bottom: 0.5rem;
-                }
-                
-                .readout-item .label {
-                    width: 90px;
-                    color: var(--m-text-dim);
-                    font-size: 0.75rem;
-                }
-                
-                .readout-item .value {
-                    color: var(--m-text);
-                    font-weight: bold;
-                }
-                
-                .meter {
-                    height: 4px;
-                    width: 100%;
-                    background-color: var(--m-border);
-                    border-radius: 2px;
-                    overflow: hidden;
-                    margin-top: 2px;
-                }
-                
-                .meter-fill {
-                    height: 100%;
-                    background-color: var(--m-text);
-                    border-radius: 2px;
-                }
-                
-                .readout-divider {
-                    height: 1px;
-                    background-color: var(--m-border);
-                    margin: 0.5rem 0;
-                }
-                
-                .scan-progress {
-                    display: inline-block;
-                    width: 100%;
-                    height: 1.2em;
-                    background: linear-gradient(to right, var(--m-text) 50%, transparent 50%);
-                    background-size: 20px 100%;
-                    background-repeat: repeat-x;
-                    animation: scan-animate 1s linear infinite;
-                }
-                
-                @keyframes scan-animate {
-                    0% { background-position: 0 0; }
-                    100% { background-position: 20px 0; }
-                }
-                
-                .blink-text {
-                    animation: blink 1s step-end infinite;
-                }
-                
-                @keyframes blink {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0; }
-                }
-            </style>
-            
-            <script>
-                // Interactive Terminal Script
-                document.addEventListener('DOMContentLoaded', function() {
-                    const terminal = document.getElementById('interactive-terminal');
-                    const content = document.getElementById('terminal-content');
-                    const inputText = document.getElementById('input-text');
-                    const terminalPath = document.getElementById('terminal-path');
-                    
-                    if (!terminal || !content || !inputText) return;
-                    
-                    // File system simulation
-                    const fileSystem = {
-                        '/system': {
-                            type: 'dir',
-                            contents: {
-                                'kernel.sys': { type: 'file', content: 'Matrix OS v3.7.9 Kernel' },
-                                'config.dat': { type: 'file', content: 'System Configuration' },
-                                'users': {
-                                    type: 'dir',
-                                    contents: {
-                                        'neo.usr': { type: 'file', content: 'Username: Neo\nAccess Level: Administrator' },
-                                        'trinity.usr': { type: 'file', content: 'Username: Trinity\nAccess Level: Operations' }
-                                    }
-                                },
-                                'network': {
-                                    type: 'dir',
-                                    contents: {
-                                        'connections.log': { type: 'file', content: 'Active connections log' },
-                                        'firewall.cfg': { type: 'file', content: 'Firewall configuration file' }
-                                    }
-                                }
-                            }
-                        }
-                    };
-                    
-                    // Current state
-                    let currentPath = '/system';
-                    let currentDir = fileSystem['/system'];
-                    let commandHistory = [];
-                    let historyIndex = -1;
-                    
-                    // Available commands
-                    const commands = {
-                        'help': function() {
-                            return `Available commands:
-          ls - List directory contents
-          cd [directory] - Change directory
-          cat [file] - View file contents
-          clear - Clear terminal
-          ping [host] - Ping remote host
-          trace [ip] - Trace IP route
-          decrypt [file] - Attempt to decrypt file
-          matrix - Display the Matrix`;
-                        },
-                        'ls': function(args) {
-                            let output = '';
-                            for (const item in currentDir.contents) {
-                                const type = currentDir.contents[item].type;
-                                const color = type === 'dir' ? 'class="m-text-bright"' : '';
-                                output += `<span ${color}>${item}</span>    `;
-                            }
-                            return output;
-                        },
-                        'cd': function(args) {
-                            if (!args[0] || args[0] === '.') {
-                                return '';
-                            }
-                            
-                            if (args[0] === '..') {
-                                if (currentPath === '/system') {
-                                    return 'Cannot go above root directory';
-                                }
-                                const pathParts = currentPath.split('/');
-                                pathParts.pop();
-                                currentPath = pathParts.join('/') || '/system';
-                                currentDir = getDirectory(currentPath);
-                                terminalPath.textContent = currentPath;
-                                return '';
-                            }
-                            
-                            if (currentDir.contents[args[0]] && currentDir.contents[args[0]].type === 'dir') {
-                                currentPath = currentPath === '/system' ? 
-                                    `${currentPath}/${args[0]}` : 
-                                    `${currentPath}/${args[0]}`;
-                                currentDir = currentDir.contents[args[0]];
-                                terminalPath.textContent = currentPath;
-                                return '';
-                            }
-                            
-                            return `Directory not found: ${args[0]}`;
-                        },
-                        'cat': function(args) {
-                            if (!args[0]) {
-                                return 'Usage: cat [filename]';
-                            }
-                            
-                            if (currentDir.contents[args[0]] && currentDir.contents[args[0]].type === 'file') {
-                                return currentDir.contents[args[0]].content;
-                            }
-                            
-                            return `File not found: ${args[0]}`;
-                        },
-                        'clear': function() {
-                            content.innerHTML = '';
-                            addNewLine('', false);
-                            return null; // Special case - no output
-                        },
-                        'ping': function(args) {
-                            if (!args[0]) {
-                                return 'Usage: ping [host]';
-                            }
-                            
-                            return `Pinging ${args[0]}...\nSending 4 packets...\n
-        Reply from ${args[0]}: time=34ms
-        Reply from ${args[0]}: time=28ms
-        Reply from ${args[0]}: time=31ms
-        Reply from ${args[0]}: time=30ms
-        
-        --- ${args[0]} ping statistics ---
-        4 packets transmitted, 4 received, 0% packet loss
-        round-trip min/avg/max = 28/30.75/34 ms`;
-                        },
-                        'trace': function(args) {
-                            if (!args[0]) {
-                                return 'Usage: trace [ip]';
-                            }
-                            
-                            return `Tracing route to ${args[0]}...
-        
-        1  192.168.1.1  3ms
-        2  10.254.0.1  7ms
-        3  172.16.0.1  16ms
-        4  103.86.99.1  28ms
-        5  ${args[0]}  42ms
-        
-        Trace complete.`;
-                        },
-                        'decrypt': function(args) {
-                            if (!args[0]) {
-                                return 'Usage: decrypt [filename]';
-                            }
-                            
-                            if (currentDir.contents[args[0]] && currentDir.contents[args[0]].type === 'file') {
-                                return `Attempting to decrypt ${args[0]}...
-        [■■■■■■□□□□] 60%
-        Decryption algorithm: Quantum Matrix
-        Estimated time remaining: 2m 47s`;
-                            }
-                            
-                            return `File not found: ${args[0]}`;
-                        },
-                        'matrix': function() {
-                            return `Wake up, Neo...
-        The Matrix has you...
-        Follow the white rabbit.
-        
-        Knock, knock, Neo.`;
-                        }
-                    };
-                    
-                    // Helper functions
-                    function getDirectory(path) {
-                        if (path === '/system') return fileSystem['/system'];
-                        
-                        const parts = path.split('/').filter(Boolean);
-                        let current = fileSystem['/system'];
-                        
-                        for (const part of parts) {
-                            if (part === 'system') continue;
-                            if (current.contents[part] && current.contents[part].type === 'dir') {
-                                current = current.contents[part];
-                            } else {
-                                return null;
-                            }
-                        }
-                        
-                        return current;
-                    }
-                    
-                    function addNewLine(text, isCommand = true) {
-                        const line = document.createElement('div');
-                        line.className = 'm-terminal-line';
-                        
-                        if (isCommand) {
-                            const prompt = document.createElement('span');
-                            prompt.className = 'm-terminal-prompt';
-                            prompt.textContent = '$';
-                            
-                            const command = document.createElement('span');
-                            command.textContent = ' ' + text;
-                            
-                            line.appendChild(prompt);
-                            line.appendChild(command);
-                        } else if (text !== null) {
-                            // Handle multiline responses
-                            text.split('\n').forEach((textLine, index) => {
-                                if (index > 0) {
-                                    const newLine = document.createElement('div');
-                                    newLine.className = 'm-terminal-line';
-                                    newLine.innerHTML = `<span>${textLine}</span>`;
-                                    content.appendChild(newLine);
-                                } else {
-                                    line.innerHTML = `<span>${textLine}</span>`;
-                                }
-                            });
-                        } else {
-                            return; // Clear command - no output
-                        }
-                        
-                        content.appendChild(line);
-                    }
-                    
-                    function processCommand(cmd) {
-                        const parts = cmd.trim().split(' ');
-                        const command = parts[0].toLowerCase();
-                        const args = parts.slice(1);
-                        
-                        if (command === '') {
-                            return '';
-                        }
-                        
-                        if (commands[command]) {
-                            return commands[command](args);
-                        }
-                        
-                        return `Command not found: ${command}\nType 'help' for available commands`;
-                    }
-                    
-                    // Add command input line
-                    function addInputLine() {
-                        const line = document.createElement('div');
-                        line.className = 'm-terminal-line';
-                        
-                        const prompt = document.createElement('span');
-                        prompt.className = 'm-terminal-prompt';
-                        prompt.textContent = '$';
-                        
-                        const inputLineSpan = document.createElement('span');
-                        inputLineSpan.id = 'input-line';
-                        
-                        const input = document.createElement('span');
-                        input.id = 'input-text';
-                        input.textContent = '';
-                        
-                        const cursor = document.createElement('span');
-                        cursor.className = 'm-terminal-cursor';
-                        
-                        inputLineSpan.appendChild(input);
-                        inputLineSpan.appendChild(cursor);
-                        
-                        line.appendChild(prompt);
-                        line.appendChild(inputLineSpan);
-                        
-                        content.appendChild(line);
-                        
-                        // Scroll to bottom
-                        content.scrollTop = content.scrollHeight;
-                    }
-                    
-                    // Set up keyboard input handling
-                    document.addEventListener('keydown', function(e) {
-                        if (!document.getElementById('input-text')) return;
-                        
-                        if (e.key === 'Enter') {
-                            const command = inputText.textContent;
-                            
-                            // Add to history if not empty
-                            if (command.trim() !== '') {
-                                commandHistory.unshift(command);
-                                historyIndex = -1;
-                            }
-                            
-                            // Process command
-                            const output = processCommand(command);
-                            
-                            // Remove input line
-                            const currentInputLine = document.getElementById('input-line').parentNode;
-                            currentInputLine.removeChild(document.getElementById('input-line'));
-                            currentInputLine.insertAdjacentHTML('beforeend', command);
-                            
-                            // Add command output
-                            if (output !== null) {
-                                addNewLine(output, false);
-                            }
-                            
-                            // Add new input line
-                            addInputLine();
-                            
-                        } else if (e.key === 'Backspace') {
-                            inputText.textContent = inputText.textContent.slice(0, -1);
-                            
-                        } else if (e.key === 'ArrowUp') {
-                            e.preventDefault();
-                            if (commandHistory.length > 0) {
-                                historyIndex = Math.min(historyIndex + 1, commandHistory.length - 1);
-                                inputText.textContent = commandHistory[historyIndex];
-                            }
-                            
-                        } else if (e.key === 'ArrowDown') {
-                            e.preventDefault();
-                            if (historyIndex > 0) {
-                                historyIndex--;
-                                inputText.textContent = commandHistory[historyIndex];
-                            } else if (historyIndex === 0) {
-                                historyIndex = -1;
-                                inputText.textContent = '';
-                            }
-                            
-                        } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
-                            inputText.textContent += e.key;
-                        } else if (e.key === 'Tab') {
-                           e.preventDefault();
-                           // Simple tab completion
-                           const input = inputText.textContent.trim();
-                           const parts = input.split(' ');
-                           const lastPart = parts[parts.length - 1];
-                           
-                           if (parts.length === 1) {
-                               // Command completion
-                               for (const cmd in commands) {
-                                   if (cmd.startsWith(lastPart)) {
-                                       inputText.textContent = cmd;
-                                       break;
-                                   }
-                               }
-                           } else if (parts[0] === 'cd' || parts[0] === 'cat') {
-                               // File/directory completion
-                               for (const item in currentDir.contents) {
-                                   if (item.startsWith(lastPart)) {
-                                       parts[parts.length - 1] = item;
-                                       inputText.textContent = parts.join(' ');
-                                       break;
-                                   }
-                               }
-                           }
-                       }
-                   });
-                   
-                   // Initialize
-                   terminalPath.textContent = currentPath;
-               });
-               
-               // Type-on Effect Terminal Script
-               document.addEventListener('DOMContentLoaded', function() {
-                   const typewriterTerminal = document.getElementById('typewriter-terminal');
-                   
-                   if (!typewriterTerminal) return;
-                   
-                   // Get all lines that need typing effect
-                   const lines = typewriterTerminal.querySelectorAll('.typewriter-text');
-                   const waitLines = typewriterTerminal.querySelectorAll('.typewriter-wait');
-                   
-                   // Start typing effect with delays
-                   let totalDelay = 0;
-                   
-                   // Animate text lines
-                   lines.forEach(line => {
-                       // Use default delay for typing
-                       totalDelay += 300;
-                       
-                       setTimeout(() => {
-                           line.style.animation = 'typing 3s steps(40, end) forwards';
-                       }, totalDelay);
-                       
-                       totalDelay += 3000; // Wait for typing to complete
-                   });
-                   
-                   // Show waiting lines with their delays
-                   waitLines.forEach(line => {
-                       const delay = parseInt(line.getAttribute('data-delay')) || 1000;
-                       totalDelay += delay;
-                       
-                       setTimeout(() => {
-                           line.style.opacity = '1';
-                       }, totalDelay);
-                   });
-               });
-               
-               // Matrix Hacker Terminal Effects
-               document.addEventListener('DOMContentLoaded', function() {
-                   const hackerTerminal = document.querySelector('.m-terminal-hacker');
-                   
-                   if (!hackerTerminal) return;
-                   
-                   // Update system readouts with random values periodically
-                   function updateSystemReadouts() {
-                       const cpu = Math.floor(Math.random() * 30) + 60; // 60-90%
-                       const mem = Math.floor(Math.random() * 40) + 30; // 30-70%
-                       const net = Math.floor(Math.random() * 20) + 75; // 75-95%
-                       
-                       const cpuMeter = hackerTerminal.querySelector('.readout-item:nth-child(1) .meter-fill');
-                       const cpuValue = hackerTerminal.querySelector('.readout-item:nth-child(1) .value');
-                       const memMeter = hackerTerminal.querySelector('.readout-item:nth-child(2) .meter-fill');
-                       const memValue = hackerTerminal.querySelector('.readout-item:nth-child(2) .value');
-                       const netMeter = hackerTerminal.querySelector('.readout-item:nth-child(3) .meter-fill');
-                       const netValue = hackerTerminal.querySelector('.readout-item:nth-child(3) .value');
-                       
-                       if (cpuMeter && cpuValue) {
-                           cpuMeter.style.width = `${cpu}%`;
-                           cpuValue.textContent = `${cpu}%`;
-                       }
-                       
-                       if (memMeter && memValue) {
-                           memMeter.style.width = `${mem}%`;
-                           memValue.textContent = `${mem}%`;
-                       }
-                       
-                       if (netMeter && netValue) {
-                           netMeter.style.width = `${net}%`;
-                           netValue.textContent = `${net}%`;
-                       }
-                       
-                       // Update uptime
-                       const uptimeValue = hackerTerminal.querySelector('.readout-item:nth-child(6) .value');
-                       if (uptimeValue) {
-                           let [hours, minutes, seconds] = uptimeValue.textContent.split(':').map(Number);
-                           
-                           seconds++;
-                           if (seconds >= 60) {
-                               seconds = 0;
-                               minutes++;
-                           }
-                           
-                           if (minutes >= 60) {
-                               minutes = 0;
-                               hours++;
-                           }
-                           
-                           uptimeValue.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                       }
-                       
-                       // Random glitch effect
-                       if (Math.random() < 0.1) {
-                           const codeRain = hackerTerminal.querySelector('.code-rain-layer');
-                           if (codeRain) {
-                               codeRain.style.opacity = '0.2';
-                               setTimeout(() => {
-                                   codeRain.style.opacity = '0.05';
-                               }, 200);
-                           }
-                       }
-                       
-                       setTimeout(updateSystemReadouts, 1000);
-                   }
-                   
-                   // Start updating readouts
-                   updateSystemReadouts();
-               });
-           </script>
-           
-           <h4 class="m-mt-5">Terminal Integration Examples</h4>
-           
-           <div class="component-demo">
-               <h5>System Status Dashboard with Terminal</h5>
-               <p class="m-text-dim m-mb-3">A complete example of integrating terminal into a dashboard interface.</p>
-               
-               <div class="m-terminal-dashboard">
-                   <div class="dashboard-header">
-                       <div class="dashboard-title">
-                           <span class="status-indicator active"></span>
-                           <span>MATRIX SYSTEM MONITOR</span>
-                       </div>
-                       <div class="dashboard-status">
-                           <span class="status-item"><span class="status-label">UPTIME:</span> 14:42:37</span>
-                           <span class="status-item"><span class="status-label">STATUS:</span> OPERATIONAL</span>
-                           <span class="status-item"><span class="status-label">THREATS:</span> 0</span>
-                       </div>
-                   </div>
-                   
-                   <div class="dashboard-grid">
-                       <div class="dashboard-panel wide">
-                           <div class="panel-header">
-                               <span>SYSTEM TERMINAL</span>
-                               <span class="panel-controls">
-                                   <span class="minimize"></span>
-                                   <span class="maximize"></span>
-                               </span>
-                           </div>
-                           <div class="panel-body">
-                               <div class="m-terminal embedded">
-                                   <div class="m-terminal-content">
-                                       <div class="m-terminal-line">
-                                           <span class="m-terminal-prompt">sys$</span>
-                                           <span>status --systems --verbose</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span class="m-text-dim">Running system diagnostics...</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span class="m-text-bright">All systems operational</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>- Network Subsystem ............................ [<span class="m-text-bright">OK</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>- Security Layer .............................. [<span class="m-text-bright">OK</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>- Quantum Encryption Engine .................... [<span class="m-text-bright">OK</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>- Neural Interface ............................. [<span class="m-text-bright">OK</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>- Memory Management System ..................... [<span class="m-text-bright">OK</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span class="m-terminal-prompt">sys$</span>
-                                           <span>scan --network --intrusion</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span class="m-text-dim">Scanning for intrusion attempts...</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>23:42:17 - Connection attempt from 198.51.100.24 [<span class="m-text-bright">BLOCKED</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span>23:59:01 - Connection attempt from 203.0.113.42 [<span class="m-text-bright">BLOCKED</span>]</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span class="m-text-dim">No successful intrusion detected</span>
-                                       </div>
-                                       <div class="m-terminal-line">
-                                           <span class="m-terminal-prompt">sys$</span>
-                                           <span class="m-terminal-cursor"></span>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-                       
-                       <div class="dashboard-panel">
-                           <div class="panel-header">
-                               <span>SYSTEM RESOURCES</span>
-                               <span class="panel-controls">
-                                   <span class="minimize"></span>
-                                   <span class="maximize"></span>
-                               </span>
-                           </div>
-                           <div class="panel-body">
-                               <div class="resource-graph">
-                                   <div class="graph-header">
-                                       <span class="graph-title">CPU USAGE</span>
-                                       <span class="graph-value">78%</span>
-                                   </div>
-                                   <div class="graph-visualization">
-                                       <div class="graph-bar">
-                                           <div class="bar-fill" style="height: 78%"></div>
-                                       </div>
-                                       <div class="graph-grid">
-                                           <div class="grid-line"></div>
-                                           <div class="grid-line"></div>
-                                           <div class="grid-line"></div>
-                                           <div class="grid-line"></div>
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="resource-graph">
-                                   <div class="graph-header">
-                                       <span class="graph-title">MEMORY</span>
-                                       <span class="graph-value">45%</span>
-                                   </div>
-                                   <div class="graph-visualization">
-                                       <div class="graph-bar">
-                                           <div class="bar-fill" style="height: 45%"></div>
-                                       </div>
-                                       <div class="graph-grid">
-                                           <div class="grid-line"></div>
-                                           <div class="grid-line"></div>
-                                           <div class="grid-line"></div>
-                                           <div class="grid-line"></div>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-                       
-                       <div class="dashboard-panel">
-                           <div class="panel-header">
-                               <span>NETWORK TRAFFIC</span>
-                               <span class="panel-controls">
-                                   <span class="minimize"></span>
-                                   <span class="maximize"></span>
-                               </span>
-                           </div>
-                           <div class="panel-body">
-                               <div class="network-stats">
-                                   <div class="stat-group">
-                                       <div class="stat-item">
-                                           <span class="stat-label">INBOUND</span>
-                                           <span class="stat-value">1.32 MB/s</span>
-                                       </div>
-                                       <div class="stat-item">
-                                           <span class="stat-label">OUTBOUND</span>
-                                           <span class="stat-value">0.87 MB/s</span>
-                                       </div>
-                                   </div>
-                                   <div class="stat-group">
-                                       <div class="stat-item">
-                                           <span class="stat-label">ACTIVE CONNECTIONS</span>
-                                           <span class="stat-value">23</span>
-                                       </div>
-                                       <div class="stat-item">
-                                           <span class="stat-label">REJECTED</span>
-                                           <span class="stat-value">142</span>
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="network-visual">
-                                   <div class="packet-line">
-                                       <div class="packet packet-in"></div>
-                                       <div class="packet packet-out"></div>
-                                       <div class="packet packet-in"></div>
-                                   </div>
-                                   <div class="packet-line">
-                                       <div class="packet packet-out"></div>
-                                       <div class="packet packet-in"></div>
-                                   </div>
-                                   <div class="packet-line">
-                                       <div class="packet packet-in"></div>
-                                       <div class="packet packet-out"></div>
-                                       <div class="packet packet-in"></div>
-                                       <div class="packet packet-out"></div>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-           </div>
-           
-           <style>
-               /* Terminal Dashboard Styles */
-               .m-terminal-dashboard {
-                   width: 100%;
-                   height: 500px;
-                   background-color: var(--m-bg);
-                   border: 1px solid var(--m-border);
-                   border-radius: var(--m-radius);
-                   overflow: hidden;
-                   font-family: var(--m-font-main);
-                   display: flex;
-                   flex-direction: column;
-               }
-               
-               .dashboard-header {
-                   display: flex;
-                   justify-content: space-between;
-                   align-items: center;
-                   padding: 0.5rem 1rem;
-                   background-color: rgba(0, 20, 0, 0.5);
-                   border-bottom: 1px solid var(--m-border);
-               }
-               
-               .dashboard-title {
-                   display: flex;
-                   align-items: center;
-                   gap: 0.5rem;
-                   font-size: 1rem;
-                   font-weight: bold;
-                   color: var(--m-text-bright);
-                   letter-spacing: 1px;
-               }
-               
-               .dashboard-status {
-                   display: flex;
-                   gap: 1.5rem;
-                   font-size: 0.85rem;
-               }
-               
-               .status-item {
-                   display: flex;
-                   align-items: center;
-                   gap: 0.5rem;
-               }
-               
-               .status-label {
-                   color: var(--m-text-dim);
-                   font-size: 0.7rem;
-               }
-               
-               .dashboard-grid {
-                   display: grid;
-                   grid-template-columns: repeat(3, 1fr);
-                   grid-template-rows: 1fr;
-                   gap: 1rem;
-                   padding: 1rem;
-                   flex: 1;
-                   overflow: auto;
-               }
-               
-               .dashboard-panel {
-                   background-color: rgba(0, 10, 0, 0.5);
-                   border: 1px solid var(--m-border);
-                   border-radius: var(--m-radius);
-                   overflow: hidden;
-                   display: flex;
-                   flex-direction: column;
-               }
-               
-               .dashboard-panel.wide {
-                   grid-column: span 2;
-               }
-               
-               .panel-header {
-                   display: flex;
-                   justify-content: space-between;
-                   align-items: center;
-                   padding: 0.5rem 1rem;
-                   background-color: rgba(0, 30, 0, 0.5);
-                   border-bottom: 1px solid var(--m-border);
-                   font-size: 0.85rem;
-                   color: var(--m-text);
-                   font-weight: bold;
-               }
-               
-               .panel-controls {
-                   display: flex;
-                   gap: 0.5rem;
-               }
-               
-               .panel-controls .minimize,
-               .panel-controls .maximize {
-                   width: 12px;
-                   height: 12px;
-                   border-radius: 50%;
-                   background-color: var(--m-border);
-                   cursor: pointer;
-                   transition: background-color 0.2s;
-               }
-               
-               .panel-controls .minimize:hover,
-               .panel-controls .maximize:hover {
-                   background-color: var(--m-text);
-               }
-               
-               .panel-body {
-                   flex: 1;
-                   padding: 1rem;
-                   overflow: auto;
-               }
-               
-               /* Embedded Terminal */
-               .m-terminal.embedded {
-                   border: none;
-                   background: transparent;
-                   height: 100%;
-                   overflow: auto;
-               }
-               
-               .m-terminal.embedded .m-terminal-content {
-                   padding: 0;
-               }
-               
-               /* Resource Graph */
-               .resource-graph {
-                   margin-bottom: 1.5rem;
-               }
-               
-               .graph-header {
-                   display: flex;
-                   justify-content: space-between;
-                   align-items: center;
-                   margin-bottom: 0.5rem;
-               }
-               
-               .graph-title {
-                   font-size: 0.75rem;
-                   color: var(--m-text-dim);
-               }
-               
-               .graph-value {
-                   font-size: 0.9rem;
-                   font-weight: bold;
-                   color: var(--m-text);
-               }
-               
-               .graph-visualization {
-                   position: relative;
-                   height: 100px;
-                   border: 1px solid var(--m-border);
-                   background-color: rgba(0, 20, 0, 0.3);
-                   border-radius: var(--m-radius);
-                   overflow: hidden;
-               }
-               
-               .graph-grid {
-                   position: absolute;
-                   top: 0;
-                   left: 0;
-                   right: 0;
-                   bottom: 0;
-                   display: flex;
-                   flex-direction: column;
-                   justify-content: space-between;
-                   pointer-events: none;
-               }
-               
-               .grid-line {
-                   height: 1px;
-                   background-color: rgba(20, 50, 20, 0.5);
-               }
-               
-               .graph-bar {
-                   position: absolute;
-                   bottom: 0;
-                   left: 0;
-                   right: 0;
-                   height: 100%;
-                   display: flex;
-                   flex-direction: column;
-                   justify-content: flex-end;
-               }
-               
-               .bar-fill {
-                   background: linear-gradient(to top, var(--m-text), rgba(0, 255, 65, 0.3));
-                   width: 100%;
-                   transition: height 0.5s;
-               }
-               
-               /* Network Stats */
-               .network-stats {
-                   display: flex;
-                   flex-direction: column;
-                   gap: 1rem;
-                   margin-bottom: 1rem;
-               }
-               
-               .stat-group {
-                   display: flex;
-                   justify-content: space-between;
-               }
-               
-               .stat-item {
-                   display: flex;
-                   flex-direction: column;
-                   gap: 0.25rem;
-               }
-               
-               .stat-label {
-                   font-size: 0.7rem;
-                   color: var(--m-text-dim);
-               }
-               
-               .stat-value {
-                   font-size: 0.9rem;
-                   font-weight: bold;
-               }
-               
-               /* Network Visualization */
-               .network-visual {
-                   height: 120px;
-                   border: 1px solid var(--m-border);
-                   background-color: rgba(0, 20, 0, 0.3);
-                   border-radius: var(--m-radius);
-                   overflow: hidden;
-                   padding: 0.5rem;
-                   display: flex;
-                   flex-direction: column;
-                   justify-content: space-between;
-               }
-               
-               .packet-line {
-                   position: relative;
-                   height: 2px;
-                   background-color: rgba(0, 255, 65, 0.2);
-                   overflow: hidden;
-               }
-               
-               .packet {
-                   position: absolute;
-                   height: 100%;
-                   width: 20px;
-                   animation-duration: 3s;
-                   animation-timing-function: linear;
-                   animation-iteration-count: infinite;
-               }
-               
-               .packet-in {
-                   background-color: var(--m-text);
-                   animation-name: packet-move-right;
-                   animation-delay: calc(var(--packet-index, 0) * 0.5s);
-               }
-               
-               .packet-out {
-                   background-color: var(--m-text-bright);
-                   animation-name: packet-move-left;
-                   animation-delay: calc(var(--packet-index, 0) * 0.7s);
-               }
-               
-               @keyframes packet-move-right {
-                   from { left: -20px; }
-                   to { left: 100%; }
-               }
-               
-               @keyframes packet-move-left {
-                   from { right: -20px; }
-                   to { right: 100%; }
-               }
-               
-               /* Create packet animations */
-               .packet-line:nth-child(1) .packet:nth-child(1) { --packet-index: 1; }
-               .packet-line:nth-child(1) .packet:nth-child(2) { --packet-index: 2; }
-               .packet-line:nth-child(1) .packet:nth-child(3) { --packet-index: 3; }
-               .packet-line:nth-child(2) .packet:nth-child(1) { --packet-index: 2; }
-               .packet-line:nth-child(2) .packet:nth-child(2) { --packet-index: 1; }
-               .packet-line:nth-child(3) .packet:nth-child(1) { --packet-index: 3; }
-               .packet-line:nth-child(3) .packet:nth-child(2) { --packet-index: 1; }
-               .packet-line:nth-child(3) .packet:nth-child(3) { --packet-index: 2; }
-               .packet-line:nth-child(3) .packet:nth-child(4) { --packet-index: 3; }
-               
-               /* Media queries */
-               @media (max-width: 992px) {
-                   .dashboard-grid {
-                       grid-template-columns: 1fr;
-                   }
-                   
-                   .dashboard-panel.wide {
-                       grid-column: span 1;
-                   }
-                   
-                   .dashboard-status {
-                       display: none;
-                   }
-               }
-           </style>
-           
-           <script>
-               // Dashboard Animation Script
-               document.addEventListener('DOMContentLoaded', function() {
-                   const dashboard = document.querySelector('.m-terminal-dashboard');
-                   if (!dashboard) return;
-                   
-                   // Simulate CPU and Memory graphs
-                   const cpuFill = dashboard.querySelector('.resource-graph:nth-child(1) .bar-fill');
-                   const cpuValue = dashboard.querySelector('.resource-graph:nth-child(1) .graph-value');
-                   const memFill = dashboard.querySelector('.resource-graph:nth-child(2) .bar-fill');
-                   const memValue = dashboard.querySelector('.resource-graph:nth-child(2) .graph-value');
-                   
-                   function updateGraphs() {
-                       // Random values with weighted tendency to stay relatively stable
-                       let cpuBase = parseInt(cpuValue.textContent);
-                       let memBase = parseInt(memValue.textContent);
-                       
-                       // Ensure we have valid values to start with
-                       if (isNaN(cpuBase)) cpuBase = 78;
-                       if (isNaN(memBase)) memBase = 45;
-                       
-                       // Calculate new values with small random changes
-                       let newCpu = cpuBase + (Math.random() * 10 - 5);
-                       let newMem = memBase + (Math.random() * 6 - 3);
-                       
-                       // Ensure values stay in range
-                       newCpu = Math.max(30, Math.min(95, newCpu));
-                       newMem = Math.max(25, Math.min(80, newMem));
-                       
-                       // Round and update display
-                       newCpu = Math.round(newCpu);
-                       newMem = Math.round(newMem);
-                       
-                       if (cpuFill && cpuValue) {
-                           cpuFill.style.height = `${newCpu}%`;
-                           cpuValue.textContent = `${newCpu}%`;
-                       }
-                       
-                       if (memFill && memValue) {
-                           memFill.style.height = `${newMem}%`;
-                           memValue.textContent = `${newMem}%`;
-                       }
-                       
-                       // Update network stats
-                       const inboundValue = dashboard.querySelector('.stat-item:nth-child(1) .stat-value');
-                       const outboundValue = dashboard.querySelector('.stat-item:nth-child(2) .stat-value');
-                       
-                       if (inboundValue) {
-                           const current = parseFloat(inboundValue.textContent);
-                           const newValue = Math.max(0.5, Math.min(2.5, current + (Math.random() * 0.4 - 0.2))).toFixed(2);
-                           inboundValue.textContent = `${newValue} MB/s`;
-                       }
-                       
-                       if (outboundValue) {
-                           const current = parseFloat(outboundValue.textContent);
-                           const newValue = Math.max(0.3, Math.min(1.8, current + (Math.random() * 0.3 - 0.15))).toFixed(2);
-                           outboundValue.textContent = `${newValue} MB/s`;
-                       }
-                       
-                       // Update uptime
-                       const uptimeEl = dashboard.querySelector('.status-item:nth-child(1) .status-item');
-                       if (uptimeEl) {
-                           let [hours, minutes, seconds] = uptimeEl.textContent.split(':').map(Number);
-                           
-                           seconds++;
-                           if (seconds >= 60) {
-                               seconds = 0;
-                               minutes++;
-                           }
-                           
-                           if (minutes >= 60) {
-                               minutes = 0;
-                               hours++;
-                           }
-                           
-                           uptimeEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                       }
-                       
-                       setTimeout(updateGraphs, 2000);
-                   }
-                   
-                   // Start updating graphs
-                   updateGraphs();
-                   
-                   // Add animations to packets
-                   const packetLines = dashboard.querySelectorAll('.packet-line');
-                   
-                   packetLines.forEach((line, lineIndex) => {
-                       // Create random packets periodically
-                       let packetCount = lineIndex === 0 ? 3 : lineIndex === 1 ? 2 : 4;
-                       for (let i = 0; i < packetCount; i++) {
-                           const packet = document.createElement('div');
-                           packet.className = i % 2 === 0 ? 'packet packet-in' : 'packet packet-out';
-                           packet.style.setProperty('--packet-index', i);
-                           line.appendChild(packet);
-                       }
-                   });
-               });
-           </script>
         </div>
         
         <div class="component-showcase" id="glitch-text">
@@ -4924,6 +3528,39 @@ function matrixEffect() {
                     height: 350px;
                 }
             }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
         </style>
         <div class="matrix-neural-visualizer">
             <!-- Header with title and stats -->
@@ -6048,6 +4685,86 @@ function matrixEffect() {
     
     </section>
 
+ <!-- Matrix Interactive Systems Section -->
+<section class="matrix-interactive-systems" id="matrix-interactive-systems">
+    <div class="system-header">
+        <h2>MATRIX INTERACTIVE SYSTEMS</h2>
+        <p>Explore quantum digital interfaces</p>
+    </div>
+
+    <div class="interactive-grid">
+        <!-- Holographic Quantum Panel -->
+        <div class="system-card holo-panel">
+            <div class="card-header">
+                <h3>Holographic Quantum Panel</h3>
+                <div class="system-indicator"></div>
+            </div>
+            <div class="card-content">
+                <div class="holo-display">
+                    <div class="holo-inner">
+                        <div class="holo-data">
+                            <span>QUANTUM ENTANGLEMENT</span>
+                            <span>MATRIX PROTOCOL: ACTIVE</span>
+                            <span>SYSTEM SYNC: 99.997%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Performance Monitor -->
+        <div class="system-card performance-monitor">
+            <div class="card-header">
+                <h3>Quantum Performance</h3>
+                <div class="system-indicator"></div>
+            </div>
+            <div class="card-content">
+                <div class="performance-display">
+                    <div class="fps-value">0.00</div>
+                    <div class="fps-label">QUANTUM FRAMES</div>
+                    <div class="performance-bar-container">
+                        <div class="performance-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Biometric Scanner -->
+        <div class="system-card biometric-scanner">
+            <div class="card-header">
+                <h3>Quantum Biometrics</h3>
+                <div class="system-indicator"></div>
+            </div>
+            <div class="card-content">
+                <div class="scanner-display">
+                    <div class="scanner-prompt">INITIATE QUANTUM SCAN</div>
+                    <div class="scanner-icon">
+                        <svg viewBox="0 0 100 100">
+                            <path d="M50 10 Q80 40, 50 70 T50 10" stroke="currentColor" fill="none" stroke-width="4"/>
+                            <circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" stroke-width="2" stroke-dasharray="5,5"/>
+                        </svg>
+                    </div>
+                    <div class="scanner-line"></div>
+                    <div class="scanner-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Network Console -->
+        <div class="system-card network-console">
+            <div class="card-header">
+                <h3>Quantum Network</h3>
+                <div class="system-indicator"></div>
+            </div>
+            <div class="card-content">
+                <div class="console-display">
+                    <pre id="network-log" class="network-log"></pre>
+                    <button id="network-trigger" class="network-button">QUANTUM PING</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <style>
 :root {
@@ -6233,6 +4950,39 @@ function matrixEffect() {
 @keyframes scanner-line {
     0% { top: 0; }
     100% { top: 100%; }
+}
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
 }
 </style>
 
@@ -6943,6 +5693,39 @@ domReady(function() {
             from { opacity: 0.1; }
             to { opacity: 0; }
         }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
     </style>
     <!-- Add this in the head section of index.html -->
 <style>
@@ -7171,6 +5954,39 @@ domReady(function() {
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
   </style>
   
   <!-- Update the navbar section with this code -->
@@ -7804,355 +6620,395 @@ domReady(function() {
       position: relative;
       z-index: 1002;
     }
+/* Fixed sidebar positioning */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 70px);
+}
+
+.docs-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 900;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+@media (max-width: 992px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+  
+  .docs-sidebar.active {
+    left: 0;
+  }
+}
   </style>
   
   <!-- Add this to your page before closing body tag -->
   <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // References to elements
-    const matrixNav = document.querySelector('.matrix-nav');
-    const mainSections = document.querySelectorAll('section[id]');
-    const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
-    const navContainer = document.querySelector('.nav-container');
-    const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+  // References to elements
+  const matrixNav = document.querySelector('.matrix-nav');
+  const mainSections = document.querySelectorAll('section[id]');
+  const sidebarLinks = document.querySelectorAll('.docs-sidebar-link');
+  const navContainer = document.querySelector('.nav-container');
+  const scrollIndicator = document.querySelector('.hero a[href="#features"]');
+  
+  // Create matrix terminal display
+  const terminalDisplay = document.createElement('div');
+  terminalDisplay.className = 'matrix-terminal-display';
+  terminalDisplay.innerHTML = `
+    <span class="terminal-prefix">></span>
+    <div class="terminal-text-box" data-content="MATRIX.CSS">MATRIX.CSS</div>
+    <span class="terminal-cursor"></span>
+  `;
+  
+  // Create connection lines container
+  const connectionLines = document.createElement('div');
+  connectionLines.className = 'terminal-connection-lines';
+  
+  // Create status indicator
+  const statusIndicator = document.createElement('div');
+  statusIndicator.className = 'matrix-status-indicator';
+  statusIndicator.innerHTML = `
+    <span class="status-dot"></span>
+    <span class="status-text">MATRIX.CSS</span>
+  `;
+  
+  // Create particles container
+  const particlesContainer = document.createElement('div');
+  particlesContainer.className = 'matrix-particles-container';
+  
+  // Add all elements to the DOM
+  if (navContainer) {
+    navContainer.appendChild(connectionLines);
+    document.body.appendChild(statusIndicator);
+    document.body.appendChild(particlesContainer);
     
-    // Create matrix terminal display
-    terminalDisplay.className = 'matrix-terminal-display';
-    terminalDisplay.innerHTML = `
-      <span class="terminal-prefix">></span>
-      <div class="terminal-text-box" data-content="MATRIX.CSS">MATRIX.CSS</div>
-      <span class="terminal-cursor"></span>
-    `;
-    
-    // Create connection lines container
-    const connectionLines = document.createElement('div');
-    connectionLines.className = 'terminal-connection-lines';
-    
-    // Create status indicator
-    const statusIndicator = document.createElement('div');
-    statusIndicator.className = 'matrix-status-indicator';
-    statusIndicator.innerHTML = `
-      <span class="status-dot"></span>
-      <span class="status-text">MATRIX.CSS</span>
-    `;
-    
-    // Create particles container
-    const particlesContainer = document.createElement('div');
-    particlesContainer.className = 'matrix-particles-container';
-    
-    // Add all elements to the DOM
-    if (navContainer) {
-      navContainer.appendChild(connectionLines);
-      document.body.appendChild(statusIndicator);
-      document.body.appendChild(particlesContainer);
-      
-      // Add connection lines between navbar and important elements
-      createConnectionLines();
+    // Add connection lines between navbar and important elements
+    createConnectionLines();
+  }
+  
+  // Terminal typing effect with glitch
+  let isTyping = false;
+  let currentSectionId = '';
+  let typeTimeout;
+  
+  function typeTerminalText(text, callback) {
+    if (isTyping) {
+      clearTimeout(typeTimeout);
     }
     
-    // Terminal typing effect with glitch
-    let isTyping = false;
-    let currentSectionId = '';
-    let typeTimeout;
+    isTyping = true;
     
-      if (isTyping) {
-        clearTimeout(typeTimeout);
-      }
-      
-      isTyping = true;
-      
-      const textBox = document.querySelector('.terminal-text-box');
-      if (!textBox) return;
-      
-      // Save original text for data-content (used by glitch effect)
-      textBox.setAttribute('data-content', text);
-      
-      // Clear and prepare for typing
-      textBox.textContent = '';
-      textBox.classList.add('glitch');
-      
-      // Create digital rain effect during transition
-      createMatrixRainParticles();
-      
-      setTimeout(() => {
-        textBox.classList.remove('glitch');
-        
-        // Type characters one by one
-        let i = 0;
-        function typeCharacter() {
-          if (i < text.length) {
-            textBox.textContent += text.charAt(i);
-            i++;
-            
-            // Random delay for realistic typing
-            const randomDelay = Math.floor(Math.random() * 50) + 30;
-            typeTimeout = setTimeout(typeCharacter, randomDelay);
-            
-            // Occasionally add glitch during typing
-            if (Math.random() < 0.1) {
-              textBox.classList.add('glitch');
-              setTimeout(() => {
-                textBox.classList.remove('glitch');
-              }, 100);
-            }
-          } else {
-            isTyping = false;
-            if (callback) callback();
-          }
-        }
-        
-        typeCharacter();
-      }, 300);
-    }
+    const textBox = document.querySelector('.terminal-text-box');
+    if (!textBox) return;
     
-    // Create matrix rain particles during transitions
-    function createMatrixRainParticles() {
-      const container = document.querySelector('.matrix-particles-container');
-      if (!container) return;
-      
-      // Clear existing particles
-      container.innerHTML = '';
-      
-      // Matrix chars
-      const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-      
-      // Create 50 particles
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'matrix-particle';
-        
-        // Random character
-        particle.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-        
-        // Random position
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 1.5}s`;
-        
-        container.appendChild(particle);
-      }
-      
-      // Remove particles after animation completes
-      setTimeout(() => {
-        container.innerHTML = '';
-      }, 3500);
-    }
+    // Save original text for data-content (used by glitch effect)
+    textBox.setAttribute('data-content', text);
     
-    // Create connection lines between nav and content
-    function createConnectionLines() {
-      const container = document.querySelector('.terminal-connection-lines');
-      if (!container) return;
-      
-      // Clear existing lines
-      container.innerHTML = '';
-      
-      // Create 8-12 lines
-      const lineCount = 8 + Math.floor(Math.random() * 5);
-      
-      for (let i = 0; i < lineCount; i++) {
-        const line = document.createElement('div');
-        line.className = 'connection-line';
-        
-        // Random positioning
-        const startX = Math.random() * 100;
-        const startY = Math.random() * 70 + 30;
-        const endX = 100 + Math.random() * 50;
-        
-        // Calculate line properties
-        const deltaX = endX - startX;
-        const length = Math.sqrt(deltaX * deltaX + 900);
-        const angle = Math.atan2(30, deltaX) * 180 / Math.PI;
-        
-        // Set styles
-        line.style.left = `${startX}%`;
-        line.style.top = `${startY}%`;
-        line.style.width = `${length}px`;
-        line.style.transform = `rotate(${angle}deg)`;
-        
-        // Randomly activate some lines
-        if (Math.random() > 0.6) {
-          line.classList.add('active');
-        }
-        
-        container.appendChild(line);
-      }
-    }
+    // Clear and prepare for typing
+    textBox.textContent = '';
+    textBox.classList.add('glitch');
     
-    // Update active section while scrolling
-    function updateActiveSection() {
-      // Get current scroll position with offset
-      const scrollPosition = window.scrollY + 100;
+    // Create digital rain effect during transition
+    createMatrixRainParticles();
+    
+    setTimeout(() => {
+      textBox.classList.remove('glitch');
       
-      // Find the current section
-      let activeSection = null;
-      mainSections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          activeSection = {
-            id: sectionId,
-            element: section
-          };
+      // Type characters one by one
+      let i = 0;
+      function typeCharacter() {
+        if (i < text.length) {
+          textBox.textContent += text.charAt(i);
+          i++;
           
-          // Update sidebar links
-          sidebarLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === `#${sectionId}`) {
-              link.classList.add('active');
-            } else {
-              link.classList.remove('active');
+          // Random delay for realistic typing
+          const randomDelay = Math.floor(Math.random() * 50) + 30;
+          typeTimeout = setTimeout(typeCharacter, randomDelay);
+          
+          // Occasionally add glitch during typing
+          if (Math.random() < 0.1) {
+            textBox.classList.add('glitch');
+            setTimeout(() => {
+              textBox.classList.remove('glitch');
+            }, 100);
+          }
+        } else {
+          isTyping = false;
+          if (callback) callback();
+        }
+      }
+      
+      typeCharacter();
+    }, 300);
+  }
+  
+  // Create matrix rain particles during transitions
+  function createMatrixRainParticles() {
+    const container = document.querySelector('.matrix-particles-container');
+    if (!container) return;
+    
+    // Clear existing particles
+    container.innerHTML = '';
+    
+    // Matrix chars
+    const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+    
+    // Create 50 particles
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'matrix-particle';
+      
+      // Random character
+      particle.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+      
+      // Random position
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 1.5}s`;
+      
+      container.appendChild(particle);
+    }
+    
+    // Remove particles after animation completes
+    setTimeout(() => {
+      container.innerHTML = '';
+    }, 3500);
+  }
+  
+  // Create connection lines between nav and content
+  function createConnectionLines() {
+    const container = document.querySelector('.terminal-connection-lines');
+    if (!container) return;
+    
+    // Clear existing lines
+    container.innerHTML = '';
+    
+    // Create 8-12 lines
+    const lineCount = 8 + Math.floor(Math.random() * 5);
+    
+    for (let i = 0; i < lineCount; i++) {
+      const line = document.createElement('div');
+      line.className = 'connection-line';
+      
+      // Random positioning
+      const startX = Math.random() * 100;
+      const startY = Math.random() * 70 + 30;
+      const endX = 100 + Math.random() * 50;
+      
+      // Calculate line properties
+      const deltaX = endX - startX;
+      const length = Math.sqrt(deltaX * deltaX + 900);
+      const angle = Math.atan2(30, deltaX) * 180 / Math.PI;
+      
+      // Set styles
+      line.style.left = `${startX}%`;
+      line.style.top = `${startY}%`;
+      line.style.width = `${length}px`;
+      line.style.transform = `rotate(${angle}deg)`;
+      
+      // Randomly activate some lines
+      if (Math.random() > 0.6) {
+        line.classList.add('active');
+      }
+      
+      container.appendChild(line);
+    }
+  }
+  
+  // Update active section while scrolling
+  function updateActiveSection() {
+    // Get current scroll position with offset
+    const scrollPosition = window.scrollY + 100;
+    
+    // Find the current section
+    let activeSection = null;
+    mainSections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const sectionId = section.getAttribute('id');
+      
+      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+        activeSection = {
+          id: sectionId,
+          element: section
+        };
+        
+        // Update sidebar links
+        sidebarLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === `#${sectionId}`) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+    });
+    
+    // Update navbar and status when entering a new section
+    if (activeSection && activeSection.id !== currentSectionId) {
+      currentSectionId = activeSection.id;
+      
+      // Get section title
+      const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
+      let sectionTitleText = sectionHeading.textContent.trim();
+      
+      // Shorten if too long
+      if (sectionTitleText.length > 20) {
+        sectionTitleText = sectionTitleText.substring(0, 18) + '...';
+      }
+      
+      // Format for terminal style
+      const terminalText = sectionTitleText.toUpperCase();
+      
+      // Type with terminal effect
+      typeTerminalText(terminalText, () => {
+        // Activate random connection lines after typing
+        const lines = document.querySelectorAll('.connection-line');
+        lines.forEach(line => {
+          line.classList.remove('active');
+        });
+        
+        setTimeout(() => {
+          // Activate some random lines
+          lines.forEach(line => {
+            if (Math.random() > 0.7) {
+              line.classList.add('active');
             }
           });
-        }
+        }, 300);
       });
       
-      // Update navbar and status when entering a new section
-      if (activeSection && activeSection.id !== currentSectionId) {
-        currentSectionId = activeSection.id;
+      // Update status indicator
+      const statusText = document.querySelector('.status-text');
+      if (statusText) {
+        statusText.textContent = terminalText;
+      }
+      statusIndicator.classList.add('visible');
+    }
+    
+    // Reset if back at the top
+    if (scrollPosition < 100) {
+      currentSectionId = '';
+      
+      // Type MATRIX.CSS in terminal
+      typeTerminalText('MATRIX.CSS');
+      
+      // Hide status indicator
+      statusIndicator.classList.remove('visible');
+    }
+    
+    // Add scrolled class to navbar
+    if (scrollPosition > 100) {
+      matrixNav.classList.add('scrolled');
+    } else {
+      matrixNav.classList.remove('scrolled');
+    }
+  }
+  
+  // Fix scroll indicator and add animation
+  if (scrollIndicator) {
+    scrollIndicator.className = 'scroll-indicator';
+    scrollIndicator.style.animation = 'bounce 2s infinite';
+  }
+  
+  // Handle sidebar links clicks
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      // Remove active class from all links
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      
+      // Add active class to clicked link
+      this.classList.add('active');
+      
+      // Get target section
+      const targetId = this.getAttribute('href').substring(1);
+      const targetSection = document.getElementById(targetId);
+      
+      if (targetSection) {
+        // Get section heading
+        const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
+        const sectionTitleText = sectionHeading.textContent.trim().toUpperCase();
         
-        // Get section title
-        const sectionHeading = activeSection.element.querySelector('h2, h3') || activeSection.element;
-        let sectionTitleText = sectionHeading.textContent.trim();
-        
-        // Shorten if too long
-        if (sectionTitleText.length > 20) {
-          sectionTitleText = sectionTitleText.substring(0, 18) + '...';
-        }
-        
-        // Format for terminal style
-        const terminalText = sectionTitleText.toUpperCase();
-        
-        // Type with terminal effect
-          // Activate random connection lines after typing
-          const lines = document.querySelectorAll('.connection-line');
-          lines.forEach(line => {
-            line.classList.remove('active');
-          });
-          
-          setTimeout(() => {
-            // Activate some random lines
-            lines.forEach(line => {
-              if (Math.random() > 0.7) {
-                line.classList.add('active');
-              }
-            });
-          }, 300);
-        });
+        // Update terminal with typing effect
+        typeTerminalText(sectionTitleText);
         
         // Update status indicator
         const statusText = document.querySelector('.status-text');
         if (statusText) {
-          statusText.textContent = terminalText;
+          statusText.textContent = sectionTitleText;
         }
         statusIndicator.classList.add('visible');
       }
       
-      // Reset if back at the top
-      if (scrollPosition < 100) {
-        currentSectionId = '';
-        
-        // Type MATRIX.CSS in terminal
-        
-        // Hide status indicator
-        statusIndicator.classList.remove('visible');
-      }
+      // Close mobile sidebar if open
+      const sidebar = document.querySelector('.docs-sidebar');
+      const backdrop = document.querySelector('.sidebar-backdrop');
       
-      // Add scrolled class to navbar
-      if (scrollPosition > 100) {
-        matrixNav.classList.add('scrolled');
-      } else {
-        matrixNav.classList.remove('scrolled');
+      if (sidebar && sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        if (backdrop) backdrop.classList.remove('active');
       }
-    }
-    
-    // Fix scroll indicator and add animation
-    if (scrollIndicator) {
-      scrollIndicator.className = 'scroll-indicator';
-      scrollIndicator.style.animation = 'bounce 2s infinite';
-    }
-    
-    // Handle sidebar links clicks
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        // Remove active class from all links
-        sidebarLinks.forEach(l => l.classList.remove('active'));
-        
-        // Add active class to clicked link
-        this.classList.add('active');
-        
-        // Get target section
-        const targetId = this.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-        
-        if (targetSection) {
-          // Get section heading
-          const sectionHeading = targetSection.querySelector('h2, h3') || targetSection;
-          const sectionTitleText = sectionHeading.textContent.trim().toUpperCase();
-          
-          // Update terminal with typing effect
-          
-          // Update status indicator
-          const statusText = document.querySelector('.status-text');
-          if (statusText) {
-            statusText.textContent = sectionTitleText;
-          }
-          statusIndicator.classList.add('visible');
-        }
-        
-        // Close mobile sidebar if open
-        const sidebar = document.querySelector('.docs-sidebar');
-        const backdrop = document.querySelector('.sidebar-backdrop');
-        
-        if (sidebar && sidebar.classList.contains('active')) {
-          sidebar.classList.remove('active');
-          if (backdrop) backdrop.classList.remove('active');
-        }
-      });
     });
-    
-    // Randomly trigger glitch effects
-    function randomGlitchEffects() {
-      const textBox = document.querySelector('.terminal-text-box');
-      if (textBox && Math.random() > 0.9) {
-        textBox.classList.add('glitch');
-        setTimeout(() => {
-          textBox.classList.remove('glitch');
-        }, 150);
-      }
-      
-      // Randomly activate connection lines
-      const lines = document.querySelectorAll('.connection-line');
-      if (lines.length > 0 && Math.random() > 0.8) {
-        // Pick a random line
-        const randomLine = lines[Math.floor(Math.random() * lines.length)];
-        randomLine.classList.add('active');
-        
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            randomLine.classList.remove('active');
-          }
-        }, 2000);
-      }
-      
-      // Schedule next glitch
-      setTimeout(randomGlitchEffects, 2000 + Math.random() * 3000);
+  });
+  
+  // Randomly trigger glitch effects
+  function randomGlitchEffects() {
+    const textBox = document.querySelector('.terminal-text-box');
+    if (textBox && Math.random() > 0.9) {
+      textBox.classList.add('glitch');
+      setTimeout(() => {
+        textBox.classList.remove('glitch');
+      }, 150);
     }
     
-    // Listen for scroll events
-    window.addEventListener('scroll', updateActiveSection);
+    // Randomly activate connection lines
+    const lines = document.querySelectorAll('.connection-line');
+    if (lines.length > 0 && Math.random() > 0.8) {
+      // Pick a random line
+      const randomLine = lines[Math.floor(Math.random() * lines.length)];
+      randomLine.classList.add('active');
+      
+      setTimeout(() => {
+        if (Math.random() > 0.5) {
+          randomLine.classList.remove('active');
+        }
+      }, 2000);
+    }
     
-    // Initialize on page load
-    updateActiveSection();
-    randomGlitchEffects();
-    
-    // Recreate connection lines on resize
-    window.addEventListener('resize', createConnectionLines);
-    
-    // Initial animation
-    setTimeout(() => {
-    }, 1000);
-  });
-  </script>
+    // Schedule next glitch
+    setTimeout(randomGlitchEffects, 2000 + Math.random() * 3000);
+  }
+  
+  // Listen for scroll events
+  window.addEventListener('scroll', updateActiveSection);
+  
+  // Initialize on page load
+  updateActiveSection();
+  randomGlitchEffects();
+  
+  // Recreate connection lines on resize
+  window.addEventListener('resize', createConnectionLines);
+  
+  // Initial animation
+  setTimeout(() => {
+    typeTerminalText('MATRIX.CSS');
+  }, 1000);
+});
+
+</script>
 </body>
 </html>
