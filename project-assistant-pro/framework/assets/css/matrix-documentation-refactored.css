@@ -1,0 +1,240 @@
+/* ========================================
+ * Matrix.css Documentation Stylesheet
+ * (Styles specific to the documentation site)
+ * ========================================
+ * Table of Contents:
+ * 1. Documentation Layout (Sidebar & Content)
+ * 2. Documentation Content Enhancements
+ * 3. Documentation Utilities & Effects
+ * 4. Responsive Adjustments (Docs)
+ */
+
+/* ========== 1. Documentation Layout ========== */
+/* Wrapper and main layout structure */
+.docs-layout {
+    display: flex;
+    min-height: calc(100vh - 70px); /* fill viewport below navbar */
+}
+.docs-sidebar {
+    width: 280px;
+    background-color: var(--m-panel);
+    border-right: 1px solid var(--m-border);
+    padding: 2rem 0;
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    transition: left 0.3s;
+    z-index: 900;
+}
+.docs-sidebar-group {
+    padding: 0 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.docs-sidebar-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--m-text-dim);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--m-border);
+}
+.docs-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.docs-sidebar-link {
+    color: var(--m-text);
+    padding: 0.5rem 0;
+    border-radius: var(--m-radius);
+    transition: all 0.2s;
+}
+.docs-sidebar-link:hover,
+.docs-sidebar-link.active {
+    color: var(--m-text-bright);
+    padding-left: 0.5rem;
+    background-color: rgba(0, 255, 65, 0.05);
+}
+.docs-content {
+    flex: 1;
+    padding: 2rem 3rem;
+}
+.docs-section {
+    margin-bottom: 3rem;
+}
+.docs-section:last-child {
+    margin-bottom: 0;
+}
+.docs-section h3 {
+    font-weight: bold;
+    margin-top: 0;
+}
+.docs-footer {
+    background-color: var(--m-panel);
+    border-top: 1px solid var(--m-border);
+    padding: 2rem 0;
+    text-align: center;
+}
+.docs-footer-content {
+    font-size: 0.9rem;
+    color: var(--m-text-dim);
+}
+
+/* ========== 2. Documentation Content Enhancements ========== */
+/* Section title styling for docs content */
+.docs-section-title {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--m-border);
+}
+.docs-section-title::before {
+    content: "//";
+    color: var(--m-text-dim);
+    margin-right: 0.5rem;
+}
+/* Highlight effect on target elements (for anchor navigation highlighting) */
+.highlight-target {
+    position: relative;
+}
+.highlight-target::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--m-text);
+    opacity: 0.1;
+    animation: fadeOut 2s forwards;
+    pointer-events: none;
+    z-index: -1;
+}
+@keyframes fadeOut {
+    from { opacity: 0.1; }
+    to   { opacity: 0; }
+}
+
+/* ========== 3. Documentation Utilities & Effects ========== */
+/* Backdrop overlay for mobile sidebar (appears when sidebar opens) */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 899;
+}
+.sidebar-backdrop.active {
+    display: block;
+}
+
+/* Active documentation section indicator (fixed info box) */
+.active-section-box {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    padding: 5px 10px;
+    background: rgba(0, 20, 0, 0.8);
+    border: 1px solid var(--m-border);
+    color: var(--m-text);
+    font-size: 0.8rem;
+    border-radius: var(--m-radius);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1002;
+}
+.active-section-box.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.active-section-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--m-text);
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.2); }
+}
+
+/* Terminal component example styling (for docs demo) */
+.terminal {
+    max-width: 600px;
+    margin: 4rem auto 2rem;
+    background-color: rgba(0, 10, 0, 0.95);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 10px var(--m-glow);
+    overflow: hidden;
+    position: relative;
+    font-family: var(--m-font-main);
+}
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: rgba(0, 20, 0, 0.7);
+    border-bottom: 1px solid var(--m-border);
+}
+.terminal-title {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--m-text);
+    letter-spacing: 1px;
+}
+.terminal-body {
+    padding: 16px;
+    min-height: 200px;
+}
+.terminal-controls {
+    display: flex;
+    gap: 6px;
+}
+.terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+.terminal-btn:nth-child(1) { background-color: #FF5F56; }
+.terminal-btn:nth-child(2) { background-color: #FFBD2E; }
+.terminal-btn:nth-child(3) { background-color: #27C93F; }
+
+/* ========== 4. Responsive Adjustments (Docs) ========== */
+@media (max-width: 992px) {
+    .docs-sidebar {
+        position: fixed;
+        top: 70px;
+        left: -300px;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+        height: calc(100vh - 70px);
+    }
+    .docs-sidebar.active {
+        left: 0;
+    }
+    .docs-content {
+        padding: 2rem;
+    }
+}
+@media (max-width: 768px) {
+    .docs-layout {
+        flex-direction: column;
+    }
+    .docs-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        padding: 1rem 0;
+        border-right: none;
+        border-bottom: 1px solid var(--m-border);
+    }
+    .docs-content {
+        padding: 1rem;
+    }
+}
