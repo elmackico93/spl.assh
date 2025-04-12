@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { cn } from '@/utils/cn';
 import CodeRain from '@/components/effects/CodeRain';
 import GlitchText from '@/components/effects/GlitchText';
-import { Button } from '@/components/ui/Button';
 
 interface MatrixHeroProps {
   className?: string;
@@ -19,6 +18,7 @@ interface MatrixHeroProps {
   showScrollIndicator?: boolean;
   showVersion?: boolean;
   version?: string;
+  disableRainEffect?: boolean;
 }
 
 export const MatrixHero: React.FC<MatrixHeroProps> = ({
@@ -30,12 +30,13 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
   showScrollIndicator = true,
   showVersion = true,
   version = 'VERSION 2.0',
+  disableRainEffect = false,
 }) => {
   const rainCanvasRef = useRef<HTMLCanvasElement>(null);
   
   // Initialize matrix rain animation
   useEffect(() => {
-    if (!rainCanvasRef.current) return;
+    if (!rainCanvasRef.current || disableRainEffect) return;
 
     const canvas = rainCanvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -111,10 +112,12 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
   return (
     <section className={cn('relative h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden', className)}>
       {/* Digital Rain Canvas (for a custom, higher-performance rain effect) */}
-      <canvas 
-        ref={rainCanvasRef}
-        className="absolute top-0 left-0 w-full h-full -z-10"
-      />
+      {!disableRainEffect && (
+        <canvas 
+          ref={rainCanvasRef}
+          className="absolute top-0 left-0 w-full h-full -z-10"
+        />
+      )}
       
       {/* Hero Content with enhanced visibility */}
       <div className="relative z-2 text-center px-5 max-w-4xl">
@@ -130,25 +133,208 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
           {subtitle}
         </p>
         
-        <div className="flex flex-wrap gap-6 justify-center mt-8">
-          <Button 
-            variant="primary" 
-            size="lg" 
-            hasGlow
-            className="min-w-[180px] font-bold tracking-wide relative overflow-hidden"
-            onClick={() => window.location.href = primaryCta.href}
+        {/* Button container */}
+        <div className="hero-cta" style={{display: "flex", gap: "1.5rem", justifyContent: "center", marginTop: "2rem", flexWrap: "wrap"}}>
+          <a 
+            href={primaryCta.href} 
+            className="m-btn m-btn-primary m-btn-lg" 
+            style={{
+              padding: "0.8rem 2rem", 
+              minWidth: "180px", 
+              fontWeight: "bold", 
+              letterSpacing: "1px", 
+              position: "relative", 
+              overflow: "hidden",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: "var(--m-font-main)",
+              fontSize: "1.2rem",
+              textAlign: "center",
+              textDecoration: "none",
+              verticalAlign: "middle",
+              cursor: "pointer",
+              userSelect: "none",
+              border: "1px solid var(--m-text)",
+              borderRadius: "var(--m-radius)",
+              background: "linear-gradient(to bottom, rgba(0, 255, 65, 0.7), rgba(0, 150, 30, 0.7))",
+              color: "var(--m-black)",
+              textShadow: "0 0 5px rgba(0, 0, 0, 0.5)",
+              boxShadow: "0 0 10px var(--m-glow)",
+              transition: "all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)",
+              textTransform: "uppercase"
+            }}
+            onMouseEnter={(e) => {
+              const target = e.currentTarget;
+              target.style.transform = "translateY(-3px)";
+              target.style.boxShadow = "0 0 15px var(--m-glow)";
+              target.style.background = "linear-gradient(to bottom, rgba(0, 255, 65, 0.8), rgba(0, 180, 30, 0.8))";
+              
+              // Create or update before pseudo-element
+              if (!target.querySelector('.btn-before-line')) {
+                const before = document.createElement('div');
+                before.className = 'btn-before-line';
+                before.style.cssText = `
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: rgba(255, 255, 255, 0.7);
+                  transform: translateX(0);
+                  transition: transform 0.5s ease;
+                `;
+                before.dataset.fromLeft = "true";
+                target.appendChild(before);
+              }
+              
+              // Create or update after pseudo-element
+              if (!target.querySelector('.btn-after-line')) {
+                const after = document.createElement('div');
+                after.className = 'btn-after-line';
+                after.style.cssText = `
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: rgba(255, 255, 255, 0.7);
+                  transform: translateX(0);
+                  transition: transform 0.5s ease;
+                `;
+                after.dataset.fromRight = "true";
+                target.appendChild(after);
+              }
+            }}
+            onMouseLeave={(e) => {
+              const target = e.currentTarget;
+              target.style.transform = "translateY(0)";
+              target.style.boxShadow = "0 0 10px var(--m-glow)";
+              target.style.background = "linear-gradient(to bottom, rgba(0, 255, 65, 0.7), rgba(0, 150, 30, 0.7))";
+              
+              // Animate out lines
+              const before = target.querySelector('.btn-before-line');
+              const after = target.querySelector('.btn-after-line');
+              
+              if (before) {
+                before.style.transform = "translateX(-100%)";
+              }
+              
+              if (after) {
+                after.style.transform = "translateX(100%)";
+              }
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = "translateY(1px)";
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = "translateY(-3px)";
+            }}
           >
-            <span className="relative z-2">{primaryCta.text}</span>
-          </Button>
+            <span style={{ position: "relative", zIndex: 2 }}>{primaryCta.text}</span>
+          </a>
           
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="min-w-[180px] font-bold tracking-wide"
-            onClick={() => window.location.href = secondaryCta.href}
+          <a 
+            href={secondaryCta.href} 
+            className="m-btn m-btn-lg" 
+            style={{ 
+              padding: "0.8rem 2rem", 
+              minWidth: "180px", 
+              fontWeight: "bold", 
+              letterSpacing: "1px",
+              position: "relative",
+              overflow: "hidden",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: "var(--m-font-main)",
+              fontSize: "1.2rem",
+              textAlign: "center",
+              textDecoration: "none",
+              verticalAlign: "middle",
+              cursor: "pointer",
+              userSelect: "none",
+              border: "1px solid var(--m-border)",
+              borderRadius: "var(--m-radius)",
+              backgroundColor: "rgba(7, 39, 7, 0.7)",
+              color: "var(--m-text)",
+              transition: "all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)",
+              boxShadow: "0 0 5px rgba(0, 255, 65, 0.2)",
+              textTransform: "uppercase"
+            }}
+            onMouseEnter={(e) => {
+              const target = e.currentTarget;
+              target.style.transform = "translateY(-3px)";
+              target.style.boxShadow = "0 0 15px var(--m-glow)";
+              target.style.backgroundColor = "rgba(7, 39, 7, 0.8)";
+              target.style.color = "var(--m-text-bright)";
+              
+              // Create or update before pseudo-element
+              if (!target.querySelector('.btn-before-line')) {
+                const before = document.createElement('div');
+                before.className = 'btn-before-line';
+                before.style.cssText = `
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: var(--m-text);
+                  opacity: 0.7;
+                  transform: translateX(0);
+                  transition: transform 0.5s ease;
+                `;
+                before.dataset.fromLeft = "true";
+                target.appendChild(before);
+              }
+              
+              // Create or update after pseudo-element
+              if (!target.querySelector('.btn-after-line')) {
+                const after = document.createElement('div');
+                after.className = 'btn-after-line';
+                after.style.cssText = `
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 2px;
+                  background: var(--m-text);
+                  opacity: 0.7;
+                  transform: translateX(0);
+                  transition: transform 0.5s ease;
+                `;
+                after.dataset.fromRight = "true";
+                target.appendChild(after);
+              }
+            }}
+            onMouseLeave={(e) => {
+              const target = e.currentTarget;
+              target.style.transform = "translateY(0)";
+              target.style.boxShadow = "0 0 5px rgba(0, 255, 65, 0.2)";
+              target.style.backgroundColor = "rgba(7, 39, 7, 0.7)";
+              target.style.color = "var(--m-text)";
+              
+              // Animate out lines
+              const before = target.querySelector('.btn-before-line');
+              const after = target.querySelector('.btn-after-line');
+              
+              if (before) {
+                before.style.transform = "translateX(-100%)";
+              }
+              
+              if (after) {
+                after.style.transform = "translateX(100%)";
+              }
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = "translateY(1px)";
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = "translateY(-3px)";
+            }}
           >
             {secondaryCta.text}
-          </Button>
+          </a>
         </div>
         
         {/* Version badge */}
