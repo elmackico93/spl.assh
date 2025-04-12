@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
-import CodeRain from '@/components/effects/CodeRain';
 import GlitchText from '@/components/effects/GlitchText';
 
 interface MatrixHeroProps {
@@ -33,6 +32,7 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
   disableRainEffect = false,
 }) => {
   const rainCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [isCanvasReady, setIsCanvasReady] = useState(false);
   
   // Initialize matrix rain animation
   useEffect(() => {
@@ -50,6 +50,7 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
+    setIsCanvasReady(true);
 
     // Matrix characters (including Japanese katakana for authenticity)
     const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -72,7 +73,7 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
       
       // Set green text color
       ctx.fillStyle = '#00ff41';
-      ctx.font = `${fontSize}px courier`;
+      ctx.font = `${fontSize}px monospace`;
       
       // Loop over each column
       for (let i = 0; i < drops.length; i++) {
@@ -98,24 +99,176 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
         }
       }
       
-      requestAnimationFrame(draw);
+      animationRef.current = requestAnimationFrame(draw);
     };
     
     // Start animation
-    draw();
+    const animationRef = { current: requestAnimationFrame(draw) };
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
-  }, []);
+  }, [disableRainEffect]);
+
+  // Button hover effect handlers
+  const handlePrimaryButtonMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget;
+    target.style.transform = "translateY(-3px)";
+    target.style.boxShadow = "0 0 15px var(--m-glow)";
+    target.style.background = "linear-gradient(to bottom, rgba(0, 255, 65, 0.8), rgba(0, 180, 30, 0.8))";
+    
+    // Get or create top line element
+    let topLine = target.querySelector('.btn-top-line') as HTMLDivElement;
+    if (!topLine) {
+      topLine = document.createElement('div');
+      topLine.className = 'btn-top-line';
+      topLine.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.7);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      `;
+      target.appendChild(topLine);
+    }
+    
+    // Get or create bottom line element
+    let bottomLine = target.querySelector('.btn-bottom-line') as HTMLDivElement;
+    if (!bottomLine) {
+      bottomLine = document.createElement('div');
+      bottomLine.className = 'btn-bottom-line';
+      bottomLine.style.cssText = `
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.7);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+      `;
+      target.appendChild(bottomLine);
+    }
+    
+    // Animate lines
+    requestAnimationFrame(() => {
+      topLine.style.transform = "scaleX(1)";
+      bottomLine.style.transform = "scaleX(1)";
+    });
+  };
+
+  const handlePrimaryButtonMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget;
+    target.style.transform = "translateY(0)";
+    target.style.boxShadow = "0 0 10px var(--m-glow)";
+    target.style.background = "linear-gradient(to bottom, rgba(0, 255, 65, 0.7), rgba(0, 150, 30, 0.7))";
+    
+    const topLine = target.querySelector('.btn-top-line') as HTMLDivElement;
+    const bottomLine = target.querySelector('.btn-bottom-line') as HTMLDivElement;
+    
+    if (topLine) topLine.style.transform = "scaleX(0)";
+    if (bottomLine) bottomLine.style.transform = "scaleX(0)";
+  };
+
+  const handleSecondaryButtonMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget;
+    target.style.transform = "translateY(-3px)";
+    target.style.boxShadow = "0 0 15px var(--m-glow)";
+    target.style.backgroundColor = "rgba(7, 39, 7, 0.8)";
+    target.style.color = "var(--m-text-bright)";
+    
+    // Get or create top line element
+    let topLine = target.querySelector('.btn-top-line') as HTMLDivElement;
+    if (!topLine) {
+      topLine = document.createElement('div');
+      topLine.className = 'btn-top-line';
+      topLine.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--m-text);
+        opacity: 0.7;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      `;
+      target.appendChild(topLine);
+    }
+    
+    // Get or create bottom line element
+    let bottomLine = target.querySelector('.btn-bottom-line') as HTMLDivElement;
+    if (!bottomLine) {
+      bottomLine = document.createElement('div');
+      bottomLine.className = 'btn-bottom-line';
+      bottomLine.style.cssText = `
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--m-text);
+        opacity: 0.7;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+      `;
+      target.appendChild(bottomLine);
+    }
+    
+    // Animate lines
+    requestAnimationFrame(() => {
+      topLine.style.transform = "scaleX(1)";
+      bottomLine.style.transform = "scaleX(1)";
+    });
+  };
+
+  const handleSecondaryButtonMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget;
+    target.style.transform = "translateY(0)";
+    target.style.boxShadow = "0 0 5px rgba(0, 255, 65, 0.2)";
+    target.style.backgroundColor = "rgba(7, 39, 7, 0.7)";
+    target.style.color = "var(--m-text)";
+    
+    const topLine = target.querySelector('.btn-top-line') as HTMLDivElement;
+    const bottomLine = target.querySelector('.btn-bottom-line') as HTMLDivElement;
+    
+    if (topLine) topLine.style.transform = "scaleX(0)";
+    if (bottomLine) bottomLine.style.transform = "scaleX(0)";
+  };
+
+  const handleButtonMouseDown = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.transform = "translateY(1px)";
+  };
+
+  const handlePrimaryButtonMouseUp = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.transform = "translateY(-3px)";
+  };
+
+  const handleSecondaryButtonMouseUp = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.transform = "translateY(-3px)";
+  };
 
   return (
     <section className={cn('relative h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden', className)}>
-      {/* Digital Rain Canvas (for a custom, higher-performance rain effect) */}
+      {/* Digital Rain Canvas */}
       {!disableRainEffect && (
         <canvas 
           ref={rainCanvasRef}
-          className="absolute top-0 left-0 w-full h-full -z-10"
+          className={cn(
+            "absolute top-0 left-0 w-full h-full -z-10",
+            isCanvasReady ? "opacity-100" : "opacity-0",
+            "transition-opacity duration-1000"
+          )}
         />
       )}
       
@@ -134,206 +287,27 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
         </p>
         
         {/* Button container */}
-        <div className="hero-cta" style={{display: "flex", gap: "1.5rem", justifyContent: "center", marginTop: "2rem", flexWrap: "wrap"}}>
+        <div className="flex gap-6 justify-center mt-8 flex-wrap">
           <a 
             href={primaryCta.href} 
-            className="m-btn m-btn-primary m-btn-lg" 
-            style={{
-              padding: "0.8rem 2rem", 
-              minWidth: "180px", 
-              fontWeight: "bold", 
-              letterSpacing: "1px", 
-              position: "relative", 
-              overflow: "hidden",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--m-font-main)",
-              fontSize: "1.2rem",
-              textAlign: "center",
-              textDecoration: "none",
-              verticalAlign: "middle",
-              cursor: "pointer",
-              userSelect: "none",
-              border: "1px solid var(--m-text)",
-              borderRadius: "var(--m-radius)",
-              background: "linear-gradient(to bottom, rgba(0, 255, 65, 0.7), rgba(0, 150, 30, 0.7))",
-              color: "var(--m-black)",
-              textShadow: "0 0 5px rgba(0, 0, 0, 0.5)",
-              boxShadow: "0 0 10px var(--m-glow)",
-              transition: "all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)",
-              textTransform: "uppercase"
-            }}
-            onMouseEnter={(e) => {
-              const target = e.currentTarget;
-              target.style.transform = "translateY(-3px)";
-              target.style.boxShadow = "0 0 15px var(--m-glow)";
-              target.style.background = "linear-gradient(to bottom, rgba(0, 255, 65, 0.8), rgba(0, 180, 30, 0.8))";
-              
-              // Create or update before pseudo-element
-              if (!target.querySelector('.btn-before-line')) {
-                const before = document.createElement('div');
-                before.className = 'btn-before-line';
-                before.style.cssText = `
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 2px;
-                  background: rgba(255, 255, 255, 0.7);
-                  transform: translateX(0);
-                  transition: transform 0.5s ease;
-                `;
-                before.dataset.fromLeft = "true";
-                target.appendChild(before);
-              }
-              
-              // Create or update after pseudo-element
-              if (!target.querySelector('.btn-after-line')) {
-                const after = document.createElement('div');
-                after.className = 'btn-after-line';
-                after.style.cssText = `
-                  position: absolute;
-                  bottom: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 2px;
-                  background: rgba(255, 255, 255, 0.7);
-                  transform: translateX(0);
-                  transition: transform 0.5s ease;
-                `;
-                after.dataset.fromRight = "true";
-                target.appendChild(after);
-              }
-            }}
-            onMouseLeave={(e) => {
-              const target = e.currentTarget;
-              target.style.transform = "translateY(0)";
-              target.style.boxShadow = "0 0 10px var(--m-glow)";
-              target.style.background = "linear-gradient(to bottom, rgba(0, 255, 65, 0.7), rgba(0, 150, 30, 0.7))";
-              
-              // Animate out lines
-              const before = target.querySelector('.btn-before-line');
-              const after = target.querySelector('.btn-after-line');
-              
-              if (before) {
-                before.style.transform = "translateX(-100%)";
-              }
-              
-              if (after) {
-                after.style.transform = "translateX(100%)";
-              }
-            }}
-            onMouseDown={(e) => {
-              e.currentTarget.style.transform = "translateY(1px)";
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-            }}
+            className="m-btn-primary relative overflow-hidden inline-flex items-center justify-center px-8 py-3 min-w-[180px] text-[var(--m-black)] bg-gradient-to-b from-[rgba(0,255,65,0.7)] to-[rgba(0,150,30,0.7)] border border-[var(--m-text)] rounded-[var(--m-radius)] font-bold text-xl uppercase tracking-wider shadow-[0_0_10px_var(--m-glow)] transition-all duration-250"
+            onMouseEnter={handlePrimaryButtonMouseEnter}
+            onMouseLeave={handlePrimaryButtonMouseLeave}
+            onMouseDown={handleButtonMouseDown}
+            onMouseUp={handlePrimaryButtonMouseUp}
           >
-            <span style={{ position: "relative", zIndex: 2 }}>{primaryCta.text}</span>
+            <span className="relative z-2">{primaryCta.text}</span>
           </a>
           
           <a 
             href={secondaryCta.href} 
-            className="m-btn m-btn-lg" 
-            style={{ 
-              padding: "0.8rem 2rem", 
-              minWidth: "180px", 
-              fontWeight: "bold", 
-              letterSpacing: "1px",
-              position: "relative",
-              overflow: "hidden",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--m-font-main)",
-              fontSize: "1.2rem",
-              textAlign: "center",
-              textDecoration: "none",
-              verticalAlign: "middle",
-              cursor: "pointer",
-              userSelect: "none",
-              border: "1px solid var(--m-border)",
-              borderRadius: "var(--m-radius)",
-              backgroundColor: "rgba(7, 39, 7, 0.7)",
-              color: "var(--m-text)",
-              transition: "all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)",
-              boxShadow: "0 0 5px rgba(0, 255, 65, 0.2)",
-              textTransform: "uppercase"
-            }}
-            onMouseEnter={(e) => {
-              const target = e.currentTarget;
-              target.style.transform = "translateY(-3px)";
-              target.style.boxShadow = "0 0 15px var(--m-glow)";
-              target.style.backgroundColor = "rgba(7, 39, 7, 0.8)";
-              target.style.color = "var(--m-text-bright)";
-              
-              // Create or update before pseudo-element
-              if (!target.querySelector('.btn-before-line')) {
-                const before = document.createElement('div');
-                before.className = 'btn-before-line';
-                before.style.cssText = `
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 2px;
-                  background: var(--m-text);
-                  opacity: 0.7;
-                  transform: translateX(0);
-                  transition: transform 0.5s ease;
-                `;
-                before.dataset.fromLeft = "true";
-                target.appendChild(before);
-              }
-              
-              // Create or update after pseudo-element
-              if (!target.querySelector('.btn-after-line')) {
-                const after = document.createElement('div');
-                after.className = 'btn-after-line';
-                after.style.cssText = `
-                  position: absolute;
-                  bottom: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 2px;
-                  background: var(--m-text);
-                  opacity: 0.7;
-                  transform: translateX(0);
-                  transition: transform 0.5s ease;
-                `;
-                after.dataset.fromRight = "true";
-                target.appendChild(after);
-              }
-            }}
-            onMouseLeave={(e) => {
-              const target = e.currentTarget;
-              target.style.transform = "translateY(0)";
-              target.style.boxShadow = "0 0 5px rgba(0, 255, 65, 0.2)";
-              target.style.backgroundColor = "rgba(7, 39, 7, 0.7)";
-              target.style.color = "var(--m-text)";
-              
-              // Animate out lines
-              const before = target.querySelector('.btn-before-line');
-              const after = target.querySelector('.btn-after-line');
-              
-              if (before) {
-                before.style.transform = "translateX(-100%)";
-              }
-              
-              if (after) {
-                after.style.transform = "translateX(100%)";
-              }
-            }}
-            onMouseDown={(e) => {
-              e.currentTarget.style.transform = "translateY(1px)";
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-            }}
+            className="m-btn-secondary relative overflow-hidden inline-flex items-center justify-center px-8 py-3 min-w-[180px] text-[var(--m-text)] bg-[rgba(7,39,7,0.7)] border border-[var(--m-border)] rounded-[var(--m-radius)] font-bold text-xl uppercase tracking-wider shadow-[0_0_5px_rgba(0,255,65,0.2)] transition-all duration-250"
+            onMouseEnter={handleSecondaryButtonMouseEnter}
+            onMouseLeave={handleSecondaryButtonMouseLeave}
+            onMouseDown={handleButtonMouseDown}
+            onMouseUp={handleSecondaryButtonMouseUp}
           >
-            {secondaryCta.text}
+            <span className="relative z-2">{secondaryCta.text}</span>
           </a>
         </div>
         
@@ -350,7 +324,7 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
       {/* Scroll indicator */}
       {showScrollIndicator && (
         <div className="absolute bottom-[2rem] left-1/2 transform -translate-x-1/2 animate-[bounce_2s_infinite] cursor-pointer">
-          <a href="#features" className="text-[var(--m-text)] flex flex-col items-center">
+          <a href="#features" className="text-[var(--m-text)] flex flex-col items-center no-underline">
             <span className="text-[0.8rem] block mb-2 uppercase tracking-[2px]">
               Scroll Down
             </span>
@@ -374,6 +348,10 @@ export const MatrixHero: React.FC<MatrixHeroProps> = ({
           0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
           40% { transform: translateY(-15px) translateX(-50%); }
           60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        a.m-btn-primary::after, a.m-btn-secondary::after {
+          display: none;
         }
       `}</style>
     </section>
